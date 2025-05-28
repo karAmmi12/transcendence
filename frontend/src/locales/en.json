@@ -1,0 +1,151 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "The Ultimate Pong Experience"
+  },
+  "nav": {
+    "home": "Home",
+    "play": "Play",
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout",
+    "selectLanguage": "Select Language"
+  },
+  "home": {
+    "welcome": "Welcome to ft_transcendence",
+    "description": "Experience the ultimate Pong game with real-time multiplayer, tournaments, and an immersive gaming experience.",
+    "features": {
+        "multiplayer": {
+        "title": "Real-time Multiplayer",
+        "description": "Play against friends in real-time from anywhere in the world."
+        },
+        "tournaments": {
+        "title": "Tournaments",
+        "description": "Compete in tournaments and climb the leaderboard to become the champion."
+        },
+        "chat": {
+        "title": "Live Chat",
+        "description": "Chat with other players and make new friends in the gaming community."
+        }
+    },
+    "buttons": {
+        "play": "Start Playing",
+        "login": "Login"
+    },
+    "stats": {
+        "players": "Players",
+        "games": "Games",
+        "tournaments": "Tournaments",
+        "online": "Online"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "loginButton": "Log In",
+      "forgotPassword": "Forgot Password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign Up"
+    },
+    "register": {
+      "title": "Create Account",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "registerButton": "Create Account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign In"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid username or password",
+      "usernameTaken": "Username is already taken",
+      "emailTaken": "Email is already registered",
+      "passwordMismatch": "Passwords do not match",
+      "requiredField": "This field is required"
+    }
+  },
+  "game": {
+    "title": "Pong Arena",
+    "lobby": {
+      "title": "Game Lobby",
+      "waitingForPlayer": "Waiting for opponent...",
+      "playerJoined": "Player joined!",
+      "startGame": "Start Game",
+      "leaveGame": "Leave Game"
+    },
+    "controls": {
+      "instructions": "Use W/S or Arrow Keys to move your paddle",
+      "pause": "Press SPACE to pause"
+    },
+    "status": {
+      "waiting": "Waiting",
+      "playing": "Playing",
+      "paused": "Paused",
+      "finished": "Game Over"
+    },
+    "score": {
+      "you": "You",
+      "opponent": "Opponent"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "stats": {
+      "title": "Statistics",
+      "gamesPlayed": "Games Played",
+      "gamesWon": "Games Won",
+      "winRate": "Win Rate",
+      "ranking": "Ranking"
+    },
+    "history": {
+      "title": "Match History",
+      "noGames": "No games played yet",
+      "result": {
+        "win": "Victory",
+        "loss": "Defeat"
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "notifications": "Notifications"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+    "footer": {
+    "description": "The ultimate Pong experience. Play, compete, and chat with the community.",
+    "allRightsReserved": "All rights reserved.",
+    "navigation": {
+        "title": "Navigation",
+        "tournaments": "Tournaments",
+        "leaderboard": "Leaderboard"
+    },
+    "support": {
+        "title": "Support",
+        "help": "Help",
+        "faq": "FAQ",
+        "contact": "Contact",
+        "rules": "Rules"
+    },
+    "social": {
+        "title": "Social"
+    }
+    }
+}
