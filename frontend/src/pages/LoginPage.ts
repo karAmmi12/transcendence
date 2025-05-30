@@ -1,41 +1,30 @@
-// export class LoginPage {
-//   mount(selector: string): void {
-//     const element = document.querySelector(selector)
-//     if (!element) return
 
-//     element.innerHTML = `
-//       <div class="text-center">
-//         <h1 class="text-4xl font-bold mb-8">Login</h1>
-//         <p class="text-gray-300 mb-4">Connect to your account to play Pong!</p>
-//         <form class="max-w-sm mx-auto">
-//           <input type="text" placeholder="Username" class="block w-full mb-4 px-4 py-2 rounded bg-gray-800 text-white" />
-//           <input type="password" placeholder="Password" class="block w-full mb-4 px-4 py-2 rounded bg-gray-800 text-white" />
-//           <button type="submit" class="btn-primary w-full">Login</button>
-//         </form>
-//       </div>
-//     `
-//   }
-
-//   destroy(): void {
-//     // Cleanup if needed
-//   }
-// }
 
 import { i18n } from '@services/i18n';
 
 export class LoginPage {
+
+    private languageListener: (() => void) | null = null;
+
     mount(selector: string): void {
         const element = document.querySelector(selector);
         if (!element) return;
 
         this.render(element);
-        this.bindEvents();
+
+        this.render(element);
+
+        // Nettoie l'ancien listener si besoin
+        this.destroy();
+
+        // Ajoute le listener pour le changement de langue
+        this.languageListener = () => {
+            this.render(element);
+        };
 
         // Écouter les changements de langue
-        document.addEventListener('languageChanged', () => {
-            this.render(element);
-            this.bindEvents();
-        });
+        window.addEventListener('languageChanged', this.languageListener);
+        this.bindEvents();
     }
 
     private render(element: Element): void {
@@ -269,5 +258,9 @@ export class LoginPage {
 
     destroy(): void {
         // Cleanup if needed
+        if (this.languageListener) {
+            window.removeEventListener('languageChanged', this.languageListener);
+            this.languageListener = null;
+        }
     }
 }

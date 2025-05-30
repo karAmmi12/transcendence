@@ -26,7 +26,7 @@ class Main {
 
     // Handle custom navigation events
     window.addEventListener('navigate', (e: Event) => {
-      const path = (e as CustomEvent).detail
+      const path = (e as CustomEvent).detail 
       this.router.navigate(path)
     })
 

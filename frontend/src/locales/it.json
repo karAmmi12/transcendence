@@ -15,51 +15,64 @@
     "welcome": "Benvenuto su ft_transcendence",
     "description": "Vivi l'esperienza definitiva di Pong con multiplayer in tempo reale, tornei e un'esperienza di gioco coinvolgente.",
     "features": {
-        "multiplayer": {
+      "multiplayer": {
         "title": "Multiplayer in tempo reale",
         "description": "Gioca contro i tuoi amici in tempo reale da qualsiasi parte del mondo."
-        },
-        "tournaments": {
+      },
+      "tournaments": {
         "title": "Tornei",
         "description": "Competi nei tornei e scala la classifica per diventare campione."
-        },
-        "chat": {
+      },
+      "chat": {
         "title": "Chat dal vivo",
         "description": "Chatta con altri giocatori e fai nuove amicizie nella comunità di gioco."
-        }
+      }
     },
     "buttons": {
-        "play": "Gioca",
-        "login": "Accedi"
+      "play": "Gioca",
+      "login": "Accedi"
     },
     "stats": {
-        "players": "Giocatori",
-        "games": "Partite",
-        "tournaments": "Tornei",
-        "online": "Online"
+      "players": "Giocatori",
+      "games": "Partite",
+      "tournaments": "Tornei",
+      "online": "Online"
     }
-    },
+  },
   "auth": {
     "login": {
       "title": "Accedi",
       "username": "Nome utente",
+      "usernamePlaceholder": "Inserisci il nome utente",
       "password": "Password",
-      "loginButton": "Accedi",
+      "passwordPlaceholder": "Inserisci la password",
+      "rememberMe": "Ricordami",
+      "submit": "Accedi",
+      "loading": "Accesso in corso...",
       "forgotPassword": "Password dimenticata?",
       "noAccount": "Non hai un account?",
-      "signUp": "Registrati"
+      "signUp": "Registrati",
+      "or": "oppure",
+      "oauth42": "Accedi con 42",
+      "google": "Accedi con Google"
     },
     "register": {
       "title": "Crea account",
       "username": "Nome utente",
+      "usernamePlaceholder": "Scegli un nome utente",
       "email": "Email",
+      "emailPlaceholder": "Inserisci la tua email",
       "password": "Password",
+      "passwordPlaceholder": "Crea una password",
       "confirmPassword": "Conferma password",
+      "confirmPasswordPlaceholder": "Ripeti la password",
       "registerButton": "Crea account",
       "haveAccount": "Hai già un account?",
       "signIn": "Accedi"
     },
     "errors": {
+      "loginFailed": "Accesso fallito",
+      "missingFields": "Compila tutti i campi",
       "invalidCredentials": "Nome utente o password non validi",
       "usernameTaken": "Nome utente già in uso",
       "emailTaken": "Email già registrata",
@@ -94,8 +107,11 @@
   "profile": {
     "title": "Profilo",
     "stats": {
-        "title": "Statistiche"
-    
+      "title": "Statistiche",
+      "gamesPlayed": "Partite giocate",
+      "gamesWon": "Partite vinte",
+      "winRate": "Percentuale vittorie",
+      "ranking": "Classifica"
     },
     "history": {
       "title": "Storico partite",
@@ -111,6 +127,12 @@
       "theme": "Tema",
       "notifications": "Notifiche"
     }
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "username": "Nome utente",
+    "email": "Email",
+    "save": "Salva impostazioni"
   },
   "common": {
     "loading": "Caricamento...",
@@ -130,19 +152,19 @@
     "description": "L'esperienza Pong definitiva. Gioca, competi e chatta con la community.",
     "allRightsReserved": "Tutti i diritti riservati.",
     "navigation": {
-        "title": "Navigazione",
-        "tournaments": "Tornei",
-        "leaderboard": "Classifica"
+      "title": "Navigazione",
+      "tournaments": "Tornei",
+      "leaderboard": "Classifica"
     },
     "support": {
-        "title": "Supporto",
-        "help": "Aiuto",
-        "faq": "FAQ",
-        "contact": "Contatto",
-        "rules": "Regole"
+      "title": "Supporto",
+      "help": "Aiuto",
+      "faq": "FAQ",
+      "contact": "Contatto",
+      "rules": "Regole"
     },
     "social": {
-        "title": "Social"
+      "title": "Social"
     }
-    }
+  }
 }
