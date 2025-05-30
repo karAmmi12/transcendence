@@ -30,15 +30,15 @@ export class Router {
     const path = window.location.pathname
     const route = this.routes.find(r => r.path === path) || this.routes[0]
     
-    // Update page title
+    // Mise à jour du titre de la page
     document.title = route.title
     
-    // Cleanup previous page
+    // Nettoyage de l'ancienne page
     if (this.currentPage && typeof this.currentPage.destroy === 'function') {
       this.currentPage.destroy()
     }
     
-    // Create and mount new page
+    // Creer une nouvelle instance de la page
     this.currentPage = new route.component()
     this.currentPage.mount('#page-content')
   }
