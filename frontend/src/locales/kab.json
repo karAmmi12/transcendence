@@ -1,0 +1,170 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "Tajrurt n Pong tamezwarut"
+  },
+  "nav": {
+    "home": "Agejdan",
+    "play": "Urar",
+    "profile": "Amasnas",
+    "login": "Kcem",
+    "logout": "Ffeɣ",
+    "selectLanguage": "Fren tutlayt"
+  },
+  "home": {
+    "welcome": "Ansuf ɣer ft_transcendence",
+    "description": "Snemmer tajrurt n Pong s umḍiq n urar, isefka n tɣerma, d tajrurt n yidles.",
+    "features": {
+      "multiplayer": {
+        "title": "Urar s waṭas n imdanen",
+        "description": "Ur ar imeddukal s waṭas n imdanen seg yal tama."
+      },
+      "tournaments": {
+        "title": "Isefka n tɣerma",
+        "description": "Semsay deg isefka, ssaɣeḍ deg udrar n yidles."
+      },
+      "chat": {
+        "title": "Ameslay n yidles",
+        "description": "Meslay akked imeddukal-nniḍen, sdukel imaynuten imaynuten."
+      }
+    },
+    "buttons": {
+      "play": "Bdu urar",
+      "login": "Kcem"
+    },
+    "stats": {
+      "players": "Imeddukal",
+      "games": "Urar",
+      "tournaments": "Isefka",
+      "online": "Di yidles"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Kcem",
+      "username": "Isem n useqdac",
+      "usernamePlaceholder": "Sekcem isem-inek",
+      "password": "Awal uffir",
+      "passwordPlaceholder": "Sekcem awal uffir-inek",
+      "rememberMe": "Cfuɣ-d yiwen",
+      "submit": "Kcem",
+      "loading": "Azkem...",
+      "forgotPassword": "Tettwessrem awal uffir?",
+      "noAccount": "Ulac aɣilif?",
+      "signUp": "Rnu amiḍan",
+      "or": "neɣ",
+      "oauth42": "Kcem s 42",
+      "google": "Kcem s Google"
+    },
+    "register": {
+      "title": "Rnu amiḍan",
+      "username": "Isem n useqdac",
+      "usernamePlaceholder": "Fren isem n useqdac",
+      "email": "Imayl",
+      "emailPlaceholder": "Sekcem imayl-inek",
+      "password": "Awal uffir",
+      "passwordPlaceholder": "Rnu awal uffir",
+      "confirmPassword": "Senqed awal uffir",
+      "confirmPasswordPlaceholder": "Ales awal uffir",
+      "registerButton": "Rnu amiḍan",
+      "haveAccount": "Tellaḍ amiḍan?",
+      "signIn": "Kcem"
+    },
+    "errors": {
+      "loginFailed": "Tuccfa deg ukcem",
+      "missingFields": "Mettawi akk urar",
+      "invalidCredentials": "Isem neɣ awal uffir d arameɣtu",
+      "usernameTaken": "Isem n useqdac yella yakan",
+      "emailTaken": "Imayl yella yakan",
+      "passwordMismatch": "Awalen uffir ur nelli ara amaynut",
+      "requiredField": "Urti agi yettwasra"
+    }
+  },
+  "game": {
+    "title": "Aren n Pong",
+    "lobby": {
+      "title": "Agraw n urar",
+      "waitingForPlayer": "Aḥeddu ɣef imeddukal...",
+      "playerJoined": "Imeddukal iḍmen!",
+      "startGame": "Bdu urar",
+      "leaveGame": "Ffeɣ seg urar"
+    },
+    "controls": {
+      "instructions": "Seqdec W/S neɣ tiwellelin i uselkim n tazallit-ik",
+      "pause": "Ssedqel SPACE i usekles"
+    },
+    "status": {
+      "waiting": "Aḥeddu",
+      "playing": "Aḍeg",
+      "paused": "Yettwaselkes",
+      "finished": "Immed urar"
+    },
+    "score": {
+      "you": "Kkem",
+      "opponent": "Amḍiq"
+    }
+  },
+  "profile": {
+    "title": "Amasnas",
+    "stats": {
+      "title": "Tigawin",
+      "gamesPlayed": "Urar yettwarnan",
+      "gamesWon": "Urar yettwaseklen",
+      "winRate": "Ameɣnas n tawaḍit",
+      "ranking": "Aseggas"
+    },
+    "history": {
+      "title": "Amezruy n urar",
+      "noGames": "Ulac urar yettwarnan",
+      "result": {
+        "win": "Tawaḍit",
+        "loss": "Tuffɣa"
+      }
+    },
+    "settings": {
+      "title": "Iɣewwaṛen",
+      "language": "Tutlayt",
+      "theme": "Asentel",
+      "notifications": "Ilɣa"
+    }
+  },
+  "settings": {
+    "title": "Iɣewwaṛen",
+    "username": "Isem n useqdac",
+    "email": "Imayl",
+    "save": "Sekles iɣewwaṛen"
+  },
+  "common": {
+    "loading": "Asali...",
+    "error": "Tuccfa",
+    "success": "Tawaḍit",
+    "cancel": "Sefsex",
+    "confirm": "Sentem",
+    "save": "Sekles",
+    "delete": "Kkes",
+    "edit": "Ẓreg",
+    "close": "Mdel",
+    "back": "Uɣal",
+    "next": "Zdat",
+    "previous": "Uɣal"
+  },
+  "footer": {
+    "description": "Tajrurt n Pong tamezwarut. Urar, semsay, d meslay akked taddart.",
+    "allRightsReserved": "Akk izerfan yellan.",
+    "navigation": {
+      "title": "Anɣel",
+      "tournaments": "Isefka",
+      "leaderboard": "Udrar"
+    },
+    "support": {
+      "title": "Tallalt",
+      "help": "Tallelt",
+      "faq": "FAQ",
+      "contact": "Mdukel",
+      "rules": "Ilemmas"
+    },
+    "social": {
+      "title": "Taddart"
+    }
+  }
+}

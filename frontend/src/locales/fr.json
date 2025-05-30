@@ -15,51 +15,64 @@
     "welcome": "Bienvenue sur ft_transcendence",
     "description": "Découvrez le jeu Pong ultime avec du multijoueur en temps réel, des tournois et une expérience de jeu immersive.",
     "features": {
-        "multiplayer": {
+      "multiplayer": {
         "title": "Multijoueur temps réel",
         "description": "Jouez contre vos amis en temps réel depuis n'importe où dans le monde."
-        },
-        "tournaments": {
+      },
+      "tournaments": {
         "title": "Tournois",
         "description": "Participez aux tournois et grimpez dans le classement pour devenir champion."
-        },
-        "chat": {
+      },
+      "chat": {
         "title": "Chat en direct",
         "description": "Discutez avec d'autres joueurs et faites-vous de nouveaux amis dans la communauté."
-        }
+      }
     },
     "buttons": {
-        "play": "Jouer",
-        "login": "Connexion"
+      "play": "Jouer",
+      "login": "Connexion"
     },
     "stats": {
-        "players": "Joueurs",
-        "games": "Parties",
-        "tournaments": "Tournois",
-        "online": "En ligne"
+      "players": "Joueurs",
+      "games": "Parties",
+      "tournaments": "Tournois",
+      "online": "En ligne"
     }
-    },
+  },
   "auth": {
     "login": {
       "title": "Connexion",
       "username": "Nom d'utilisateur",
+      "usernamePlaceholder": "Entrez votre nom d'utilisateur",
       "password": "Mot de passe",
-      "loginButton": "Se connecter",
+      "passwordPlaceholder": "Entrez votre mot de passe",
+      "rememberMe": "Se souvenir de moi",
+      "submit": "Se connecter",
+      "loading": "Connexion...",
       "forgotPassword": "Mot de passe oublié ?",
       "noAccount": "Pas de compte ?",
-      "signUp": "S'inscrire"
+      "signUp": "S'inscrire",
+      "or": "ou",
+      "oauth42": "Connexion avec 42",
+      "google": "Connexion avec Google"
     },
     "register": {
       "title": "Créer un compte",
       "username": "Nom d'utilisateur",
+      "usernamePlaceholder": "Choisissez un nom d'utilisateur",
       "email": "Email",
+      "emailPlaceholder": "Entrez votre email",
       "password": "Mot de passe",
+      "passwordPlaceholder": "Créez un mot de passe",
       "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Répétez votre mot de passe",
       "registerButton": "Créer le compte",
       "haveAccount": "Déjà un compte ?",
       "signIn": "Se connecter"
     },
     "errors": {
+      "loginFailed": "Échec de la connexion",
+      "missingFields": "Veuillez remplir tous les champs",
       "invalidCredentials": "Nom d'utilisateur ou mot de passe invalide",
       "usernameTaken": "Ce nom d'utilisateur est déjà pris",
       "emailTaken": "Cet email est déjà enregistré",
@@ -94,9 +107,12 @@
   "profile": {
     "title": "Profil",
     "stats": {
-        "title": "Statistiques"
+      "title": "Statistiques",
+      "gamesPlayed": "Parties jouées",
+      "gamesWon": "Parties gagnées",
+      "winRate": "Taux de victoire",
+      "ranking": "Classement"
     },
-
     "history": {
       "title": "Historique des matchs",
       "noGames": "Aucune partie jouée",
@@ -111,6 +127,12 @@
       "theme": "Thème",
       "notifications": "Notifications"
     }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "username": "Nom d'utilisateur",
+    "email": "Email",
+    "save": "Sauvegarder les paramètres"
   },
   "common": {
     "loading": "Chargement...",
@@ -130,19 +152,19 @@
     "description": "L'expérience Pong ultime. Jouez, affrontez et discutez avec la communauté.",
     "allRightsReserved": "Tous droits réservés.",
     "navigation": {
-        "title": "Navigation",
-        "tournaments": "Tournois",
-        "leaderboard": "Classement"
+      "title": "Navigation",
+      "tournaments": "Tournois",
+      "leaderboard": "Classement"
     },
     "support": {
-        "title": "Support",
-        "help": "Aide",
-        "faq": "FAQ",
-        "contact": "Contact",
-        "rules": "Règles"
+      "title": "Support",
+      "help": "Aide",
+      "faq": "FAQ",
+      "contact": "Contact",
+      "rules": "Règles"
     },
     "social": {
-        "title": "Réseaux sociaux"
+      "title": "Réseaux sociaux"
     }
-    }
+  }
 }

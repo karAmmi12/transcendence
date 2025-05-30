@@ -1,0 +1,170 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "تجربة بونغ النهائية"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "play": "العب",
+    "profile": "الملف الشخصي",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "selectLanguage": "اختر اللغة"
+  },
+  "home": {
+    "welcome": "مرحبًا بك في ft_transcendence",
+    "description": "استمتع بتجربة بونغ النهائية مع اللعب الجماعي في الوقت الحقيقي، البطولات، وتجربة ألعاب غامرة.",
+    "features": {
+      "multiplayer": {
+        "title": "لعب جماعي في الوقت الحقيقي",
+        "description": "العب ضد أصدقائك في الوقت الحقيقي من أي مكان في العالم."
+      },
+      "tournaments": {
+        "title": "بطولات",
+        "description": "تنافس في البطولات وتسلق لوحة الصدارة لتصبح البطل."
+      },
+      "chat": {
+        "title": "دردشة مباشرة",
+        "description": "تحدث مع لاعبين آخرين وتعرف على أصدقاء جدد في مجتمع الألعاب."
+      }
+    },
+    "buttons": {
+      "play": "ابدأ اللعب",
+      "login": "تسجيل الدخول"
+    },
+    "stats": {
+      "players": "اللاعبون",
+      "games": "الألعاب",
+      "tournaments": "البطولات",
+      "online": "متصل"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "تسجيل الدخول",
+      "username": "اسم المستخدم",
+      "usernamePlaceholder": "أدخل اسم المستخدم",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور",
+      "rememberMe": "تذكرني",
+      "submit": "تسجيل الدخول",
+      "loading": "جاري تسجيل الدخول...",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "إنشاء حساب",
+      "or": "أو",
+      "oauth42": "تسجيل الدخول عبر 42",
+      "google": "تسجيل الدخول عبر Google"
+    },
+    "register": {
+      "title": "إنشاء حساب",
+      "username": "اسم المستخدم",
+      "usernamePlaceholder": "اختر اسم مستخدم",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "password": "كلمة المرور",
+      "passwordPlaceholder": "أنشئ كلمة مرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "أعد كتابة كلمة المرور",
+      "registerButton": "إنشاء حساب",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول"
+    },
+    "errors": {
+      "loginFailed": "فشل تسجيل الدخول",
+      "missingFields": "يرجى ملء جميع الحقول",
+      "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+      "usernameTaken": "اسم المستخدم مستخدم بالفعل",
+      "emailTaken": "البريد الإلكتروني مستخدم بالفعل",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "requiredField": "هذا الحقل مطلوب"
+    }
+  },
+  "game": {
+    "title": "ساحة بونغ",
+    "lobby": {
+      "title": "غرفة اللعبة",
+      "waitingForPlayer": "في انتظار الخصم...",
+      "playerJoined": "انضم لاعب!",
+      "startGame": "ابدأ اللعبة",
+      "leaveGame": "غادر اللعبة"
+    },
+    "controls": {
+      "instructions": "استخدم W/S أو الأسهم لتحريك المضرب",
+      "pause": "اضغط على المسافة للإيقاف المؤقت"
+    },
+    "status": {
+      "waiting": "في الانتظار",
+      "playing": "قيد اللعب",
+      "paused": "متوقف مؤقتًا",
+      "finished": "انتهت اللعبة"
+    },
+    "score": {
+      "you": "أنت",
+      "opponent": "الخصم"
+    }
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "stats": {
+      "title": "الإحصائيات",
+      "gamesPlayed": "الألعاب التي تم لعبها",
+      "gamesWon": "الألعاب الفائزة",
+      "winRate": "نسبة الفوز",
+      "ranking": "الترتيب"
+    },
+    "history": {
+      "title": "سجل المباريات",
+      "noGames": "لم يتم لعب أي مباريات بعد",
+      "result": {
+        "win": "فوز",
+        "loss": "خسارة"
+      }
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "language": "اللغة",
+      "theme": "السمة",
+      "notifications": "الإشعارات"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "save": "حفظ الإعدادات"
+  },
+  "common": {
+    "loading": "جار التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق"
+  },
+  "footer": {
+    "description": "تجربة بونغ النهائية. العب، تنافس، وتحدث مع المجتمع.",
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "navigation": {
+      "title": "التنقل",
+      "tournaments": "البطولات",
+      "leaderboard": "لوحة الصدارة"
+    },
+    "support": {
+      "title": "الدعم",
+      "help": "مساعدة",
+      "faq": "الأسئلة الشائعة",
+      "contact": "اتصل",
+      "rules": "القواعد"
+    },
+    "social": {
+      "title": "اجتماعي"
+    }
+  }
+}

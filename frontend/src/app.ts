@@ -3,11 +3,12 @@ import { Header } from '@components/layout/Header'
 import { Footer } from '@components/layout/Footer'
 
 export class App {
-  private router: Router
-  private header: Header
+  private router: Router //instanciation du routeur pour la navigation SPA
+  private header: Header 
   private footer: Footer
 
-  constructor(router: Router) {
+  
+  constructor(router: Router) { 
     this.router = router
     this.header = new Header()
     this.footer = new Footer()
@@ -19,7 +20,7 @@ export class App {
       throw new Error(`Element with selector ${selector} not found`)
     }
 
-    // Create main layout
+    // Creer le contenu de l'application
     appElement.innerHTML = `
       <div class="min-h-screen flex flex-col">
         <header id="header"></header>
@@ -30,7 +31,7 @@ export class App {
       </div>
     `
 
-    // Mount components
+
     this.header.mount('#header')
     this.footer.mount('#footer')
   }
