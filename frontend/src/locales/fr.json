@@ -1,0 +1,170 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "L'Expérience Pong Ultime"
+  },
+  "nav": {
+    "home": "Accueil",
+    "play": "Jouer",
+    "profile": "Profil",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "selectLanguage": "Sélectionner la langue"
+  },
+  "home": {
+    "welcome": "Bienvenue sur ft_transcendence",
+    "description": "Découvrez le jeu Pong ultime avec du multijoueur en temps réel, des tournois et une expérience de jeu immersive.",
+    "features": {
+      "multiplayer": {
+        "title": "Multijoueur temps réel",
+        "description": "Jouez contre vos amis en temps réel depuis n'importe où dans le monde."
+      },
+      "tournaments": {
+        "title": "Tournois",
+        "description": "Participez aux tournois et grimpez dans le classement pour devenir champion."
+      },
+      "chat": {
+        "title": "Chat en direct",
+        "description": "Discutez avec d'autres joueurs et faites-vous de nouveaux amis dans la communauté."
+      }
+    },
+    "buttons": {
+      "play": "Jouer",
+      "login": "Connexion"
+    },
+    "stats": {
+      "players": "Joueurs",
+      "games": "Parties",
+      "tournaments": "Tournois",
+      "online": "En ligne"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "username": "Nom d'utilisateur",
+      "usernamePlaceholder": "Entrez votre nom d'utilisateur",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Entrez votre mot de passe",
+      "rememberMe": "Se souvenir de moi",
+      "submit": "Se connecter",
+      "loading": "Connexion...",
+      "forgotPassword": "Mot de passe oublié ?",
+      "noAccount": "Pas de compte ?",
+      "signUp": "S'inscrire",
+      "or": "ou",
+      "oauth42": "Connexion avec 42",
+      "google": "Connexion avec Google"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "username": "Nom d'utilisateur",
+      "usernamePlaceholder": "Choisissez un nom d'utilisateur",
+      "email": "Email",
+      "emailPlaceholder": "Entrez votre email",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Créez un mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Répétez votre mot de passe",
+      "registerButton": "Créer le compte",
+      "haveAccount": "Déjà un compte ?",
+      "signIn": "Se connecter"
+    },
+    "errors": {
+      "loginFailed": "Échec de la connexion",
+      "missingFields": "Veuillez remplir tous les champs",
+      "invalidCredentials": "Nom d'utilisateur ou mot de passe invalide",
+      "usernameTaken": "Ce nom d'utilisateur est déjà pris",
+      "emailTaken": "Cet email est déjà enregistré",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "requiredField": "Ce champ est requis"
+    }
+  },
+  "game": {
+    "title": "Arène Pong",
+    "lobby": {
+      "title": "Salon de jeu",
+      "waitingForPlayer": "En attente d'un adversaire...",
+      "playerJoined": "Joueur rejoint !",
+      "startGame": "Commencer la partie",
+      "leaveGame": "Quitter la partie"
+    },
+    "controls": {
+      "instructions": "Utilisez W/S ou les flèches pour déplacer votre raquette",
+      "pause": "Appuyez sur ESPACE pour faire une pause"
+    },
+    "status": {
+      "waiting": "En attente",
+      "playing": "En cours",
+      "paused": "En pause",
+      "finished": "Partie terminée"
+    },
+    "score": {
+      "you": "Vous",
+      "opponent": "Adversaire"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "stats": {
+      "title": "Statistiques",
+      "gamesPlayed": "Parties jouées",
+      "gamesWon": "Parties gagnées",
+      "winRate": "Taux de victoire",
+      "ranking": "Classement"
+    },
+    "history": {
+      "title": "Historique des matchs",
+      "noGames": "Aucune partie jouée",
+      "result": {
+        "win": "Victoire",
+        "loss": "Défaite"
+      }
+    },
+    "settings": {
+      "title": "Paramètres",
+      "language": "Langue",
+      "theme": "Thème",
+      "notifications": "Notifications"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "username": "Nom d'utilisateur",
+    "email": "Email",
+    "save": "Sauvegarder les paramètres"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent"
+  },
+  "footer": {
+    "description": "L'expérience Pong ultime. Jouez, affrontez et discutez avec la communauté.",
+    "allRightsReserved": "Tous droits réservés.",
+    "navigation": {
+      "title": "Navigation",
+      "tournaments": "Tournois",
+      "leaderboard": "Classement"
+    },
+    "support": {
+      "title": "Support",
+      "help": "Aide",
+      "faq": "FAQ",
+      "contact": "Contact",
+      "rules": "Règles"
+    },
+    "social": {
+      "title": "Réseaux sociaux"
+    }
+  }
+}

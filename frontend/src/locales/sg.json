@@ -1,0 +1,148 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "Nyama na Pong asonga mingi"
+  },
+  "nav": {
+    "home": "Da",
+    "play": "Bara",
+    "profile": "Lakue ti lo",
+    "login": "Gue",
+    "logout": "Kiri",
+    "selectLanguage": "Ye yanga"
+  },
+  "home": {
+    "welcome": "Mbote na ft_transcendence",
+    "description": "Hinga bara Pong asonga mingi na bara na ndo sioni, tournament, na nyama ti bara asonga.",
+    "features": {
+        "multiplayer": {
+        "title": "Bara na ndo sioni",
+        "description": "Bara na aterene ti mo na tempo sioni na kodoro kue."
+        },
+        "tournaments": {
+        "title": "Tournament",
+        "description": "Gue na tournament be yeke na kanga na classification be fa champion."
+        },
+        "chat": {
+        "title": "Tene na sioni",
+        "description": "Tene na aterene bara ape ye fa aterene kodo na communaute."
+        }
+    },
+    "buttons": {
+        "play": "Bara",
+        "login": "Gue"
+    },
+    "stats": {
+        "players": "Aterene bara",
+        "games": "Bara",
+        "tournaments": "Tournament",
+        "online": "Na sioni"
+    }
+    },
+  "auth": {
+    "login": {
+      "title": "Gue",
+      "username": "Iri ti lo",
+      "password": "Mot susu",
+      "loginButton": "Gue",
+      "forgotPassword": "Mo hungara mot susu?",
+      "noAccount": "Ala na compte ape?",
+      "signUp": "Sura iri"
+    },
+    "register": {
+      "title": "Ke compte oko",
+      "username": "Iri ti lo",
+      "email": "Email",
+      "password": "Mot susu",
+      "confirmPassword": "Ye mot susu kua",
+      "registerButton": "Ke compte",
+      "haveAccount": "Mo ala na compte?",
+      "signIn": "Gue"
+    },
+    "errors": {
+      "invalidCredentials": "Iri ti lo to mot susu ape gi",
+      "usernameTaken": "Iri ti lo so ale zua",
+      "emailTaken": "Email so ale zua",
+      "passwordMismatch": "Amot susu ape kelen-kelen ape",
+      "requiredField": "Champ so nyeke obligatoire"
+    }
+  },
+  "game": {
+    "title": "Arena Pong",
+    "lobby": {
+      "title": "Da ti bara",
+      "waitingForPlayer": "Hinga aterene bara ape...",
+      "playerJoined": "Aterene bara gue!",
+      "startGame": "Banda bara",
+      "leaveGame": "Kiri bara"
+    },
+    "controls": {
+      "instructions": "Senzbere W/S to asunga-bere be tene raquette ti mo",
+      "pause": "To ESPACE be pause"
+    },
+    "status": {
+      "waiting": "Hinga",
+      "playing": "Yeke bara",
+      "paused": "Pause",
+      "finished": "Bara leke"
+    },
+    "score": {
+      "you": "Mo",
+      "opponent": "Aterene bara"
+    }
+  },
+  "profile": {
+    "title": "Lakue ti lo",
+    "stats": {
+        "title": "Statistique"
+    },
+
+    "history": {
+      "title": "Histoire ti match ape",
+      "noGames": "Bara oke ape",
+      "result": {
+        "win": "Longisa",
+        "loss": "Kua"
+      }
+    },
+    "settings": {
+      "title": "Configuration",
+      "language": "Yanga",
+      "theme": "Theme",
+      "notifications": "Notification"
+    }
+  },
+  "common": {
+    "loading": "Yeke charge...",
+    "error": "Faute",
+    "success": "Longisa",
+    "cancel": "Sio",
+    "confirm": "Ye na ndo",
+    "save": "Simbele",
+    "delete": "Fini",
+    "edit": "Changer",
+    "close": "Kangbi",
+    "back": "Rukua",
+    "next": "Na use",
+    "previous": "Na kota"
+  },
+  "footer": {
+    "description": "Nyama Pong asonga mingi. Bara, sioni na tene na communaute.",
+    "allRightsReserved": "Droit kue zua.",
+    "navigation": {
+        "title": "Navigation",
+        "tournaments": "Tournament",
+        "leaderboard": "Classification"
+    },
+    "support": {
+        "title": "Support",
+        "help": "Gbata",
+        "faq": "FAQ",
+        "contact": "Contact",
+        "rules": "Loi"
+    },
+    "social": {
+        "title": "Reseaux sociaux"
+    }
+    }
+}
