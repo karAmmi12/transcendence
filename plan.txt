@@ -1,0 +1,144 @@
+✅ Objectif confirmé : 125% = 19 points
+🧩 Modules choisis (mis à jour) :
+Domaine	Module	Type	Points
+Web	Backend avec Fastify	MAJ	2
+Frontend avec Tailwind CSS	MIN	1
+SQLite	MIN	1
+User Mgmt	Auth classique (email + password)	MAJ	2
+Auth Google (OAuth)	MAJ	2
+Gameplay	Joueurs distants (remote players)	MAJ	2
+Customisation du jeu	MIN	1
+AI / Stats	Dashboard statistiques utilisateur	MIN	1
+Cybersecurity	GDPR (suppression + anonymisation)	MIN	1
+JWT + 2FA	MAJ	2
+Accessibilité	Support tous appareils (responsive)	MIN	1
+Compatibilité navigateurs étendue	MIN	1
+Support multilingue	MIN	1
+
+Total = 19 points ✅
+
+👨‍👨‍👦 Répartition des tâches — Équipe de 3
+🎨 Personne 1 — Frontend + UI/UX
+Responsabilités :
+
+Structure SPA avec routing
+
+Intégration Tailwind CSS
+
+Composants UI : login, tournoi, dashboard
+
+Multilingue (i18n)
+
+Responsive design (mobile, tablette, PC)
+
+Support navigateurs étendus (tests + fixes)
+
+Intégration graphique de la personnalisation
+
+Affichage dashboard avec Chart.js
+
+Modules liés :
+
+Tailwind (1 pt)
+
+Multilingue (1 pt)
+
+Compatibilité navigateurs (1 pt)
+
+Responsive design (1 pt)
+
+Stats dashboard (1 pt)
+
+Customisation jeu (1 pt)
+
+🧠 Personne 2 — Backend & Authentification
+Responsabilités :
+
+Backend avec Fastify (Node.js)
+
+Auth classique (bcrypt)
+
+Auth Google avec Passport.js
+
+JWT pour sessions
+
+2FA simple (par email ou app)
+
+Gestion de la base de données SQLite (users, matchs, tournoi)
+
+Suppression/anonymisation des comptes (GDPR)
+
+Sécurité des routes (middleware, validation)
+
+Modules liés :
+
+Fastify (2 pts)
+
+SQLite (1 pt)
+
+Auth classique (2 pts)
+
+Auth Google (2 pts)
+
+2FA + JWT (2 pts)
+
+GDPR (1 pt)
+
+📡 Personne 3 — Gameplay & Réseau
+Responsabilités :
+
+Pong multijoueur distant via WebSocket
+
+Gestion matchmaking / tournoi
+
+Système d’inscription à un tournoi
+
+Application des customisations (vitesse, thème, etc.)
+
+Synchronisation des états entre clients
+
+Score tracking & historique
+
+Interaction avec l’API backend
+
+Modules liés :
+
+Remote players (2 pts)
+
+Customisation jeu (1 pt)
+
+Intégration data pour stats (1 pt)
+
+📆 Planning hebdomadaire (6 semaines)
+Semaine	Objectifs clés
+S1 – Setup	Initialisation Git, Docker, base Fastify & Tailwind, routing SPA
+S2 – Auth	Auth classique + Google, JWT, setup SQLite users
+S3 – Pong + Tournoi	Jeu Pong local, structure tournoi, mise en place WebSocket
+S4 – Customisation + Stats	Options de jeu, début tracking score, affichage dashboard
+S5 – Accessibilité + 2FA	Responsive + compatibilité navigateurs, i18n, 2FA
+S6 – GDPR + Polish	Suppression de compte, anonymisation, tests, README, soutenance
+
+🗂️ Structure du projet (référentiel)
+css
+Copy
+Edit
+ft_transcendence/
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── i18n/
+│   │   └── main.ts
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── db.ts
+├── game/
+│   └── pong.ts / pong.html
+├── docker-compose.yml
+├── Dockerfile.frontend
+├── Dockerfile.backend
+└── README.md
