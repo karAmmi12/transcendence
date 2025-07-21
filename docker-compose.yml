@@ -63,3 +63,45 @@ networks:
 volumes:
   database_data: #siuu pk _data et pas juste database
     driver: local
+
+
+###########################################################################################
+
+#vue avec mamadou
+# ne pas exposer les port dans les deux sens, version 17, pas besoin de service frontend, .env, 
+
+#services:
+
+  #backend:
+    #build: ./backend
+    #ports:
+      #- "8000"
+    #environment: #.env
+      #- NODE_ENV=development
+      #- JWT_SECRET=your-super-secret-jwt-key
+      #- PORT=8000
+      #- HOST=0.0.0.0
+    #networks:
+      #- app-network
+    #healthcheck:
+      #test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8000/api/health"]
+      #interval: 30s
+      #timeout: 10s
+      #retries: 3
+
+  #nginx:
+    #build: ./nginx
+    #ports:
+      #- "8080:80"
+    #depends_on:
+      #backend:
+        #condition: service_healthy
+    #networks:
+      #- app-network
+
+#volumes:
+  #postgres_data:
+
+#networks:
+  #app-network:
+    #driver: bridge
