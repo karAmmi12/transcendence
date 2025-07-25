@@ -32,6 +32,7 @@ prod:
 	@echo "$(GREEN)Containers has starded in production mode! Access here http://localhost:3000 !$(END)"
 	
 down:
+	@$(DC) down
 
 clean:
 
