@@ -3,23 +3,35 @@ services:
     build: ./backend
     env_file: 
       - ./backend/.env
-    # environment:
-      # - NODE_ENV=production
-    # volumes:
-      # - ./apps/backend/prisma:/app/prisma
+    volumes:
+      - ./backend/database.db:/app/database.db
     networks:
       - transcendence_network
-    # command: sh -c "npx prisma migrate deploy && npm run start"
-
-  frontend:
-    build: ./frontend
-    networks:
-      - transcendence_network
-    depends_on:
-      - backend
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "3000:3000" 
+
+  # frontend:
+  #   build: ./frontend
+  #   networks:
+  #     - transcendence_network
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - "8080:80"
+  #     - "8443:443"
+
+# A AJOUTER PLUS TARD ET ENLEVER LES PORTS DANS LES AUTRES SERVICES
+  # nginx:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf
+  #   depends_on:
+  #     - backend
+  #     - frontend
+  #   networks:
+  #     - transcendence_network
 
 networks:
   transcendence_network:
