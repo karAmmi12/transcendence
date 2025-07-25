@@ -1,29 +1,24 @@
-FROM node:20-alpine AS builder
+FROM node:20
+
+# Installer sqlite3 de manière permanente
+RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+# Copie des fichiers de dépendances
 COPY package*.json ./
 
+# Installation des dépendances
 RUN npm install
 
+# Copie du code source
 COPY . .
 
-RUN npx prisma migrate dev --name init
-
-RUN npx prisma generate
-
+# Compilation TypeScript
 RUN npm run build
 
-FROM node:20-alpine
+# Exposition du port
+EXPOSE 3000
 
-WORKDIR /app
-
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma /app/prisma
-
-EXPOSE 3333
-
+# Démarrage de l'application
 CMD ["npm", "run", "start"]
-
