@@ -45,7 +45,7 @@ dev:
 
 prod:
 	@echo "$(BLUE)Launching in prod mode...$(END)"
-	@$(DC) up --build -d
+	@$(DC) up --build
 	@echo "$(GREEN)Containers have started in production mode!$(END)"
 	@echo "$(CYAN)Access your app here: http://localhost:8080$(END)"
 	@echo "$(CYAN)HTTPS access: https://localhost:8443$(END)"

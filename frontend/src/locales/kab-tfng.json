@@ -1,0 +1,174 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "ⵜⴰⵊⵔⵓⵔⵜ ⵏ ⴱⵓⵏⴳ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ"
+  },
+  "nav": {
+    "home": "ⴰⴳⵊⴷⴰⵏ",
+    "play": "ⵓⵔⴰⵔ",
+    "profile": "ⴰⵎⴰⵙⵏⴰⵙ",
+    "login": "ⴽⵛⵎ",
+    "logout": "ⴼⴼⵖ",
+    "selectLanguage": "ⴼⵔⵏ ⵜⵓⵜⵍⴰⵢⵜ"
+  },
+  "home": {
+    "welcome": "ⴰⵏⵙⵓⴼ ⵖⵔ ft_transcendence",
+    "description": "ⵙⵏⵎⵎⵔ ⵜⴰⵊⵔⵓⵔⵜ ⵏ ⴱⵓⵏⴳ ⵙ ⵓⵎⴹⵉⵇ ⵏ ⵓⵔⴰⵔ, ⵉⵙⴼⴽⴰ ⵏ ⵜⵖⵔⵎⴰ, ⴷ ⵜⴰⵊⵔⵓⵔⵜ ⵏ ⵢⵉⴷⵍⵙ.",
+    "features": {
+      "multiplayer": {
+        "title": "ⵓⵔⴰⵔ ⵙ ⵡⴰⵟⴰⵙ ⵏ ⵉⵎⴷⴰⵏⵏ",
+        "description": "ⵓⵔ ⴰⵔ ⵉⵎⴷⴷⵓⴽⴰⵍ ⵙ ⵡⴰⵟⴰⵙ ⵏ ⵉⵎⴷⴰⵏⵏ ⵙⴳ ⵢⴰⵍ ⵜⴰⵎⴰ."
+      },
+      "tournaments": {
+        "title": "ⵉⵙⴼⴽⴰ ⵏ ⵜⵖⵔⵎⴰ",
+        "description": "ⵙⵎⵙⴰⵢ ⴷⴳ ⵉⵙⴼⴽⴰ, ⵙⵙⴰⵖⴻⴷ ⴷⴳ ⵓⴷⵔⴰⵔ ⵏ ⵢⵉⴷⵍⵙ."
+      },
+      "chat": {
+        "title": "ⴰⵎⵙⵍⴰⵢ ⵏ ⵢⵉⴷⵍⵙ",
+        "description": "ⵎⵙⵍⴰⵢ ⴰⴽⴷ ⵉⵎⴷⴷⵓⴽⴰⵍ-ⵏⵏⵉⴹⵏ, ⵙⴷⵓⴽⵍ ⵉⵎⴰⵢⵏⵓⵜⵏ ⵉⵎⴰⵢⵏⵓⵜⵏ."
+      },
+      "singleplayer": {
+        "title": "ⴰⵎⵙⵍⴰⵢ ⵏ ⵉⵙⵎⵏⵉⵍ",
+        "description": "ⵎⵙⵍⴰⵢ ⴰⴽⴷ ⵉⵎⴷⴷⵓⴽⴰⵍ-ⵏⵏⵉⴹⵏ, ⵙⴷⵓⴽⵍ ⵉⵎⴰⵢⵏⵓⵜⵏ ⵉⵎⴰⵢⵏⵓⵜⵏ."
+      }
+    },
+    "buttons": {
+      "play": "ⴱⴷⵓ ⵓⵔⴰⵔ",
+      "login": "ⴽⵛⵎ"
+    },
+    "stats": {
+      "players": "ⵉⵎⴷⴷⵓⴽⴰⵍ",
+      "games": "ⵓⵔⴰⵔ",
+      "tournaments": "ⵉⵙⴼⴽⴰ",
+      "online": "ⴷⵉ ⵢⵉⴷⵍⵙ"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ⴽⵛⵎ",
+      "username": "ⵉⵙⵎ ⵏ ⵓⵙⵇⴷⴰⵛ",
+      "usernamePlaceholder": "ⵙⴽⵛⵎ ⵉⵙⵎ-ⵉⵏⴽ",
+      "password": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "passwordPlaceholder": "ⵙⴽⵛⵎ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ-ⵉⵏⴽ",
+      "rememberMe": "ⵛⴼⵓⵖ-ⴷ ⵢⵉⵡⵏ",
+      "submit": "ⴽⵛⵎ",
+      "loading": "ⴰⵣⴽⵎ...",
+      "forgotPassword": "ⵜⵜⵡⵙⵙⵔⵎ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ?",
+      "noAccount": "ⵓⵍⴰⵛ ⴰⵖⵉⵍⵉⴼ?",
+      "signUp": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "or": "ⵏⵖ",
+      "oauth42": "ⴽⵛⵎ ⵙ 42",
+      "google": "ⴽⵛⵎ ⵙ Google"
+    },
+    "register": {
+      "title": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "username": "ⵉⵙⵎ ⵏ ⵓⵙⵇⴷⴰⵛ",
+      "usernamePlaceholder": "ⴼⵔⵏ ⵉⵙⵎ ⵏ ⵓⵙⵇⴷⴰⵛ",
+      "email": "ⵉⵎⴰⵢⵍ",
+      "emailPlaceholder": "ⵙⴽⵛⵎ ⵉⵎⴰⵢⵍ-ⵉⵏⴽ",
+      "password": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "passwordPlaceholder": "ⵔⵏⵓ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "confirmPassword": "ⵙⵏⵇⴷ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "confirmPasswordPlaceholder": "ⴰⵍⵙ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "registerButton": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "haveAccount": "ⵜⵍⵍⴰⴹ ⴰⵎⵉⴹⴰⵏ?",
+      "signIn": "ⴽⵛⵎ"
+    },
+    "errors": {
+      "loginFailed": "ⵜⵓⵛⵛⴼⴰ ⴷⴳ ⵓⴽⵛⵎ",
+      "missingFields": "ⵎⵜⵜⴰⵡⵉ ⴰⵛⴽ ⵓⵔⴰⵔ",
+      "invalidCredentials": "ⵉⵙⵎ ⵏⵖ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⴷ ⴰⵔⴰⵎⵖⵜⵓ",
+      "usernameTaken": "ⵉⵙⵎ ⵏ ⵓⵙⵇⴷⴰⵛ ⵢⵍⵍⴰ ⵢⴰⴽⴰⵏ",
+      "emailTaken": "ⵉⵎⴰⵢⵍ ⵢⵍⵍⴰ ⵢⴰⴽⴰⵏ",
+      "passwordMismatch": "ⴰⵡⴰⵍⵏ ⵓⴼⴼⵉⵔ ⵓⵔ ⵏⵍⵍⵉ ⴰⵔⴰ ⴰⵎⴰⵢⵏⵓⵜ",
+      "requiredField": "ⵓⵔⵜⵉ ⴰⴳⵉ ⵢⵜⵜⵡⴰⵙⵔⴰ"
+    }
+  },
+  "game": {
+    "title": "ⴰⵔⵏ ⵏ ⴱⵓⵏⴳ",
+    "lobby": {
+      "title": "ⴰⴳⵔⴰⵡ ⵏ ⵓⵔⴰⵔ",
+      "waitingForPlayer": "ⴰⵃⴷⴷⵓ ⵖⴼ ⵉⵎⴷⴷⵓⴽⴰⵍ...",
+      "playerJoined": "ⵉⵎⴷⴷⵓⴽⴰⵍ ⵉⴹⵎⵏ!",
+      "startGame": "ⴱⴷⵓ ⵓⵔⴰⵔ",
+      "leaveGame": "ⴼⴼⵖ ⵙⴳ ⵓⵔⴰⵔ"
+    },
+    "controls": {
+      "instructions": "ⵙⵇⴷⵛ W/S ⵏⵖ ⵜⵉⵡⵍⵍⵉⵏ ⵉ ⵓⵙⵍⴽⵉⵎ ⵏ ⵜⴰⵣⴰⵍⵍⵉⵜ-ⵉⴽ",
+      "pause": "ⵙⵙⴷⵇⵍ SPACE ⵉ ⵓⵙⴽⵍⵙ"
+    },
+    "status": {
+      "waiting": "ⴰⵃⴷⴷⵓ",
+      "playing": "ⴰⴹⴳ",
+      "paused": "ⵢⵜⵜⵡⴰⵙⵍⴽⵙ",
+      "finished": "ⵉⵎⵎⴷ ⵓⵔⴰⵔ"
+    },
+    "score": {
+      "you": "ⴽⴽⵎ",
+      "opponent": "ⴰⵎⴹⵉⵇ"
+    }
+  },
+  "profile": {
+    "title": "ⴰⵎⴰⵙⵏⴰⵙ",
+    "stats": {
+      "title": "ⵜⵉⴳⴰⵡⵉⵏ",
+      "gamesPlayed": "ⵓⵔⴰⵔ ⵢⵜⵜⵡⴰⵔⵏⴰⵏ",
+      "gamesWon": "ⵓⵔⴰⵔ ⵢⵜⵜⵡⴰⵙⴽⵍⵏ",
+      "winRate": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵜⴰⵡⴰⴹⵉⵜ",
+      "ranking": "ⴰⵙⴳⴳⴰⵙ"
+    },
+    "history": {
+      "title": "ⴰⵎⵣⵔⵓⵢ ⵏ ⵓⵔⴰⵔ",
+      "noGames": "ⵓⵍⴰⵛ ⵓⵔⴰⵔ ⵢⵜⵜⵡⴰⵔⵏⴰⵏ",
+      "result": {
+        "win": "ⵜⴰⵡⴰⴹⵉⵜ",
+        "loss": "ⵜⵓⴼⴼⵖⴰ"
+      }
+    },
+    "settings": {
+      "title": "ⵉⵖⵡⵡⴰⵔⵏ",
+      "language": "ⵜⵓⵜⵍⴰⵢⵜ",
+      "theme": "ⴰⵙⵏⵜⵍ",
+      "notifications": "ⵉⵍⵖⴰ"
+    }
+  },
+  "settings": {
+    "title": "ⵉⵖⵡⵡⴰⵔⵏ",
+    "username": "ⵉⵙⵎ ⵏ ⵓⵙⵇⴷⴰⵛ",
+    "email": "ⵉⵎⴰⵢⵍ",
+    "save": "ⵙⴽⵍⵙ ⵉⵖⵡⵡⴰⵔⵏ"
+  },
+  "common": {
+    "loading": "ⴰⵙⴰⵍⵉ...",
+    "error": "ⵜⵓⵛⵛⴼⴰ",
+    "success": "ⵜⴰⵡⴰⴹⵉⵜ",
+    "cancel": "ⵙⴼⵙⵅ",
+    "confirm": "ⵙⵏⵜⵎ",
+    "save": "ⵙⴽⵍⵙ",
+    "delete": "ⴽⴽⵙ",
+    "edit": "ⵥⵔⴳ",
+    "close": "ⵎⴷⵍ",
+    "back": "ⵓⵖⴰⵍ",
+    "next": "ⵣⴷⴰⵜ",
+    "previous": "ⵓⵖⴰⵍ"
+  },
+  "footer": {
+    "description": "ⵜⴰⵊⵔⵓⵔⵜ ⵏ ⴱⵓⵏⴳ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ. ⵓⵔⴰⵔ, ⵙⵎⵙⴰⵢ, ⴷ ⵎⵙⵍⴰⵢ ⴰⴽⴷ ⵜⴰⴷⴷⴰⵔⵜ.",
+    "allRightsReserved": "ⴰⴽⴽ ⵉⵣⵔⴼⴰⵏ ⵢⵍⵍⴰⵏ.",
+    "navigation": {
+      "title": "ⴰⵏⵖⵍ",
+      "tournaments": "ⵉⵙⴼⴽⴰ",
+      "leaderboard": "ⵓⴷⵔⴰⵔ"
+    },
+    "support": {
+      "title": "ⵜⴰⵍⵍⴰⵍⵜ",
+      "help": "ⵜⴰⵍⵍⵍⵜ",
+      "faq": "FAQ",
+      "contact": "ⵎⴷⵓⴽⵍ",
+      "rules": "ⵉⵍⵎⵎⴰⵙ"
+    },
+    "social": {
+      "title": "ⵜⴰⴷⴷⴰⵔⵜ"
+    }
+  }
+}
