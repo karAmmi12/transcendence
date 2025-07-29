@@ -1,7 +1,7 @@
 import { i18n } from '@services/i18n';
 import { authService } from '@services/auth';
 
-export class LoginPage {
+export class RegisterPage {
   private languageListener: (() => void) | null = null;
 
   mount(selector: string): void {
@@ -29,7 +29,7 @@ export class LoginPage {
         <div class="max-w-md w-full space-y-8">
           <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
-              ${i18n.t('auth.login.title')}
+              ${i18n.t('auth.register.title')}
             </h2>
           </div>
           
@@ -38,11 +38,11 @@ export class LoginPage {
             <span id="error-description"></span>
           </div>
 
-          <form id="login-form" class="mt-8 space-y-6">
+          <form id="register-form" class="mt-8 space-y-6">
             <div class="space-y-4">
               <div>
                 <label for="username" class="block text-sm font-medium text-gray-300">
-                  ${i18n.t('auth.login.username')}
+                  ${i18n.t('auth.register.username')}
                 </label>
                 <input 
                   id="username" 
@@ -50,13 +50,27 @@ export class LoginPage {
                   type="text" 
                   required 
                   class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" 
-                  placeholder="${i18n.t('auth.login.usernamePlaceholder')}"
+                  placeholder="${i18n.t('auth.register.usernamePlaceholder')}"
+                />
+              </div>
+              
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-300">
+                  ${i18n.t('auth.register.email')}
+                </label>
+                <input 
+                  id="email" 
+                  name="email" 
+                  type="email" 
+                  required 
+                  class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" 
+                  placeholder="${i18n.t('auth.register.emailPlaceholder')}"
                 />
               </div>
               
               <div>
                 <label for="password" class="block text-sm font-medium text-gray-300">
-                  ${i18n.t('auth.login.password')}
+                  ${i18n.t('auth.register.password')}
                 </label>
                 <input 
                   id="password" 
@@ -64,78 +78,42 @@ export class LoginPage {
                   type="password" 
                   required 
                   class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" 
-                  placeholder="${i18n.t('auth.login.passwordPlaceholder')}"
+                  placeholder="${i18n.t('auth.register.passwordPlaceholder')}"
                 />
               </div>
-            </div>
 
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <input 
-                  id="remember-me" 
-                  name="remember-me" 
-                  type="checkbox" 
-                  class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-600 bg-gray-700 rounded"
-                />
-                <label for="remember-me" class="ml-2 block text-sm text-gray-300">
-                  ${i18n.t('auth.login.rememberMe')}
+              <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-300">
+                  ${i18n.t('auth.register.confirmPassword')}
                 </label>
-              </div>
-              
-              <div class="text-sm">
-                <a href="#" id="forgot-password-link" class="text-primary-400 hover:text-primary-300">
-                  ${i18n.t('auth.login.forgotPassword')}
-                </a>
+                <input 
+                  id="confirmPassword" 
+                  name="confirmPassword" 
+                  type="password" 
+                  required 
+                  class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" 
+                  placeholder="${i18n.t('auth.register.confirmPasswordPlaceholder')}"
+                />
               </div>
             </div>
 
             <div>
               <button 
                 type="submit" 
-                id="login-submit"
+                id="register-submit"
                 class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span id="login-spinner" class="hidden absolute left-3 top-1/2 transform -translate-y-1/2">
+                <span id="register-spinner" class="hidden absolute left-3 top-1/2 transform -translate-y-1/2">
                   <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                 </span>
-                <span id="login-text">${i18n.t('auth.login.submit')}</span>
+                <span id="register-text">${i18n.t('auth.register.registerButton')}</span>
               </button>
             </div>
 
-            <!-- OAuth Buttons -->
-            <div class="mt-6">
-              <div class="relative">
-                <div class="absolute inset-0 flex items-center">
-                  <div class="w-full border-t border-gray-600"></div>
-                </div>
-                <div class="relative flex justify-center text-sm">
-                  <span class="px-2 bg-gray-900 text-gray-400">${i18n.t('auth.login.or')}</span>
-                </div>
-              </div>
-
-              <div class="mt-6 grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  id="oauth-42"
-                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600"
-                >
-                  ${i18n.t('auth.login.oauth42')}
-                </button>
-                
-                <button
-                  type="button"
-                  id="oauth-google"
-                  class="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600"
-                >
-                  ${i18n.t('auth.login.google')}
-                </button>
-              </div>
-            </div>
-
             <div class="text-center">
-              <span class="text-gray-400">${i18n.t('auth.login.noAccount')}</span>
-              <a href="#" id="register-link" class="ml-2 text-primary-400 hover:text-primary-300">
-                ${i18n.t('auth.login.signUp')}
+              <span class="text-gray-400">${i18n.t('auth.register.haveAccount')}</span>
+              <a href="#" id="login-link" class="ml-2 text-primary-400 hover:text-primary-300">
+                ${i18n.t('auth.register.signIn')}
               </a>
             </div>
           </form>
@@ -145,10 +123,10 @@ export class LoginPage {
   }
 
   private bindEvents(): void {
-    const form = document.getElementById('login-form') as HTMLFormElement;
-    const submitBtn = document.getElementById('login-submit') as HTMLButtonElement;
-    const loginText = document.getElementById('login-text') as HTMLSpanElement;
-    const loginSpinner = document.getElementById('login-spinner') as HTMLElement;
+    const form = document.getElementById('register-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('register-submit') as HTMLButtonElement;
+    const registerText = document.getElementById('register-text') as HTMLSpanElement;
+    const registerSpinner = document.getElementById('register-spinner') as HTMLElement;
     const errorMessage = document.getElementById('error-message') as HTMLElement;
 
     form?.addEventListener('submit', async (e) => {
@@ -156,17 +134,24 @@ export class LoginPage {
       
       // Show loading state
       submitBtn.disabled = true;
-      loginText.textContent = i18n.t('auth.login.loading');
-      loginSpinner.classList.remove('hidden');
+      registerText.textContent = i18n.t('common.loading');
+      registerSpinner.classList.remove('hidden');
       errorMessage.classList.add('hidden');
 
       const formData = new FormData(form);
       const username = formData.get('username') as string;
+      const email = formData.get('email') as string;
       const password = formData.get('password') as string;
+      const confirmPassword = formData.get('confirmPassword') as string;
 
       try {
+        // Validation côté client
+        if (password !== confirmPassword) {
+          throw new Error(i18n.t('auth.errors.passwordMismatch'));
+        }
+
         // Appel à l'API Fastify via le service
-        await authService.login(username, password);
+        await authService.register(username, email, password);
         
         // Rediriger vers le dashboard
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
@@ -176,35 +161,16 @@ export class LoginPage {
       } finally {
         // Reset loading state
         submitBtn.disabled = false;
-        loginText.textContent = i18n.t('auth.login.submit');
-        loginSpinner.classList.add('hidden');
+        registerText.textContent = i18n.t('auth.register.registerButton');
+        registerSpinner.classList.add('hidden');
       }
     });
 
-    // OAuth buttons
-    document.getElementById('oauth-42')?.addEventListener('click', () => {
-      this.handleOAuth('42');
-    });
-
-    document.getElementById('oauth-google')?.addEventListener('click', () => {
-      this.handleOAuth('google');
-    });
-
     // Links
-    document.getElementById('register-link')?.addEventListener('click', (e) => {
+    document.getElementById('login-link')?.addEventListener('click', (e) => {
       e.preventDefault();
-      window.dispatchEvent(new CustomEvent('navigate', { detail: '/register' }));
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
     });
-
-    document.getElementById('forgot-password-link')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      // TODO: Implement forgot password
-    });
-  }
-
-  private handleOAuth(provider: string): void {
-    // Rediriger vers l'endpoint OAuth du backend
-    window.location.href = `/api/auth/oauth/${provider}`;
   }
 
   private showError(message: string): void {

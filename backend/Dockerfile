@@ -1,7 +1,7 @@
 FROM node:20
 
 # Installer sqlite3 de manière permanente
-RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # Exposition du port
-EXPOSE 3000
+EXPOSE 8000
 
 # Démarrage de l'application
 CMD ["npm", "run", "start"]

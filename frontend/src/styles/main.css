@@ -62,3 +62,41 @@
 .animate-pulse-slow {
   animation: pulse-slow 3s ease-in-out infinite;
 }
+
+
+/* Support pour les caractères Tifinagh */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tifinagh&display=swap');
+
+/* Styles pour la langue Tifinagh */
+html.tifinagh {
+  font-family: 'Noto Sans Tifinagh', 'Segoe UI', 'Arial Unicode MS', sans-serif;
+}
+
+html.tifinagh * {
+  font-family: 'Noto Sans Tifinagh', 'Segoe UI', 'Arial Unicode MS', sans-serif !important;
+}
+
+/* Amélioration de la lisibilité pour Tifinagh */
+html.tifinagh {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* Support pour les caractères spéciaux Tifinagh */
+.tifinagh-text {
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ajustements pour les éléments de navigation en Tifinagh */
+html.tifinagh .nav-item,
+html.tifinagh .button,
+html.tifinagh .menu-item {
+  letter-spacing: 0.05em;
+}
+
+/* Support pour l'affichage RTL si nécessaire pour certains textes */
+html.tifinagh .rtl-support {
+  direction: rtl;
+  text-align: right;
+}
