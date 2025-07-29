@@ -31,3 +31,5 @@ export default {
   plugins: [],
   darkMode: 'class',
 }
+
+// Utiliser tailwind v4 c'est quoi ce bordel
