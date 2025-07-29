@@ -1,3 +1,6 @@
+//siuu Fix temporaire pour la fonction de traduction poour dockercompose
+// const t = (key: string, ...args: any[]) => key;
+
 export class DOMUtils {
   static updateTranslations(): void {
     // Update all elements with data-i18n attribute

@@ -7,18 +7,18 @@ services:
       - ./backend/database.db:/app/database.db
     networks:
       - transcendence_network
-    ports:
-      - "3000:3000" 
+    # ports:
+    #   - "3000:3000" 
 
-  # frontend:
-  #   build: ./frontend
-  #   networks:
-  #     - transcendence_network
-  #   depends_on:
-  #     - backend
-  #   ports:
-  #     - "8080:80"
-  #     - "8443:443"
+  frontend:
+    build: ./frontend
+    networks:
+      - transcendence_network
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+      - "8443:443"
 
 # A AJOUTER PLUS TARD ET ENLEVER LES PORTS DANS LES AUTRES SERVICES
   # nginx:
