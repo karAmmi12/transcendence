@@ -8,7 +8,8 @@ services:
     networks:
       - transcendence_network
     # ports:
-    #   - "8000:8000" 
+    #   - "8000"
+    #ne pas mapper le port du backend 
 
   frontend:
     build: ./frontend

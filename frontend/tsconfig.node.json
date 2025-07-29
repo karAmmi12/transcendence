@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "CommonJS",
+    "module": "CommonJS", // utliser esm pas commonJs soyez normaux
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
