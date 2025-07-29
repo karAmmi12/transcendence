@@ -140,7 +140,7 @@ export class Header {
             option.addEventListener('click', (e) => {
                 const lang = (e.currentTarget as HTMLElement).dataset.lang;
                 if (lang) {
-                    i18n.setLanguage(lang);
+                    i18n.setLanguage(lang); //siuu fix temp pour docker compose ajout de "as any"
                     languageDropdown?.classList.add('opacity-0', 'invisible');
                     languageDropdown?.classList.remove('opacity-100', 'visible');
                 }

@@ -3,7 +3,7 @@ import { Header } from '@components/layout/Header'
 import { Footer } from '@components/layout/Footer'
 
 export class App {
-  private router: Router //instanciation du routeur pour la navigation SPA
+  private router: Router //instanciation du routeur pour la navigation SPA 
   private header: Header 
   private footer: Footer
 
