@@ -12,7 +12,7 @@
     "selectLanguage": "Select Language"
   },
   "home": {
-    "welcome": "Welcome to ft_transcendence",
+    "welcome": "Welcome to ft_transcendence ",
     "description": "Experience the ultimate Pong game with real-time multiplayer, tournaments, and an immersive gaming experience.",
     "features": {
       "multiplayer": {
@@ -26,6 +26,10 @@
       "chat": {
         "title": "Live Chat",
         "description": "Chat with other players and make new friends in the gaming community."
+      },
+      "singleplayer": {
+        "title": "Singleplayer Mode",
+        "description": "Play against AI opponents and improve your skills."
       }
     },
     "buttons": {

@@ -10,9 +10,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "strict": false, //fix rapide dockercompose
-    "noUnusedLocals": false, //fix rapide dockercompose
-    "noUnusedParameters": false, //fix rapide dockercompose
+    "strict": false, //siuu modif
+    "noUnusedLocals": false, //siuu modif
+    "noUnusedParameters": false, //siuu modif
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {

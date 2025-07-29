@@ -26,6 +26,10 @@
       "chat": {
         "title": "Chat en direct",
         "description": "Discutez avec d'autres joueurs et faites-vous de nouveaux amis dans la communauté."
+      },
+      "singleplayer": {
+        "title": "Mode solo",
+        "description": "Affrontez des adversaires IA et améliorez vos compétences."
       }
     },
     "buttons": {

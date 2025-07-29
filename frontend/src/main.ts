@@ -16,28 +16,28 @@ class Main {
   }
 
   private init(): void {
-    // Initialize the application
+    // Initialisation de l'application
     this.app.mount('#app')
 
-    // Handle browser navigation
+    // Gestion de la navigation dans le navigateur
     window.addEventListener('popstate', () => {
       this.router.handleRoute()
     })
 
-    // Handle custom navigation events
+    // Gestion des événements de navigation personnalisés
     window.addEventListener('navigate', (e: Event) => {
       const path = (e as CustomEvent).detail 
       this.router.navigate(path)
     })
 
-    // Initial route handling
+    // Gestion de la route initiale
     this.router.handleRoute()
 
     console.log('🚀 ft_transcendence frontend started!')
   }
 }
 
-// Start the application after translations are loaded
+// Démarrer l'application après le chargement des traductions
 i18n.translationsLoaded.then(() => {
   new Main()
 })

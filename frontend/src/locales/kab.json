@@ -26,7 +26,12 @@
       "chat": {
         "title": "Ameslay n yidles",
         "description": "Meslay akked imeddukal-nniḍen, sdukel imaynuten imaynuten."
+      },
+      "singleplayer": {
+        "title": "Urar akked d IA",
+        "description": "Urar akked imeddukal n IA, sdukel imaynuten-ik."
       }
+
     },
     "buttons": {
       "play": "Bdu urar",

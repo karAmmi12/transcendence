@@ -81,6 +81,7 @@ export class HomePage {
         // Ajoute le listener pour le changement de langue
         this.languageListener = () => {
             this.render(element);
+            this.bindEvents();
         };
         window.addEventListener('languageChanged', this.languageListener);
         this.bindEvents();
@@ -97,13 +98,17 @@ export class HomePage {
                     ${i18n.t('home.description')}
                 </p>
 
-                <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="grid md:grid-cols-4 gap-8 mb-12">
                     <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                         <div class="text-4xl mb-4">🏓</div>
                         <h3 class="text-xl font-semibold mb-2">${i18n.t('home.features.multiplayer.title')}</h3>
                         <p class="text-gray-400">${i18n.t('home.features.multiplayer.description')}</p>
                     </div>
-
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <div class="text-4xl mb-4">🎮</div>
+                        <h3 class="text-xl font-semibold mb-2">${i18n.t('home.features.singleplayer.title')}</h3>
+                        <p class="text-gray-400">${i18n.t('home.features.singleplayer.description')}</p>
+                    </div>
                     <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                         <div class="text-4xl mb-4">🏆</div>
                         <h3 class="text-xl font-semibold mb-2">${i18n.t('home.features.tournaments.title')}</h3>
