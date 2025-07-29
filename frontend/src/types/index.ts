@@ -5,6 +5,9 @@ export interface User {
   avatar?: string;
   isOnline: boolean;
   stats: UserStats;
+  createdAt: string;
+  lastLogin?: string;
+  twoFactorEnabled: boolean;
 }
 
 export interface UserStats {
@@ -12,22 +15,37 @@ export interface UserStats {
   losses: number;
   totalGames: number;
   winRate: number;
+  rank: number;
+  highestScore: number;
+  currentStreak: number;
+  longestStreak: number;
 }
 
-export interface GameState {
+export interface LoginCredentials {
+  username: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+}
+
+// Ajouter cette interface manquante :
+export interface MatchHistory {
   id: string;
-  player1: User;
-  player2: User;
-  score: { player1: number; player2: number; };
-  status: 'waiting' | 'playing' | 'finished';
-  ball: { x: number; y: number; vx: number; vy: number; };
-  paddles: { 
-    player1: { y: number; }; 
-    player2: { y: number; }; 
+  opponent: string;
+  result: 'win' | 'loss';
+  score: {
+    player: number;
+    opponent: number;
   };
+  date: string;
+  duration?: number;
+  gameMode?: 'classic' | 'ai' | 'tournament';
 }
 
-export interface Page {
-  render(): HTMLElement;
-  destroy?(): void;
-}
+// Ajouter le type Language manquant :
+export type Language = 'en' | 'fr' | 'it' | 'ar' | 'kab' | 'kab-tfng' | 'sg';

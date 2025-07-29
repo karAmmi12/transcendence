@@ -26,6 +26,10 @@
       "chat": {
         "title": "Chat dal vivo",
         "description": "Chatta con altri giocatori e fai nuove amicizie nella comunità di gioco."
+      },
+      "singleplayer": {
+        "title": "Modalità Giocatore Singolo",
+        "description": "Gioca contro avversari IA e migliora le tue abilità."
       }
     },
     "buttons": {
