@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:22
 
 # Installer sqlite3 de manière permanente
 # RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*

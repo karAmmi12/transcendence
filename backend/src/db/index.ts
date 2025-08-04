@@ -7,7 +7,10 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+        createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+        username TEXT UNIQUE NOT NULL,
+        avatar_url TEXT,
+        is_online INTEGER NOT NULL DEFAULT 0
     );
 `);
 
