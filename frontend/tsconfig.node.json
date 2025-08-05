@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "CommonJS", // utliser esm pas commonJs soyez normaux
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
