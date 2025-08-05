@@ -5,10 +5,10 @@ const db = new Database("database.db", {verbose: console.log}); //affiche dans l
 db.exec(`
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
-        username TEXT UNIQUE NOT NULL,
         avatar_url TEXT,
         is_online INTEGER NOT NULL DEFAULT 0
     );
