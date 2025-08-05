@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.js";
 const app = Fastify({ logger: true });
 
 // Autoriser CORS pour le dev frontend
+
 await app.register(cors, { origin: "*" });
 
 // Routes
