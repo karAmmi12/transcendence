@@ -2,7 +2,7 @@ import bcrypt from "bcrypt"
 import db from "../db/index"
 import { AuthResult, RegisterData } from "../types/auth"
 import { validateSignup } from "../utils/validation"
-
+// siuu ANCIENNE VERSION SANS LES SHCEMAS A SUPPRIMER
 
 /**
  * Verifie si le mail existe deja dans la db
