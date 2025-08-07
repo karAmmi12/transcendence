@@ -9,11 +9,12 @@ export class GamePage {
     const element = document.querySelector(selector);
     if (!element) return;
 
-    const currentUser = await authService.getCurrentUser();
-    if (!currentUser) {
-      window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
-      return;
-    }
+    // const currentUser = await authService.getCurrentUser();
+    const currentUser = { id: 'test-user-id' }; // Pour le développement, à remplacer par l'authentification réelle
+    // if (!currentUser) {
+    //   window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
+    //   return;
+    // } SIUUUUUU a decommenter pour l'authentification 
 
     element.innerHTML = `
       <div class="min-h-screen bg-gray-900 text-white">
