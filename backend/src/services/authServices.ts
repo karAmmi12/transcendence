@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import db from "../db/index.js"
 import { RegisterData, AuthResult, LoginData, UserFromDB } from "../types/auth"
-import { create } from "domain";
+import { JWTService } from "./jwtServices.js";
 
 /**
  * Verifie si le mail existe deja dans la db
@@ -49,12 +49,19 @@ export async function registerUser(userData: RegisterData): Promise<AuthResult>
         // Creer le user
         const stmt = db.prepare("INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)");
         const result = stmt.run(userData.username, userData.email, hashedPassword);
+        
+        const userId = result.lastInsertRowid as number;
 
         //siuu a GERer le token JWT
+        //Generer les tokens
+        const PairToken = JWTService.generateTokenPair(userId, userData.username)
 
-        //Return
+        //Creer nouvelle session dans la db
+        JWTService.createSession(userId, PairToken.refreshToken);
+
+        //Return siuu a rendre complet
         const user = {
-            id: result.lastInsertRowid as number,
+            id: userId,
             username: userData.username,
             email: userData.email,
             createAt: new Date().toISOString()
@@ -62,7 +69,9 @@ export async function registerUser(userData: RegisterData): Promise<AuthResult>
 
         return {
             success: true,
-            user: user
+            user: user,
+            accessToken: PairToken.accessToken,
+            refreshToken: PairToken.refreshToken
         };
     } catch (error) {
         console.error('Register error: ', error);
@@ -97,9 +106,16 @@ export async function loginUser(loginData: LoginData): Promise<AuthResult> {
                 error: "Invalid password" //siuu surment changer les msg pour la secu
             }
         
-        //siuu A gerer maj du lastLogin dans la db
+        //Maj lastLogin dans la db
+        const updateStmt = db.prepare("UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
+        updateStmt.run(user.id);
 
         //siuu a gerer gestion du JWT
+        //Generer les tokens
+        const PairToken = JWTService.generateTokenPair(user.id, user.username)
+
+        //Creer nouvelle session dans la db
+        JWTService.createSession(user.id, PairToken.refreshToken);
         
         const userReturn = {
             id: user.id,
@@ -111,7 +127,9 @@ export async function loginUser(loginData: LoginData): Promise<AuthResult> {
         // Return
         return {
             success: true,
-            user: userReturn
+            user: userReturn,
+            accessToken: PairToken.accessToken,
+            refreshToken: PairToken.refreshToken
         };
 
     } catch (error) {

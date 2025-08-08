@@ -4,3 +4,13 @@ export interface TokenPayload {
     iat: number;
     exp?: number;
 }
+
+export interface SessionResult {
+    valid: boolean;
+    userId?: number;
+}
+
+export interface PairToken {
+    accessToken: string;
+    refreshToken: string;
+}
