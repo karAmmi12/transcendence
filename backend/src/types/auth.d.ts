@@ -1,15 +1,3 @@
-// validation
-// export interface ValidationResult {
-//     isValid: boolean;
-//     errors: string[];
-// }
-
-// export interface SignupBody {
-//     username?: string;
-//     email: string;
-//     password: string;
-// }
-
 export interface RegisterData {
     username: string;
     email: string;
@@ -33,7 +21,8 @@ export interface AuthResult {
     createdAt?: string;
     stats?: UserStats;
   };
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
   error?: string;
 }
 

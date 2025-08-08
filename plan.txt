@@ -15,7 +15,7 @@ Accessibilité	Support tous appareils (responsive)	MIN	1
 Compatibilité navigateurs étendue	MIN	1
 Support multilingue	MIN	1
 
-Devpos Monitoring system Grafana Prometheus MIN 1
+Devops Monitoring system Grafana Prometheus MIN 1
 
 Total = 19 points ✅
 
@@ -144,3 +144,12 @@ ft_transcendence/
 ├── Dockerfile.frontend
 ├── Dockerfile.backend
 └── README.md
+
+
+TABLE DB PLAN:
+
+-users
+-sessions
+-tournaments
+-stats?
+-matches?
