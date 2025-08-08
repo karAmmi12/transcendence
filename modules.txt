@@ -23,7 +23,7 @@ USER MANAGEMENT:
 GAMEPLAY AND USER EXPERIENCE:
     +2 MAJ: Remote players.
 
-    +2 MAJ: Live chat.
+    +1 MIN: Game customization options.
 
 AI-ALGO:
     +1 MIN: User and game stats dashboards
@@ -40,5 +40,8 @@ ACCESSIBILITY:
     +1 MIN: Expanding browser compatibility.
 
     +1 MIN:  Supports multiple languages.
+
+DEVOPS:
+    +1 MIN: Monitoring system.
 
 TOTAL = 19
