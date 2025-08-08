@@ -21,10 +21,10 @@ export interface UserStats {
   longestStreak: number;
 }
 
-export interface LoginCredentials {
+export interface LoginData {
   username: string;
   password: string;
-  rememberMe?: boolean;
+  // rememberMe?: boolean;
 }
 
 export interface RegisterData {
