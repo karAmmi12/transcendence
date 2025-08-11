@@ -17,7 +17,7 @@ export class Router {
     { path: '/', component: HomePage, title: 'Home - ft_transcendence' },
     { path: '/login', component: LoginPage, title: 'Login - ft_transcendence' },
     { path: '/register', component: RegisterPage, title: 'Register - ft_transcendence' },
-    { path: '/game', component: GamePage, title: 'Game - ft_transcendence', requiresAuth: true },
+    { path: '/game', component: GamePage, title: 'Game - ft_transcendence'}, //SIUUU requiresAuth: true },
     { path: '/profile', component: ProfilePage, title: 'Profile - ft_transcendence', requiresAuth: true },
     { path: '/profile/:id', component: ProfilePage, title: 'Profile - ft_transcendence', requiresAuth: true },
     { path: '/settings', component: SettingsPage, title: 'Settings - ft_transcendence', requiresAuth: true }
