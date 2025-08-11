@@ -36,6 +36,7 @@ export class AuthService {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include', // Important pour les cookies de session
       body: JSON.stringify({ username, password })
     });
 
