@@ -52,9 +52,9 @@ export const registerSchema = {
 export const loginSchema = {
     body: {
         type: 'object',
-        required: ['identifier', 'password'],
+        required: ['username', 'password'],
         properties: {
-            identifier: {
+            username: {
                 type: 'string',
                 minLength: 1
             }, // siuu pour le moment mail et username possible
