@@ -51,7 +51,6 @@ export default async function authRoutes(app: FastifyInstance) {
     console.log("JE SUIS DANS LE BACKENd /LOGIN");
 
     const loginData = req.body as LoginData;
-    console.log("identifier: ", loginData.identifier);
     
     const result = await loginUser(loginData);
     if (!result.success) 
