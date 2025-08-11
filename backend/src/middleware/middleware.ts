@@ -1,9 +1,7 @@
-import fastify from "fastify";
-import {FastifyRequest, FastifyReply } from 'fastify'
+import {FastifyRequest, FastifyReply} from 'fastify'
 import { JWTService } from "../services/jwtServices.js";
 import db from '../db/index.js'
-import { ref } from "process";
-import { setEngine } from "crypto";
+
 
 // augmentation du detail car pas de user dans FastifyRequest de base 
 declare module 'fastify' 
