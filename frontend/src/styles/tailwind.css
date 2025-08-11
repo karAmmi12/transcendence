@@ -1,0 +1,124 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap');
+
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  
+  --color-secondary-50: #f8fafc;
+  --color-secondary-500: #64748b;
+  --color-secondary-600: #475569;
+
+  --font-family-orbitron : Orbitron, ui-monospace, monospace;
+  --font-family-game: var(--font-family-orbitron);
+  
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
+  --animate-bounce-gentle: bounce 2s ease-in-out infinite;
+}
+
+/* Support pour les caractères Tifinagh */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tifinagh&display=swap');
+
+/* Styles pour la langue Tifinagh */
+html.tifinagh {
+  font-family: 'Noto Sans Tifinagh', 'Segoe UI', 'Arial Unicode MS', sans-serif;
+}
+
+html.tifinagh * {
+  font-family: 'Noto Sans Tifinagh', 'Segoe UI', 'Arial Unicode MS', sans-serif !important;
+}
+
+/* Amélioration de la lisibilité pour Tifinagh */
+html.tifinagh {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* Support pour les caractères spéciaux Tifinagh */
+.tifinagh-text {
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ajustements pour les éléments de navigation en Tifinagh */
+html.tifinagh .nav-item,
+html.tifinagh .button,
+html.tifinagh .menu-item {
+  letter-spacing: 0.05em;
+}
+
+/* Support pour l'affichage RTL si nécessaire pour certains textes */
+html.tifinagh .rtl-support {
+  direction: rtl;
+  text-align: right;
+}
+
+@layer components {
+  .nav-link {
+    @apply text-gray-300 hover:text-white transition-colors duration-200 font-medium;
+  }
+  
+  .nav-link:hover {
+    @apply text-primary-500;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .footer-link {
+    @apply text-gray-400 hover:text-white transition-colors duration-200;
+  }
+}
+
+.font-game {
+  font-family: var(--font-family-orbitron);
+}
+
+.font-orbitron {
+  font-family: var(--font-family-orbitron);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Game specific styles */
+.game-canvas {
+  border: 2px solid theme(--color-primary-500);
+  box-shadow: 0 0 20px color-mix(in srgb, theme(--color-primary-500) 30%, transparent);
+}
+
+/* Loading animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}

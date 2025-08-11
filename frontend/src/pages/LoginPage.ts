@@ -66,7 +66,9 @@ export class LoginPage {
                   class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-600 placeholder-gray-400 text-white bg-gray-700 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm" 
                   placeholder="${i18n.t('auth.login.passwordPlaceholder')}"
                 />
+                
               </div>
+              
             </div>
 
             <div class="flex items-center justify-between">

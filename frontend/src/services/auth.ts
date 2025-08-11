@@ -1,5 +1,6 @@
 import { User } from '../types/index.js';
 
+
 export interface MatchHistory {
   id: string;
   opponent: string;
@@ -12,8 +13,10 @@ export interface MatchHistory {
 export class AuthService {
   private static instance: AuthService;
   private currentUser: User | null = null;
-  // private baseURL = 'http://localhost:8000/api';
-  private baseURL = `http://${location.hostname}:8000/api`;
+  // ✅ En production, utiliser le proxy nginx au lieu d'aller directement au backend
+  private baseURL = process.env.NODE_ENV === 'production' 
+    ? '/api'  // Via le proxy nginx
+    : `http://${location.hostname}:8000/api`; // Direct en dev
   
   private constructor() {
     console.log('AuthService baseURL:', this.baseURL);
