@@ -14,7 +14,7 @@ export class JWTService
      */
     static generateAccessToken(payload: {userId: number; username: string}): string
     {
-        return (jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: '30s'}));
+        return (jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: '30s'})); //siuu 30s pour test remttree 15min
     }
 
     /**
