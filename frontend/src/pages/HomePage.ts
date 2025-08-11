@@ -131,25 +131,7 @@ export class HomePage {
                     </button>
                 </div>
 
-                <!-- Section statistiques -->
-                <div class="mt-16 grid md:grid-cols-4 gap-6">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-primary-400 mb-2">1,234</div>
-                        <div class="text-gray-400">${i18n.t('home.stats.players')}</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-primary-400 mb-2">5,678</div>
-                        <div class="text-gray-400">${i18n.t('home.stats.games')}</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-primary-400 mb-2">42</div>
-                        <div class="text-gray-400">${i18n.t('home.stats.tournaments')}</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-primary-400 mb-2">24/7</div>
-                        <div class="text-gray-400">${i18n.t('home.stats.online')}</div>
-                    </div>
-                </div>
+                
             </div>
         `;
     }
