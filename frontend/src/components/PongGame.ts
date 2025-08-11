@@ -1,4 +1,5 @@
 import { GameState } from '../types/game.js'; // Changé de @/types/game.js
+import { i18n } from '../services/i18n.js'; // Changé de @/services/i18n.js
 
 export class PongGame {
   private canvas: HTMLCanvasElement;
@@ -19,17 +20,160 @@ export class PongGame {
     this.bindEvents();
   }
 
+  
   private setupCanvas(): void {
-    this.canvas.width = 800;
-    this.canvas.height = 400;
-    this.canvas.style.border = '2px solid #fff';
-    this.canvas.style.backgroundColor = '#000';
+    this.canvas = document.getElementById('pong-canvas') as HTMLCanvasElement;
+    if (!this.canvas) {
+      throw new Error('Canvas element not found');
+    }
+
+    this.ctx = this.canvas.getContext('2d')!;
     
-    // Afficher un message initial
-    this.ctx.fillStyle = '#fff';
-    this.ctx.font = '24px Orbitron, monospace';
-    this.ctx.textAlign = 'center';
-    this.ctx.fillText('Initializing...', this.canvas.width / 2, this.canvas.height / 2);
+    // Rendre le canvas responsive
+    this.resizeCanvas();
+    window.addEventListener('resize', () => this.resizeCanvas());
+    
+    // Ajouter les contrôles tactiles pour mobile
+    this.setupTouchControls();
+  }
+
+  private resizeCanvas(): void {
+    const container = this.canvas.parentElement;
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const maxWidth = containerRect.width - 32; // Marges
+    const maxHeight = window.innerHeight * 0.6; // 60% de la hauteur de l'écran
+
+    // Calculer les dimensions en gardant le ratio 16:9
+    let width = maxWidth;
+    let height = width * (9/16);
+
+    // Si trop haut, ajuster par la hauteur
+    if (height > maxHeight) {
+      height = maxHeight;
+      width = height * (16/9);
+    }
+
+    // Minimum pour la jouabilité
+    const minWidth = 320;
+    const minHeight = 180;
+
+    width = Math.max(width, minWidth);
+    height = Math.max(height, minHeight);
+
+    // Sur mobile, utiliser un ratio plus carré
+    if (window.innerWidth <= 768) {
+      height = width * (3/4); // Ratio 4:3 pour mobile
+    }
+
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
+
+    console.log(`Canvas resized to: ${width}x${height}`);
+  }
+
+  private setupTouchControls(): void {
+    // Ajouter des boutons de contrôle tactile pour mobile
+    if (window.innerWidth <= 768) {
+      this.addTouchControls();
+    }
+
+    // Contrôles de swipe
+    let startY = 0;
+    let currentY = 0;
+
+    this.canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      startY = touch.clientY;
+    }, { passive: false });
+
+    this.canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      currentY = touch.clientY;
+      
+      const deltaY = currentY - startY;
+      this.handleTouchMove(deltaY);
+    }, { passive: false });
+
+    this.canvas.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      startY = 0;
+      currentY = 0;
+    }, { passive: false });
+  }
+
+  private addTouchControls(): void {
+    const container = this.canvas.parentElement;
+    if (!container || document.getElementById('touch-controls')) return;
+
+    const touchControls = document.createElement('div');
+    touchControls.id = 'touch-controls';
+    touchControls.className = 'flex justify-between mt-4 md:hidden';
+    touchControls.setAttribute('data-touch-control', 'true');
+
+    touchControls.innerHTML = `
+      <button 
+        id="touch-up" 
+        class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg active:bg-blue-800 touch-manipulation"
+        style="min-width: 60px; min-height: 60px;"
+      >
+        ↑
+      </button>
+      <div class="text-center text-gray-400 text-sm flex items-center px-4">
+        ${i18n.t('game.controls.instructions')}
+      </div>
+      <button 
+        id="touch-down" 
+        class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg active:bg-blue-800 touch-manipulation"
+        style="min-width: 60px; min-height: 60px;"
+      >
+        ↓
+      </button>
+    `;
+
+    container.appendChild(touchControls);
+
+    // Événements pour les boutons tactiles
+    const upBtn = document.getElementById('touch-up');
+    const downBtn = document.getElementById('touch-down');
+
+    upBtn?.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.keys['w'] = true;
+    });
+
+    upBtn?.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.keys['w'] = false;
+    });
+
+    downBtn?.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.keys['s'] = true;
+    });
+
+    downBtn?.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.keys['s'] = false;
+    });
+  }
+
+  private handleTouchMove(deltaY: number): void {
+    // Convertir le mouvement tactile en mouvement de paddle
+    const sensitivity = 0.5;
+    const moveAmount = deltaY * sensitivity;
+    
+    if (this.gameState?.paddles?.player1) {
+      const newY = this.gameState.paddles.player1.y + moveAmount;
+      const maxY = this.canvas.height - this.gameState.paddles.player1.height;
+      
+      this.gameState.paddles.player1.y = Math.max(0, Math.min(newY, maxY));
+    }
   }
 
   private bindEvents(): void {
