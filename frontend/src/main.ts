@@ -6,6 +6,7 @@ import { Router } from './router'
 import { i18n } from '@services/i18n'
 // import { MobileTestUtils } from './utils/MobileTestUtils'
 // import { ResponsiveTest } from './utils/ResponsiveTest'
+import { authService } from './services/auth'
 
 class Main {
   private app: App
@@ -17,14 +18,18 @@ class Main {
     this.init()
   }
 
-  private init(): void {
+  private async init(): Promise<void> {
+
+    await authService.checkAuthStatus();
+
     // Initialisation de l'application
-    this.app.mount('#app')
+    this.app.mount('#app');
+    this.router.init();
 
     // Gestion de la navigation dans le navigateur
-    window.addEventListener('popstate', () => {
-      this.router.handleRoute()
-    })
+    // window.addEventListener('popstate', () => {
+    //   this.router.handleRoute()
+    // })
 
     // //initialiser les outils de test responsive
     // if (import.meta.env.DEV) {
@@ -34,13 +39,13 @@ class Main {
   
 
     // Gestion des événements de navigation personnalisés
-    window.addEventListener('navigate', (e: Event) => {
-      const path = (e as CustomEvent).detail 
-      this.router.navigate(path)
-    })
+    // window.addEventListener('navigate', (e: Event) => {
+    //   const path = (e as CustomEvent).detail 
+    //   this.router.navigate(path)
+    // })
 
     // Gestion de la route initiale
-    this.router.handleRoute()
+    // this.router.handleRoute()
 
     console.log('🚀 ft_transcendence frontend started!')
   }
@@ -81,6 +86,6 @@ class Main {
 }
 
 // Démarrer l'application après le chargement des traductions
-i18n.translationsLoaded.then(() => {
+i18n.translationsLoaded.then(async () => {
   new Main()
-})
+});

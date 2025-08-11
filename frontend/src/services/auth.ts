@@ -47,8 +47,9 @@ export class AuthService {
 
     const data = await response.json();
     
-    localStorage.setItem('authToken', data.token);
     this.currentUser = data.user;
+
+    window.dispatchEvent(new CustomEvent('authStateChanged'));// declencher l'event de changement d'etat
     
     return data;
   }
@@ -146,29 +147,49 @@ export class AuthService {
   }
 
   public isAuthenticated(): boolean {
-    return !!localStorage.getItem('authToken');
+    return this.currentUser !== null;
   }
 
   public async logout(): Promise<void> {
-    const token = localStorage.getItem('authToken');
     
-    if (token) {
-      try {
-        await fetch(`${this.baseURL}/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      } catch (error) {
-        console.error('Logout API call failed:', error);
-      }
-    }
+    try {
+      await fetch(`${this.baseURL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include' // ✅ Utiliser les cookies
+      });
+    } catch (error) {
+      console.error('Logout API call failed:', error);
+    }    
 
     this.currentUser = null;
     localStorage.removeItem('authToken');
+    window.dispatchEvent(new CustomEvent('authStateChanged')); // Déclencher l'événement de changement d'état
     window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
   }
+
+  public async checkAuthStatus(): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.baseURL}/auth/myProfile`, {
+        credentials : 'include'
+      });
+
+      if (response.ok)
+      {
+        this.currentUser = await response.json();
+        window.dispatchEvent(new CustomEvent('authStateChanged'));
+        return true;
+      }
+
+    }catch (error) {
+    console.error('Failed to check auth status:', error);
+
+    } 
+    this.currentUser = null;
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
+    return false;
+  }
+
+
 }
 
 export const authService = AuthService.getInstance();
