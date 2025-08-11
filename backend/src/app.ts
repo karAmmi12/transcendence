@@ -41,7 +41,9 @@ const start = async () => {
   try {
     // Autoriser CORS pour le dev frontend
     await app.register(cors, {
-      origin: "*", 
+      origin: process.env.NODE_ENV === 'production' 
+        ? ['https://localhost:8443', 'https://localhost'] // En production
+        : ['http://localhost:5173', 'http://localhost:3000'], // En développement 
       credentials: true // pour les cookies
     });
     // PLugin pour les cookies
