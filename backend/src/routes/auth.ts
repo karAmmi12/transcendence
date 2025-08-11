@@ -17,7 +17,7 @@ export default async function authRoutes(app: FastifyInstance) {
   app.post('/register', {schema: registerSchema}, async (req: FastifyRequest, reply: FastifyReply) => {
       
     const userData = req.body as RegisterData;
-      
+    console.log("JE SUIS DANS LE BACKEND /REGISTER");
     const result = await registerUser(userData);
     if (!result.success)
       return (reply.status(400).send({error: result.error}));
