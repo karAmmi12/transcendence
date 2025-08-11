@@ -89,7 +89,7 @@ export async function loginUser(loginData: LoginData): Promise<AuthResult> {
     try {
         // chercher le user dans la db via email ou username
         const stmt = db.prepare("SELECT * FROM users WHERE email = ? OR username = ?");
-        const user = stmt.get(loginData.username, loginData.username) as UserFromDB | undefined;
+        const user = stmt.get(loginData.identifier, loginData.identifier) as UserFromDB | undefined;
 
         if (!user)
             return {
