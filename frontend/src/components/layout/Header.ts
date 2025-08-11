@@ -1,4 +1,5 @@
 import { i18n } from '@services/i18n';
+// import { authService } from '@/services/auth';
 
 export class Header {
   private languageListener: (() => void) | null = null;
@@ -19,6 +20,13 @@ export class Header {
       this.bindEvents();
     };
     window.addEventListener('languageChanged', this.languageListener);
+
+    // ecouter les changements d'authentification
+    // window.addEventListener('authStateChanged', () => {
+    //   this.render(element);
+    //   this.bindEvents();
+    // }
+    // );
   }
 
     private render(element: Element): void {
