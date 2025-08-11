@@ -44,7 +44,6 @@ const start = async () => {
       origin: "*", 
       credentials: true // pour les cookies
     });
-
     // PLugin pour les cookies
     await app.register(cookie, {
       secret: process.env.COOKIE_SECRET || "fallback-cookie-secret"
@@ -54,7 +53,7 @@ const start = async () => {
     app.addHook('preHandler', authMiddleware);
 
     // Routes (apres etre passer dans le Middleware)
-    await app.register(authRoutes, {prefix: '/auth'});
+    await app.register(authRoutes, {prefix: '/api/auth'});
 
     // Démarrer le serveur 
     await app.listen({ port: 8000, host: "0.0.0.0" });

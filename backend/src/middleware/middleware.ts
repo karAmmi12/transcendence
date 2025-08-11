@@ -16,10 +16,10 @@ declare module 'fastify'
 
 // Routes publiques (pas d'auth du middleware nécessaire)
 const PUBLIC_ROUTES = [
-    '/test',
-    '/register', 
-    '/login',
-    '/users'
+    '/api/auth/test',
+    '/api/auth/register', 
+    '/api/auth/login',
+    '/api/auth/users'
 ];
 
 /**
@@ -55,7 +55,10 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
 
         // si pas de refreshToken trouver demander au user de ce reconnecter
         if (!refreshToken)
+        {
+            console.log('No refresh token found, user needs to login again');
             return (reply.status(401).send({error: 'Authentification required'}));
+        }
         
         // sinon verifier le refreshToken
         const refreshPayload = JWTService.verifyRefreshToken(refreshToken);
