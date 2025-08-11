@@ -17,7 +17,7 @@ export default async function authRoutes(app: FastifyInstance) {
   app.post('/register', {schema: registerSchema}, async (req: FastifyRequest, reply: FastifyReply) => {
       
     const userData = req.body as RegisterData;
-      
+    console.log("JE SUIS DANS LE BACKEND /REGISTER");
     const result = await registerUser(userData);
     if (!result.success)
       return (reply.status(400).send({error: result.error}));
@@ -48,6 +48,8 @@ export default async function authRoutes(app: FastifyInstance) {
   // Route login permet au user de ce connecter
   app.post('/login', {schema: loginSchema}, async (req: FastifyRequest, reply: FastifyReply) => {
     
+    console.log("JE SUIS DANS LE BACKENd /LOGIN");
+
     const loginData = req.body as LoginData;
     
     const result = await loginUser(loginData);
@@ -73,7 +75,7 @@ export default async function authRoutes(app: FastifyInstance) {
     
     reply.send({
       message: "✅ Login successful",
-      user: result.user
+      user: result.user,
     })
     
   });

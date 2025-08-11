@@ -5,7 +5,7 @@ export interface RegisterData {
 }
 
 export interface LoginData {
-  identifier: string; //siuu email ou username pour l'instant
+  username: string; //siuu email ou username pour l'instant
   password: string;
 }
 
