@@ -109,6 +109,12 @@ export default async function authRoutes(app: FastifyInstance) {
   });
 
   //siuu creer route /logout
+  
+  app.post('/logout', async (req: FastifyRequest, reply: FastifyReply) => {
+    reply.clearCookie('accessToken');
+    reply.clearCookie('refreshToken');
+    reply.send({ message: 'Logged out successfully' });
+  });
 
 }
 
