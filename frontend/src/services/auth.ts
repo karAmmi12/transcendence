@@ -169,24 +169,34 @@ export class AuthService {
 
   public async checkAuthStatus(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseURL}/auth/myProfile`, {
+      const response = await fetch(`${this.baseURL}/auth/me`, {
         credentials : 'include'
       });
+
+      console.log('Response status:', response.status);
 
       if (response.ok)
       {
         this.currentUser = await response.json();
+        console.log('✅ User authenticated:', this.currentUser.username);
         window.dispatchEvent(new CustomEvent('authStateChanged'));
         return true;
+      } else {
+        console.log('❌ Auth check failed:', response.status);
       }
 
     }catch (error) {
-    console.error('Failed to check auth status:', error);
+      console.error('Failed to check auth status:', error);
 
     } 
     this.currentUser = null;
+    console.log('🚫 User not authenticated');
     window.dispatchEvent(new CustomEvent('authStateChanged'));
     return false;
+  }
+
+  public getCurrentUser(): User | null {
+    return this.currentUser;
   }
 
 

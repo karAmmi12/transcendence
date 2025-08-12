@@ -34,13 +34,25 @@
     },
     "buttons": {
       "play": "Jouer",
-      "login": "Connexion"
+      "login": "Connexion",
+      "register": "S'inscrire",
+      "tournaments": "Tournois"
+
     },
     "stats": {
+      "title": "Vos statistiques",
+      "wins": "Victoires",
+      "losses": "Défaites",
+      "winRate": "Taux de victoire",
+      "rank": "Classement",
+      "highestScore": "Score le plus élevé",
+      "currentStreak": "Série actuelle",
+      "longestStreak": "Plus longue série",
       "players": "Joueurs",
       "games": "Parties",
       "tournaments": "Tournois",
       "online": "En ligne"
+
     }
   },
   "auth": {
