@@ -1,13 +1,13 @@
 export interface User {
-  id: string;
+  id: number;
   username: string;
   email: string;
-  avatar?: string;
-  isOnline: boolean;
-  stats: UserStats;
-  createdAt: string;
+  avatar_url?: string | null; //siuuu remettre par defaut
+  isOnline?: boolean;
+  twoFactorEnabled?: boolean;
+  createdAt?: string;
   lastLogin?: string;
-  twoFactorEnabled: boolean;
+  stats?: UserStats;
 }
 
 export interface UserStats {
