@@ -9,21 +9,30 @@ export interface LoginData {
   password: string;
 }
 
+// Type pour req.user défini par le middleware
+export interface AuthenticatedUser {
+    userId: number;
+    username: string;
+}
+
 export interface AuthResult {
   success: boolean;
-  user?: {
-    id: number;
-    username: string;
-    email: string;
-    avatar?: string;
-    isOnline?: boolean;
-    twoFactorEnabled?: boolean;
-    createdAt?: string;
-    stats?: UserStats;
-  };
+  user?: UserData;
   accessToken?: string;
   refreshToken?: string;
   error?: string;
+}
+
+export interface UserData {
+  id: number;
+  username: string;
+  email: string;
+  avatar_url?: string | null; //siuuu remettre par defaut
+  isOnline?: boolean;
+  twoFactorEnabled?: boolean;
+  createdAt?: string;
+  lastLogin?: string;
+  stats?: UserStats;
 }
 
 export interface UserStats {

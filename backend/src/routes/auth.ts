@@ -15,15 +15,15 @@ export default async function authRoutes(app: FastifyInstance)
 
   //Route d'authentification
   app.post('/register', {schema: registerSchema}, AuthController.register);
-  app.post('/login', { schema: loginSchema }, AuthController.login);
-  // app.post('/logout', AuthController.logout); // siuu a faire
+  app.post('/login', {schema: loginSchema}, AuthController.login);
+  app.post('/logout', AuthController.logout);
 
   //Routes protege (passe par le middleware)
   app.get('/myProfile', AuthController.getProfile);
   // siuu ajouter update profile
 
   //Routes de Debug
-  app.get('/users', AuthController.getAllUsers);
+  // app.get('/users', AuthController.getAllUsers);
 }
 
 // ANCIENNE VERSION 

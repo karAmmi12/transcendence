@@ -185,7 +185,20 @@ export class AuthService
             id: userId,
             username: userData.username,
             email: userData.email,
-            createAt: new Date().toISOString()
+            avatar_url: null, //siuu mettre un avatar par default
+            isOnline: true,
+            twoFactorEnabled: false,
+            createdAt: new Date().toISOString(),
+            stats: {
+                wins: 0,
+                losses: 0,
+                totalGames: 0,
+                winRate: 0,
+                rank: 0,
+                highestScore: 0,
+                currentStreak: 0,
+                longestStreak: 0
+            }
         };
 
         return {
@@ -263,16 +276,16 @@ export class AuthService
     }
 
     /**
-     * Déconnecter un utilisateur // SIUU VOIR FONCTION LOGOUT
+     * Déconnecter un utilisateur
      */
-    // static async logout(refreshToken: string): Promise<void> {
-    //     try {
-    //         // Supprimer la session de la base de données
-    //         JWTService.deleteSession(refreshToken);
-    //         console.log("🚪 User logged out successfully");
-    //     } catch (error) {
-    //         console.error("Logout service error:", error);
-    //         throw error;
-    //     }
-    // }
+    static async logout(refreshToken: string): Promise<void> 
+    {
+        try {
+            // Supprimer la session de la base de données
+            JWTService.deleteSession(refreshToken);
+        } catch (error) {
+            console.error("Logout service error:", error);
+            throw error;
+        }
+    }
 }
