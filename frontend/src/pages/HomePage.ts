@@ -34,6 +34,7 @@ export class HomePage {
     private render(element: Element): void {
         const isAuthenticated = authService.isAuthenticated();
         const currentUser = authService.getCurrentUser();
+        console.log('Rendering HomePage:', { isAuthenticated, currentUser });
 
         element.innerHTML = `
             <div class="text-center">

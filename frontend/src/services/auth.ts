@@ -60,6 +60,7 @@ export class AuthService {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({ username, email, password })
     });
 
@@ -70,39 +71,41 @@ export class AuthService {
 
     const data = await response.json();
     
-    localStorage.setItem('authToken', data.token);
+    
     this.currentUser = data.user;
+
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
     
     return data;
   }
 
-  public async getCurrentUser(): Promise<User | null> {
-    if (this.currentUser) {
-      return this.currentUser;
-    }
+  // public async getCurrentUser(): Promise<User | null> {
+  //   if (this.currentUser) {
+  //     return this.currentUser;
+  //   }
 
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      return null;
-    }
+  //   const token = localStorage.getItem('authToken');
+  //   if (!token) {
+  //     return null;
+  //   }
 
-    try {
-      const response = await fetch(`${this.baseURL}/auth/me`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+  //   try {
+  //     const response = await fetch(`${this.baseURL}/auth/me`, {
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`
+  //       }
+  //     });
 
-      if (response.ok) {
-        this.currentUser = await response.json();
-        return this.currentUser;
-      }
-    } catch (error) {
-      console.error('Failed to get current user:', error);
-    }
+  //     if (response.ok) {
+  //       this.currentUser = await response.json();
+  //       return this.currentUser;
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to get current user:', error);
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   public async getUserProfile(userId?: string): Promise<User | null> {
     try {
