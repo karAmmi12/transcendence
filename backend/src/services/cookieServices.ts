@@ -26,6 +26,11 @@ export class CookieService
     }
 
     //Siuuu ajouter focntion supprime les cookies
+    static clearAuthCookies(reply: FastifyReply)
+    {
+        reply.clearCookie('accessToken', {path: '/'});
+        reply.clearCookie('refreshToken', {path: '/'});
+    }
 
     // siuuu ajouter fonction maj de l'access token
 }
