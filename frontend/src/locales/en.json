@@ -32,16 +32,27 @@
         "description": "Play against AI opponents and improve your skills."
       }
     },
-    "buttons": {
-      "play": "Start Playing",
-      "login": "Login"
-    },
     "stats": {
+      "title": "Your Stats",
+      "wins": "Wins",
+      "losses": "Losses",
+      "winRate": "Win Rate",
+      "rank": "Rank",
+      "highestScore": "Highest Score",
+      "currentStreak": "Current Streak",
+      "longestStreak": "Longest Streak",
       "players": "Players",
       "games": "Games",
       "tournaments": "Tournaments",
       "online": "Online"
+    },
+    "buttons": {
+      "play": "Start Playing",
+      "login": "Login",
+      "register": "Register",
+      "tournaments": "Tournaments"
     }
+    
   },
   "auth": {
     "login": {

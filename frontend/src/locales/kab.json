@@ -35,9 +35,19 @@
     },
     "buttons": {
       "play": "Bdu urar",
-      "login": "Kcem"
+      "login": "Kcem",
+      "register": "Rnu amiḍan",
+      "tournaments": "Isefka"
     },
     "stats": {
+      "title": "Amasnas n tigawin",
+      "wins": "Tawaḍit",
+      "losses": "Tuffɣa",
+      "winRate": "Ameɣnas n tawaḍit",
+      "rank": "Aseggas",
+      "highestScore": "Asin n tɣerma",
+      "currentStreak": "Amasnas n tawaḍit",
+      "longestStreak": "Amasnas n tawaḍit d tɣerma",
       "players": "Imeddukal",
       "games": "Urar",
       "tournaments": "Isefka",

@@ -34,9 +34,19 @@
     },
     "buttons": {
       "play": "ابدأ اللعب",
-      "login": "تسجيل الدخول"
+      "login": "تسجيل الدخول",
+      "register": "إنشاء حساب",
+      "tournaments": "البطولات"
     },
     "stats": {
+      "title": "إحصائياتك",
+      "wins": "الانتصارات",
+      "losses": "الخسائر",
+      "winRate": "نسبة الفوز",
+      "rank": "الترتيب",
+      "highestScore": "أعلى نتيجة",
+      "currentStreak": "السلسلة الحالية",
+      "longestStreak": "أطول سلسلة",
       "players": "اللاعبون",
       "games": "الألعاب",
       "tournaments": "البطولات",
