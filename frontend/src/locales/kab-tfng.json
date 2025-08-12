@@ -34,9 +34,19 @@
     },
     "buttons": {
       "play": "ⴱⴷⵓ ⵓⵔⴰⵔ",
-      "login": "ⴽⵛⵎ"
+      "login": "ⴽⵛⵎ",
+      "register": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "tournaments": "ⵉⵙⴼⴽⴰ"
     },
     "stats": {
+      "title": "ⴰⵎⵙⵙⴰⵏ ⵜⵉⴳⴰⵡⵉⵏ",
+      "wins": "ⵜⴰⵡⴰⴹⵉⵜ",
+      "losses": "ⵜⵓⴼⴼⵖⴰ",
+      "winRate": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵜⴰⵡⴰⴹⵉⵜ",
+      "rank": "ⴰⵙⴳⴳⴰⵙ",
+      "highestScore": "ⴰⵙⵉⵏ ⴰⵎⴰⵙⵉⴹ",
+      "currentStreak": "ⴰⵎⴰⵙⵉⴹ ⵜⴰⵡⴰⵏ",
+      "longestStreak": "ⴰⵎⴰⵙⵉⴹ ⵜⴰⵡⴰⵏ ⴷ ⵜⴰⵎⴰ",
       "players": "ⵉⵎⴷⴷⵓⴽⴰⵍ",
       "games": "ⵓⵔⴰⵔ",
       "tournaments": "ⵉⵙⴼⴽⴰ",

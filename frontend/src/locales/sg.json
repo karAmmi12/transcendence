@@ -30,9 +30,19 @@
     },
     "buttons": {
         "play": "Bara",
-        "login": "Gue"
+        "login": "Gue",
+        "register": "Ke compte",
+        "tournaments": "Tournament"
     },
     "stats": {
+        "title": "Amasnas ti lo",
+        "wins": "Longisa",
+        "losses": "Kua",
+        "winRate": "Ameɣnas ti longisa",
+        "rank": "Aseggas",
+        "highestScore": "Asin ti tɣerma",
+        "currentStreak": "Amasnas ti longisa",
+        "longestStreak": "Amasnas ti longisa d tɣerma",
         "players": "Aterene bara",
         "games": "Bara",
         "tournaments": "Tournament",
