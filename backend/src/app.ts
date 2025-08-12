@@ -41,11 +41,16 @@ const start = async () => {
   try {
     // Autoriser CORS pour le dev frontend
     await app.register(cors, {
-      origin: process.env.NODE_ENV === 'production' 
-        ? ['https://localhost:8443', 'https://localhost'] // En production
-        : ['http://localhost:5173', 'http://localhost:3000'], // En développement 
-      credentials: true // pour les cookies
-    });
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://localhost:8443', 'https://localhost', 'http://localhost:8080']
+    : [
+        'http://localhost:5173',  // Vite dev
+        'http://localhost:3000',  // Autres frontends
+        'http://localhost:8080',  // Nginx frontend
+        'http://localhost:8000'   // Backend direct
+      ],
+  credentials: true
+});
     // PLugin pour les cookies
     await app.register(cookie, {
       secret: process.env.COOKIE_SECRET || "fallback-cookie-secret"
