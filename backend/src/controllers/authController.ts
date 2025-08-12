@@ -2,7 +2,10 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { RegisterData, LoginData } from "../types/auth.js";
 import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js";
-import { UserService } from "../services/userServices.js";
+import { userServices } from "../services/userServices.js"
+import db from '../db/index.js'
+// import { UserService } from "../services/userServices.js";
+import { ref } from "process";
 
 export class AuthController
 {
@@ -70,10 +73,39 @@ export class AuthController
     /**
      * Siuuu faire le logout
      */
+    static async logout(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            if (refreshToken)
+                await AuthService.logout(refreshToken);//supp session de la db
+
+            CookieService.clearAuthCookies(reply);
+            reply.send({message: "✅ Logout successful"});
+
+        } catch (error) {
+            console.error("Logout controller error:", error);
+            reply.status(500).send({ error: "Logout failed" });
+        }
+    }
 
     /**
      * Siuuu faire le getProfile
      */
+    static async getProfile(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const user = req.user!; //assurer par le middleware 
+
+            const profile = userServices.getUserDataFromDb(user);
+
+            reply.send(profile);
+
+        } catch (error) {
+            console.error("Get profile error:", error);
+            reply.status(500).send({ error: "Failed to get profile" });
+        }
+    }
 
     /**
      * Siuuu faire le  update profile User
@@ -82,14 +114,14 @@ export class AuthController
     /**
      * Récupérer tous les utilisateurs (debug)
      */
-    static async getAllUsers(req: FastifyRequest, reply: FastifyReply) {
-        try {
-            const users = await UserService.getAllUsers();
-            reply.send(users);
-        } catch (error) {
-            console.error("Get all users controller error:", error);
-            reply.status(500).send({ error: "Failed to get users" });
-        }
-    }
+    // static async getAllUsers(req: FastifyRequest, reply: FastifyReply) {
+    //     try {
+    //         const users = await UserService.getAllUsers();
+    //         reply.send(users);
+    //     } catch (error) {
+    //         console.error("Get all users controller error:", error);
+    //         reply.status(500).send({ error: "Failed to get users" });
+    //     }
+    // }
 
 }
