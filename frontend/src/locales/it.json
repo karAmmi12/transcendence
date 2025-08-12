@@ -34,9 +34,19 @@
     },
     "buttons": {
       "play": "Gioca",
-      "login": "Accedi"
+      "login": "Accedi",
+      "register": "Registrati",
+      "tournaments": "Tornei"
     },
     "stats": {
+      "title": "Le tue statistiche",
+      "wins": "Vittorie",
+      "losses": "Sconfitte",
+      "winRate": "Percentuale vittorie",
+      "rank": "Classifica",
+      "highestScore": "Punteggio più alto",
+      "currentStreak": "Serie attuale",
+      "longestStreak": "Serie più lunga",
       "players": "Giocatori",
       "games": "Partite",
       "tournaments": "Tornei",

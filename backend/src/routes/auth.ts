@@ -87,11 +87,12 @@ export default async function authRoutes(app: FastifyInstance) {
   });
 
   //siuu creer route /me qui donne les stats du joeur (renomable)
-  app.get('/myProfile', async (req: FastifyRequest, reply: FastifyReply) => {
+  app.get('/me', async (req: FastifyRequest, reply: FastifyReply) => {
+      console.log(' /me route called, user: ', req.user);
       const user = req.user!; // info recuperer dans le middleware
 
       const stmt = db.prepare(`
-        SELECT id, username, email, avatar, createdAt, lastLogin 
+        SELECT id, username, email, avatar_url as avatar, createdAt, lastLogin 
         FROM users WHERE id = ?
       `);
       const userData = stmt.get(user.userId);
@@ -101,6 +102,7 @@ export default async function authRoutes(app: FastifyInstance) {
 
       reply.send({
         ...userData,
+        isOnline: true,
         stats:{
           wins:1,
           losses:0
