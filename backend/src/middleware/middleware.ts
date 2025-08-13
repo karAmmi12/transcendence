@@ -19,7 +19,8 @@ const PUBLIC_ROUTES = [
     '/api/auth/test',
     '/api/auth/register', 
     '/api/auth/login',
-    '/api/auth/users'
+    '/api/auth/users',
+    '/api/auth/oauth/google'
 ];
 
 /**
