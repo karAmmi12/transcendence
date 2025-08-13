@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { loginSchema, registerSchema } from "../schemas/auth_schema.js";
 import { RegisterData, LoginData } from "../types/auth.js";
 import { AuthController } from "../controllers/authController.js";
+import { OAuthController } from "../controllers/oauthController.js";
 
 // import db from "../db/index.js";
 // import bcrypt from "bcrypt"
@@ -17,6 +18,7 @@ export default async function authRoutes(app: FastifyInstance)
   app.post('/register', {schema: registerSchema}, AuthController.register);
   app.post('/login', {schema: loginSchema}, AuthController.login);
   app.post('/logout', AuthController.logout);
+  app.get('/oauth/google', OAuthController.oauthLogin);
 
   //Routes protege (passe par le middleware)
   app.get('/me', AuthController.getProfile);
