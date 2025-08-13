@@ -1,5 +1,5 @@
 import { i18n } from '@services/i18n';
-import { authService } from '@/services/auth';
+import { authService } from '@/services/authService';
 
 export class Header {
   private languageListener: (() => void) | null = null;
