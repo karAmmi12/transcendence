@@ -5,7 +5,7 @@ export interface RegisterData {
 }
 
 export interface LoginData {
-  username: string; //siuu email ou username pour l'instant
+  username: string; //siuu email ou username pour l'instant(identifier)
   password: string;
 }
 
@@ -40,14 +40,10 @@ export interface UserStats {
   losses: number;
   totalGames: number;
   winRate: number;
-  rank: number;
-  highestScore: number;
-  currentStreak: number;
-  longestStreak: number;
 }
 
 // interface pour recupe info de la db
-interface UserFromDB {
+export interface UserFromDB {
   id: number;
   username: string;
   email: string;
@@ -57,4 +53,16 @@ interface UserFromDB {
   twoFactorEnabled: boolean;
   createdAt: string;
   lastLogin?: string;
+}
+
+export interface UpdateProfileData {
+  username?: string;
+  email?: string;
+  avatar_url?: string;
+}
+
+export interface UpdateResult {
+  success: boolean;
+  user?: UserData;
+  error?: string;
 }
