@@ -1,11 +1,18 @@
 import { i18n } from '@services/i18n';
-import { authService } from '@services/auth';
-import type { User, MatchHistory } from '../types/index.js';
+import { userService } from '@services/userService';
+import { authService } from '@services/authService';
+import { ProfileHeader } from '@components/profile/ProfileHeader';
+import { StatsCard } from '@components/profile/StatsCard';
+import { FriendsSection } from '@components/profile/FriendsSection';
+import { MatchHistoryCard } from '@components/profile/MatchHistoryCard';
+import type { User, MatchHistory, Friend } from '../types/index.js';
+import { EditProfileModal } from '@components/profile/EditProfileModal';
 
 export class ProfilePage {
   private languageListener: (() => void) | null = null;
   private user: User | null = null;
   private matchHistory: MatchHistory[] = [];
+  private friends: Friend[] = [];
   private userId: string | null = null; // Pour afficher le profil d'un autre utilisateur
 
   mount(selector: string): void {
@@ -17,10 +24,11 @@ export class ProfilePage {
     const matches = path.match(/\/profile\/(.+)/);
     this.userId = matches ? matches[1] : null;
 
-    this.loadUserData();
-
     // Nettoie l'ancien listener si besoin
     this.destroy();
+    
+    this.loadUserData();
+
 
     // Ajoute le listener pour le changement de langue
     this.languageListener = () => {
@@ -30,26 +38,127 @@ export class ProfilePage {
   }
 
   private async loadUserData(): Promise<void> {
+
+    console.log('Chargement des données utilisateur...');
+
     const element = document.querySelector('#page-content');
-    if (!element) return;
+    if (!element) {
+      console.log('Element not found for rendering profile page');
+      return;
+    }
 
     // Afficher un état de chargement
     this.renderLoading(element);
 
     try {
       // Charger les données utilisateur
-      this.user = await authService.getUserProfile(this.userId);
-      this.matchHistory = await authService.getMatchHistory(this.userId);
+      this.user = await userService.getUserProfile(this.userId);
 
       if (!this.user) {
+        console.log('Utilisateur non trouvé');
         this.renderError(element, i18n.t('profile.errors.userNotFound'));
         return;
       }
 
+      
+      // this.matchHistory = await authService.getMatchHistory(this.userId); SIUU a decommenter une fois que l'API est prête
+      this.matchHistory = this.createMockMatchHistory(); // Pour l'instant, simuler l'historique des matchs
+
+      // Pour l'instant, simuler des amis SIUUU
+      this.friends = this.createMockFriends();
+
+    
       this.render(element);
+      
     } catch (error) {
       this.renderError(element, i18n.t('profile.errors.loadFailed'));
     }
+  }
+
+   private openEditModal(): void {
+    if (!this.user) return;
+
+    const editModal = new EditProfileModal(this.user, (updatedUser: User) => {
+      // Mettre à jour les données locales
+      this.user = updatedUser;
+      
+      // Re-render la page avec les nouvelles données
+      const element = document.querySelector('#page-content');
+      if (element) {
+        this.render(element);
+      }
+      
+      // Déclencher un événement pour mettre à jour l'en-tête si nécessaire
+      window.dispatchEvent(new CustomEvent('authStateChanged'));
+      
+      // Afficher un message de succès (optionnel)
+      console.log('Profil mis à jour avec succès');
+    });
+
+    editModal.show();
+  }
+
+
+
+  destroy(): void {
+    if (this.languageListener) {
+      window.removeEventListener('languageChanged', this.languageListener);
+      this.languageListener = null;
+    }
+  }
+
+  // Simulation temporaire des amis
+  private createMockFriends(): Friend[] {
+    return [
+      {
+        id: 1,
+        username: 'Alice',
+        avatar_url: null,
+        isOnline: true,
+        lastSeen: new Date().toISOString(),
+        friendshipDate: new Date(Date.now() - 2592000000).toISOString()
+      },
+      {
+        id: 2,
+        username: 'Bob',
+        avatar_url: null,
+        isOnline: false,
+        lastSeen: new Date(Date.now() - 3600000).toISOString(),
+        friendshipDate: new Date(Date.now() - 5184000000).toISOString()
+      },
+      {
+        id: 3,
+        username: 'Charlie',
+        avatar_url: null,
+        isOnline: true,
+        lastSeen: new Date().toISOString(),
+        friendshipDate: new Date(Date.now() - 1296000000).toISOString()
+      }
+    ];
+  }
+
+  // Simulation temporaire de l'historique des matchs
+  private createMockMatchHistory(): MatchHistory[] {
+    return [
+      {
+        id: '1',
+        opponent: 'Alice',
+        result: 'win',
+        score: { player: 5, opponent: 3 },
+        date: new Date(Date.now() - 86400000).toISOString(),
+        duration: 180,
+        gameMode: 'classic'
+      },
+      {
+        id: '2',
+        opponent: 'Bob',
+        result: 'loss',
+        score: { player: 2, opponent: 5 },
+        date: new Date(Date.now() - 172800000).toISOString(),
+        duration: 240,
+        gameMode: 'ai'
+      }
+    ];
   }
 
   private renderLoading(element: Element): void {
@@ -79,119 +188,95 @@ export class ProfilePage {
   }
 
   private render(element: Element): void {
-    if (!this.user) return;
+      if (!this.user) return;
 
-    const isOwnProfile = !this.userId || this.userId === this.user.id;
+      const isOwnProfile = !this.userId || this.userId === this.user.id.toString();
+      
+      // Créer les composants
+      const profileHeader = new ProfileHeader(this.user, isOwnProfile);
+      const statsCard = new StatsCard(this.user);
+      const friendsSection = new FriendsSection(this.friends, isOwnProfile);
+      const matchHistoryCard = new MatchHistoryCard(this.matchHistory, isOwnProfile);
 
-    element.innerHTML = `
-      <div class="max-w-4xl mx-auto">
-        <!-- Header du profil -->
-        <div class="bg-gray-800 rounded-lg p-8 mb-8">
-          <div class="flex items-center space-x-6">
-            <div class="relative">
-              <img 
-                src="${this.user.avatar || '/default-avatar.png'}" 
-                alt="${this.user.username}" 
-                class="w-24 h-24 rounded-full border-4 border-primary-500"
-              />
-              ${this.user.isOnline ? '<div class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-800"></div>' : ''}
+ 
+
+      element.innerHTML = `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          ${profileHeader.render()}
+          
+          <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Colonne principale -->
+            <div class="lg:col-span-2 space-y-8">
+              ${statsCard.render()}
+              ${matchHistoryCard.render()}
             </div>
             
-            <div class="flex-1">
-              <h1 class="text-3xl font-bold text-white mb-2">${this.user.username}</h1>
-              <p class="text-gray-400 mb-2">${i18n.t('profile.joinedOn')} ${new Date(this.user.createdAt).toLocaleDateString()}</p>
-              ${this.user.lastLogin ? `<p class="text-gray-400">${i18n.t('profile.lastLogin')} ${new Date(this.user.lastLogin).toLocaleDateString()}</p>` : ''}
-              ${isOwnProfile ? `<button id="edit-profile" class="mt-4 btn-secondary">${i18n.t('profile.editProfile')}</button>` : ''}
+            <!-- Sidebar -->
+            <div class="space-y-8">
+              ${friendsSection.render()}
+              ${isOwnProfile ? this.renderQuickActions() : this.renderProfileActions()}
             </div>
           </div>
         </div>
+      `;
 
-        <div class="grid md:grid-cols-2 gap-8">
-          <!-- Statistiques -->
-          <div class="bg-gray-800 rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-6 text-primary-400">${i18n.t('profile.stats.title')}</h2>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="text-center">
-                <div class="text-2xl font-bold text-green-400">${this.user.stats.wins}</div>
-                <div class="text-gray-400">${i18n.t('profile.stats.gamesWon')}</div>
-              </div>
-              <div class="text-center">
-                <div class="text-2xl font-bold text-red-400">${this.user.stats.losses}</div>
-                <div class="text-gray-400">${i18n.t('profile.stats.gamesLost')}</div>
-              </div>
-              <div class="text-center">
-                <div class="text-2xl font-bold text-blue-400">${this.user.stats.totalGames}</div>
-                <div class="text-gray-400">${i18n.t('profile.stats.gamesPlayed')}</div>
-              </div>
-              <div class="text-center">
-                <div class="text-2xl font-bold text-yellow-400">${this.user.stats.winRate}%</div>
-                <div class="text-gray-400">${i18n.t('profile.stats.winRate')}</div>
-              </div>
-            </div>
-            
-            <div class="mt-6 pt-6 border-t border-gray-700">
-              <div class="flex justify-between">
-                <span class="text-gray-400">${i18n.t('profile.stats.ranking')}</span>
-                <span class="text-white font-bold">#${this.user.stats.rank}</span>
-              </div>
-              <div class="flex justify-between mt-2">
-                <span class="text-gray-400">${i18n.t('profile.stats.currentStreak')}</span>
-                <span class="text-white font-bold">${this.user.stats.currentStreak}</span>
-              </div>
-            </div>
-          </div>
+      this.bindEvents();
+    }
 
-          <!-- Historique des matchs -->
-          <div class="bg-gray-800 rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-6 text-primary-400">${i18n.t('profile.history.title')}</h2>
-            <div class="space-y-3 max-h-64 overflow-y-auto">
-              ${this.matchHistory.length > 0 
-                ? this.matchHistory.slice(0, 5).map(match => `
-                    <div class="flex items-center justify-between p-3 bg-gray-700 rounded">
-                      <div class="flex items-center space-x-3">
-                        <div class="w-3 h-3 rounded-full ${match.result === 'win' ? 'bg-green-500' : 'bg-red-500'}"></div>
-                        <span class="text-white">${match.opponent}</span>
-                      </div>
-                      <div class="text-right">
-                        <div class="text-white font-bold">${match.score.player} - ${match.score.opponent}</div>
-                        <div class="text-gray-400 text-sm">${new Date(match.date).toLocaleDateString()}</div>
-                      </div>
-                    </div>
-                  `).join('')
-                : `<p class="text-gray-400 text-center py-8">${i18n.t('profile.history.noGames')}</p>`
-              }
-            </div>
-            ${this.matchHistory.length > 5 ? `
-              <button id="view-all-matches" class="w-full mt-4 btn-secondary">
-                ${i18n.t('profile.history.viewAll')}
-              </button>
-            ` : ''}
+    private renderQuickActions(): string {
+      
+      return `
+        <div class="bg-gray-800 rounded-lg p-6">
+          <h2 class="text-xl font-bold mb-4 text-primary-400">${i18n.t('profile.actions.title')}</h2>
+          <div class="space-y-3">
+            <button id="edit-profile" class="w-full btn-secondary text-left flex items-center">
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+              ${i18n.t('profile.actions.editProfile')}
+            </button>
+            <button id="change-password" class="w-full btn-secondary text-left flex items-center">
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+              ${i18n.t('profile.actions.changePassword')}
+            </button>
+            <button id="logout" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center">
+              <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+              ${i18n.t('nav.logout')}
+            </button>
           </div>
         </div>
+      `;
+    }
 
-        ${isOwnProfile ? `
-          <!-- Actions du profil -->
-          <div class="mt-8 bg-gray-800 rounded-lg p-6">
-            <h2 class="text-xl font-bold mb-4 text-primary-400">${i18n.t('profile.actions.title')}</h2>
-            <div class="flex space-x-4">
-              <button id="change-avatar" class="btn-secondary">${i18n.t('profile.actions.changeAvatar')}</button>
-              <button id="change-password" class="btn-secondary">${i18n.t('profile.actions.changePassword')}</button>
-              <button id="logout" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                ${i18n.t('nav.logout')}
-              </button>
-            </div>
+    private renderProfileActions(): string {
+      return `
+        <div class="bg-gray-800 rounded-lg p-6">
+          <div class="space-y-3">
+            <button id="add-friend" class="w-full btn-primary">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+              </svg>
+              ${i18n.t('profile.actions.addFriend')}
+            </button>
+            <button id="challenge-user" class="w-full btn-secondary">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+              ${i18n.t('profile.actions.challenge')}
+            </button>
           </div>
-        ` : ''}
-      </div>
-    `;
-
-    this.bindEvents();
-  }
+        </div>
+      `;
+    }
 
   private bindEvents(): void {
     // Actions du profil
     document.getElementById('edit-profile')?.addEventListener('click', () => {
-      window.dispatchEvent(new CustomEvent('navigate', { detail: '/settings' }));
+      this.openEditModal();
     });
 
     document.getElementById('logout')?.addEventListener('click', () => {
@@ -214,10 +299,10 @@ export class ProfilePage {
     });
   }
 
-  destroy(): void {
-    if (this.languageListener) {
-      window.removeEventListener('languageChanged', this.languageListener);
-      this.languageListener = null;
-    }
-  }
+  // destroy(): void {
+  //   if (this.languageListener) {
+  //     window.removeEventListener('languageChanged', this.languageListener);
+  //     this.languageListener = null;
+  //   }
+  // }
 }

@@ -6,7 +6,7 @@ import { Router } from './router'
 import { i18n } from '@services/i18n'
 // import { MobileTestUtils } from './utils/MobileTestUtils'
 // import { ResponsiveTest } from './utils/ResponsiveTest'
-import { authService } from './services/auth'
+import { authService } from './services/authService'
 
 class Main {
   private app: App
