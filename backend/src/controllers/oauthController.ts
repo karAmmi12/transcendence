@@ -1,12 +1,12 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js"; 
+import 'dotenv/config'
 
 export class OAuthController 
 {
     static async oauthLogin (req: FastifyRequest, reply: FastifyReply)
     {
-        console.log('SIUUUUU Here');
         try {
 
             const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
