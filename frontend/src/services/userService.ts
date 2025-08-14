@@ -18,6 +18,27 @@ export class UserService {
   }
 
   /**
+   * Construit l'URL complète pour un avatar
+   */
+  public getAvatarUrl(avatarPath: string | null | undefined): string {
+    if (!avatarPath) {
+      return '/images/default-avatar.png'; // Avatar par défaut
+    }
+
+    // Si c'est déjà une URL complète, la retourner
+    if (avatarPath.startsWith('http://') || avatarPath.startsWith('https://')) {
+      return avatarPath;
+    }
+
+    // Construire l'URL complète vers le backend
+    const backendURL = process.env.NODE_ENV === 'production' 
+      ? '' // En production, nginx proxy
+      : `http://${location.hostname}:8000`; // Direct en dev
+    
+    return `${backendURL}${avatarPath}`;
+  }
+
+  /**
    * Met à jour le profil utilisateur
    */
   public async updateProfile(data: { username: string; email: string }, avatarFile?: File): Promise<User> {
@@ -40,12 +61,13 @@ export class UserService {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || i18n.t('profile.edit.errors.updateFailed'));
+      throw new Error(error.error || i18n.t('profile.edit.errors.updateFailed'));
     }
 
-    const updatedUser = await response.json();
+    const responseData = await response.json();
     
-    return updatedUser;
+    // Retourner l'utilisateur mis à jour depuis la réponse
+    return responseData.user;
   }
 
   /**
@@ -60,7 +82,12 @@ export class UserService {
       });
 
       if (response.ok) {
-        return await response.json();
+        const user = await response.json();
+        // Construire l'URL complète de l'avatar
+        if (user.avatar_url) {
+          user.avatar_url = this.getAvatarUrl(user.avatar_url);
+        }
+        return user;
       }
       return null;
     } catch (error) {

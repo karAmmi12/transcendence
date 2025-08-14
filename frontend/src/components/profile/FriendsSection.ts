@@ -1,4 +1,5 @@
 import { i18n } from '@services/i18n';
+import { userService } from '../../services/userService.js';
 import type { Friend } from '../../types/index.js';
 
 export class FriendsSection {
@@ -49,15 +50,17 @@ export class FriendsSection {
   }
 
   private renderFriendItem(friend: Friend): string {
+    const avatarUrl = userService.getAvatarUrl(friend.avatar_url);
+    
     return `
       <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors group">
         <div class="flex items-center space-x-3">
           <div class="relative">
             <img 
-              src="${friend.avatar_url || '/default-avatar.png'}" 
+              src="${avatarUrl}"
               alt="${friend.username}" 
               class="w-10 h-10 rounded-full bg-gray-600 object-cover"
-              onerror="this.src='/default-avatar.png'"
+              onerror="this.src='/images/default-avatar.png'"
             >
             <div class="absolute -bottom-1 -right-1 w-4 h-4 ${friend.isOnline ? 'bg-green-500' : 'bg-gray-500'} rounded-full border-2 border-gray-700"></div>
           </div>
