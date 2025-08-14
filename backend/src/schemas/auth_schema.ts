@@ -1,3 +1,4 @@
+//schema REGISTER
 export const registerSchema = {
     body: {
         type: 'object',
@@ -11,7 +12,8 @@ export const registerSchema = {
             },
             email: {
                 type: 'string',
-                format: 'email'
+                format: 'email',
+                maxLength: 255
             },
             password: {
                 type: 'string',
@@ -49,6 +51,7 @@ export const registerSchema = {
     }
 };
 
+//schema LOGIN
 export const loginSchema = {
     body: {
         type: 'object',
@@ -85,6 +88,55 @@ export const loginSchema = {
             type: 'object',
             properties: {
                 error: {type: 'string'}
+            }
+        }
+    }
+};
+
+//schema UPDATE
+export const updateProfileSchema = {
+    body: {
+        type: 'object',
+        properties: {
+            username: {
+                type: 'string',
+                minLength: 3,
+                maxLength: 20,
+                pattern: '^[a-zA-Z0-9_]+$'
+            },
+            email: {
+                type: 'string',
+                format: 'email',
+                maxLength: 255
+            },
+            avatar_url: {
+                type: 'string',
+                maxLength: 500,
+            }
+        },
+        additionalProperties: false,
+        minProperties: 1
+    },
+    response: {
+        200: {
+            type: 'object',
+            properties: {
+                message: {type: 'string'},
+                user: {
+                    type: 'object',
+                    properties: {
+                        id: {type: 'number'},
+                        username: {type: 'string'},
+                        email: {type: 'string'},
+                        avatar_url: {type: ['string', 'null']}
+                    }
+                }
+            }
+        },
+        400: {
+            type: 'object',
+            properties: {
+                error: {type:'string'},
             }
         }
     }

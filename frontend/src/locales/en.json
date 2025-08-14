@@ -12,7 +12,7 @@
     "selectLanguage": "Select Language"
   },
   "home": {
-    "welcome": "Welcome to ft_transcendence ",
+    "welcome": "Welcome to ft_transcendence",
     "description": "Experience the ultimate Pong game with real-time multiplayer, tournaments, and an immersive gaming experience.",
     "features": {
       "multiplayer": {
@@ -121,6 +121,17 @@
       "classic": "Classic",
       "ai": "vs AI",
       "tournament": "Tournament"
+    },
+    "customization": {
+      "title": "Game Settings",
+      "ballSpeed": "Ball Speed",
+      "paddleSpeed": "Paddle Speed",
+      "powerUps": "Power-ups",
+      "gameMode": "Game Mode",
+      "theme": "Theme",
+      "difficulty": "Difficulty",
+      "resetToDefault": "Reset to Default",
+      "applySettings": "Apply Settings"
     }
   },
   "profile": {
@@ -175,8 +186,24 @@
       "title": "Quick actions",
       "editProfile": "Edit profile",
       "changePassword": "Change password",
+      "changeAvatar": "Change avatar",
       "addFriend": "Add as friend",
       "challenge": "Challenge"
+    },
+    "edit": {
+      "title": "Edit Profile",
+      "username": "Username",
+      "email": "Email",
+      "avatar": "Avatar",
+      "selectImage": "Select Image",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "uploading": "Uploading...",
+      "errors": {
+        "updateFailed": "Failed to update profile",
+        "invalidImage": "Invalid image format",
+        "imageTooLarge": "Image too large"
+      }
     },
     "errors": {
       "userNotFound": "User not found",
