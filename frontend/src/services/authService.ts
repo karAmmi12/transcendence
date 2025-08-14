@@ -1,5 +1,5 @@
 import { User } from '../types/index.js';
-
+import { userService } from './userService.js';
 
 export interface MatchHistory {
   id: string;
@@ -100,8 +100,8 @@ export class AuthService {
   }
 
   public async checkAuthStatus(): Promise<boolean> {
-    if (this.authChecked && this.currentUser) {
-      return true;
+    if (this.authChecked) {
+      return this.currentUser !== null;
     }
 
     try {
@@ -112,6 +112,12 @@ export class AuthService {
 
       if (response.ok) {
         const userData = await response.json();
+
+        // Construire l'url complète de l'avatar
+        if (userData.avatar_url) {
+          userData.avatar_url = userService.getAvatarUrl(userData.avatar_url);
+        }
+
         this.currentUser = userData;
         this.authChecked = true;
         window.dispatchEvent(new CustomEvent('authStateChanged'));
@@ -144,6 +150,9 @@ export class AuthService {
         method: 'GET',
         credentials: 'include'
       });
+      if (this.authChecked && this.currentUser) {
+        return true;
+    }
 
       if (response.ok) {
         return await response.json();

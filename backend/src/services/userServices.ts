@@ -2,7 +2,7 @@ import db from '../db/index.js'
 import {UserData, AuthenticatedUser, UpdateProfileData, UpdateResult} from "../types/auth.js"
 import {checkUsernameExists, checkEmailExists} from "./authServices.js"
 
-export class userServices
+export class UserServices
 {
     /**
      * sous fonction qui recupere les infos du user depuis la db
@@ -46,18 +46,20 @@ export class userServices
         const transaction = db.transaction(() =>
         {
             try {
-                // check dans db si deja present
+                // check dans db si deja present (en excluant l'utilisateur actuel)
                 if (updateData.username)
                 {
-                    const exist = checkUsernameExists(updateData.username);
-                    if (exist)
-                        throw new Error("User already exist")//siuu modif msg
+                    const stmt = db.prepare("SELECT id FROM users WHERE username = ? AND id != ?");
+                    const existingUser = stmt.get(updateData.username, userId);
+                    if (existingUser)
+                        throw new Error("Username already taken");
                 }
                 if (updateData.email)
                 {
-                    const exist = checkEmailExists(updateData.email);
-                    if (exist)
-                        throw ("Email already exist")//siuu modif msg
+                    const stmt = db.prepare("SELECT id FROM users WHERE email = ? AND id != ?");
+                    const existingUser = stmt.get(updateData.email, userId);
+                    if (existingUser)
+                        throw new Error("Email already taken");
                 }
 
                 //Preparation de la maj de la db
