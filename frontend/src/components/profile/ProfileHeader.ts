@@ -1,28 +1,37 @@
+import { User } from '../../types/index.js';
 import { i18n } from '@services/i18n';
-import type { User } from '../../types/index.js';
+import { userService } from '../../services/userService.js';
 
 export class ProfileHeader {
-  constructor(private user: User, private isOwnProfile: boolean) {}
-  
+  private user: User;
+  private isOwnProfile: boolean;
+
+  constructor(user: User, isOwnProfile: boolean = false) {
+    this.user = user;
+    this.isOwnProfile = isOwnProfile;
+  }
+
   render(): string {
     return `
-      <div class="bg-gray-800 rounded-lg p-8 mb-8">
-        <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+      <div class="bg-gray-800 rounded-lg p-6 mb-6">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
           ${this.renderAvatar()}
           ${this.renderUserInfo()}
-          ${this.renderActions()}
         </div>
       </div>
     `;
   }
 
   private renderAvatar(): string {
+    const avatarUrl = userService.getAvatarUrl(this.user.avatar_url);
+    
     return `
       <div class="relative group">
         <img 
-          src="${this.user.avatar_url || '/images/default-avatar.png'}" 
+          src="${avatarUrl}" 
           alt="${this.user.username}" 
-          class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-primary-500 transition-transform hover:scale-105"
+          class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-primary-500 transition-transform hover:scale-105 object-cover"
+          onerror="this.src='/images/default-avatar.png'"
         />
         ${this.user.isOnline ? '<div class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-800 animate-pulse"></div>' : ''}
         ${this.isOwnProfile ? `
@@ -38,66 +47,49 @@ export class ProfileHeader {
   }
 
   private renderUserInfo(): string {
-    const joinedDate = this.user.createdAt ? new Date(this.user.createdAt).toLocaleDateString() : '';
-    const lastLoginDate = this.user.lastLogin ? new Date(this.user.lastLogin).toLocaleDateString() : '';
-    
     return `
-      <div class="flex-1">
-        <h1 class="text-3xl font-bold text-white mb-2">${this.user.username}</h1>
-        ${this.user.createdAt ? `
-          <p class="text-gray-400 mb-2">
-            ${i18n.t('profile.joinedOn')} ${joinedDate}
-          </p>
-        ` : ''}
-        ${this.user.lastLogin ? `
-          <p class="text-gray-400">
-            ${i18n.t('profile.lastLogin')} ${lastLoginDate}
-          </p>
-        ` : ''}
-        ${this.user.isOnline ? `
-          <div class="flex items-center mt-2">
-            <div class="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-            <span class="text-green-400 text-sm font-medium">${i18n.t('profile.status.online')}</span>
-          </div>
-        ` : `
-          <div class="flex items-center mt-2">
-            <div class="w-3 h-3 bg-gray-500 rounded-full mr-2"></div>
-            <span class="text-gray-400 text-sm">${i18n.t('profile.status.offline')}</span>
-          </div>
-        `}
+      <div class="flex-1 text-center md:text-left">
+        <h1 class="text-3xl font-bold mb-2">${this.user.username}</h1>
+        <p class="text-gray-400 mb-4">${this.user.email}</p>
+        
+        <div class="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
+          <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">
+            ${this.user.isOnline ? i18n.t('profile.friends.online') : i18n.t('profile.friends.offline')}
+          </span>
+          ${this.user.stats ? `
+            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">
+              ${i18n.t('profile.stats.ranking')}: #${this.user.stats.rank || 'N/A'}
+            </span>
+          ` : ''}
+        </div>
+
+        ${this.isOwnProfile ? this.renderOwnProfileActions() : this.renderOtherProfileActions()}
       </div>
     `;
   }
 
-  private renderActions(): string {
-    if (!this.isOwnProfile) {
-      return `
-        <div class="flex flex-col space-y-2">
-          <button id="add-friend" class="btn-primary">
-            <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-            </svg>
-            ${i18n.t('profile.actions.addFriend')}
-          </button>
-          <button id="challenge-user" class="btn-secondary">
-            <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-            ${i18n.t('profile.actions.challenge')}
-          </button>
-        </div>
-      `;
-    }
-
+  private renderOwnProfileActions(): string {
     return `
-      <div class="flex flex-col space-y-2">
+      <div class="flex flex-wrap gap-2 justify-center md:justify-start">
         <button id="edit-profile" class="btn-primary">
-          <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-          </svg>
           ${i18n.t('profile.actions.editProfile')}
         </button>
-        
+        <button id="change-password" class="btn-secondary">
+          ${i18n.t('profile.actions.changePassword')}
+        </button>
+      </div>
+    `;
+  }
+
+  private renderOtherProfileActions(): string {
+    return `
+      <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+        <button id="add-friend" class="btn-primary">
+          ${i18n.t('profile.actions.addFriend')}
+        </button>
+        <button id="challenge-user" class="btn-secondary">
+          ${i18n.t('profile.actions.challenge')}
+        </button>
       </div>
     `;
   }
