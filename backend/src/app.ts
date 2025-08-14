@@ -2,6 +2,9 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import authRoutes from "./routes/auth.js";
 import cookie from "@fastify/cookie";
+import multipart from "@fastify/multipart";
+import fastifyStatic from "@fastify/static";
+import path from "path";
 import { authMiddleware } from "./middleware/middleware.js";
 
 const app = Fastify({ logger: true });
@@ -18,13 +21,30 @@ const start = async () => {
           'http://localhost:8080',  // Nginx frontend
           'http://localhost:8000'   // Backend direct
         ],
-        credentials: true
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+        optionsSuccessStatus: 200
     });
+
     // PLugin pour les cookies
     await app.register(cookie, {
       secret: process.env.COOKIE_SECRET || "fallback-cookie-secret"
     });
 
+    //siuu Enregistrer le plugin multipart pour gérer les uploads
+    await app.register(multipart, {
+      limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB max
+      }
+    });
+
+     //siuu Servir les fichiers statiques (avatars)
+    await app.register(fastifyStatic, {
+      root: path.join(process.cwd(), 'uploads'),
+      prefix: '/uploads/'
+    });
+    
     // Fastify hook permet de passer par le middleware pour verifier les token a chaque passage
     app.addHook('preHandler', authMiddleware);
 

@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import db from "../db/index.js"
 import {SessionResult, TokenPayload} from "../types/jwt.js";
+import 'dotenv/config'
 
 const ACCESS_TOKEN_SECRET =  process.env.ACCESS_TOKEN_SECRET || 'fallback-access-secret';
 const REFRESH_TOKEN_SECRET =  process.env.REFRESH_TOKEN_SECRET || 'fallback-refresh-secret';
