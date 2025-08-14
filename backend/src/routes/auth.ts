@@ -15,7 +15,7 @@ export default async function authRoutes(app: FastifyInstance)
   //Routes protege (passe par le middleware)
   app.get('/me', UserController.getProfile);
   app.post('/logout', AuthController.logout);
-  app.put('/updateProfile',{schema: updateProfileSchema}, UserController.updateProfile)
+  app.put('/updateProfile', UserController.updateProfile)
 
   //Routes de Debug
   // app.get('/users', AuthController.getAllUsers);
