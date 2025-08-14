@@ -47,5 +47,14 @@ export interface MatchHistory {
   gameMode?: 'classic' | 'ai' | 'tournament';
 }
 
+export interface Friend {
+  id: number;
+  username: string;
+  avatar_url?: string | null;
+  isOnline: boolean;
+  lastSeen?: string;
+  friendshipDate: string;
+}
+
 // Ajouter le type Language manquant :
 export type Language = 'en' | 'fr' | 'it' | 'ar' | 'kab' | 'kab-tfng' | 'sg';
