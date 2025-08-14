@@ -1,5 +1,5 @@
 import { PongGame } from '../components/PongGame.js';
-import { authService } from '../services/auth.js';
+import { authService } from '../services/authService.js';
 import { i18n } from '../services/i18n.js';
 
 export class GamePage {
