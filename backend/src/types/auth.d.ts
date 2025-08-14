@@ -61,6 +61,11 @@ export interface UpdateProfileData {
   avatar_url?: string;
 }
 
+// export interface UpdateProfileData {
+//   username?: string;
+//   email?: string;
+// }
+
 export interface UpdateResult {
   success: boolean;
   user?: UserData;
