@@ -1,4 +1,4 @@
-import { FastifyReply } from "fastify";
+import {FastifyReply} from "fastify";
 
 export class CookieService 
 {
@@ -25,7 +25,7 @@ export class CookieService
         });
     }
 
-    //Siuuu ajouter focntion supprime les cookies
+    //fonction supprime les cookies
     static clearAuthCookies(reply: FastifyReply)
     {
         reply.clearCookie('accessToken', {path: '/'});
