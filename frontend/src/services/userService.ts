@@ -32,7 +32,7 @@ export class UserService {
       formData.append('avatar', avatarFile);
     }
 
-    const response = await fetch(`${this.baseURL}/users/profile`, {
+    const response = await fetch(`${this.baseURL}/auth/updateProfile`, {
       method: 'PUT',
       credentials: 'include', // Pour envoyer les cookies d'authentification
       body: formData
