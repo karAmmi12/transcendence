@@ -107,6 +107,13 @@ export class AuthService {
   //   return null;
   // }
 
+  public initiateGoogleLogin(): void 
+  {
+    // Rediriger vers l'endpoint OAuth Google du backend
+    console.log('Initiating Google OAuth... SIUUUUUUU');
+    window.location.href = `${this.baseURL}/auth/oauth/google`;
+  }
+
   public async getUserProfile(userId?: string): Promise<User | null> {
     try {
       const url = userId ? `${this.baseURL}/users/${userId}` : `${this.baseURL}/auth/me`;
