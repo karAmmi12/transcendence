@@ -1,37 +1,72 @@
-import { HomePage } from '@pages/HomePage'
-import { LoginPage } from '@pages/LoginPage'
-import { RegisterPage } from '@pages/RegisterPage'
-import { GamePage } from '@pages/GamePage'
-import { ProfilePage } from '@pages/ProfilePage'
-import { SettingsPage } from '@pages/SettingsPage'
+import { ROUTES } from './utils/constants';
+import { authService } from '@services/authService';
+import { HomePage } from '@pages/HomePage';
+import { LoginPage } from '@pages/LoginPage';
+import { RegisterPage } from '@pages/RegisterPage';
+import { GamePage } from '@pages/GamePage';
+import { ProfilePage } from '@pages/ProfilePage';
+// import { TournamentPage } from '@pages/TournamentPage';
 
 interface Route {
-  path: string
-  component: any
-  title: string
-  requiresAuth?: boolean
+  path: string;
+  component: () => any; // Changé en fonction qui retourne une instance
+  title: string;
+  requiresAuth: boolean;
 }
 
 export class Router {
   private routes: Route[] = [
-    { path: '/', component: HomePage, title: 'Home - ft_transcendence' },
-    { path: '/login', component: LoginPage, title: 'Login - ft_transcendence' },
-    { path: '/register', component: RegisterPage, title: 'Register - ft_transcendence' },
-    { path: '/game', component: GamePage, title: 'Game - ft_transcendence'}, //SIUUU requiresAuth: true },
-    { path: '/profile', component: ProfilePage, title: 'Profile - ft_transcendence', requiresAuth: true },
-    { path: '/profile/:id', component: ProfilePage, title: 'Profile - ft_transcendence', requiresAuth: true },
-    { path: '/settings', component: SettingsPage, title: 'Settings - ft_transcendence', requiresAuth: true }
-  ]
+    {
+      path: ROUTES.HOME,
+      component: () => new HomePage(), // Instanciation avec new
+      title: 'Home - ft_transcendence',
+      requiresAuth: false
+    },
+    {
+      path: ROUTES.LOGIN,
+      component: () => new LoginPage(),
+      title: 'Login - ft_transcendence',
+      requiresAuth: false
+    },
+    {
+      path: ROUTES.REGISTER,
+      component: () => new RegisterPage(),
+      title: 'Register - ft_transcendence',
+      requiresAuth: false
+    },
+    {
+      path: ROUTES.GAME,
+      component: () => new GamePage(),
+      title: 'Game - ft_transcendence',
+      requiresAuth: true
+    },
+    {
+      path: ROUTES.PROFILE,
+      component: () => new ProfilePage(),
+      title: 'Profile - ft_transcendence',
+      requiresAuth: true
+    },
+    {
+      path: '/profile/:id',
+      component: () => new ProfilePage(),
+      title: 'Profile - ft_transcendence',
+      requiresAuth: true
+    },
+    {
+      path: ROUTES.TOURNAMENT,
+      component: () => new TournamentPage(),
+      title: 'Tournament - ft_transcendence',
+      requiresAuth: true
+    }
+  ];
 
-  private currentPage: any = null 
-
-  navigate(path: string): void {
-    window.history.pushState({}, '', path)
-    this.handleRoute()
+  async navigate(path: string): Promise<void> {
+    history.pushState({}, '', path);
+    await this.handleRoute();
   }
 
-  handleRoute(): void {
-    const path = window.location.pathname
+  async handleRoute(): Promise<void> {
+    const path = window.location.pathname;
     
     // Gestion des routes avec paramètres
     let matchedRoute = this.routes.find(r => r.path === path);
@@ -54,9 +89,18 @@ export class Router {
     
     // Vérification de l'authentification
     if (route.requiresAuth) {
-      const token = localStorage.getItem('authToken');
-      if (!token) {
+      const isAuthenticated = await authService.checkAuthStatus();
+      if (!isAuthenticated) {
         this.navigate('/login');
+        return;
+      }
+    }
+    
+    // Rediriger vers home si utilisateur connecté essaie d'accéder à login/register
+    if ((path === '/login' || path === '/register')) {
+      const isAuthenticated = await authService.checkAuthStatus();
+      if (isAuthenticated) {
+        this.navigate('/');
         return;
       }
     }
@@ -64,26 +108,23 @@ export class Router {
     // Mise à jour du titre de la page
     document.title = route.title;
     
-    // Nettoyage de l'ancienne page
-    if (this.currentPage && typeof this.currentPage.destroy === 'function') {
-      this.currentPage.destroy()
-    }
-    
-    // Créer une nouvelle instance de la page
-    this.currentPage = new route.component()
-    this.currentPage.mount('#page-content')
+    // Charger et monter la page
+    const component = route.component(); // Maintenant ça retourne une instance
+    component.mount('#page-content');
   }
 
   init(): void {
-    // Écouter les changements d'URL
-    window.addEventListener('popstate', () => this.handleRoute());
-    
-    // Écouter les événements de navigation personnalisés
-    window.addEventListener('navigate', (e: any) => {
-      this.navigate(e.detail);
+    // Gérer les changements d'URL
+    window.addEventListener('popstate', () => {
+      this.handleRoute();
     });
-    
-    // Traiter la route initiale
+
+    // Gérer la navigation par événement custom
+    window.addEventListener('navigate', (event: CustomEvent) => {
+      this.navigate(event.detail);
+    });
+
+    // Charger la route initiale
     this.handleRoute();
   }
 }

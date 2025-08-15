@@ -12,7 +12,7 @@
     "selectLanguage": "Select Language"
   },
   "home": {
-    "welcome": "Welcome to ft_transcendence ",
+    "welcome": "Welcome to ft_transcendence",
     "description": "Experience the ultimate Pong game with real-time multiplayer, tournaments, and an immersive gaming experience.",
     "features": {
       "multiplayer": {
@@ -52,7 +52,6 @@
       "register": "Register",
       "tournaments": "Tournaments"
     }
-    
   },
   "auth": {
     "login": {
@@ -117,6 +116,22 @@
     "score": {
       "you": "You",
       "opponent": "Opponent"
+    },
+    "modes": {
+      "classic": "Classic",
+      "ai": "vs AI",
+      "tournament": "Tournament"
+    },
+    "customization": {
+      "title": "Game Settings",
+      "ballSpeed": "Ball Speed",
+      "paddleSpeed": "Paddle Speed",
+      "powerUps": "Power-ups",
+      "gameMode": "Game Mode",
+      "theme": "Theme",
+      "difficulty": "Difficulty",
+      "resetToDefault": "Reset to Default",
+      "applySettings": "Apply Settings"
     }
   },
   "profile": {
@@ -131,10 +146,68 @@
     "history": {
       "title": "Match History",
       "noGames": "No games played yet",
+      "noGamesDesc": "Start playing to see your match history here",
+      "playFirstGame": "Play my first game",
+      "viewAll": "View all history",
+      "viewDetails": "View details",
       "result": {
         "win": "Victory",
         "loss": "Defeat"
+      },
+      "filters": {
+        "all": "All",
+        "wins": "Wins",
+        "losses": "Losses",
+        "tournament": "Tournament"
+      },
+      "stats": {
+        "totalGames": "Total",
+        "winRate": "Win Rate",
+        "recent": "Recent"
       }
+    },
+    "friends": {
+      "title": "Friends",
+      "noFriends": "No friends yet",
+      "findFriends": "Find friends",
+      "manage": "Manage",
+      "viewAll": "View all",
+      "online": "Online",
+      "offline": "Offline",
+      "justOffline": "Just now",
+      "minsAgo": "{mins} min ago",
+      "hoursAgo": "{hours}h ago",
+      "daysAgo": "{days}d ago",
+      "viewProfile": "View profile",
+      "challenge": "Challenge",
+      "sendMessage": "Send message"
+    },
+    "actions": {
+      "title": "Quick actions",
+      "editProfile": "Edit profile",
+      "changePassword": "Change password",
+      "changeAvatar": "Change avatar",
+      "addFriend": "Add as friend",
+      "challenge": "Challenge"
+    },
+    "edit": {
+      "title": "Edit Profile",
+      "username": "Username",
+      "email": "Email",
+      "avatar": "Avatar",
+      "selectImage": "Select Image",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "uploading": "Uploading...",
+      "errors": {
+        "updateFailed": "Failed to update profile",
+        "invalidImage": "Invalid image format",
+        "imageTooLarge": "Image too large"
+      }
+    },
+    "errors": {
+      "userNotFound": "User not found",
+      "loadFailed": "Failed to load profile"
     },
     "settings": {
       "title": "Settings",
@@ -161,7 +234,10 @@
     "close": "Close",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{days} days ago"
   },
   "footer": {
     "description": "The ultimate Pong experience. Play, compete, and chat with the community.",
