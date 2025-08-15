@@ -204,9 +204,15 @@ export class LoginPage {
     });
   }
 
-  private handleOAuth(provider: string): void {
-    // Rediriger vers l'endpoint OAuth du backend
-    window.location.href = `/api/auth/oauth/${provider}`;
+  private handleOAuth(provider: string): void 
+  {
+    if (provider === 'google') 
+      {
+        console.log('SIUUUU INSIDE');
+        // Utiliser le service AuthService pour Google OAuth
+        authService.initiateGoogleLogin();
+    }else
+      console.log('OAuth Google echec');
   }
 
   private showError(message: string): void {

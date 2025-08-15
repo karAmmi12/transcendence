@@ -156,7 +156,7 @@ export class AuthService
     static async logout(refreshToken: string): Promise<void> 
     {
         try {
-            //siuuu changer isOnline sur false ??
+            //siuu changer isOnline sur flase ??
             // Supprimer la session de la base de données
             JWTService.deleteSession(refreshToken);
         } catch (error) {
