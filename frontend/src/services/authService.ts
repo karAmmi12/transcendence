@@ -150,9 +150,7 @@ export class AuthService {
         method: 'GET',
         credentials: 'include'
       });
-      if (this.authChecked && this.currentUser) {
-        return true;
-    }
+    // Removed invalid return of boolean; method should return User or null
 
       if (response.ok) {
         return await response.json();

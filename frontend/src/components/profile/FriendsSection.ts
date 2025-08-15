@@ -1,6 +1,7 @@
 import { i18n } from '@services/i18n';
 import { userService } from '../../services/userService.js';
 import type { Friend } from '../../types/index.js';
+import { FriendsManagementModal } from './FriendsManagementModal.js';
 
 export class FriendsSection {
   constructor(private friends: Friend[], private isOwnProfile: boolean) {}
@@ -22,6 +23,140 @@ export class FriendsSection {
     `;
   }
 
+
+  /**
+   * ✅ NOUVELLE MÉTHODE : Attacher les événements après le rendu
+   */
+  public bindEvents(): void {
+    // Gestion du bouton "Gérer les amis"
+    if (this.isOwnProfile) {
+      const manageBtn = document.getElementById('manage-friends');
+      manageBtn?.addEventListener('click', () => {
+        this.openFriendsManagementModal();
+      });
+    }
+
+    // Gestion du bouton "Trouver des amis" (quand aucun ami)
+    const findFriendsBtn = document.querySelector('[data-action="find-friends"]');
+    findFriendsBtn?.addEventListener('click', () => {
+      this.openFriendsManagementModal('search'); // Ouvrir directement sur l'onglet recherche
+    });
+
+    // Gestion du bouton "Voir tous les amis"
+    const viewAllBtn = document.getElementById('view-all-friends');
+    viewAllBtn?.addEventListener('click', () => {
+      this.openFriendsManagementModal('friends');
+    });
+
+    // Gestion des actions sur les amis individuels
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const button = target.closest('[data-action]') as HTMLElement;
+      
+      if (!button) return;
+
+      const action = button.dataset.action;
+      const friendId = parseInt(button.dataset.friendId || '0');
+
+      switch (action) {
+        case 'view-profile':
+          this.viewFriendProfile(friendId);
+          break;
+        case 'challenge':
+          this.challengeFriend(friendId);
+          break;
+        case 'message':
+          this.messageFriend(friendId);
+          break;
+      }
+    });
+  }
+
+  /**
+   * ✅ NOUVELLE MÉTHODE : Ouvrir le modal de gestion des amis
+   */
+  private async openFriendsManagementModal(initialTab: 'friends' | 'requests' | 'search' = 'friends'): Promise<void> {
+    try {
+      const modal = new FriendsManagementModal();
+      
+      // Définir l'onglet initial si spécifié
+      if (initialTab !== 'friends') {
+        (modal as any).currentTab = initialTab;
+      }
+      
+      await modal.show();
+      
+      // Écouter les changements depuis le modal pour mettre à jour la liste
+      const handleFriendsUpdate = () => {
+        // Recharger les données des amis et re-render la section
+        this.refreshFriendsList();
+      };
+
+      // On peut écouter des événements personnalisés depuis le modal
+      window.addEventListener('friendsListUpdated', handleFriendsUpdate, { once: true });
+      
+    } catch (error) {
+      console.error('Failed to open friends management modal:', error);
+    }
+  }
+
+  /**
+   * ✅ NOUVELLE MÉTHODE : Rafraîchir la liste des amis
+   */
+  private async refreshFriendsList(): Promise<void> {
+    try {
+      // Ici vous devriez recharger les amis depuis votre service
+      // const updatedFriends = await friendService.getFriends();
+      // this.friends = updatedFriends;
+      
+      // Pour l'instant, on déclenche juste un événement pour notifier le parent
+      window.dispatchEvent(new CustomEvent('refreshProfile'));
+      
+    } catch (error) {
+      console.error('Failed to refresh friends list:', error);
+    }
+  }
+
+  /**
+   * ✅ NOUVELLE MÉTHODE : Voir le profil d'un ami
+   */
+  private viewFriendProfile(friendId: number): void {
+    window.dispatchEvent(new CustomEvent('navigate', { 
+      detail: `/profile/${friendId}` 
+    }));
+  }
+
+  /**
+   * ✅ NOUVELLE MÉTHODE : Défier un ami
+   */
+  private challengeFriend(friendId: number): void {
+    // Créer une invitation de jeu
+    window.dispatchEvent(new CustomEvent('createGameInvitation', { 
+      detail: { friendId } 
+    }));
+    
+    // Ou naviguer directement vers le jeu avec l'ami
+    // window.dispatchEvent(new CustomEvent('navigate', { 
+    //   detail: `/game?invite=${friendId}` 
+    // }));
+  }
+
+  /**
+   * ✅ NOUVELLE MÉTHODE : Envoyer un message à un ami
+   */
+  private messageFriend(friendId: number): void {
+    // Ouvrir le chat avec cet ami
+    window.dispatchEvent(new CustomEvent('openChat', { 
+      detail: { friendId } 
+    }));
+    
+    // Ou naviguer vers la page de chat
+    // window.dispatchEvent(new CustomEvent('navigate', { 
+    //   detail: `/chat/${friendId}` 
+    // }));
+  }
+
+
   private renderFriendsList(): string {
     if (this.friends.length === 0) {
       return `
@@ -29,7 +164,7 @@ export class FriendsSection {
           <div class="text-gray-400 text-4xl mb-4">👥</div>
           <p class="text-gray-400">${i18n.t('profile.friends.noFriends')}</p>
           ${this.isOwnProfile ? `
-            <button class="mt-4 btn-primary text-sm">
+            <button class="mt-4 btn-primary text-sm" data-action="find-friends">
               ${i18n.t('profile.friends.findFriends')}
             </button>
           ` : ''}
@@ -48,6 +183,7 @@ export class FriendsSection {
       ` : ''}
     `;
   }
+
 
   private renderFriendItem(friend: Friend): string {
     const avatarUrl = userService.getAvatarUrl(friend.avatar_url);
@@ -121,8 +257,8 @@ export class FriendsSection {
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
     if (diffMins < 5) return i18n.t('profile.friends.justOffline');
-    if (diffMins < 60) return i18n.t('profile.friends.minsAgo', { mins: diffMins });
-    if (diffHours < 24) return i18n.t('profile.friends.hoursAgo', { hours: diffHours });
-    return i18n.t('profile.friends.daysAgo', { days: diffDays });
+    if (diffMins < 60) return i18n.t('profile.friends.minsAgo', { mins: diffMins.toString() });
+    if (diffHours < 24) return i18n.t('profile.friends.hoursAgo', { hours: diffHours.toString() });
+    return i18n.t('profile.friends.daysAgo', { days: diffDays.toString() });
   }
 }
