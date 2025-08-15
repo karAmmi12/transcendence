@@ -19,11 +19,28 @@ export class OAuthController
 
             console.log('Redirecting to:', authUrl.toString());
 
-            reply.redirect(authUrl.toString());
+            return (reply.redirect(authUrl.toString()));
 
         } catch (error) {
             console.error("Google redirect error:", error);
-            reply.status(500).send({ error: "Google OAuth redirect failed" });
+            return (reply.status(500).send({ error: "Google OAuth redirect failed" }));
+        }
+    }
+
+    static async oauthCallback (req: FastifyRequest, reply: FastifyReply)
+    {
+       console.log('HELLO: I MAKE A LINK');
+        const { code, error } = req.query as {code?: string, error?: string};
+        try {
+            console.log('siiiiiiiiiiiiiiiiiiiiiiiiiiiu');
+            if (!code)
+                return (reply.status(401).send(error));
+            else
+                return (reply.redirect(`http://localhost:5173`));
+            
+        }catch (error){
+            console.error("Code generate error:", error);
+            return (reply.status(500).send({error: "Google generate coode failed"}));
         }
     }
 }
