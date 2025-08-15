@@ -85,23 +85,23 @@ export class HomePage {
 
         return `
             <div class="bg-gray-800 p-6 rounded-lg mb-8 max-w-4xl mx-auto">
-                <h2 class="text-2xl font-semibold mb-4 text-primary-400">${i18n.t('home.stats.title', 'Your Stats')}</h2>
+                <h2 class="text-2xl font-semibold mb-4 text-primary-400">${i18n.t('home.stats.title')}</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-green-400">${currentUser.stats.wins}</div>
-                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.wins', 'Wins')}</div>
+                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.wins')}</div>
                     </div>
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-red-400">${currentUser.stats.losses}</div>
-                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.losses', 'Losses')}</div>
+                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.losses')}</div>
                     </div>
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-yellow-400">${currentUser.stats.winRate}%</div>
-                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.winRate', 'Win Rate')}</div>
+                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.winRate')}</div>
                     </div>
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="text-2xl font-bold text-purple-400">#${currentUser.stats.rank}</div>
-                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.rank', 'Rank')}</div>
+                        <div class="text-gray-400 text-sm">${i18n.t('home.stats.rank')}</div>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@ export class HomePage {
                         ${i18n.t('nav.profile')}
                     </button>
                     <button id="tournaments-btn" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
-                        ${i18n.t('home.buttons.tournaments', 'Tournaments')}
+                        ${i18n.t('home.buttons.tournaments')}
                     </button>
                 </div>
             `;
@@ -130,7 +130,7 @@ export class HomePage {
                         ${i18n.t('home.buttons.login')}
                     </button>
                     <button id="register-btn" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors">
-                        ${i18n.t('home.buttons.register', 'Sign Up')}
+                        ${i18n.t('home.buttons.register')}
                     </button>
                     
                 </div>

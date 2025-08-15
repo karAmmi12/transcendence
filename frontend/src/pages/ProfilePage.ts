@@ -220,6 +220,9 @@ export class ProfilePage {
         </div>
       `;
 
+      friendsSection.bindEvents();
+      // matchHistoryCard.bindEvents();
+
       this.bindEvents();
     }
 
