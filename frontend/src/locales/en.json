@@ -136,12 +136,29 @@
   },
   "profile": {
     "title": "Profile",
+    "actions": {
+      "editProfile": "Edit Profile",
+      "changePassword": "Change Password",
+      "changeAvatar": "Change Avatar",
+      "addFriend": "Add Friend",
+      "challenge": "Challenge"
+    },
     "stats": {
       "title": "Statistics",
+      "wins": "Wins",
+      "losses": "Losses",
+      "totalGames": "Total Games",
       "gamesPlayed": "Games Played",
       "gamesWon": "Games Won",
       "winRate": "Win Rate",
-      "ranking": "Ranking"
+      "ranking": "Ranking",
+      "rank": "Rank",
+      "highestScore": "Highest Score",
+      "averageScore": "Average Score",
+      "currentStreak": "Current Streak",
+      "longestStreak": "Longest Streak",
+      "playtime": "Total Playtime",
+      "lastPlayed": "Last Played"
     },
     "history": {
       "title": "Match History",
@@ -168,64 +185,242 @@
     },
     "friends": {
       "title": "Friends",
+      "manage": "Manage Friends",
       "noFriends": "No friends yet",
-      "findFriends": "Find friends",
-      "manage": "Manage",
-      "viewAll": "View all",
+      "findFriends": "Find Friends",
+      "viewAll": "View All",
       "online": "Online",
       "offline": "Offline",
-      "justOffline": "Just now",
-      "minsAgo": "{mins} min ago",
-      "hoursAgo": "{hours}h ago",
-      "daysAgo": "{days}d ago",
-      "viewProfile": "View profile",
+      "justOffline": "Just went offline",
+      "minsAgo": "{mins} minutes ago",
+      "hoursAgo": "{hours} hours ago",
+      "daysAgo": "{days} days ago",
+      "viewProfile": "View Profile",
       "challenge": "Challenge",
-      "sendMessage": "Send message"
-    },
-    "actions": {
-      "title": "Quick actions",
-      "editProfile": "Edit profile",
-      "changePassword": "Change password",
-      "changeAvatar": "Change avatar",
-      "addFriend": "Add as friend",
-      "challenge": "Challenge"
+      "sendMessage": "Send Message",
+      "search": {
+        "title": "Find Friends",
+        "placeholder": "Search users...",
+        "noResults": "No users found",
+        "searchInstructions": "Enter at least 2 characters to search"
+      },
+      "requests": {
+        "title": "Friend Requests",
+        "noPending": "No pending requests",
+        "sentRequest": "Sent you a friend request",
+        "received": "Received",
+        "sent": "Sent"
+      },
+      "actions": {
+        "addFriend": "Add Friend",
+        "removeFriend": "Remove Friend",
+        "accept": "Accept",
+        "decline": "Decline",
+        "acceptRequest": "Accept Request",
+        "cancelRequest": "Cancel Request",
+        "remove": "Remove"
+      },
+      "status": {
+        "requestSent": "Request Sent",
+        "pending": "Pending",
+        "friends": "Friends",
+        "blocked": "Blocked"
+      },
+      "messages": {
+        "requestSent": "Friend request sent!",
+        "requestAccepted": "Friend request accepted!",
+        "requestDeclined": "Friend request declined",
+        "friendRemoved": "Friend removed",
+        "actionFailed": "Action failed. Please try again.",
+        "userNotFound": "User not found",
+        "alreadyFriends": "You are already friends with this user",
+        "cannotAddSelf": "You cannot add yourself as a friend"
+      },
+      "confirmations": {
+        "removeFriend": "Are you sure you want to remove this friend?",
+        "declineRequest": "Are you sure you want to decline this friend request?"
+      }
     },
     "edit": {
       "title": "Edit Profile",
       "username": "Username",
+      "usernamePlaceholder": "Enter your username",
       "email": "Email",
-      "avatar": "Avatar",
-      "selectImage": "Select Image",
+      "emailPlaceholder": "Enter your email",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us about yourself...",
+      "location": "Location",
+      "locationPlaceholder": "Your location",
+      "website": "Website",
+      "websitePlaceholder": "Your website URL",
       "save": "Save Changes",
       "cancel": "Cancel",
-      "uploading": "Uploading...",
-      "errors": {
-        "updateFailed": "Failed to update profile",
-        "invalidImage": "Invalid image format",
-        "imageTooLarge": "Image too large"
+      "saving": "Saving...",
+      "saved": "Profile updated successfully!",
+      "error": "Failed to update profile"
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "currentPasswordPlaceholder": "Enter your current password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Enter your new password",
+      "confirmPassword": "Confirm New Password",
+      "confirmPasswordPlaceholder": "Confirm your new password",
+      "save": "Change Password",
+      "cancel": "Cancel",
+      "saving": "Changing...",
+      "success": "Password changed successfully!",
+      "error": "Failed to change password",
+      "validation": {
+        "required": "This field is required",
+        "minLength": "Password must be at least 8 characters",
+        "mismatch": "Passwords do not match",
+        "weak": "Password is too weak"
       }
     },
     "errors": {
       "userNotFound": "User not found",
-      "loadFailed": "Failed to load profile"
+      "loadFailed": "Failed to load profile",
+      "unauthorized": "You don't have permission to view this profile",
+      "networkError": "Network error. Please try again."
     },
     "settings": {
       "title": "Settings",
       "language": "Language",
       "theme": "Theme",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "security": "Security"
+    }
+  },
+  "friends": {
+    "title": "Friends",
+    "search": {
+      "title": "Find Friends",
+      "placeholder": "Search users...",
+      "noResults": "No users found"
+    },
+    "requests": {
+      "title": "Friend Requests",
+      "noPending": "No pending requests",
+      "sentRequest": "Sent you a friend request"
+    },
+    "actions": {
+      "addFriend": "Add Friend",
+      "removeFriend": "Remove Friend",
+      "accept": "Accept",
+      "decline": "Decline",
+      "acceptRequest": "Accept Request"
+    },
+    "status": {
+      "requestSent": "Request Sent",
+      "pending": "Pending"
+    },
+    "messages": {
+      "requestSent": "Friend request sent!",
+      "requestAccepted": "Friend request accepted!",
+      "requestDeclined": "Friend request declined",
+      "friendRemoved": "Friend removed",
+      "actionFailed": "Action failed. Please try again."
+    },
+    "confirmations": {
+      "removeFriend": "Are you sure you want to remove this friend?"
     }
   },
   "settings": {
     "title": "Settings",
     "username": "Username",
     "email": "Email",
-    "save": "Save Settings"
+    "save": "Save Settings",
+    "general": {
+      "title": "General Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "timezone": "Timezone"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "email": "Email Notifications",
+      "push": "Push Notifications",
+      "gameInvites": "Game Invitations",
+      "friendRequests": "Friend Requests",
+      "messages": "Messages"
+    },
+    "privacy": {
+      "title": "Privacy Settings",
+      "profileVisibility": "Profile Visibility",
+      "onlineStatus": "Show Online Status",
+      "gameHistory": "Show Game History"
+    },
+    "account": {
+      "title": "Account",
+      "changePassword": "Change Password",
+      "deleteAccount": "Delete Account",
+      "exportData": "Export Data"
+    }
+  },
+  "modals": {
+    "confirm": {
+      "title": "Confirm Action",
+      "message": "Are you sure you want to proceed?",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "error": {
+      "title": "Error",
+      "genericMessage": "An error occurred. Please try again.",
+      "close": "Close"
+    },
+    "success": {
+      "title": "Success",
+      "close": "Close"
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address",
+      "minLength": "Must be at least {min} characters",
+      "maxLength": "Must be no more than {max} characters",
+      "password": "Password must contain at least 8 characters",
+      "confirmPassword": "Passwords must match",
+      "username": "Username must be 3-20 characters and contain only letters, numbers, and underscores"
+    },
+    "placeholders": {
+      "search": "Search...",
+      "email": "Enter your email",
+      "username": "Enter your username",
+      "password": "Enter your password",
+      "message": "Type your message..."
+    }
+  },
+  "time": {
+    "now": "Now",
+    "justNow": "Just now",
+    "minuteAgo": "1 minute ago",
+    "minutesAgo": "{minutes} minutes ago",
+    "hourAgo": "1 hour ago",
+    "hoursAgo": "{hours} hours ago",
+    "dayAgo": "1 day ago",
+    "daysAgo": "{days} days ago",
+    "weekAgo": "1 week ago",
+    "weeksAgo": "{weeks} weeks ago",
+    "monthAgo": "1 month ago",
+    "monthsAgo": "{months} months ago",
+    "yearAgo": "1 year ago",
+    "yearsAgo": "{years} years ago"
   },
   "common": {
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "save": "Save",
@@ -235,9 +430,32 @@
     "back": "Back",
     "next": "Next",
     "previous": "Previous",
+    "submit": "Submit",
+    "reset": "Reset",
+    "clear": "Clear",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
     "today": "Today",
     "yesterday": "Yesterday",
-    "daysAgo": "{days} days ago"
+    "tomorrow": "Tomorrow",
+    "daysAgo": "{days} days ago",
+    "online": "Online",
+    "offline": "Offline",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "tryAgain": "Try Again",
+    "goBack": "Go Back",
+    "seeMore": "See More",
+    "showLess": "Show Less",
+    "expand": "Expand",
+    "collapse": "Collapse"
   },
   "footer": {
     "description": "The ultimate Pong experience. Play, compete, and chat with the community.",
