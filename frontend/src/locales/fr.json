@@ -37,7 +37,6 @@
       "login": "Connexion",
       "register": "S'inscrire",
       "tournaments": "Tournois"
-
     },
     "stats": {
       "title": "Vos statistiques",
@@ -52,7 +51,6 @@
       "games": "Parties",
       "tournaments": "Tournois",
       "online": "En ligne"
-
     }
   },
   "auth": {
@@ -118,6 +116,22 @@
     "score": {
       "you": "Vous",
       "opponent": "Adversaire"
+    },
+    "modes": {
+      "classic": "Classique",
+      "ai": "vs IA",
+      "tournament": "Tournoi"
+    },
+    "customization": {
+      "title": "Paramètres de jeu",
+      "ballSpeed": "Vitesse de la balle",
+      "paddleSpeed": "Vitesse de la raquette",
+      "powerUps": "Power-ups",
+      "gameMode": "Mode de jeu",
+      "theme": "Thème",
+      "difficulty": "Difficulté",
+      "resetToDefault": "Remettre par défaut",
+      "applySettings": "Appliquer les paramètres"
     }
   },
   "profile": {
@@ -132,10 +146,68 @@
     "history": {
       "title": "Historique des matchs",
       "noGames": "Aucune partie jouée",
+      "noGamesDesc": "Commencez à jouer pour voir votre historique ici",
+      "playFirstGame": "Jouer ma première partie",
+      "viewAll": "Voir tout l'historique",
+      "viewDetails": "Voir les détails",
       "result": {
         "win": "Victoire",
         "loss": "Défaite"
+      },
+      "filters": {
+        "all": "Tous",
+        "wins": "Victoires",
+        "losses": "Défaites",
+        "tournament": "Tournoi"
+      },
+      "stats": {
+        "totalGames": "Total",
+        "winRate": "Taux de victoire",
+        "recent": "Récent"
       }
+    },
+    "friends": {
+      "title": "Amis",
+      "noFriends": "Aucun ami pour le moment",
+      "findFriends": "Trouver des amis",
+      "manage": "Gérer",
+      "viewAll": "Voir tout",
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "justOffline": "À l'instant",
+      "minsAgo": "Il y a {mins} min",
+      "hoursAgo": "Il y a {hours}h",
+      "daysAgo": "Il y a {days}j",
+      "viewProfile": "Voir le profil",
+      "challenge": "Défier",
+      "sendMessage": "Envoyer un message"
+    },
+    "actions": {
+      "title": "Actions rapides",
+      "editProfile": "Modifier le profil",
+      "changePassword": "Changer le mot de passe",
+      "changeAvatar": "Changer l'avatar",
+      "addFriend": "Ajouter comme ami",
+      "challenge": "Défier"
+    },
+    "edit": {
+      "title": "Modifier le profil",
+      "username": "Nom d'utilisateur",
+      "email": "Email",
+      "avatar": "Avatar",
+      "selectImage": "Sélectionner une image",
+      "save": "Sauvegarder les modifications",
+      "cancel": "Annuler",
+      "uploading": "Téléchargement...",
+      "errors": {
+        "updateFailed": "Échec de la mise à jour du profil",
+        "invalidImage": "Format d'image invalide",
+        "imageTooLarge": "Image trop volumineuse"
+      }
+    },
+    "errors": {
+      "userNotFound": "Utilisateur introuvable",
+      "loadFailed": "Échec du chargement du profil"
     },
     "settings": {
       "title": "Paramètres",
@@ -162,7 +234,10 @@
     "close": "Fermer",
     "back": "Retour",
     "next": "Suivant",
-    "previous": "Précédent"
+    "previous": "Précédent",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "daysAgo": "Il y a {days} jours"
   },
   "footer": {
     "description": "L'expérience Pong ultime. Jouez, affrontez et discutez avec la communauté.",
