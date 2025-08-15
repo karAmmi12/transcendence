@@ -1,9 +1,10 @@
-import jwt, { TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import db from "../db/index.js"
-import { SessionResult, TokenPayload } from "../types/jwt.js";
+import {SessionResult, TokenPayload} from "../types/jwt.js";
+import 'dotenv/config'
 
 const ACCESS_TOKEN_SECRET =  process.env.ACCESS_TOKEN_SECRET || 'fallback-access-secret';
-const REFRESH_TOKEN_SECRET =  process.env.REFRESH_TOKEN_SECRET || 'fallback-refresh-secret'; //as jwt.Secret | jwt.PrivateKey; //siuu bon type?;
+const REFRESH_TOKEN_SECRET =  process.env.REFRESH_TOKEN_SECRET || 'fallback-refresh-secret';
 
 export class JWTService 
 {
@@ -14,7 +15,7 @@ export class JWTService
      */
     static generateAccessToken(payload: {userId: number; username: string}): string
     {
-        return (jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: '15m'})); //siuu 30s pour test remttree 15min
+        return (jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: '15m'}));
     }
 
     /**

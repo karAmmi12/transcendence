@@ -3,7 +3,7 @@ export interface Translations {
 }
 
 // Ajout du nouveau type de langue
-export type Language = 'en' | 'fr' | 'it' | 'kab' | 'kab-tfng' | 'ar' | 'sg';
+export type Language = 'en' | 'fr' | 'it' | 'es' | 'kab' | 'kab-tfng' | 'ar' | 'sg';
 
 export class I18nService {
   private static instance: I18nService;
@@ -12,8 +12,9 @@ export class I18nService {
     en: {},
     fr: {},
     it: {},
+    es: {},
     kab: {},
-    'kab-tfng': {}, // Ajout de la nouvelle langue
+    'kab-tfng': {}, 
     ar: {},
     sg: {}
   };
@@ -34,7 +35,7 @@ export class I18nService {
 
   private async loadTranslations(): Promise<void> {
     try {
-      const languages: Language[] = ['en', 'fr', 'it', 'kab', 'kab-tfng', 'ar', 'sg'];
+      const languages: Language[] = ['en', 'fr', 'it', 'es', 'kab', 'kab-tfng', 'ar', 'sg'];
       for (const lang of languages) {
         const response = await fetch(`/src/locales/${lang}.json`);
         if (response.ok) {
@@ -77,6 +78,7 @@ export class I18nService {
       { code: 'en', name: 'English', flag: '🇬🇧' },
       { code: 'fr', name: 'Français', flag: '🇫🇷' },
       { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+      { code: 'es', name: 'Español', flag: '🇪🇸' },
       { code: 'kab', name: 'Taqbaylit', flag: `
                                               <svg class="inline w-6 h-6 align-middle" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
                                               <rect fill="#0090DA" width="900" height="200"/>

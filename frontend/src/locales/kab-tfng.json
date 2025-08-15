@@ -21,7 +21,7 @@
       },
       "tournaments": {
         "title": "ⵉⵙⴼⴽⴰ ⵏ ⵜⵖⵔⵎⴰ",
-        "description": "ⵙⵎⵙⴰⵢ ⴷⴳ ⵉⵙⴼⴽⴰ, ⵙⵙⴰⵖⴻⴷ ⴷⴳ ⵓⴷⵔⴰⵔ ⵏ ⵢⵉⴷⵍⵙ."
+        "description": "ⵙⵎⵙⴰⵢ ⴷⴳ ⵉⵙⴼⴽⴰ, ⵙⵙⴰⵖⵇⴷ ⴷⴳ ⵓⴷⵔⴰⵔ ⵏ ⵢⵉⴷⵍⵙ."
       },
       "chat": {
         "title": "ⴰⵎⵙⵍⴰⵢ ⵏ ⵢⵉⴷⵍⵙ",
@@ -29,7 +29,7 @@
       },
       "singleplayer": {
         "title": "ⴰⵎⵙⵍⴰⵢ ⵏ ⵉⵙⵎⵏⵉⵍ",
-        "description": "ⵎⵙⵍⴰⵢ ⴰⴽⴷ ⵉⵎⴷⴷⵓⴽⴰⵍ-ⵏⵏⵉⴹⵏ, ⵙⴷⵓⴽⵍ ⵉⵎⴰⵢⵏⵓⵜⵏ ⵉⵎⴰⵢⵏⵓⵜⵏ."
+        "description": "ⵓⵔⴰⵔ ⴰⴽⴷ ⵉⵎⴷⴰⵏⵏ ⵏ IA, ⵙⵏⵔⵏⵉ ⵜⵉⵖⵉⵔⴰ-ⴽ."
       }
     },
     "buttons": {
@@ -116,6 +116,22 @@
     "score": {
       "you": "ⴽⴽⵎ",
       "opponent": "ⴰⵎⴹⵉⵇ"
+    },
+    "modes": {
+      "classic": "ⴰⴽⵍⴰⵙⵉⴽ",
+      "ai": "ⵎⴳⴰⵍ IA",
+      "tournament": "ⴰⵙⴼⴽⵓ"
+    },
+    "customization": {
+      "title": "ⵉⵖⵡⵡⴰⵔⵏ ⵏ ⵓⵔⴰⵔ",
+      "ballSpeed": "ⴰⵔⵓⵔⴷ ⵏ ⵜⵖⴰⵡⵍⴰ",
+      "paddleSpeed": "ⴰⵔⵓⵔⴷ ⵏ ⵜⴰⵣⴰⵍⵍⵉⵜ",
+      "powerUps": "ⵜⵉⵣⵎⵔⵜ",
+      "gameMode": "ⴰⵏⴰⵡ ⵏ ⵓⵔⴰⵔ",
+      "theme": "ⴰⵙⵏⵜⵍ",
+      "difficulty": "ⵓⴳⵓⵔ",
+      "resetToDefault": "ⵓⵖⴰⵍ ⵖⵔ ⵡⴰⵣⴰⵍ ⴰⵎⵣⵡⴰⵔⵓ",
+      "applySettings": "ⵙⴱⴷⴷ ⵉⵖⵡⵡⴰⵔⵏ"
     }
   },
   "profile": {
@@ -130,10 +146,68 @@
     "history": {
       "title": "ⴰⵎⵣⵔⵓⵢ ⵏ ⵓⵔⴰⵔ",
       "noGames": "ⵓⵍⴰⵛ ⵓⵔⴰⵔ ⵢⵜⵜⵡⴰⵔⵏⴰⵏ",
+      "noGamesDesc": "ⴱⴷⵓ ⴰⴷ ⵜⴰⵔⵓⴹ ⵉ ⵜⵉⴽⵜⵉ ⵏ ⵓⵎⵣⵔⵓⵢ-ⵉⴽ ⴷⴰ",
+      "playFirstGame": "ⵓⵔⴰⵔ ⴰⵎⵣⵡⴰⵔⵓ-ⵉⵡ",
+      "viewAll": "ⵡⴰⵍⵉ ⴰⴽⴽ ⴰⵎⵣⵔⵓⵢ",
+      "viewDetails": "ⵡⴰⵍⵉ ⵜⴰⵍⵖⵓⵜ",
       "result": {
         "win": "ⵜⴰⵡⴰⴹⵉⵜ",
         "loss": "ⵜⵓⴼⴼⵖⴰ"
+      },
+      "filters": {
+        "all": "ⴰⴽⴽ",
+        "wins": "ⵜⴰⵡⴰⴹⵉⵜ",
+        "losses": "ⵜⵓⴼⴼⵖⴰ",
+        "tournament": "ⴰⵙⴼⴽⵓ"
+      },
+      "stats": {
+        "totalGames": "ⴰⵙⵎⴷⴰⵢ",
+        "winRate": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵜⴰⵡⴰⴹⵉⵜ",
+        "recent": "ⵉⵎⴰⵢⵏⵓⵜⵏ"
       }
+    },
+    "friends": {
+      "title": "ⵉⵎⴷⵓⴽⴽⴰⵍ",
+      "noFriends": "ⵓⵍⴰⵛ ⵉⵎⴷⵓⴽⴽⴰⵍ ⴰⵔ ⵜⵓⵔⴰ",
+      "findFriends": "ⵏⴰⴷⵉ ⵉⵎⴷⵓⴽⴽⴰⵍ",
+      "manage": "ⵙⴼⵔⴽ",
+      "viewAll": "ⵡⴰⵍⵉ ⴰⴽⴽ",
+      "online": "ⵙⵔⵉⴷ",
+      "offline": "ⵓⵔ ⵢⵙⵔⵉⴷ ⴰⵔⴰ",
+      "justOffline": "ⵜⵓⵔⴰ ⴽⴰⵏ",
+      "minsAgo": "ⵓⵇⴱⵍ {mins} ⵏ ⵜⵙⴷⴰⵜ",
+      "hoursAgo": "ⵓⵇⴱⵍ {hours} ⵏ ⵉⵙⵔⴰⴳⵏ",
+      "daysAgo": "ⵓⵇⴱⵍ {days} ⵏ ⵡⵓⵙⵙⴰⵏ",
+      "viewProfile": "ⵡⴰⵍⵉ ⴰⵎⴰⵙⵏⴰⵙ",
+      "challenge": "ⵛⴳⴳⴰⵄ",
+      "sendMessage": "ⴰⵣⵏ ⵉⵣⵏ"
+    },
+    "actions": {
+      "title": "ⵜⵉⴳⴰⵡⵉⵏ ⵜⵉⵔⵓⵔⵉⵢⵉⵏ",
+      "editProfile": "ⵥⵔⴳ ⴰⵎⴰⵙⵏⴰⵙ",
+      "changePassword": "ⴱⴷⵍ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "changeAvatar": "ⴱⴷⵍ ⵜⵓⴳⵏⴰ",
+      "addFriend": "ⵔⵏⵓ ⴷ ⴰⵎⴷⴰⴽⴽⵍ",
+      "challenge": "ⵛⴳⴳⴰⵄ"
+    },
+    "edit": {
+      "title": "ⵥⵔⴳ ⴰⵎⴰⵙⵏⴰⵙ",
+      "username": "ⵉⵙⵎ ⵏ ⵓⵙⵇⴷⴰⵛ",
+      "email": "ⵉⵎⴰⵢⵍ",
+      "avatar": "ⵜⵓⴳⵏⴰ",
+      "selectImage": "ⴼⵔⵏ ⵜⵓⴳⵏⴰ",
+      "save": "ⵙⴽⵍⵙ ⵉⴱⴷⴷⵉⵍⵏ",
+      "cancel": "ⵙⴼⵙⵅ",
+      "uploading": "ⴰⵙⴰⵍⵉ...",
+      "errors": {
+        "updateFailed": "ⵜⵓⵛⵛⴼⴰ ⴷⴳ ⵓⴱⴷⴷⵍ ⵏ ⵓⵎⴰⵙⵏⴰⵙ",
+        "invalidImage": "ⴰⵎⴰⵙⴰⵍ ⵏ ⵜⵓⴳⵏⴰ ⴷ ⴰⵔⴰⵎⵖⵜⵓ",
+        "imageTooLarge": "ⵜⵓⴳⵏⴰ ⵜⴰⵎⵇⵇⵔⴰⵏⵜ ⴰⵟⴰⵙ"
+      }
+    },
+    "errors": {
+      "userNotFound": "ⵓⵙⵇⴷⴰⵛ ⵓⵍⴰⵛ-ⵉⵜ",
+      "loadFailed": "ⵜⵓⵛⵛⴼⴰ ⴷⴳ ⵓⵙⴰⵍⵉ ⵏ ⵓⵎⴰⵙⵏⴰⵙ"
     },
     "settings": {
       "title": "ⵉⵖⵡⵡⴰⵔⵏ",
@@ -160,7 +234,10 @@
     "close": "ⵎⴷⵍ",
     "back": "ⵓⵖⴰⵍ",
     "next": "ⵣⴷⴰⵜ",
-    "previous": "ⵓⵖⴰⵍ"
+    "previous": "ⵓⵖⴰⵍ",
+    "today": "ⴰⵙⵙ-ⴰ",
+    "yesterday": "ⵉⴹⵍⵍⵉ",
+    "daysAgo": "ⵓⵇⴱⵍ {days} ⵏ ⵡⵓⵙⵙⴰⵏ"
   },
   "footer": {
     "description": "ⵜⴰⵊⵔⵓⵔⵜ ⵏ ⴱⵓⵏⴳ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ. ⵓⵔⴰⵔ, ⵙⵎⵙⴰⵢ, ⴷ ⵎⵙⵍⴰⵢ ⴰⴽⴷ ⵜⴰⴷⴷⴰⵔⵜ.",
