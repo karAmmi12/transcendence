@@ -1,5 +1,5 @@
 import {FastifyRequest, FastifyReply} from 'fastify'
-import { JWTService } from "../services/jwtServices.js";
+import {JWTService} from "../services/jwtServices.js";
 import db from '../db/index.js'
 
 
