@@ -157,7 +157,7 @@ export class MatchHistoryCard {
 
     if (diffDays === 0) return i18n.t('common.today');
     if (diffDays === 1) return i18n.t('common.yesterday');
-    if (diffDays < 7) return i18n.t('common.daysAgo', { days: diffDays });
+    if (diffDays < 7) return i18n.t('common.daysAgo', { days: diffDays.toString() });
     
     return date.toLocaleDateString();
   }
