@@ -2,7 +2,7 @@ import {FastifyRequest, FastifyReply} from "fastify";
 import {RegisterData, LoginData} from "../types/auth.js";
 import {AuthService} from "../services/authServices.js";
 import {CookieService} from "../services/cookieServices.js";
-import {userServices} from "../services/userServices.js"
+import {UserServices} from "../services/userServices.js"
 
 export class AuthController
 {

@@ -28,10 +28,9 @@
         "description": "Meslay akked imeddukal-nniḍen, sdukel imaynuten imaynuten."
       },
       "singleplayer": {
-        "title": "Urar akked d IA",
-        "description": "Urar akked imeddukal n IA, sdukel imaynuten-ik."
+        "title": "Ameslay n ismilen",
+        "description": "Urar akked imdanen n IA, snerni tiɣira-k."
       }
-
     },
     "buttons": {
       "play": "Bdu urar",
@@ -45,7 +44,7 @@
       "losses": "Tuffɣa",
       "winRate": "Ameɣnas n tawaḍit",
       "rank": "Aseggas",
-      "highestScore": "Asin n tɣerma",
+      "highestScore": "Asin amasiḍ",
       "currentStreak": "Amasnas n tawaḍit",
       "longestStreak": "Amasnas n tawaḍit d tɣerma",
       "players": "Imeddukal",
@@ -117,6 +116,22 @@
     "score": {
       "you": "Kkem",
       "opponent": "Amḍiq"
+    },
+    "modes": {
+      "classic": "Aklasik",
+      "ai": "mgal IA",
+      "tournament": "Asefku"
+    },
+    "customization": {
+      "title": "Iɣewwaṛen n urar",
+      "ballSpeed": "Arured n tɣawla",
+      "paddleSpeed": "Arured n tazallit",
+      "powerUps": "Tizmert",
+      "gameMode": "Anaw n urar",
+      "theme": "Asentel",
+      "difficulty": "Ugur",
+      "resetToDefault": "Uɣal ɣer wazal amezwaru",
+      "applySettings": "Sebded iɣewwaṛen"
     }
   },
   "profile": {
@@ -131,10 +146,68 @@
     "history": {
       "title": "Amezruy n urar",
       "noGames": "Ulac urar yettwarnan",
+      "noGamesDesc": "Bdu ad taruḍ i tikti n umezruy-ik da",
+      "playFirstGame": "Urar amezwaru-iw",
+      "viewAll": "Wali akk amezruy",
+      "viewDetails": "Wali talɣut",
       "result": {
         "win": "Tawaḍit",
         "loss": "Tuffɣa"
+      },
+      "filters": {
+        "all": "Akk",
+        "wins": "Tawaḍit",
+        "losses": "Tuffɣa",
+        "tournament": "Asefku"
+      },
+      "stats": {
+        "totalGames": "Asemday",
+        "winRate": "Ameɣnas n tawaḍit",
+        "recent": "Imaynuten"
       }
+    },
+    "friends": {
+      "title": "Imdukkal",
+      "noFriends": "Ulac imdukkal ar tura",
+      "findFriends": "Nadi imdukkal",
+      "manage": "Sefrek",
+      "viewAll": "Wali akk",
+      "online": "Srid",
+      "offline": "Ur yesrid ara",
+      "justOffline": "Tura kan",
+      "minsAgo": "Uqbel {mins} n tesdat",
+      "hoursAgo": "Uqbel {hours} n isragen",
+      "daysAgo": "Uqbel {days} n wussan",
+      "viewProfile": "Wali amasnas",
+      "challenge": "Ceggaɛ",
+      "sendMessage": "Azen izen"
+    },
+    "actions": {
+      "title": "Tigawin tiruriyin",
+      "editProfile": "Ẓreg amasnas",
+      "changePassword": "Beddel awal uffir",
+      "changeAvatar": "Beddel tugna",
+      "addFriend": "Rnu d amdakkel",
+      "challenge": "Ceggaɛ"
+    },
+    "edit": {
+      "title": "Ẓreg amasnas",
+      "username": "Isem n useqdac",
+      "email": "Imayl",
+      "avatar": "Tugna",
+      "selectImage": "Fren tugna",
+      "save": "Sekles ibeddilen",
+      "cancel": "Sefsex",
+      "uploading": "Asali...",
+      "errors": {
+        "updateFailed": "Tuccfa deg ubeddel n umasnas",
+        "invalidImage": "Amasal n tugna d arameɣtu",
+        "imageTooLarge": "Tugna tameqqrant aṭas"
+      }
+    },
+    "errors": {
+      "userNotFound": "Useqdac ulac-it",
+      "loadFailed": "Tuccfa deg usali n umasnas"
     },
     "settings": {
       "title": "Iɣewwaṛen",
@@ -161,7 +234,10 @@
     "close": "Mdel",
     "back": "Uɣal",
     "next": "Zdat",
-    "previous": "Uɣal"
+    "previous": "Uɣal",
+    "today": "Ass-a",
+    "yesterday": "Iḍelli",
+    "daysAgo": "Uqbel {days} n wussan"
   },
   "footer": {
     "description": "Tajrurt n Pong tamezwarut. Urar, semsay, d meslay akked taddart.",
