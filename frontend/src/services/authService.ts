@@ -81,6 +81,39 @@ export class AuthService {
   }
 
 
+  //   const token = localStorage.getItem('authToken');
+  //   if (!token) {
+  //     return null;
+  //   }
+
+  //   try {
+  //     const response = await fetch(`${this.baseURL}/auth/me`, {
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`
+  //       }
+  //     });
+
+  //     if (response.ok) {
+  //       this.currentUser = await response.json();
+  //       return this.currentUser;
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to get current user:', error);
+  //   }
+
+  //   return null;
+  // }
+
+  public initiateGoogleLogin(): void 
+  {
+    // Rediriger vers l'endpoint OAuth Google du backend
+    console.log('Initiating Google OAuth... SIUUUUUUU');
+    window.location.href = `${this.baseURL}/auth/oauth/google`;
+  }
+
+  public isAuthenticated(): boolean {
+    return this.currentUser !== null;
+  }
 
   public async logout(): Promise<void> {
     
@@ -133,10 +166,6 @@ export class AuthService {
       this.authChecked = true;
       return false;
     }
-  }
-
-  public isAuthenticated(): boolean {
-    return this.currentUser !== null;
   }
 
   public getCurrentUser(): User | null {
