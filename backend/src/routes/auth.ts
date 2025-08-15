@@ -5,8 +5,6 @@ import { AuthController } from "../controllers/authController.js";
 import { OAuthController } from "../controllers/oauthController.js";
 import { UserController } from "../controllers/userController.js";
 
-
-
 // NOuvelle version Propre 
 export default async function authRoutes(app: FastifyInstance)
 {
