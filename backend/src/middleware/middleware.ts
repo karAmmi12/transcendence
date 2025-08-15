@@ -20,7 +20,8 @@ const PUBLIC_ROUTES = [
     '/api/auth/register', 
     '/api/auth/login',
     '/api/auth/users',
-    '/api/auth/oauth/google'
+    '/api/auth/oauth/google',
+    '/api/auth/oauth/google/callback'
 ];
 
 /**
@@ -29,8 +30,10 @@ const PUBLIC_ROUTES = [
  */
 export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
 {
+    const routePath = req.url.split('?')[0];
+    console.log('Checking route:', routePath); // Debug
     try{
-        if (PUBLIC_ROUTES.includes(req.url))
+        if (PUBLIC_ROUTES.includes(req.url) || PUBLIC_ROUTES.includes(routePath))
             return; //on ignore certaine route voir liste au dessus
 
         // recupere l'accessToken dans les cookies
