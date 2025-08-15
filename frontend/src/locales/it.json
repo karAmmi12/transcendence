@@ -116,6 +116,22 @@
     "score": {
       "you": "Tu",
       "opponent": "Avversario"
+    },
+    "modes": {
+      "classic": "Classico",
+      "ai": "vs IA",
+      "tournament": "Torneo"
+    },
+    "customization": {
+      "title": "Impostazioni di gioco",
+      "ballSpeed": "Velocità palla",
+      "paddleSpeed": "Velocità racchetta",
+      "powerUps": "Potenziamenti",
+      "gameMode": "Modalità di gioco",
+      "theme": "Tema",
+      "difficulty": "Difficoltà",
+      "resetToDefault": "Ripristina predefiniti",
+      "applySettings": "Applica impostazioni"
     }
   },
   "profile": {
@@ -130,10 +146,68 @@
     "history": {
       "title": "Storico partite",
       "noGames": "Nessuna partita giocata",
+      "noGamesDesc": "Inizia a giocare per vedere il tuo storico qui",
+      "playFirstGame": "Gioca la mia prima partita",
+      "viewAll": "Visualizza tutto lo storico",
+      "viewDetails": "Visualizza dettagli",
       "result": {
         "win": "Vittoria",
         "loss": "Sconfitta"
+      },
+      "filters": {
+        "all": "Tutte",
+        "wins": "Vittorie",
+        "losses": "Sconfitte",
+        "tournament": "Torneo"
+      },
+      "stats": {
+        "totalGames": "Totale",
+        "winRate": "Percentuale vittorie",
+        "recent": "Recenti"
       }
+    },
+    "friends": {
+      "title": "Amici",
+      "noFriends": "Nessun amico ancora",
+      "findFriends": "Trova amici",
+      "manage": "Gestisci",
+      "viewAll": "Visualizza tutti",
+      "online": "Online",
+      "offline": "Offline",
+      "justOffline": "Proprio ora",
+      "minsAgo": "{mins} min fa",
+      "hoursAgo": "{hours}h fa",
+      "daysAgo": "{days}g fa",
+      "viewProfile": "Visualizza profilo",
+      "challenge": "Sfida",
+      "sendMessage": "Invia messaggio"
+    },
+    "actions": {
+      "title": "Azioni rapide",
+      "editProfile": "Modifica profilo",
+      "changePassword": "Cambia password",
+      "changeAvatar": "Cambia avatar",
+      "addFriend": "Aggiungi come amico",
+      "challenge": "Sfida"
+    },
+    "edit": {
+      "title": "Modifica profilo",
+      "username": "Nome utente",
+      "email": "Email",
+      "avatar": "Avatar",
+      "selectImage": "Seleziona immagine",
+      "save": "Salva modifiche",
+      "cancel": "Annulla",
+      "uploading": "Caricamento...",
+      "errors": {
+        "updateFailed": "Aggiornamento profilo fallito",
+        "invalidImage": "Formato immagine non valido",
+        "imageTooLarge": "Immagine troppo grande"
+      }
+    },
+    "errors": {
+      "userNotFound": "Utente non trovato",
+      "loadFailed": "Caricamento profilo fallito"
     },
     "settings": {
       "title": "Impostazioni",
@@ -160,7 +234,10 @@
     "close": "Chiudi",
     "back": "Indietro",
     "next": "Avanti",
-    "previous": "Precedente"
+    "previous": "Precedente",
+    "today": "Oggi",
+    "yesterday": "Ieri",
+    "daysAgo": "{days} giorni fa"
   },
   "footer": {
     "description": "L'esperienza Pong definitiva. Gioca, competi e chatta con la community.",
