@@ -56,5 +56,24 @@ export interface Friend {
   friendshipDate: string;
 }
 
+export interface FriendRequest {
+  id: number;
+  senderId: number;
+  receiverId: number;
+  status: 'pending' | 'accepted' | 'declined';
+  createdAt: string;
+  sender?: User;
+  receiver?: User;
+}
+
+export interface FriendshipStatus {
+  isFriend: boolean;
+  isPending: boolean;
+  isRequestSent: boolean;
+  isRequestReceived: boolean;
+  requestId?: number;
+}
+
 // Ajouter le type Language manquant :
 export type Language = 'en' | 'fr' | 'it' | 'ar' | 'kab' | 'kab-tfng' | 'sg';
+
