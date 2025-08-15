@@ -82,6 +82,10 @@ export class Header {
                         <span class="text-lg">🇮🇹</span>
                         <span>Italiano</span>
                         </button>
+                        <button class="language-option w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 hover:text-white flex items-center space-x-2" data-lang="es">
+                        <span class="text-lg">🇪🇸</span>
+                        <span>Español</span>
+                        </button>
                         <button class="language-option w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 hover:text-white flex items-center space-x-2" data-lang="kab">
                         <span class="text-lg flex items-center">
                             <svg class="inline w-6 h-6 align-middle" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" width="900px" height="600px" id="Berber_flag">
@@ -236,6 +240,7 @@ export class Header {
             'en': '🇬🇧',
             'fr': '🇫🇷',
             'it': '🇮🇹',
+            'es': '🇪🇸',
             'kab': `
                     <svg class="inline w-6 h-6 align-middle" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
                     <rect fill="#0090DA" width="900" height="200"/>
@@ -268,6 +273,7 @@ export class Header {
             'en': 'EN',
             'fr': 'FR',
             'it': 'IT',
+            'es': 'ES',
             'kab': 'KAB',
             'kab-tfng': 'ⵜⴰⵇⴱⴰⵢⵍⵉⵜ',
             'ar': 'AR',

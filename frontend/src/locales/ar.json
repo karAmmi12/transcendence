@@ -116,6 +116,22 @@
     "score": {
       "you": "أنت",
       "opponent": "الخصم"
+    },
+    "modes": {
+      "classic": "كلاسيكي",
+      "ai": "ضد الذكاء الاصطناعي",
+      "tournament": "بطولة"
+    },
+    "customization": {
+      "title": "إعدادات اللعبة",
+      "ballSpeed": "سرعة الكرة",
+      "paddleSpeed": "سرعة المضرب",
+      "powerUps": "القوى الخاصة",
+      "gameMode": "وضع اللعبة",
+      "theme": "السمة",
+      "difficulty": "الصعوبة",
+      "resetToDefault": "إعادة تعيين افتراضي",
+      "applySettings": "تطبيق الإعدادات"
     }
   },
   "profile": {
@@ -130,10 +146,68 @@
     "history": {
       "title": "سجل المباريات",
       "noGames": "لم يتم لعب أي مباريات بعد",
+      "noGamesDesc": "ابدأ اللعب لرؤية سجلك هنا",
+      "playFirstGame": "العب مبارتي الأولى",
+      "viewAll": "عرض كامل السجل",
+      "viewDetails": "عرض التفاصيل",
       "result": {
         "win": "فوز",
         "loss": "خسارة"
+      },
+      "filters": {
+        "all": "الكل",
+        "wins": "الانتصارات",
+        "losses": "الخسائر",
+        "tournament": "البطولة"
+      },
+      "stats": {
+        "totalGames": "المجموع",
+        "winRate": "نسبة الفوز",
+        "recent": "حديث"
       }
+    },
+    "friends": {
+      "title": "الأصدقاء",
+      "noFriends": "لا يوجد أصدقاء بعد",
+      "findFriends": "البحث عن أصدقاء",
+      "manage": "إدارة",
+      "viewAll": "عرض الكل",
+      "online": "متصل",
+      "offline": "غير متصل",
+      "justOffline": "الآن",
+      "minsAgo": "منذ {mins} دقيقة",
+      "hoursAgo": "منذ {hours} ساعة",
+      "daysAgo": "منذ {days} يوم",
+      "viewProfile": "عرض الملف الشخصي",
+      "challenge": "تحدي",
+      "sendMessage": "إرسال رسالة"
+    },
+    "actions": {
+      "title": "إجراءات سريعة",
+      "editProfile": "تعديل الملف الشخصي",
+      "changePassword": "تغيير كلمة المرور",
+      "changeAvatar": "تغيير الصورة الرمزية",
+      "addFriend": "إضافة كصديق",
+      "challenge": "تحدي"
+    },
+    "edit": {
+      "title": "تعديل الملف الشخصي",
+      "username": "اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "avatar": "الصورة الرمزية",
+      "selectImage": "اختيار صورة",
+      "save": "حفظ التغييرات",
+      "cancel": "إلغاء",
+      "uploading": "جاري الرفع...",
+      "errors": {
+        "updateFailed": "فشل في تحديث الملف الشخصي",
+        "invalidImage": "تنسيق صورة غير صالح",
+        "imageTooLarge": "الصورة كبيرة جداً"
+      }
+    },
+    "errors": {
+      "userNotFound": "المستخدم غير موجود",
+      "loadFailed": "فشل في تحميل الملف الشخصي"
     },
     "settings": {
       "title": "الإعدادات",
@@ -160,7 +234,10 @@
     "close": "إغلاق",
     "back": "رجوع",
     "next": "التالي",
-    "previous": "السابق"
+    "previous": "السابق",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "daysAgo": "منذ {days} أيام"
   },
   "footer": {
     "description": "تجربة بونغ النهائية. العب، تنافس، وتحدث مع المجتمع.",
