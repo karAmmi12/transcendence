@@ -51,13 +51,14 @@ export class Router {
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
       requiresAuth: true
-    },
-    {
-      path: ROUTES.TOURNAMENT,
-      component: () => new TournamentPage(),
-      title: 'Tournament - ft_transcendence',
-      requiresAuth: true
     }
+    // ,
+    // {
+    //   path: ROUTES.TOURNAMENT,
+    //   component: () => new TournamentPage(),
+    //   title: 'Tournament - ft_transcendence',
+    //   requiresAuth: true
+    // }
   ];
 
   async navigate(path: string): Promise<void> {

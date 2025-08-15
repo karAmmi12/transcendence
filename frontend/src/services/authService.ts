@@ -179,7 +179,8 @@ export class AuthService {
         method: 'GET',
         credentials: 'include'
       });
-      // remove invalid return 
+    // Removed invalid return of boolean; method should return User or null
+
       if (response.ok) {
         return await response.json();
       }
