@@ -17,8 +17,8 @@ export default async function authRoutes(app: FastifyInstance)
   //Route d'authentification
   app.post('/register', {schema: registerSchema}, AuthController.register);
   app.post('/login', {schema: loginSchema}, AuthController.login);
-  // app.get('/oauth/google', OAuthController.oauthLogin);
-  // app.get('/oauth/google/callback', OAuthController.oauthCallback);
+  app.get('/oauth/google', OAuthController.oauthLogin);
+  app.get('/oauth/google/callback', OAuthController.oauthCallback);
   app.post('/logout', AuthController.logout);
 
   //Routes protege (passe par le middleware)
