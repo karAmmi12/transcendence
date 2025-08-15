@@ -151,16 +151,17 @@ export class AuthService
     }
 
     /**
-     * Déconnecter un utilisateur // SIUU VOIR FONCTION LOGOUT
+     * Déconnecter un utilisateur
      */
-    // static async logout(refreshToken: string): Promise<void> {
-    //     try {
-    //         // Supprimer la session de la base de données
-    //         JWTService.deleteSession(refreshToken);
-    //         console.log("🚪 User logged out successfully");
-    //     } catch (error) {
-    //         console.error("Logout service error:", error);
-    //         throw error;
-    //     }
-    // }
+    static async logout(refreshToken: string): Promise<void> 
+    {
+        try {
+            //siuu changer isOnline sur flase ??
+            // Supprimer la session de la base de données
+            JWTService.deleteSession(refreshToken);
+        } catch (error) {
+            console.error("Logout service error:", error);
+            throw error;
+        }
+    }
 }
