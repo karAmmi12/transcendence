@@ -139,6 +139,9 @@
     "stats": {
       "title": "Estadísticas",
       "gamesPlayed": "Juegos Jugados",
+      "wins": "Victorias",
+      "losses": "Derrotas",
+      "totalGames": "Total de Juegos",
       "gamesWon": "Juegos Ganados",
       "winRate": "Tasa de Victoria",
       "ranking": "Clasificación"

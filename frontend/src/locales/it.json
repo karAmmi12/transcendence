@@ -139,6 +139,9 @@
     "stats": {
       "title": "Statistiche",
       "gamesPlayed": "Partite giocate",
+      "totalGames": "Totale partite",
+      "wins": "Vittorie",
+      "losses": "Sconfitte",
       "gamesWon": "Partite vinte",
       "winRate": "Percentuale vittorie",
       "ranking": "Classifica"
