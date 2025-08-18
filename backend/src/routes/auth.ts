@@ -16,12 +16,12 @@ export default async function authRoutes(app: FastifyInstance)
   app.get('/oauth/google', OAuthController.oauthLogin);
   app.get('/oauth/google/callback', OAuthController.oauthCallback);
 
-
   //Routes protege (passe par le middleware)
-  app.get('/me', UserController.getProfile);
   app.post('/logout', AuthController.logout);
-  app.put('/updateProfile', UserController.updateProfile)
 
+  app.get('/me', UserController.getProfile);
+  app.put('/updateProfile', UserController.updateProfile);
+  
   //Routes de Debug
   // app.get('/users', AuthController.getAllUsers);
 }

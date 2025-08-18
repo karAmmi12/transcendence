@@ -285,25 +285,8 @@ export class FriendsManagementModal {
       });
     });
 
-    // Recherche
-    const searchInput = this.modal.querySelector('#search-input') as HTMLInputElement;
-    const searchBtn = this.modal.querySelector('#search-btn');
-    
-    const performSearch = async () => {
-      const query = searchInput?.value.trim();
-      if (query && query.length >= 2) {
-        this.searchResults = await friendService.searchUsers(query);
-        this.updateSearchResults();
-      }
-    };
-
-    searchInput?.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') {
-        performSearch();
-      }
-    });
-
-    searchBtn?.addEventListener('click', performSearch);
+    // Recherche - attacher les événements initiaux
+    this.bindSearchEvents();
 
     // Actions
     this.modal.addEventListener('click', async (e) => {
@@ -371,6 +354,68 @@ export class FriendsManagementModal {
     });
   }
 
+  // Nouvelle méthode pour attacher les événements de recherche
+  private bindSearchEvents(): void {
+    const searchInput = this.modal?.querySelector('#search-input') as HTMLInputElement;
+    const searchBtn = this.modal?.querySelector('#search-btn');
+    
+    if (!searchInput || !searchBtn) return;
+    
+    const performSearch = async () => {
+      const query = searchInput.value.trim();
+      console.log('🔍 Performing search for:', query);
+      
+      if (query && query.length >= 2) {
+        console.log('🔍 Making API call...');
+        try {
+          this.searchResults = await friendService.searchUsers(query);
+          console.log('🔍 Search results:', this.searchResults);
+          this.updateSearchResults();
+        } catch (error) {
+          console.error('🔍 Search error:', error);
+          this.showMessage('Search failed. Please try again.', 'error');
+        }
+      } else if (query.length === 0) {
+        // Vider les résultats si le champ est vide
+        this.searchResults = [];
+        this.updateSearchResults();
+      }
+    };
+
+    // Recherche sur Enter
+    searchInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        console.log('🔍 Enter key pressed');
+        performSearch();
+      }
+    });
+
+    // Recherche sur clic du bouton
+    searchBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🔍 Search button clicked');
+      performSearch();
+    });
+
+    // Optionnel : recherche en temps réel avec debounce
+    let searchTimeout: number;
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim();
+      
+      clearTimeout(searchTimeout);
+      
+      if (query.length >= 2) {
+        searchTimeout = window.setTimeout(() => {
+          console.log('🔍 Auto-search triggered');
+          performSearch();
+        }, 500);
+      } else if (query.length === 0) {
+        this.searchResults = [];
+        this.updateSearchResults();
+      }
+    });
+  }
+
   private switchTab(tab: 'friends' | 'requests' | 'search'): void {
     this.currentTab = tab;
     
@@ -385,6 +430,14 @@ export class FriendsManagementModal {
     activeTab?.classList.add('bg-blue-600', 'text-white');
     
     this.updateTabContent();
+    
+    // Re-attacher les événements de recherche si on passe à l'onglet search
+    if (tab === 'search') {
+      // Petit délai pour s'assurer que le DOM est mis à jour
+      setTimeout(() => {
+        this.bindSearchEvents();
+      }, 50);
+    }
   }
 
   private updateTabContent(): void {

@@ -135,6 +135,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Base de donnees et uploads
+# Base de données et uploads
 backend/database.db
 backend/uploads/
