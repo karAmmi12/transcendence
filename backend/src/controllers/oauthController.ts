@@ -55,7 +55,7 @@ export class OAuthController
             if (!userData)
                 return (reply.status(401).send('Error: Required token access for OAuth2'));
             // // si l'utilisateur existe dans la db tu le connect, si non tu le creee et tu le connect
-            const res = await OAuth2Service.
+            // const res = await OAuth2Service.
             return (reply.redirect(`http://localhost:5173`));
             
         }catch (error){
