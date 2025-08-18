@@ -138,4 +138,93 @@ export class UserServices
             };
         }
     }
+
+    /**
+     * Sous fonction qui recupere tous les users
+     */
+    static async getAllUsernames(): Promise<UserData[]>
+    {
+        try {
+            const stmt = db.prepare(`
+                SELECT id, username, avatar_url,is_online
+                FROM users
+                ORDER BY username ASC
+            `);
+            
+            const usersRaw = stmt.all() as any[];
+            
+            //siuuu pour attacher els stats temporaire a tous les users
+            const users: UserData[] = usersRaw.map(userData => {
+                const stats = { // Stats temporaires
+                    wins: 2,
+                    losses: 0,
+                    totalGames: 2,
+                    winRate: 100
+                };
+                
+                return {
+                    id: userData.id,
+                    username: userData.username,
+                    email: userData.email,
+                    avatar_url: userData.avatar_url,
+                    isOnline: userData.is_online,
+                    twoFactorEnabled: false,
+                    createdAt: userData.createdAt,
+                    lastLogin: userData.lastLogin,
+                    stats: stats
+                };
+            });
+            
+            return users;
+            
+        } catch (error) {
+            console.error("Get all users error:", error);
+            return [];
+        }
+    }
+
+    /**
+     * Sous fonction qui recherche les users par nom d'utilisateur
+     */
+    static async searchUsers(query: string): Promise<UserData[]> {
+        try {
+            const stmt = db.prepare(`
+                SELECT id, username, email, avatar_url, createdAt, lastLogin, is_online
+                FROM users
+                WHERE username LIKE ? OR email LIKE ?
+                ORDER BY username ASC
+                LIMIT 20
+            `);
+            
+            const searchPattern = `%${query}%`;
+            const usersRaw = stmt.all(searchPattern, searchPattern) as any[];
+            
+            const users: UserData[] = usersRaw.map(userData => {
+                const stats = {
+                    wins: 2,
+                    losses: 0,
+                    totalGames: 2,
+                    winRate: 100
+                };
+                
+                return {
+                    id: userData.id,
+                    username: userData.username,
+                    email: userData.email,
+                    avatar_url: userData.avatar_url,
+                    isOnline: userData.is_online,
+                    twoFactorEnabled: false,
+                    createdAt: userData.createdAt,
+                    lastLogin: userData.lastLogin,
+                    stats: stats
+                };
+            });
+            
+            return users;
+            
+        } catch (error) {
+            console.error("Search users error:", error);
+            return [];
+        }
+    }
 }
