@@ -203,4 +203,18 @@ export class UserController
         // Retourner le chemin relatif pour la DB
         return `/uploads/avatars/${fileName}`;
     }
+
+    /**
+     * Récupérer tous les utilisateurs (debug)
+     */
+    static async getAllUsers(req: FastifyRequest, reply: FastifyReply) {
+        try {
+            console.log("SIUUUUUU GET ALLL USERS")
+            const users = await UserServices.getAllUsers();
+            reply.send(users);
+        } catch (error) {
+            console.error("Get all users controller error:", error);
+            reply.status(500).send({ error: "Failed to get users" });
+        }
+    }
 }
