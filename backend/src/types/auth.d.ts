@@ -33,6 +33,7 @@ export interface UserData {
   createdAt?: string;
   lastLogin?: string;
   stats?: UserStats;
+  oauthProvider?: string;
 }
 
 export interface UserStats {
