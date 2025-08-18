@@ -14,23 +14,28 @@ export class FriendService {
   }
 
   /**
-   * Rechercher des utilisateurs par nom
-   */
-  public async searchUsers(query: string): Promise<User[]> {
-    try {
-      const response = await fetch(`${this.baseURL}/users/search?q=${encodeURIComponent(query)}`, {
-        credentials: 'include'
-      });
-      
-      if (response.ok) {
-        return await response.json();
-      }
-      return [];
-    } catch (error) {
-      console.error('Failed to search users:', error);
-      return [];
+ * Rechercher des utilisateurs par nom
+ */
+public async searchUsers(query: string): Promise<User[]> {
+  try {
+    // Utiliser la route getAllUsers existante
+    const response = await fetch(`${this.baseURL}/user/users`, {
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      const allUsers = await response.json();
+      // Filtrer côté client
+      return allUsers.filter((user: User) => 
+        user.username.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 10); // Limiter à 10 résultats
     }
+    return [];
+  } catch (error) {
+    console.error('Failed to search users:', error);
+    return [];
   }
+}
 
   /**
    * Obtenir le statut d'amitié avec un utilisateur
