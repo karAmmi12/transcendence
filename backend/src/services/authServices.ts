@@ -2,6 +2,7 @@ import bcrypt from "bcrypt"
 import db from "../db/index.js"
 import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth"
 import {JWTService} from "./jwtServices.js";
+import { OAuthController } from "../controllers/oauthController.js";
 
 /**
  * Verifie si le mail existe deja dans la db
@@ -164,4 +165,9 @@ export class AuthService
             throw error;
         }
     }
+
+    // static async handleOAuthUser(googleData): Promise<AuthResult>
+    // {
+    //     googleData.
+    // }
 }
