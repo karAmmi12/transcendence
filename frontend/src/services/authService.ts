@@ -138,7 +138,7 @@ export class AuthService {
     }
 
     try {
-      const response = await fetch(`${this.baseURL}/auth/me`, {
+      const response = await fetch(`${this.baseURL}/user/me`, {
         method: 'GET',
         credentials: 'include' // Important pour les cookies
       });
