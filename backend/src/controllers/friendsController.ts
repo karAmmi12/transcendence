@@ -1,32 +1,52 @@
 import {FastifyRequest, FastifyReply} from "fastify";
-import { FriendsService } from "../services/friendsService";
+import { FriendsService } from "../services/friendsServices";
 
-export class FriendsController 
+export class FriendsController
 {
     /**
-     * envoyer une demande d'amis
+     * Route pour ajouter une demande d'ami
      */
-    static async sendFriendRequest(req: FastifyRequest, reply: FastifyReply)
+    static async addFriend(req: FastifyRequest, reply: FastifyReply)
     {
+        // Logique pour ajouter une demande d'ami
         try {
-            const user = req.user!; //grace au middleware
-            
+            const user = req.user!;
             const { friendId } = req.body as { friendId: number };
-            if (!friendId)
-                return (reply.status(400).send({error: "freind id required"}));
             
-            const result = await FriendsService.sendFriendRequest(user.userId, friendId);
-            if (!result.success)
-                return (reply.status(400).send({error: result.error}));
+            if (!friendId) {
+                return reply.status(400).send({ error: "Friend ID required" });
+            }
+            
+            const result = await FriendsService.addFriend(user.userId, friendId);
+            
+            if (!result.success) {
+                return reply.status(400).send({ error: result.error });
+            }
 
             reply.send({
-                message: "Friend request sent successfully",
+                message: "Friend added successfully",
                 data: result.data
             });
 
         } catch (error) {
-            console.error("Send friend request error:", error);
-            reply.status(500).send({ error: "Failed to send friend request" });
+            console.error("Add friend error:", error);
+            reply.status(500).send({ error: "Failed to add friend" });
         }
+    }
+
+    /**
+     * Route pour obtenir la liste des amis
+     */
+    static async getFriendsList(req: FastifyRequest, reply: FastifyReply)
+    {
+        // Logique pour obtenir la liste des amis
+    }
+
+    /**
+     * Route pour supprimer un ami
+     */
+    static async removeFriend(req: FastifyRequest, reply: FastifyReply)
+    {
+        // Logique pour supprimer un ami
     }
 }
