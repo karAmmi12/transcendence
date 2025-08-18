@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import authRoutes from "./routes/auth.js";
 import usersRoutes from "./routes/users.js";
+import friendsRoutes from "./routes/friends.js";
 import cookie from "@fastify/cookie";
 import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
@@ -52,6 +53,7 @@ const start = async () => {
     // Routes (apres etre passer dans le Middleware)
     await app.register(authRoutes, {prefix: '/api/auth'});
     await app.register(usersRoutes, {prefix: '/api/user'});
+    await app.register(friendsRoutes, {prefix: '/api/friends'});
 
     // Démarrer le serveur 
     await app.listen({ port: 8000, host: "0.0.0.0" });

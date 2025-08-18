@@ -207,7 +207,8 @@ export class UserController
     /**
      * Récupérer tous les utilisateurs (debug)
      */
-    static async getAllUsernames(req: FastifyRequest, reply: FastifyReply) {
+    static async getAllUsernames(req: FastifyRequest, reply: FastifyReply) 
+    {
         try {
             console.log("SIUUUUUU GET ALLL USERS")
             const users = await UserServices.getAllUsernames();
@@ -221,7 +222,8 @@ export class UserController
     /**
      * Recherche d'utilisateurs par nom d'utilisateur
      */
-    static async searchUsers(req: FastifyRequest, reply: FastifyReply) {
+    static async searchUsers(req: FastifyRequest, reply: FastifyReply) 
+    {
         try {
             const query = (req.query as any).q;
             
@@ -236,4 +238,28 @@ export class UserController
             reply.status(500).send({ error: "Failed to search users" });
         }
     }
+
+    /**
+     * Récupérer un utilisateur par ID
+     */
+    static async getProfileById(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const { id } = req.params as { id: string };
+            const userId = parseInt(id);
+
+            const user = await UserServices.getUserDataFromDb(userId);
+
+            
+            if (!user) {
+                return reply.status(404).send({ error: "User not found" });
+            }
+
+            reply.send(user);
+        } catch (error) {
+            console.error("Get user by ID error:", error);
+            reply.status(500).send({ error: "Failed to get user" });
+        }
+    }
 }
+
