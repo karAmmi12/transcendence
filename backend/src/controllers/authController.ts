@@ -86,18 +86,4 @@ export class AuthController
             reply.status(500).send({ error: "Logout failed" });
         }
     }
-
-    /**
-     * Récupérer tous les utilisateurs (debug)
-     */
-    // static async getAllUsers(req: FastifyRequest, reply: FastifyReply) {
-    //     try {
-    //         const users = await UserService.getAllUsers();
-    //         reply.send(users);
-    //     } catch (error) {
-    //         console.error("Get all users controller error:", error);
-    //         reply.status(500).send({ error: "Failed to get users" });
-    //     }
-    // }
-
 }
