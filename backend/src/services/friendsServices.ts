@@ -56,14 +56,59 @@ export class FriendsService
      * recup la liste d'amis
      */
     static async getFriendsList(userId: number): Promise<FriendProfile[]>
-    {}
+    {
+        try {
+            const stmt = db.prepare(`
+                SELECT DISTINCT u.id, u.username, u.avatar_url, u.is_online, u.lastLogin, f.createdAt
+                FROM users u
+                JOIN friends f ON (
+                    (f.user_id = u.id AND f.friend_id = ?) OR 
+                    (f.friend_id = u.id AND f.user_id = ?)
+                )
+                WHERE u.id != ?
+                ORDER BY u.is_online DESC, u.username ASC
+            `);
+
+            const friends = stmt.all(userId, userId, userId) as FriendProfile[];
+            return friends;
+
+        } catch (error) {
+            console.error('Error getting friends:', error);
+            return [];
+        }
+    }
 
     /**
      * supprimer un ami
      */
-    static async removeFriend(userId: number, friendId: number): Promise<FriendProfile[]>
-    {}
+    static async removeFriend(userId: number, friendId: number): Promise<FriendsResult>
+    {
+        const transaction = db.transaction(() => {
+            try {
+                const stmt = db.prepare(`
+                    DELETE FROM friends 
+                    WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)
+                `);
+                
+                const result = stmt.run(userId, friendId, friendId, userId);
+                if (result.changes === 0)
+                    throw ({error: "Friendship not found"});
 
+                return ({ success: true });
 
+            } catch (error) {
+                throw error;
+            }
+        });
 
+        try {
+            return (transaction());
+        } catch (error) {
+            console.error('Friend remove:', error);
+            return ({
+                success: false,
+                error: "Fail remove friend"
+            });
+        }
+    }
 }
