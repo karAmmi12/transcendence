@@ -75,7 +75,8 @@ export class UserService {
    */
   public async getUserProfile(userId?: string | null): Promise<User | null> {
     try {
-      const endpoint = userId ? `/auth/profile/${userId}` : '/auth/me';
+      console.log('Fetching user profile for userId:', userId);
+      const endpoint = userId ? `/user/profile/${userId}` : '/user/me';
       const response = await fetch(`${this.baseURL}${endpoint}`, {
         method: 'GET',
         credentials: 'include'
