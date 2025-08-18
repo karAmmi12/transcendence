@@ -203,4 +203,37 @@ export class UserController
         // Retourner le chemin relatif pour la DB
         return `/uploads/avatars/${fileName}`;
     }
+
+    /**
+     * Récupérer tous les utilisateurs (debug)
+     */
+    static async getAllUsernames(req: FastifyRequest, reply: FastifyReply) {
+        try {
+            console.log("SIUUUUUU GET ALLL USERS")
+            const users = await UserServices.getAllUsernames();
+            reply.send(users);
+        } catch (error) {
+            console.error("Get all users controller error:", error);
+            reply.status(500).send({ error: "Failed to get users" });
+        }
+    }
+
+    /**
+     * Recherche d'utilisateurs par nom d'utilisateur
+     */
+    static async searchUsers(req: FastifyRequest, reply: FastifyReply) {
+        try {
+            const query = (req.query as any).q;
+            
+            if (!query || query.length < 2) {
+                return reply.status(400).send({ error: "Query must be at least 2 characters long" });
+            }
+
+            const users = await UserServices.searchUsers(query);
+            reply.send(users);
+        } catch (error) {
+            console.error("Search users controller error:", error);
+            reply.status(500).send({ error: "Failed to search users" });
+        }
+    }
 }
