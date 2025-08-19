@@ -11,13 +11,13 @@ export class FriendsController
         // Logique pour ajouter une demande d'ami
         try {
             const user = req.user!;
-            const { friendId } = req.body as { friendId: number };
-            
-            if (!friendId) {
+            const { userId } = req.body as { userId: number };// friend a ajouter
+
+            if (!userId) {
                 return reply.status(400).send({ error: "Friend ID required" });
             }
             
-            const result = await FriendsService.addFriend(user.userId, friendId);
+            const result = await FriendsService.addFriend(user.userId, userId);
             
             if (!result.success) {
                 return reply.status(400).send({ error: result.error });

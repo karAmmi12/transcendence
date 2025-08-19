@@ -25,8 +25,8 @@ export class FriendsService
                     throw ({error: "already friends"});
 
                 const stmt = db.prepare(`
-                    INSERT INTO friends (user_id, friend_id, status) 
-                    VALUES (?, ?, 'accepted')
+                    INSERT INTO friends (user_id, friend_id) 
+                    VALUES (?, ?)
                 `);
 
                 const result = stmt.run(userId, friendId);
@@ -69,7 +69,17 @@ export class FriendsService
                 ORDER BY u.is_online DESC, u.username ASC
             `);
 
-            const friends = stmt.all(userId, userId, userId) as FriendProfile[];
+            const friendsRaw = stmt.all(userId, userId, userId) as any[];
+            
+           
+            const friends: FriendProfile[] = friendsRaw.map(friend => ({
+                id: friend.id,
+                username: friend.username,
+                avatar_url: friend.avatar_url,
+                isOnline: Boolean(friend.is_online), 
+                lastSeen: friend.lastLogin,
+                friendshipDate: friend.createdAt
+            }));
             return friends;
 
         } catch (error) {
