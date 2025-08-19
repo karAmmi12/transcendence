@@ -210,8 +210,8 @@ export class UserController
     static async getAllUsernames(req: FastifyRequest, reply: FastifyReply) 
     {
         try {
-            console.log("SIUUUUUU GET ALLL USERS")
-            const users = await UserServices.getAllUsernames();
+            const user = req.user!; //grace au middleware
+            const users = await UserServices.getAllUsernames(user.userId);
             reply.send(users);
         } catch (error) {
             console.error("Get all users controller error:", error);
