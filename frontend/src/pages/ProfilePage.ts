@@ -52,9 +52,11 @@ export class ProfilePage {
         return;
       }
 
+      this.friends = await friendService.getFriends();
+
       // Si c'est le profil d'un autre utilisateur, charger le statut d'amitié
       if (this.userId) {
-        this.friendshipStatus = await friendService.getFriendshipStatus(parseInt(this.userId));
+        this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
       }
 
       // Charger l'historique des matchs (pour l'instant mock data)
@@ -71,6 +73,20 @@ export class ProfilePage {
       console.error('Failed to load user data:', error);
       this.renderError(element, i18n.t('profile.errors.loadFailed'));
     }
+  }
+
+  private calculateFriendshipStatus(userId: number): FriendshipStatus {
+    // Vérifier si l'utilisateur est dans la liste d'amis
+    const isFriend = this.friends.some(friend => friend.id === userId);
+
+    // Pour l'instant, on n'a pas de système de demandes d'amis implémenté
+    // Donc on retourne un statut simple : ami ou pas ami
+    return {
+      isFriend,
+      isPending: false,
+      isRequestSent: false,
+      isRequestReceived: false
+    };
   }
 
   private openEditModal(): void {
@@ -96,8 +112,8 @@ export class ProfilePage {
 
     const isOwnProfile = !this.userId;
 
-    // Créer les composants
-    const profileHeader = new ProfileHeader(this.user, isOwnProfile);
+    // Créer les composants - ✅ Passer le friendshipStatus au ProfileHeader
+    const profileHeader = new ProfileHeader(this.user, isOwnProfile, this.friendshipStatus);
     const statsCard = new StatsCard(this.user);
     const matchHistoryCard = new MatchHistoryCard(this.matchHistory, isOwnProfile);
     
@@ -126,12 +142,56 @@ export class ProfilePage {
       </div>
     `;
 
+    // ✅ Aussi attacher les événements du ProfileHeader
+    if (!isOwnProfile) {
+      profileHeader.bindEvents(this.handleFriendAction.bind(this));
+    }
+
     if (friendsSection) {
       friendsSection.bindEvents();
     }
 
     this.bindEvents();
   }
+
+  private async handleFriendAction(action: string): Promise<void> {
+    if (!this.userId) return;
+
+    try {
+      let success = false;
+      
+      switch (action) {
+        case 'add-friend':
+          success = await friendService.sendFriendRequest(parseInt(this.userId));
+          break;
+        case 'remove-friend':
+          if (confirm(i18n.t('friends.confirmations.removeFriend'))) {
+            success = await friendService.removeFriend(parseInt(this.userId));
+          }
+          break;
+        case 'accept-friend-request':
+          // TODO: Implémenter quand le système de demandes sera ajouté
+          console.log('Accept friend request - TODO');
+          break;
+        case 'decline-friend-request':
+          // TODO: Implémenter quand le système de demandes sera ajouté
+          console.log('Decline friend request - TODO');
+          break;
+      }
+
+      if (success) {
+        // ✅ Recharger les données et recalculer le statut
+        this.friends = await friendService.getFriends();
+        this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
+        
+        const element = document.querySelector('#page-content');
+        if (element) this.render(element);
+      }
+    } catch (error) {
+      console.error('Failed to perform friend action:', error);
+    }
+  }
+
 
   private renderQuickActions(): string {
     return `
