@@ -112,7 +112,7 @@ export class UserServices
                     username: updatedUserRaw.username,
                     email: updatedUserRaw.email,
                     avatar_url: updatedUserRaw.avatar_url,
-                    isOnline: updatedUserRaw.is_online,
+                    isOnline: updatedUserRaw.isOnline,
                     twoFactorEnabled: false,
                     createdAt: updatedUserRaw.createdAt,
                     lastLogin: updatedUserRaw.lastLogin,
@@ -142,16 +142,17 @@ export class UserServices
     /**
      * Sous fonction qui recupere tous les users
      */
-    static async getAllUsernames(): Promise<UserData[]>
+    static async getAllUsernames(userId: number): Promise<UserData[]>
     {
         try {
             const stmt = db.prepare(`
                 SELECT id, username, avatar_url,is_online
                 FROM users
+                WHERE id != ?
                 ORDER BY username ASC
             `);
             
-            const usersRaw = stmt.all() as any[];
+            const usersRaw = stmt.all(userId) as any[];
             
             //siuuu pour attacher els stats temporaire a tous les users
             const users: UserData[] = usersRaw.map(userData => {
@@ -167,7 +168,7 @@ export class UserServices
                     username: userData.username,
                     email: userData.email,
                     avatar_url: userData.avatar_url,
-                    isOnline: userData.is_online,
+                    isOnline: userData.isOnline,
                     twoFactorEnabled: false,
                     createdAt: userData.createdAt,
                     lastLogin: userData.lastLogin,
@@ -212,7 +213,7 @@ export class UserServices
                     username: userData.username,
                     email: userData.email,
                     avatar_url: userData.avatar_url,
-                    isOnline: userData.is_online,
+                    isOnline: userData.isOnline,
                     twoFactorEnabled: false,
                     createdAt: userData.createdAt,
                     lastLogin: userData.lastLogin,
