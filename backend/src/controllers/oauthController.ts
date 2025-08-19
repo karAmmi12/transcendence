@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js"; 
+import {  GoogleUserData, UserFromDB } from "../types/auth.js";
 import 'dotenv/config'
-import { OAuth2Service } from "../services/oauth2Services.js";
 
 export class OAuthController 
 {
@@ -54,9 +54,19 @@ export class OAuthController
             console.log("userData: ",userData)
             if (!userData)
                 return (reply.status(401).send('Error: Required token access for OAuth2'));
-            // // si l'utilisateur existe dans la db tu le connect, si non tu le creee et tu le connect
-            // const res = await OAuth2Service.
-            return (reply.redirect(`http://localhost:5173`));
+
+            const oData = {
+                username: userData.given_name + userData.family_name,
+                email: userData.email,
+                googleId: userData.sub
+            }
+
+            const oauth2Data = oData as UserFromDB;
+            const res = await AuthService.handleOAuthUser(oauth2Data);
+            if (!res)
+                return (reply.status(401).send({error: "Error login fail"}));
+            CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
+            return (reply.redirect(`http://localhost:5173`).send(res));
             
         }catch (error){
             console.error("Code generate error:", error);

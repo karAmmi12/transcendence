@@ -3,6 +3,7 @@ import db from "../db/index.js"
 import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth"
 import {JWTService} from "./jwtServices.js";
 import { OAuthController } from "../controllers/oauthController.js";
+import 'dotenv/config'
 
 /**
  * Verifie si le mail existe deja dans la db
@@ -22,6 +23,26 @@ export function checkUsernameExists(username: string): boolean
     const stmt = db.prepare("SELECT id FROM users WHERE username = ?");
     const user = stmt.get(username);
     return (user !== undefined);
+}
+
+/**
+ * recupere tout le User via email 
+ */
+function findUserByEmail(email: string): UserFromDB | null 
+{
+    const stmt = db.prepare("SELECT * FROM users WHERE email = ?");
+    const user = stmt.get(email) as UserFromDB | undefined;
+    return (user || null);
+}
+
+/**
+ * recupere tout le User via email 
+ */
+function findUserByUsername(username: string): UserFromDB | null 
+{
+    const stmt = db.prepare("SELECT * FROM users WHERE username = ?");
+    const user = stmt.get(username) as UserFromDB | undefined;
+    return (user || null);
 }
 
 export class AuthService 
@@ -166,8 +187,71 @@ export class AuthService
         }
     }
 
-    // static async handleOAuthUser(googleData): Promise<AuthResult>
-    // {
-    //     googleData.
-    // }
+    static async handleOAuthUser(userData: UserFromDB): Promise<AuthResult>
+    {
+        try {
+            const userExist = findUserByEmail(userData.email); 
+            
+            if (userExist) {
+                const updateStmt = db.prepare("UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
+                updateStmt.run(userExist.id);
+
+                
+                const updateGoogleIdStmt = db.prepare("UPDATE users SET googleId = ? WHERE id = ?");
+                updateGoogleIdStmt.run(userData.googleId, userExist.id);
+
+                const PairToken = JWTService.generateTokenPair(userExist.id, userExist.username)
+                
+                JWTService.createSession(userExist.id, PairToken.refreshToken);
+
+                const userReturn = {
+                    id: userExist.id,
+                    username: userExist.username,
+                    email: userExist.email,
+                    lastLogin: new Date().toISOString(),
+                }
+                
+                return {
+                    success: true,
+                    user: userReturn,
+                    accessToken: PairToken.accessToken,
+                    refreshToken: PairToken.refreshToken
+                };
+            }
+            const userName = findUserByUsername(userData.username);
+            if (!userName){
+                const randomPassword = process.env.RAND_SECRET!;
+                const hashedPassword = await bcrypt.hash(randomPassword, 10);
+                const stmt = db.prepare("INSERT INTO USERS (username, email, password, googleId) VALUES (?, ?, ?, ?) ")
+                const res = stmt.run(userData.username, userData.email, hashedPassword, userData.googleId);
+    
+                const userId = res.lastInsertRowid as number;
+                const PairToken = JWTService.generateTokenPair(userId, userData.username)
+                JWTService.createSession(userId, PairToken.refreshToken);
+    
+                const userReturn = {
+                        id: userId,
+                        username: userData.username,
+                        email: userData.email,
+                        password: hashedPassword,
+                        lastLogin: new Date().toISOString(),
+                    }
+                    
+                    return {
+                        success: true,
+                        user: userReturn,
+                        accessToken: PairToken.accessToken,
+                        refreshToken: PairToken.refreshToken
+                    };
+            }
+            return {
+                success: false,
+                error: "Login failed"
+            };
+        } catch (error) {
+            console.error("Oauth login failed");
+            throw error
+            
+        }
+    }
 }
