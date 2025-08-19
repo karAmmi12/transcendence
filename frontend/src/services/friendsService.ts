@@ -72,7 +72,7 @@ public async searchUsers(query: string): Promise<User[]> {
    */
   public async sendFriendRequest(userId: number): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseURL}/friends/request`, {
+      const response = await fetch(`${this.baseURL}/friends/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -127,7 +127,7 @@ public async searchUsers(query: string): Promise<User[]> {
    */
   public async removeFriend(userId: number): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseURL}/friends/${userId}`, {
+      const response = await fetch(`${this.baseURL}/friends/remove/${userId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -144,7 +144,7 @@ public async searchUsers(query: string): Promise<User[]> {
    */
   public async getFriends(): Promise<Friend[]> {
     try {
-      const response = await fetch(`${this.baseURL}/friends`, {
+      const response = await fetch(`${this.baseURL}/friends/list`, {
         credentials: 'include'
       });
       
