@@ -12,7 +12,7 @@ db.exec(`
         avatar_url TEXT,
         is_online INTEGER NOT NULL DEFAULT 0,
         lastLogin TEXT,
-        oauth_provider TEXT DEFAULT NULL
+        googleId TEXT
     );
     CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
