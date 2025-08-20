@@ -32,6 +32,7 @@ export interface UserData {
   twoFactorEnabled?: boolean;
   createdAt?: string;
   lastLogin?: string;
+  googleId?: string; 
   stats?: UserStats;
 }
 
@@ -53,12 +54,20 @@ export interface UserFromDB {
   twoFactorEnabled: boolean;
   createdAt: string;
   lastLogin?: string;
+  googleId?: string;
 }
 
 export interface UpdateProfileData {
   username?: string;
   email?: string;
   avatar_url?: string;
+}
+
+export interface GoogleUserData {
+    email: string;
+    name: string;
+    picture?: string;
+    sub: string;
 }
 
 // export interface UpdateProfileData {
@@ -70,4 +79,9 @@ export interface UpdateResult {
   success: boolean;
   user?: UserData;
   error?: string;
+}
+
+export interface ChangePassword {
+  currentPassword: string;
+  newPassword: string;
 }

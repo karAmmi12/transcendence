@@ -15,7 +15,8 @@ db.exec(`
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
         avatar_url TEXT,
         is_online INTEGER NOT NULL DEFAULT 0,
-        lastLogin TEXT
+        lastLogin TEXT,
+        googleId TEXT
     );
     CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,6 +44,27 @@ db.exec(`
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE,
         UNIQUE(user_id, friend_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS matches (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mode TEXT NOT NULL, -- 'local', 'remote', 'tournament'
+        tournament_id INTEGER, -- NULL si pas tournoi
+        started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        ended_at DATETIME,
+        winner_id INTEGER, -- NULL si pas de user connecté ou si invité
+        FOREIGN KEY (winner_id) REFERENCES users (id) ON DELETE SET NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS match_participants (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        match_id INTEGER NOT NULL,
+        user_id INTEGER,       -- NULL si invité
+        alias TEXT,            -- utilisé si user_id est NULL
+        score INTEGER NOT NULL DEFAULT 0,
+        is_winner INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (match_id) REFERENCES matches (id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
     );
 
     -- ============================================
