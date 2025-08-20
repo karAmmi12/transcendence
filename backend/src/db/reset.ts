@@ -7,7 +7,7 @@ db.exec("DROP TABLE IF EXISTS users;");
 
 // Recréer les tables
 db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
@@ -25,15 +25,6 @@ db.exec(`
         expires_at DATETIME NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-    );
-
-    CREATE TABLE IF NOT EXISTS user_stats (
-        user_id INTEGER PRIMARY KEY,
-        wins INTEGER DEFAULT 0,
-        losses INTEGER DEFAULT 0,
-        total_games INTEGER DEFAULT 0,
-        win_rate REAL DEFAULT 0,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS friends (
@@ -77,12 +68,55 @@ db.exec(`
     ('future', 'future@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-04 13:00:00'),
     ('pnd', 'pnd@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-05 14:00:00');
 
-    INSERT OR IGNORE INTO user_stats (user_id, wins, losses, total_games, win_rate) VALUES 
-    (1, 5, 2, 7, 71.43),
-    (2, 3, 4, 7, 42.86),
-    (3, 10, 1, 11, 90.91),
-    (4, 15, 3, 18, 83.33),
-    (5, 8, 12, 20, 40.0);
+    -- 🆕 Données de test pour les matches
+    INSERT OR IGNORE INTO matches (id, mode, tournament_id, started_at, ended_at, winner_id) VALUES 
+    -- Matches remote entre utilisateurs
+    (1, 'remote', NULL, '2024-01-15 10:00:00', '2024-01-15 10:05:00', 1), -- carti gagne
+    (2, 'remote', NULL, '2024-01-16 14:00:00', '2024-01-16 14:07:00', 3), -- travis gagne
+    (3, 'remote', NULL, '2024-01-17 16:00:00', '2024-01-17 16:04:00', 2), -- kanye gagne
+    (4, 'remote', NULL, '2024-01-18 18:00:00', '2024-01-18 18:06:00', 4), -- future gagne
+    (5, 'remote', NULL, '2024-01-19 20:00:00', '2024-01-19 20:03:00', 1), -- carti gagne
+
+    -- Matches locaux (pas de winner_id car joueurs invités)
+    (6, 'local', NULL, '2024-01-20 10:00:00', '2024-01-20 10:05:00', NULL),
+    (7, 'local', NULL, '2024-01-21 14:00:00', '2024-01-21 14:07:00', NULL),
+
+    -- Match en cours
+    (8, 'remote', NULL, '2024-01-28 20:00:00', NULL, NULL);
+
+    -- 🆕 Participants aux matches
+    INSERT OR IGNORE INTO match_participants (match_id, user_id, alias, score, is_winner) VALUES 
+    -- Match 1: carti vs kanye (carti gagne 5-3)
+    (1, 1, NULL, 5, 1), -- carti gagne
+    (1, 2, NULL, 3, 0), -- kanye perd
+
+    -- Match 2: travis vs future (travis gagne 5-2)
+    (2, 3, NULL, 5, 1), -- travis gagne
+    (2, 4, NULL, 2, 0), -- future perd
+
+    -- Match 3: kanye vs pnd (kanye gagne 5-4)
+    (3, 2, NULL, 5, 1), -- kanye gagne
+    (3, 5, NULL, 4, 0), -- pnd perd
+
+    -- Match 4: future vs carti (future gagne 5-1)
+    (4, 4, NULL, 5, 1), -- future gagne
+    (4, 1, NULL, 1, 0), -- carti perd
+
+    -- Match 5: carti vs travis (carti gagne 5-3)
+    (5, 1, NULL, 5, 1), -- carti gagne
+    (5, 3, NULL, 3, 0), -- travis perd
+
+    -- Match 6 (local): Guest vs Guest
+    (6, NULL, 'Player1', 5, 1), -- Player1 gagne
+    (6, NULL, 'Player2', 3, 0), -- Player2 perd
+
+    -- Match 7 (local): Guest vs Guest
+    (7, NULL, 'Alice', 2, 0),   -- Alice perd
+    (7, NULL, 'Bob', 5, 1),     -- Bob gagne
+
+    -- Match 8 (en cours): carti vs pnd
+    (8, 1, NULL, 2, 0), -- Score temporaire
+    (8, 5, NULL, 1, 0); -- Score temporaire
 `);
 
 console.log("✅ Database reset complete!");
