@@ -32,11 +32,12 @@
         "description": "العب ضد خصوم الذكاء الاصطناعي وحسن مهاراتك."
       }
     },
-    "buttons": {
-      "play": "ابدأ اللعب",
-      "login": "تسجيل الدخول",
-      "register": "إنشاء حساب",
-      "tournaments": "البطولات"
+    "globalStats": {
+      "title": "إحصائيات المنصة",
+      "totalPlayers": "إجمالي اللاعبين",
+      "totalGames": "إجمالي الألعاب",
+      "onlinePlayers": "اللاعبون المتصلون",
+      "activeTournaments": "البطولات النشطة"
     },
     "stats": {
       "title": "إحصائياتك",
@@ -51,6 +52,12 @@
       "games": "الألعاب",
       "tournaments": "البطولات",
       "online": "متصل"
+    },
+    "buttons": {
+      "play": "ابدأ اللعب",
+      "login": "تسجيل الدخول",
+      "register": "إنشاء حساب",
+      "tournaments": "البطولات"
     }
   },
   "auth": {
@@ -136,15 +143,31 @@
   },
   "profile": {
     "title": "الملف الشخصي",
+    "actions": {
+      "title": "إجراءات سريعة",
+      "editProfile": "تعديل الملف الشخصي",
+      "changePassword": "تغيير كلمة المرور",
+      "changeAvatar": "تغيير الصورة الرمزية",
+      "addFriend": "إضافة كصديق",
+      "removeFriend": "إزالة الصديق",
+      "challenge": "تحدي"
+    },
     "stats": {
       "title": "الإحصائيات",
-      "gamesPlayed": "الألعاب التي تم لعبها",
-      "totalGames": "إجمالي الألعاب",
       "wins": "الانتصارات",
       "losses": "الخسائر",
+      "totalGames": "إجمالي الألعاب",
+      "gamesPlayed": "الألعاب التي تم لعبها",
       "gamesWon": "الألعاب الفائزة",
       "winRate": "نسبة الفوز",
-      "ranking": "الترتيب"
+      "ranking": "الترتيب",
+      "rank": "الترتيب",
+      "highestScore": "أعلى نتيجة",
+      "averageScore": "المتوسط",
+      "currentStreak": "السلسلة الحالية",
+      "longestStreak": "أطول سلسلة",
+      "playtime": "إجمالي وقت اللعب",
+      "lastPlayed": "آخر لعبة"
     },
     "history": {
       "title": "سجل المباريات",
@@ -171,9 +194,9 @@
     },
     "friends": {
       "title": "الأصدقاء",
+      "manage": "إدارة",
       "noFriends": "لا يوجد أصدقاء بعد",
       "findFriends": "البحث عن أصدقاء",
-      "manage": "إدارة",
       "viewAll": "عرض الكل",
       "online": "متصل",
       "offline": "غير متصل",
@@ -185,18 +208,12 @@
       "challenge": "تحدي",
       "sendMessage": "إرسال رسالة"
     },
-    "actions": {
-      "title": "إجراءات سريعة",
-      "editProfile": "تعديل الملف الشخصي",
-      "changePassword": "تغيير كلمة المرور",
-      "changeAvatar": "تغيير الصورة الرمزية",
-      "addFriend": "إضافة كصديق",
-      "challenge": "تحدي"
-    },
     "edit": {
       "title": "تعديل الملف الشخصي",
       "username": "اسم المستخدم",
+      "usernamePlaceholder": "أدخل اسم المستخدم",
       "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
       "avatar": "الصورة الرمزية",
       "selectImage": "اختيار صورة",
       "save": "حفظ التغييرات",
@@ -208,27 +225,175 @@
         "imageTooLarge": "الصورة كبيرة جداً"
       }
     },
+    "changePassword": {
+      "title": "تغيير كلمة المرور",
+      "currentPassword": "كلمة المرور الحالية",
+      "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+      "newPassword": "كلمة المرور الجديدة",
+      "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "confirmPasswordPlaceholder": "أعد كتابة كلمة المرور الجديدة",
+      "save": "تغيير كلمة المرور",
+      "cancel": "إلغاء",
+      "saving": "جاري التغيير...",
+      "success": "تم تغيير كلمة المرور بنجاح!",
+      "error": "فشل في تغيير كلمة المرور",
+      "validation": {
+        "required": "هذا الحقل مطلوب",
+        "minLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+        "mismatch": "كلمتا المرور غير متطابقتين",
+        "weak": "كلمة المرور ضعيفة جدًا"
+      }
+    },
     "errors": {
       "userNotFound": "المستخدم غير موجود",
-      "loadFailed": "فشل في تحميل الملف الشخصي"
+      "loadFailed": "فشل في تحميل الملف الشخصي",
+      "unauthorized": "ليس لديك إذن لعرض هذا الملف الشخصي",
+      "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى."
     },
     "settings": {
       "title": "الإعدادات",
       "language": "اللغة",
       "theme": "السمة",
-      "notifications": "الإشعارات"
+      "notifications": "الإشعارات",
+      "privacy": "الخصوصية",
+      "security": "الأمان"
+    }
+  },
+  "friends": {
+    "title": "إدارة الأصدقاء",
+    "search": {
+      "title": "البحث عن أصدقاء",
+      "placeholder": "ابحث عن مستخدمين...",
+      "noResults": "لم يتم العثور على مستخدمين",
+      "searchInstructions": "أدخل حرفين على الأقل للبحث"
+    },
+    "requests": {
+      "title": "طلبات الصداقة",
+      "noPending": "لا توجد طلبات معلقة",
+      "sentRequest": "أرسل لك طلب صداقة",
+      "received": "الواردة",
+      "sent": "المرسلة"
+    },
+    "actions": {
+      "addFriend": "إضافة كصديق",
+      "removeFriend": "إزالة الصديق",
+      "accept": "قبول",
+      "decline": "رفض",
+      "acceptRequest": "قبول الطلب",
+      "cancelRequest": "إلغاء الطلب",
+      "remove": "إزالة"
+    },
+    "status": {
+      "requestSent": "تم إرسال الطلب",
+      "pending": "معلق",
+      "friends": "أصدقاء",
+      "blocked": "محظور"
+    },
+    "messages": {
+      "requestSent": "تم إرسال طلب الصداقة!",
+      "requestAccepted": "تم قبول طلب الصداقة!",
+      "requestDeclined": "تم رفض طلب الصداقة",
+      "friendRemoved": "تم إزالة الصديق",
+      "actionFailed": "فشلت العملية. يرجى المحاولة مرة أخرى.",
+      "userNotFound": "المستخدم غير موجود",
+      "alreadyFriends": "أنت بالفعل صديق لهذا المستخدم",
+      "cannotAddSelf": "لا يمكنك إضافة نفسك كصديق"
+    },
+    "confirmations": {
+      "removeFriend": "هل أنت متأكد أنك تريد إزالة هذا الصديق؟",
+      "declineRequest": "هل أنت متأكد أنك تريد رفض طلب الصداقة هذا؟"
     }
   },
   "settings": {
     "title": "الإعدادات",
     "username": "اسم المستخدم",
     "email": "البريد الإلكتروني",
-    "save": "حفظ الإعدادات"
+    "save": "حفظ الإعدادات",
+    "general": {
+      "title": "الإعدادات العامة",
+      "language": "اللغة",
+      "theme": "السمة",
+      "timezone": "المنطقة الزمنية"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "email": "إشعارات البريد الإلكتروني",
+      "push": "الإشعارات الفورية",
+      "gameInvites": "دعوات اللعبة",
+      "friendRequests": "طلبات الصداقة",
+      "messages": "الرسائل"
+    },
+    "privacy": {
+      "title": "إعدادات الخصوصية",
+      "profileVisibility": "رؤية الملف الشخصي",
+      "onlineStatus": "عرض الحالة على الإنترنت",
+      "gameHistory": "عرض سجل الألعاب"
+    },
+    "account": {
+      "title": "الحساب",
+      "changePassword": "تغيير كلمة المرور",
+      "deleteAccount": "حذف الحساب",
+      "exportData": "تصدير البيانات"
+    }
+  },
+  "modals": {
+    "confirm": {
+      "title": "تأكيد الإجراء",
+      "message": "هل أنت متأكد أنك تريد المتابعة؟",
+      "confirm": "تأكيد",
+      "cancel": "إلغاء"
+    },
+    "error": {
+      "title": "خطأ",
+      "genericMessage": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "close": "إغلاق"
+    },
+    "success": {
+      "title": "نجاح",
+      "close": "إغلاق"
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "هذا الحقل مطلوب",
+      "email": "يرجى إدخال عنوان بريد إلكتروني صالح",
+      "minLength": "يجب أن يحتوي على {min} أحرف على الأقل",
+      "maxLength": "يجب ألا يزيد عن {max} أحرف",
+      "password": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+      "confirmPassword": "يجب أن تتطابق كلمات المرور",
+      "username": "يجب أن يكون اسم المستخدم بين 3 و 20 حرفًا ويحتوي فقط على أحرف وأرقام وشرطات سفلية"
+    },
+    "placeholders": {
+      "search": "ابحث...",
+      "email": "أدخل بريدك الإلكتروني",
+      "username": "أدخل اسم المستخدم",
+      "password": "أدخل كلمة المرور",
+      "message": "اكتب رسالتك..."
+    }
+  },
+  "time": {
+    "now": "الآن",
+    "justNow": "الآن",
+    "minuteAgo": "منذ دقيقة",
+    "minutesAgo": "منذ {minutes} دقيقة",
+    "hourAgo": "منذ ساعة",
+    "hoursAgo": "منذ {hours} ساعة",
+    "dayAgo": "منذ يوم",
+    "daysAgo": "منذ {days} يوم",
+    "weekAgo": "منذ أسبوع",
+    "weeksAgo": "منذ {weeks} أسبوع",
+    "monthAgo": "منذ شهر",
+    "monthsAgo": "منذ {months} شهر",
+    "yearAgo": "منذ سنة",
+    "yearsAgo": "منذ {years} سنة"
   },
   "common": {
     "loading": "جار التحميل...",
     "error": "خطأ",
     "success": "نجاح",
+    "warning": "تحذير",
+    "info": "معلومة",
     "cancel": "إلغاء",
     "confirm": "تأكيد",
     "save": "حفظ",
@@ -238,9 +403,32 @@
     "back": "رجوع",
     "next": "التالي",
     "previous": "السابق",
+    "submit": "إرسال",
+    "reset": "إعادة تعيين",
+    "clear": "مسح",
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "refresh": "تحديث",
+    "retry": "إعادة المحاولة",
+    "yes": "نعم",
+    "no": "لا",
+    "ok": "موافق",
     "today": "اليوم",
     "yesterday": "أمس",
-    "daysAgo": "منذ {days} أيام"
+    "tomorrow": "غدًا",
+    "daysAgo": "منذ {days} أيام",
+    "online": "متصل",
+    "offline": "غير متصل",
+    "connecting": "جار الاتصال...",
+    "connected": "متصل",
+    "disconnected": "غير متصل",
+    "tryAgain": "حاول مرة أخرى",
+    "goBack": "رجوع",
+    "seeMore": "عرض المزيد",
+    "showLess": "عرض أقل",
+    "expand": "توسيع",
+    "collapse": "طي"
   },
   "footer": {
     "description": "تجربة بونغ النهائية. العب، تنافس، وتحدث مع المجتمع.",
