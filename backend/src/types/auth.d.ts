@@ -53,12 +53,20 @@ export interface UserFromDB {
   twoFactorEnabled: boolean;
   createdAt: string;
   lastLogin?: string;
+  googleId?: string;
 }
 
 export interface UpdateProfileData {
   username?: string;
   email?: string;
   avatar_url?: string;
+}
+
+export interface GoogleUserData {
+    email: string;
+    name: string;
+    picture?: string;
+    sub: string;
 }
 
 // export interface UpdateProfileData {
