@@ -1,12 +1,11 @@
 import { i18n } from '@services/i18n';
 import { friendService } from '@services/friendsService';
-import { User, Friend, FriendRequest } from '../../types/index.js';
+import { User, Friend } from '../../types/index.js';
 
 export class FriendsManagementModal {
   private modal: HTMLElement | null = null;
-  private currentTab: 'friends' | 'requests' | 'search' = 'friends';
+  private currentTab: 'friends' | 'search' = 'friends';
   private friends: Friend[] = [];
-  private pendingRequests: FriendRequest[] = [];
   private searchResults: User[] = [];
 
   public async show(): Promise<void> {
@@ -28,7 +27,6 @@ export class FriendsManagementModal {
 
   private async loadData(): Promise<void> {
     this.friends = await friendService.getFriends();
-    this.pendingRequests = await friendService.getPendingRequests();
   }
 
   private createModal(): void {
@@ -55,9 +53,6 @@ export class FriendsManagementModal {
             <button id="tab-friends" class="tab-btn flex-1 py-2 px-4 rounded-md transition-colors ${this.currentTab === 'friends' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'}">
               ${i18n.t('profile.friends.title')} (${this.friends.length})
             </button>
-            <button id="tab-requests" class="tab-btn flex-1 py-2 px-4 rounded-md transition-colors ${this.currentTab === 'requests' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'}">
-              ${i18n.t('friends.requests.title')} (${this.pendingRequests.length})
-            </button>
             <button id="tab-search" class="tab-btn flex-1 py-2 px-4 rounded-md transition-colors ${this.currentTab === 'search' ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white'}">
               ${i18n.t('friends.search.title')}
             </button>
@@ -78,8 +73,6 @@ export class FriendsManagementModal {
     switch (this.currentTab) {
       case 'friends':
         return this.renderFriendsList();
-      case 'requests':
-        return this.renderRequestsList();
       case 'search':
         return this.renderSearchTab();
       default:
@@ -92,7 +85,13 @@ export class FriendsManagementModal {
       return `
         <div class="text-center py-12">
           <div class="text-gray-400 text-4xl mb-4">👥</div>
-          <p class="text-gray-400">${i18n.t('profile.friends.noFriends')}</p>
+          <p class="text-gray-400 mb-4">${i18n.t('profile.friends.noFriends')}</p>
+          <button 
+            class="btn-primary" 
+            onclick="document.querySelector('#tab-search').click()"
+          >
+            ${i18n.t('profile.friends.findFriends')}
+          </button>
         </div>
       `;
     }
@@ -117,65 +116,17 @@ export class FriendsManagementModal {
             <div class="flex space-x-2">
               <button 
                 class="btn-secondary text-sm" 
-                onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile/${friend.id}' }))"
+                data-action="view-profile"
+                data-userid="${friend.id}"
               >
                 ${i18n.t('profile.friends.viewProfile')}
               </button>
               <button 
                 class="btn-danger text-sm" 
                 data-action="remove-friend" 
-                data-user-id="${friend.id}"
+                data-userid="${friend.id}"
               >
-                ${i18n.t('friends.actions.remove')}
-              </button>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  private renderRequestsList(): string {
-    if (this.pendingRequests.length === 0) {
-      return `
-        <div class="text-center py-12">
-          <div class="text-gray-400 text-4xl mb-4">📨</div>
-          <p class="text-gray-400">${i18n.t('friends.requests.noPending')}</p>
-        </div>
-      `;
-    }
-
-    return `
-      <div class="space-y-3">
-        ${this.pendingRequests.map(request => `
-          <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
-            <div class="flex items-center space-x-3">
-              <img 
-                src="${request.sender?.avatar_url || '/images/default-avatar.png'}" 
-                alt="${request.sender?.username}"
-                class="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <h3 class="font-semibold text-white">${request.sender?.username}</h3>
-                <p class="text-sm text-gray-400">
-                  ${i18n.t('friends.requests.sentRequest')}
-                </p>
-              </div>
-            </div>
-            <div class="flex space-x-2">
-              <button 
-                class="btn-primary text-sm" 
-                data-action="accept-request" 
-                data-request-id="${request.id}"
-              >
-                ${i18n.t('friends.actions.accept')}
-              </button>
-              <button 
-                class="btn-secondary text-sm" 
-                data-action="decline-request" 
-                data-request-id="${request.id}"
-              >
-                ${i18n.t('friends.actions.decline')}
+                ${i18n.t('friends.actions.removeFriend')}
               </button>
             </div>
           </div>
@@ -205,6 +156,7 @@ export class FriendsManagementModal {
               </svg>
             </button>
           </div>
+          <p class="text-sm text-gray-400 mt-2">${i18n.t('friends.search.searchInstructions')}</p>
         </div>
 
         <!-- Search Results -->
@@ -227,41 +179,61 @@ export class FriendsManagementModal {
 
     return `
       <div class="space-y-3">
-        ${this.searchResults.map(user => `
-          <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
-            <div class="flex items-center space-x-3">
-              <img 
-                src="${user.avatar_url || '/images/default-avatar.png'}" 
-                alt="${user.username}"
-                class="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <h3 class="font-semibold text-white">${user.username}</h3>
-                <p class="text-sm ${user.isOnline ? 'text-green-400' : 'text-gray-400'}">
-                  ${user.isOnline ? i18n.t('profile.friends.online') : i18n.t('profile.friends.offline')}
-                </p>
+        ${this.searchResults.map(user => {
+          const isFriend = this.friends.some(friend => friend.id === user.id);
+          
+          return `
+            <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+              <div class="flex items-center space-x-3">
+                <img 
+                  src="${user.avatar_url || '/images/default-avatar.png'}"
+                  alt="${user.username}"
+                  class="w-12 h-12 rounded-full object-cover"
+                  onerror="this.src='/images/default-avatar.png'"
+                />
+                <div>
+                  <h3 class="font-semibold text-white">${user.username}</h3>
+                  <p class="text-sm ${user.isOnline ? 'text-green-400' : 'text-gray-400'}">
+                    ${user.isOnline ? i18n.t('profile.friends.online') : i18n.t('profile.friends.offline')}
+                  </p>
+                  ${isFriend ? `<span class="text-xs bg-green-600 text-white px-2 py-1 rounded-full">${i18n.t('friends.status.friends')}</span>` : ''}
+                </div>
+              </div>
+              <div class="flex space-x-2">
+                <button 
+                  class="btn-secondary text-sm" 
+                  data-action="view-profile"
+                  data-userid="${user.id}"
+                  type="button"
+                >
+                  ${i18n.t('profile.friends.viewProfile')}
+                </button>
+                ${isFriend ? 
+                  `<button 
+                    class="btn-danger text-sm" 
+                    data-action="remove-friend" 
+                    data-userid="${user.id}"
+                    type="button"
+                  >
+                    ${i18n.t('friends.actions.removeFriend')}
+                  </button>` :
+                  `<button 
+                    class="btn-primary text-sm" 
+                    data-action="add-friend" 
+                    data-userid="${user.id}"
+                    type="button"
+                  >
+                    ${i18n.t('friends.actions.addFriend')}
+                  </button>`
+                }
               </div>
             </div>
-            <div class="flex space-x-2">
-              <button 
-                class="btn-secondary text-sm" 
-                onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile/${user.id}' }))"
-              >
-                ${i18n.t('profile.friends.viewProfile')}
-              </button>
-              <button 
-                class="btn-primary text-sm" 
-                data-action="send-request" 
-                data-user-id="${user.id}"
-              >
-                ${i18n.t('friends.actions.addFriend')}
-              </button>
-            </div>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
     `;
   }
+
 
   private bindEvents(): void {
     if (!this.modal) return;
@@ -280,7 +252,7 @@ export class FriendsManagementModal {
     this.modal.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        const tabId = target.id.replace('tab-', '') as 'friends' | 'requests' | 'search';
+        const tabId = target.id.replace('tab-', '') as 'friends' | 'search';
         this.switchTab(tabId);
       });
     });
@@ -288,74 +260,89 @@ export class FriendsManagementModal {
     // Recherche - attacher les événements initiaux
     this.bindSearchEvents();
 
-    // Actions
+    // Actions - MODIFIER ICI pour éviter la double exécution
     this.modal.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       const target = e.target as HTMLElement;
       const action = target.dataset.action;
       
       if (!action) return;
 
+      console.log('Action clicked:', action, 'Target:', target); // Debug
+
       try {
         let success = false;
         
         switch (action) {
-          case 'send-request':
-            const userId = parseInt(target.dataset.userId!);
-            success = await friendService.sendFriendRequest(userId);
+          case 'view-profile':
+            const userId = target.dataset.userid;
+            console.log('User ID récupéré pour view-profile:', userId); // Debug
+            
+            if (!userId || userId === '0' || userId === 'undefined') {
+              console.error('ID utilisateur invalide:', userId);
+              return;
+            }
+            
+            // Fermer le modal immédiatement avant la navigation
+            this.close();
+            
+            // Attendre un petit délai pour s'assurer que le modal est fermé
+            setTimeout(() => {
+              window.dispatchEvent(new CustomEvent('navigate', { detail: `/profile/${userId}` }));
+            }, 100);
+            
+            return; // Important: sortir de la fonction ici
+            
+          case 'add-friend':
+            const userIdToAdd = parseInt(target.dataset.userid || '0');
+            console.log('Adding friend with ID:', userIdToAdd);
+            if (userIdToAdd === 0) {
+              console.error('ID utilisateur invalide pour ajout ami');
+              return;
+            }
+            success = await friendService.sendFriendRequest(userIdToAdd);
             if (success) {
-              this.showMessage(i18n.t('friends.messages.requestSent'), 'success');
-              // Supprimer de la liste de recherche
-              this.searchResults = this.searchResults.filter(u => u.id !== userId);
+              this.showMessage(i18n.t('friends.messages.friendAdded'), 'success');
+              await this.loadData();
+              this.updateTabContent();
               this.updateSearchResults();
             }
             break;
             
-          case 'accept-request':
-            const acceptRequestId = parseInt(target.dataset.requestId!);
-            success = await friendService.acceptFriendRequest(acceptRequestId);
-            if (success) {
-              this.showMessage(i18n.t('friends.messages.requestAccepted'), 'success');
-              await this.loadData();
-              this.updateTabContent();
-            }
-            break;
-            
-          case 'decline-request':
-            const declineRequestId = parseInt(target.dataset.requestId!);
-            success = await friendService.declineFriendRequest(declineRequestId);
-            if (success) {
-              this.showMessage(i18n.t('friends.messages.requestDeclined'), 'success');
-              await this.loadData();
-              this.updateTabContent();
-            }
-            break;
-            
           case 'remove-friend':
-            const friendId = parseInt(target.dataset.userId!);
+            const friendId = parseInt(target.dataset.userid || '0');
+            console.log('Removing friend with ID:', friendId);
+            if (friendId === 0) {
+              console.error('ID ami invalide pour suppression');
+              return;
+            }
             if (confirm(i18n.t('friends.confirmations.removeFriend'))) {
               success = await friendService.removeFriend(friendId);
               if (success) {
                 this.showMessage(i18n.t('friends.messages.friendRemoved'), 'success');
                 await this.loadData();
                 this.updateTabContent();
+                this.updateSearchResults();
               }
             }
             break;
         }
         
-        if (!success && action !== 'remove-friend') {
+        if (!success && action !== 'view-profile') {
           this.showMessage(i18n.t('friends.messages.actionFailed'), 'error');
         }
         
       } catch (error) {
-        console.error('Friend action error:', error);
+        console.error('Action failed:', error);
         this.showMessage(i18n.t('friends.messages.actionFailed'), 'error');
       }
     });
   }
 
-  // Nouvelle méthode pour attacher les événements de recherche
-  private bindSearchEvents(): void {
+  private bindSearchEvents(): void 
+  {
     const searchInput = this.modal?.querySelector('#search-input') as HTMLInputElement;
     const searchBtn = this.modal?.querySelector('#search-btn');
     
@@ -363,20 +350,16 @@ export class FriendsManagementModal {
     
     const performSearch = async () => {
       const query = searchInput.value.trim();
-      console.log('🔍 Performing search for:', query);
       
       if (query && query.length >= 2) {
-        console.log('🔍 Making API call...');
         try {
           this.searchResults = await friendService.searchUsers(query);
-          console.log('🔍 Search results:', this.searchResults);
           this.updateSearchResults();
         } catch (error) {
-          console.error('🔍 Search error:', error);
-          this.showMessage('Search failed. Please try again.', 'error');
+          console.error('Search error:', error);
+          this.showMessage(i18n.t('friends.messages.searchFailed'), 'error');
         }
       } else if (query.length === 0) {
-        // Vider les résultats si le champ est vide
         this.searchResults = [];
         this.updateSearchResults();
       }
@@ -385,7 +368,6 @@ export class FriendsManagementModal {
     // Recherche sur Enter
     searchInput.addEventListener('keyup', (e) => {
       if (e.key === 'Enter') {
-        console.log('🔍 Enter key pressed');
         performSearch();
       }
     });
@@ -393,11 +375,10 @@ export class FriendsManagementModal {
     // Recherche sur clic du bouton
     searchBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('🔍 Search button clicked');
       performSearch();
     });
 
-    // Optionnel : recherche en temps réel avec debounce
+    // Recherche en temps réel avec debounce
     let searchTimeout: number;
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.trim();
@@ -406,7 +387,6 @@ export class FriendsManagementModal {
       
       if (query.length >= 2) {
         searchTimeout = window.setTimeout(() => {
-          console.log('🔍 Auto-search triggered');
           performSearch();
         }, 500);
       } else if (query.length === 0) {
@@ -416,7 +396,7 @@ export class FriendsManagementModal {
     });
   }
 
-  private switchTab(tab: 'friends' | 'requests' | 'search'): void {
+  private switchTab(tab: 'friends' | 'search'): void {
     this.currentTab = tab;
     
     // Mettre à jour les styles des onglets
@@ -433,7 +413,6 @@ export class FriendsManagementModal {
     
     // Re-attacher les événements de recherche si on passe à l'onglet search
     if (tab === 'search') {
-      // Petit délai pour s'assurer que le DOM est mis à jour
       setTimeout(() => {
         this.bindSearchEvents();
       }, 50);
@@ -444,6 +423,12 @@ export class FriendsManagementModal {
     const content = this.modal?.querySelector('#tab-content');
     if (content) {
       content.innerHTML = this.renderTabContent();
+      
+      // Mettre à jour le compteur d'amis dans l'onglet
+      const friendsTab = this.modal?.querySelector('#tab-friends');
+      if (friendsTab) {
+        friendsTab.textContent = `${i18n.t('profile.friends.title')} (${this.friends.length})`;
+      }
     }
   }
 
@@ -455,7 +440,6 @@ export class FriendsManagementModal {
   }
 
   private showMessage(message: string, type: 'success' | 'error'): void {
-    // Créer une notification temporaire
     const notification = document.createElement('div');
     notification.className = `fixed top-4 right-4 z-[60] px-4 py-2 rounded-lg text-white font-medium ${
       type === 'success' ? 'bg-green-600' : 'bg-red-600'

@@ -71,3 +71,8 @@ export interface UpdateResult {
   user?: UserData;
   error?: string;
 }
+
+export interface ChangePassword {
+  currentPassword: string;
+  newPassword: string;
+}
