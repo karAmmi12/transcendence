@@ -1,7 +1,8 @@
 import {FastifyRequest, FastifyReply} from "fastify";
 import { UserServices } from "../services/userServices";
-import { UpdateProfileData } from "../types/auth";
+import { UpdateProfileData, ChangePassword} from "../types/auth";
 import db from "../db/index.js"
+import bcrypt from "bcrypt"
 
 export class UserController
 {
@@ -27,38 +28,48 @@ export class UserController
     }
 
     /**
-     * Siuuu
-     * Route updateProfile - Mise à jour du profil utilisateur
-     * Permet de modifier username, email et/ou avatar_url
-     * Si une modification échoue, aucune n'est appliquée
+     * Route upadate MDP
      */
-    // static async updateProfile(req: FastifyRequest, reply: FastifyReply)
-    // {
-    //     try {
-    //         const user = req.user!; //assurer par le middleware 
-    //         const updateData = req.body as UpdateProfileData;
+    static async changePassword(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const user = req.user!; // grace au middleware
+            const changePassword = req.body as ChangePassword;
 
-    //         if (!updateData.username && !updateData.email && !updateData.avatar_url)
-    //             return (reply.status(400).send({error: "No update element as been given"}));
+            if (changePassword.currentPassword === changePassword.newPassword)
+                return (reply.status(400).send({error: "New password need to be different from old password"}));
 
-    //         const result = await userServices.updateUserProfile(user.userId, updateData);
-    //         if(!result.success)
-    //             return (reply.status(400).send({error: result.error}));
+            if (changePassword.newPassword.length < 8)
+                return (reply.status(400).send({error: "Password must be 8 character long"}));
 
-    //         reply.send({
-    //             message: "User profile updated",
-    //             user: result.user
-    //         });
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(changePassword.newPassword))
+                return (reply.status(400).send({error: "Password must contain 1 lower case, 1 upper case, 1 number, 1 symbole"}));
 
-    //     } catch (error) {
-    //         console.error("Update profile controller error:", error);
-    //         reply.status(500).send({error: "Failed to update profile"});
-    //     }
-    // }
+            const stmt = db.prepare("SELECT password FROM users WHERE id = ?");
+            const dbPassword = stmt.get(user.userId) as string | undefined;
+            if (!dbPassword)
+                return (reply.status(400).send({error: "User not found"}));
+
+            const isCurrentPasswordValid = await bcrypt.compare(changePassword.currentPassword, dbPassword)
+            if (!isCurrentPasswordValid)
+                return (reply.status(400).send({error: "Current passWord incorrect"}));
+
+            const hashedNewPassword = await bcrypt.hash(changePassword.newPassword, 10);
+
+            const updateStmt = db.prepare("UPDATE users SET password = ?, lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
+            const result = updateStmt.run(hashedNewPassword, user.userId);
+            if (result.changes === 0)
+                return (reply.status(500).send({error: "Failed update password"}));
+
+            reply.send({message: "Password upadte success"});
+        } catch (error) {
+            console.error("Change password error:", error);
+            reply.status(500).send({ error: "Failed to change password" });
+        }
+    }
 
 
-
-    //SIUUUUUUUU TEST 
     /**
      * Routes updateProfile qui peux recevoir des files
      */
