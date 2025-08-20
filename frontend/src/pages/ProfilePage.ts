@@ -7,6 +7,7 @@ import { StatsCard } from '@components/profile/StatsCard';
 import { FriendsSection } from '@components/profile/FriendsSection';
 import { MatchHistoryCard } from '@components/profile/MatchHistoryCard';
 import { EditProfileModal } from '@components/profile/EditProfileModal';
+import { ChangePasswordModal } from '@components/profile/ChangePasswordModal';
 import { QuickActionsCard, type ActionCallbacks } from '@components/profile/QuickActionsCard';
 import { ProfileLayout, type ProfileComponents } from '@components/profile/ProfileLayout';
 import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/index.js';
@@ -109,6 +110,22 @@ export class ProfilePage {
     editModal.show();
   }
 
+  private openChangePasswordModal(): void 
+  {
+    if (!this.user) return;
+
+    const changePasswordModal = new ChangePasswordModal(this.user, () => {
+      // Callback après changement de mot de passe
+      alert(i18n.t('profile.changePassword.success'));
+      // Optionnel : rediriger vers la page de profil ou recharger les données
+      const element = document.querySelector('#page-content');
+      if (element) {
+        this.render(element);
+      }
+    });
+    changePasswordModal.show();
+  }
+
   private render(element: Element): void {
     if (!this.user) return;
 
@@ -133,7 +150,7 @@ export class ProfilePage {
       const actionCallbacks: ActionCallbacks = {
         onEditProfile: () => this.openEditModal(),
         onLogout: () => authService.logout(),
-        onChangePassword: () => console.log('Change password - TODO: Implement')
+        onChangePassword: () => this.openChangePasswordModal()
       };
       
       components.actions = new QuickActionsCard(actionCallbacks);
