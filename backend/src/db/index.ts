@@ -11,7 +11,8 @@ db.exec(`
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
         avatar_url TEXT,
         is_online INTEGER NOT NULL DEFAULT 0,
-        lastLogin TEXT
+        lastLogin TEXT,
+        googleId TEXT
     );
     CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,8 +62,6 @@ db.exec(`
         FOREIGN KEY (match_id) REFERENCES matches (id) ON DELETE CASCADE,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
     );
-
-
 
     -- ============================================
     -- SIUU DONNÉES DE TEST - À COMMENTER PLUS TARD
