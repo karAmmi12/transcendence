@@ -61,17 +61,13 @@ export class FriendsService
             const stmt = db.prepare(`
                 SELECT DISTINCT u.id, u.username, u.avatar_url, u.is_online, u.lastLogin, f.createdAt
                 FROM users u
-                JOIN friends f ON (
-                    (f.user_id = u.id AND f.friend_id = ?) OR 
-                    (f.friend_id = u.id AND f.user_id = ?)
-                )
-                WHERE u.id != ?
+                JOIN friends f ON f.friend_id = u.id
+                WHERE f.user_id = ?
                 ORDER BY u.is_online DESC, u.username ASC
             `);
 
-            const friendsRaw = stmt.all(userId, userId, userId) as any[];
+            const friendsRaw = stmt.all(userId) as any[];
             
-           
             const friends: FriendProfile[] = friendsRaw.map(friend => ({
                 id: friend.id,
                 username: friend.username,
