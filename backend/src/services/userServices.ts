@@ -29,7 +29,7 @@ export class UserServices
             username: userData.username,
             email: userData.email,
             avatar_url: userData.avatar_url,
-            isOnline: userData.isOnline,
+            isOnline: userData.is_online,
             twoFactorEnabled: userData.twoFactorEnabled,
             createdAt: userData.createdAt,
             stats: stats
@@ -197,7 +197,7 @@ export class UserServices
                 LIMIT 20
             `);
             
-            const searchPattern = `%${query}%`;
+            const searchPattern = `${query}%`;
             const usersRaw = stmt.all(searchPattern, searchPattern) as any[];
             
             const users: UserData[] = usersRaw.map(userData => {

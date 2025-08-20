@@ -8,6 +8,5 @@ export default async function friendsRoutes(app: FastifyInstance)
     //gestions des amis simplifiee
     app.get('/list', FriendsController.getFriendsList);
     app.post('/add', FriendsController.addFriend);
-    app.delete('/remove', FriendsController.removeFriend); // '/:friendId
-    
+    app.delete('/remove/:friendId', FriendsController.removeFriend); // '/:friendId
 }
