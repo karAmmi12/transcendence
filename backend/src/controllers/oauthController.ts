@@ -1,21 +1,37 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js"; 
+import {  GoogleUserData, UserFromDB } from "../types/auth.js";
 import 'dotenv/config'
 
 export class OAuthController 
 {
+
+    private static exchangeCodeToken = "https://oauth2.googleapis.com/token";
+    private static authEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+    private static getUserGoogle = "https://www.googleapis.com/oauth2/v3/userinfo";
+    
+        // Validation au chargement de la classe
+    static {
+        if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || 
+            !process.env.GOOGLE_REDIRECT_URI || !process.env.API_URL_FRONT) {
+                console.error('Missing environnement variable for oauthController Class');
+                throw new Error("Missing required Google OAuth environment variables");
+        }
+    }
+
     static async oauthLogin (req: FastifyRequest, reply: FastifyReply)
     {
         try {
 
-            const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+            const authUrl = new URL(OAuthController.authEndpoint);
 
             authUrl.searchParams.set('client_id', process.env.GOOGLE_CLIENT_ID!);
             authUrl.searchParams.set('redirect_uri', process.env.GOOGLE_REDIRECT_URI!);
             authUrl.searchParams.set('response_type', 'code');
-            authUrl.searchParams.set('scope', ' profile ');
+            authUrl.searchParams.set('scope', 'profile email');
             authUrl.searchParams.set('access_type', 'offline');
+            authUrl.searchParams.set('prompt', 'select_account');
 
             console.log('Redirecting to:', authUrl.toString());
 
@@ -29,18 +45,85 @@ export class OAuthController
 
     static async oauthCallback (req: FastifyRequest, reply: FastifyReply)
     {
-       console.log('HELLO: I MAKE A LINK');
         const { code, error } = req.query as {code?: string, error?: string};
         try {
-            console.log('siiiiiiiiiiiiiiiiiiiiiiiiiiiu');
+            if(error) {
+                console.log('OAuth error received: ', error);
+                return (reply.redirect(`${process.env.API_URL_FRONT}/login?error=${error}`))
+            }
+
             if (!code)
                 return (reply.status(401).send(error));
-            else
-                return (reply.redirect(`http://localhost:5173`));
+    
+            const data = await OAuthController.exchangeCodeForToken(code!);
+            console.log("data received from exchange code: ", data)
+            if (!data)
+                return (reply.status(401).send('Error: Required code for OAuth2'));
+            
+            const userData = await OAuthController.getUserData(data.access_token);
+            console.log("userData: ",userData)
+            if (!userData)
+                return (reply.status(401).send('Error: Required token access for OAuth2'));
+
+            const oData = {
+                username: userData.given_name + userData.family_name,
+                email: userData.email,
+                googleId: userData.sub
+            }
+
+            const oauth2Data = oData as UserFromDB;
+            const res = await AuthService.handleOAuthUser(oauth2Data);
+            if (!res)
+                return (reply.status(401).send({error: "Error login fail"}));
+            CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
+            return (reply.redirect(process.env.API_URL_FRONT!));
             
         }catch (error){
             console.error("Code generate error:", error);
             return (reply.status(500).send({error: "Google generate coode failed"}));
+        }
+    }
+
+    static async exchangeCodeForToken(code: string) 
+    {
+        const params = new URLSearchParams({
+            code, 
+            client_id: process.env.GOOGLE_CLIENT_ID!,
+            client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+            redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
+            grant_type: 'authorization_code',
+        });
+
+        try {
+            const token = await fetch(OAuthController.exchangeCodeToken , {
+                method: "POST",
+                headers: {
+                   "Content-type": "application/x-www-form-urlencoded",
+                },
+                body: params.toString()
+            });
+            return (token.json());
+        } 
+        catch (error){
+            console.error(`Error generate token failed: ${error}`);
+            return (null);
+        }
+      
+    }
+
+    static async getUserData(accessToken: string) 
+    {
+        try {
+            const userData = await fetch(OAuthController.getUserGoogle, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            return (userData.json());
+        }
+        catch(error) {
+            console.log(`Error get users info: ${error}`);
+            return (null);
         }
     }
 }
