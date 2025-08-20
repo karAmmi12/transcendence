@@ -7,6 +7,7 @@ export interface User {
   twoFactorEnabled?: boolean;
   createdAt?: string;
   lastLogin?: string;
+  googleId?: string; 
   stats?: UserStats;
 }
 

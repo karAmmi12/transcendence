@@ -160,6 +160,8 @@ export class ProfilePage {
     const layout = new ProfileLayout(isOwnProfile, components);
     element.innerHTML = layout.render();
 
+    matchHistoryCard.bindFilterEvents(element);
+
     // Attacher les événements
     layout.bindEvents(this.handleFriendAction.bind(this));
   }
