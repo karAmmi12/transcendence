@@ -17,6 +17,6 @@ export interface FriendSearchResult {
   id: number;
   username: string;
   avatar_url: string | null;
-  is_onisOnlineline: boolean;
+  isOnline: boolean;
   isFriend?: boolean;
 }
