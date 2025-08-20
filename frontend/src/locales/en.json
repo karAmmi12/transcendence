@@ -32,6 +32,13 @@
         "description": "Play against AI opponents and improve your skills."
       }
     },
+    "globalStats": {
+      "title": "Platform Statistics",
+      "totalPlayers": "Total Players",
+      "totalGames": "Games Played",
+      "onlinePlayers": "Online Now",
+      "activeTournaments": "Active Tournaments"
+    },
     "stats": {
       "title": "Your Stats",
       "wins": "Wins",
@@ -137,10 +144,12 @@
   "profile": {
     "title": "Profile",
     "actions": {
+      "title": "Quick Actions",
       "editProfile": "Edit Profile",
       "changePassword": "Change Password",
       "changeAvatar": "Change Avatar",
       "addFriend": "Add Friend",
+      "removeFriend": "Remove Friend",
       "challenge": "Challenge"
     },
     "stats": {
@@ -197,49 +206,7 @@
       "daysAgo": "{days} days ago",
       "viewProfile": "View Profile",
       "challenge": "Challenge",
-      "sendMessage": "Send Message",
-      "search": {
-        "title": "Find Friends",
-        "placeholder": "Search users...",
-        "noResults": "No users found",
-        "searchInstructions": "Enter at least 2 characters to search"
-      },
-      "requests": {
-        "title": "Friend Requests",
-        "noPending": "No pending requests",
-        "sentRequest": "Sent you a friend request",
-        "received": "Received",
-        "sent": "Sent"
-      },
-      "actions": {
-        "addFriend": "Add Friend",
-        "removeFriend": "Remove Friend",
-        "accept": "Accept",
-        "decline": "Decline",
-        "acceptRequest": "Accept Request",
-        "cancelRequest": "Cancel Request",
-        "remove": "Remove"
-      },
-      "status": {
-        "requestSent": "Request Sent",
-        "pending": "Pending",
-        "friends": "Friends",
-        "blocked": "Blocked"
-      },
-      "messages": {
-        "requestSent": "Friend request sent!",
-        "requestAccepted": "Friend request accepted!",
-        "requestDeclined": "Friend request declined",
-        "friendRemoved": "Friend removed",
-        "actionFailed": "Action failed. Please try again.",
-        "userNotFound": "User not found",
-        "alreadyFriends": "You are already friends with this user",
-        "cannotAddSelf": "You cannot add yourself as a friend"
-      },
-      "confirmations": {
-        "removeFriend": "Are you sure you want to remove this friend?",
-        "declineRequest": "Are you sure you want to decline this friend request?"
-      }
+      "sendMessage": "Send Message"
     },
     "edit": {
       "title": "Edit Profile",
@@ -247,21 +214,16 @@
       "usernamePlaceholder": "Enter your username",
       "email": "Email",
       "emailPlaceholder": "Enter your email",
-      "firstName": "First Name",
-      "firstNamePlaceholder": "Enter your first name",
-      "lastName": "Last Name",
-      "lastNamePlaceholder": "Enter your last name",
-      "bio": "Bio",
-      "bioPlaceholder": "Tell us about yourself...",
-      "location": "Location",
-      "locationPlaceholder": "Your location",
-      "website": "Website",
-      "websitePlaceholder": "Your website URL",
+      "avatar": "Avatar",
+      "selectImage": "Select Image",
       "save": "Save Changes",
       "cancel": "Cancel",
-      "saving": "Saving...",
-      "saved": "Profile updated successfully!",
-      "error": "Failed to update profile"
+      "uploading": "Uploading...",
+      "errors": {
+        "updateFailed": "Failed to update profile",
+        "invalidImage": "Invalid image format",
+        "imageTooLarge": "Image too large"
+      }
     },
     "changePassword": {
       "title": "Change Password",
@@ -299,37 +261,48 @@
     }
   },
   "friends": {
-    "title": "Friends",
+    "title": "Friends Management",
     "search": {
       "title": "Find Friends",
       "placeholder": "Search users...",
-      "noResults": "No users found"
+      "noResults": "No users found",
+      "searchInstructions": "Enter at least 2 characters to search"
     },
     "requests": {
       "title": "Friend Requests",
       "noPending": "No pending requests",
-      "sentRequest": "Sent you a friend request"
+      "sentRequest": "Sent you a friend request",
+      "received": "Received",
+      "sent": "Sent"
     },
     "actions": {
       "addFriend": "Add Friend",
       "removeFriend": "Remove Friend",
       "accept": "Accept",
       "decline": "Decline",
-      "acceptRequest": "Accept Request"
+      "acceptRequest": "Accept Request",
+      "cancelRequest": "Cancel Request",
+      "remove": "Remove"
     },
     "status": {
       "requestSent": "Request Sent",
-      "pending": "Pending"
+      "pending": "Pending",
+      "friends": "Friends",
+      "blocked": "Blocked"
     },
     "messages": {
       "requestSent": "Friend request sent!",
       "requestAccepted": "Friend request accepted!",
       "requestDeclined": "Friend request declined",
       "friendRemoved": "Friend removed",
-      "actionFailed": "Action failed. Please try again."
+      "actionFailed": "Action failed. Please try again.",
+      "userNotFound": "User not found",
+      "alreadyFriends": "You are already friends with this user",
+      "cannotAddSelf": "You cannot add yourself as a friend"
     },
     "confirmations": {
-      "removeFriend": "Are you sure you want to remove this friend?"
+      "removeFriend": "Are you sure you want to remove this friend?",
+      "declineRequest": "Are you sure you want to decline this friend request?"
     }
   },
   "settings": {

@@ -32,14 +32,15 @@
         "description": "Urar akked imdanen n IA, snerni tiɣira-k."
       }
     },
-    "buttons": {
-      "play": "Bdu urar",
-      "login": "Kcem",
-      "register": "Rnu amiḍan",
-      "tournaments": "Isefka"
+    "globalStats": {
+      "title": "Tigawin n tamezwarut",
+      "totalPlayers": "Amḍiq n imeddukal",
+      "totalGames": "Amḍiq n urar",
+      "onlinePlayers": "Imeddukal di yidles",
+      "activeTournaments": "Isefka ittwaseqdacen"
     },
     "stats": {
-      "title": "Amasnas n tigawin",
+      "title": "Tigawin-inek",
       "wins": "Tawaḍit",
       "losses": "Tuffɣa",
       "winRate": "Ameɣnas n tawaḍit",
@@ -51,6 +52,12 @@
       "games": "Urar",
       "tournaments": "Isefka",
       "online": "Di yidles"
+    },
+    "buttons": {
+      "play": "Bdu urar",
+      "login": "Kcem",
+      "register": "Rnu amiḍan",
+      "tournaments": "Isefka"
     }
   },
   "auth": {
@@ -64,7 +71,7 @@
       "submit": "Kcem",
       "loading": "Azkem...",
       "forgotPassword": "Tettwessrem awal uffir?",
-      "noAccount": "Ulac aɣilif?",
+      "noAccount": "Ulac amiḍan?",
       "signUp": "Rnu amiḍan",
       "or": "neɣ",
       "oauth42": "Kcem s 42",
@@ -136,6 +143,15 @@
   },
   "profile": {
     "title": "Amasnas",
+    "actions": {
+      "title": "Tigawin tiruriyin",
+      "editProfile": "Ẓreg amasnas",
+      "changePassword": "Beddel awal uffir",
+      "changeAvatar": "Beddel tugna",
+      "addFriend": "Rnu d amdakkel",
+      "removeFriend": "Kkes amdakkel",
+      "challenge": "Ceggaɛ"
+    },
     "stats": {
       "title": "Tigawin",
       "gamesPlayed": "Urar yettwarnan",
@@ -182,14 +198,6 @@
       "challenge": "Ceggaɛ",
       "sendMessage": "Azen izen"
     },
-    "actions": {
-      "title": "Tigawin tiruriyin",
-      "editProfile": "Ẓreg amasnas",
-      "changePassword": "Beddel awal uffir",
-      "changeAvatar": "Beddel tugna",
-      "addFriend": "Rnu d amdakkel",
-      "challenge": "Ceggaɛ"
-    },
     "edit": {
       "title": "Ẓreg amasnas",
       "username": "Isem n useqdac",
@@ -200,14 +208,14 @@
       "cancel": "Sefsex",
       "uploading": "Asali...",
       "errors": {
-        "updateFailed": "Tuccfa deg ubeddel n umasnas",
+        "updateFailed": "Tuccfa deg ubeddel n amasnas",
         "invalidImage": "Amasal n tugna d arameɣtu",
         "imageTooLarge": "Tugna tameqqrant aṭas"
       }
     },
     "errors": {
       "userNotFound": "Useqdac ulac-it",
-      "loadFailed": "Tuccfa deg usali n umasnas"
+      "loadFailed": "Tuccfa deg usali n amasnas"
     },
     "settings": {
       "title": "Iɣewwaṛen",
