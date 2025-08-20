@@ -32,11 +32,12 @@
         "description": "Affrontez des adversaires IA et améliorez vos compétences."
       }
     },
-    "buttons": {
-      "play": "Jouer",
-      "login": "Connexion",
-      "register": "S'inscrire",
-      "tournaments": "Tournois"
+    "globalStats": {
+      "title": "Statistiques de la plateforme",
+      "totalPlayers": "Joueurs inscrits",
+      "totalGames": "Parties jouées",
+      "onlinePlayers": "Joueurs en ligne",
+      "activeTournaments": "Tournois actifs"
     },
     "stats": {
       "title": "Vos statistiques",
@@ -51,6 +52,12 @@
       "games": "Parties",
       "tournaments": "Tournois",
       "online": "En ligne"
+    },
+    "buttons": {
+      "play": "Commencer à jouer",
+      "login": "Connexion",
+      "register": "S'inscrire",
+      "tournaments": "Tournois"
     }
   },
   "auth": {
@@ -136,15 +143,31 @@
   },
   "profile": {
     "title": "Profil",
+    "actions": {
+      "title": "Actions rapides",
+      "editProfile": "Modifier le profil",
+      "changePassword": "Changer le mot de passe",
+      "changeAvatar": "Changer l'avatar",
+      "addFriend": "Ajouter comme ami",
+      "removeFriend": "Supprimer l'ami",
+      "challenge": "Défier"
+    },
     "stats": {
       "title": "Statistiques",
-      "gamesPlayed": "Parties jouées",
-      "totalGames": "Total des parties",
       "wins": "Victoires",
       "losses": "Défaites",
+      "totalGames": "Total des parties",
+      "gamesPlayed": "Parties jouées",
       "gamesWon": "Parties gagnées",
       "winRate": "Taux de victoire",
-      "ranking": "Classement"
+      "ranking": "Classement",
+      "rank": "Classement",
+      "highestScore": "Score le plus élevé",
+      "averageScore": "Score moyen",
+      "currentStreak": "Série actuelle",
+      "longestStreak": "Plus longue série",
+      "playtime": "Temps de jeu total",
+      "lastPlayed": "Dernière partie"
     },
     "history": {
       "title": "Historique des matchs",
@@ -171,9 +194,9 @@
     },
     "friends": {
       "title": "Amis",
+      "manage": "Gérer les amis",
       "noFriends": "Aucun ami pour le moment",
       "findFriends": "Trouver des amis",
-      "manage": "Gérer",
       "viewAll": "Voir tout",
       "online": "En ligne",
       "offline": "Hors ligne",
@@ -185,18 +208,12 @@
       "challenge": "Défier",
       "sendMessage": "Envoyer un message"
     },
-    "actions": {
-      "title": "Actions rapides",
-      "editProfile": "Modifier le profil",
-      "changePassword": "Changer le mot de passe",
-      "changeAvatar": "Changer l'avatar",
-      "addFriend": "Ajouter comme ami",
-      "challenge": "Défier"
-    },
     "edit": {
       "title": "Modifier le profil",
       "username": "Nom d'utilisateur",
+      "usernamePlaceholder": "Entrez votre nom d'utilisateur",
       "email": "Email",
+      "emailPlaceholder": "Entrez votre email",
       "avatar": "Avatar",
       "selectImage": "Sélectionner une image",
       "save": "Sauvegarder les modifications",
@@ -208,27 +225,175 @@
         "imageTooLarge": "Image trop volumineuse"
       }
     },
+    "changePassword": {
+      "title": "Changer le mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "currentPasswordPlaceholder": "Entrez votre mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "newPasswordPlaceholder": "Entrez votre nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "confirmPasswordPlaceholder": "Confirmez votre nouveau mot de passe",
+      "save": "Changer le mot de passe",
+      "cancel": "Annuler",
+      "saving": "Changement en cours...",
+      "success": "Mot de passe changé avec succès !",
+      "error": "Échec du changement de mot de passe",
+      "validation": {
+        "required": "Ce champ est requis",
+        "minLength": "Le mot de passe doit contenir au moins 8 caractères",
+        "mismatch": "Les mots de passe ne correspondent pas",
+        "weak": "Le mot de passe est trop faible"
+      }
+    },
     "errors": {
       "userNotFound": "Utilisateur introuvable",
-      "loadFailed": "Échec du chargement du profil"
+      "loadFailed": "Échec du chargement du profil",
+      "unauthorized": "Vous n'avez pas la permission de voir ce profil",
+      "networkError": "Erreur réseau. Veuillez réessayer."
     },
     "settings": {
       "title": "Paramètres",
       "language": "Langue",
       "theme": "Thème",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "privacy": "Confidentialité",
+      "security": "Sécurité"
+    }
+  },
+  "friends": {
+    "title": "Gestion des amis",
+    "search": {
+      "title": "Trouver des amis",
+      "placeholder": "Rechercher des utilisateurs...",
+      "noResults": "Aucun utilisateur trouvé",
+      "searchInstructions": "Entrez au moins 2 caractères pour rechercher"
+    },
+    "requests": {
+      "title": "Demandes d'amis",
+      "noPending": "Aucune demande en attente",
+      "sentRequest": "Vous a envoyé une demande d'ami",
+      "received": "Reçues",
+      "sent": "Envoyées"
+    },
+    "actions": {
+      "addFriend": "Ajouter comme ami",
+      "removeFriend": "Supprimer l'ami",
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "acceptRequest": "Accepter la demande",
+      "cancelRequest": "Annuler la demande",
+      "remove": "Supprimer"
+    },
+    "status": {
+      "requestSent": "Demande envoyée",
+      "pending": "En attente",
+      "friends": "Amis",
+      "blocked": "Bloqué"
+    },
+    "messages": {
+      "requestSent": "Demande d'ami envoyée !",
+      "requestAccepted": "Demande d'ami acceptée !",
+      "requestDeclined": "Demande d'ami refusée",
+      "friendRemoved": "Ami supprimé",
+      "actionFailed": "Action échouée. Veuillez réessayer.",
+      "userNotFound": "Utilisateur introuvable",
+      "alreadyFriends": "Vous êtes déjà amis avec cet utilisateur",
+      "cannotAddSelf": "Vous ne pouvez pas vous ajouter comme ami"
+    },
+    "confirmations": {
+      "removeFriend": "Êtes-vous sûr de vouloir supprimer cet ami ?",
+      "declineRequest": "Êtes-vous sûr de vouloir refuser cette demande d'ami ?"
     }
   },
   "settings": {
     "title": "Paramètres",
     "username": "Nom d'utilisateur",
     "email": "Email",
-    "save": "Sauvegarder les paramètres"
+    "save": "Sauvegarder les paramètres",
+    "general": {
+      "title": "Paramètres généraux",
+      "language": "Langue",
+      "theme": "Thème",
+      "timezone": "Fuseau horaire"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "email": "Notifications par email",
+      "push": "Notifications push",
+      "gameInvites": "Invitations de jeu",
+      "friendRequests": "Demandes d'amis",
+      "messages": "Messages"
+    },
+    "privacy": {
+      "title": "Paramètres de confidentialité",
+      "profileVisibility": "Visibilité du profil",
+      "onlineStatus": "Afficher le statut en ligne",
+      "gameHistory": "Afficher l'historique des parties"
+    },
+    "account": {
+      "title": "Compte",
+      "changePassword": "Changer le mot de passe",
+      "deleteAccount": "Supprimer le compte",
+      "exportData": "Exporter les données"
+    }
+  },
+  "modals": {
+    "confirm": {
+      "title": "Confirmer l'action",
+      "message": "Êtes-vous sûr de vouloir continuer ?",
+      "confirm": "Confirmer",
+      "cancel": "Annuler"
+    },
+    "error": {
+      "title": "Erreur",
+      "genericMessage": "Une erreur est survenue. Veuillez réessayer.",
+      "close": "Fermer"
+    },
+    "success": {
+      "title": "Succès",
+      "close": "Fermer"
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "Ce champ est requis",
+      "email": "Veuillez entrer une adresse email valide",
+      "minLength": "Doit contenir au moins {min} caractères",
+      "maxLength": "Doit contenir au maximum {max} caractères",
+      "password": "Le mot de passe doit contenir au moins 8 caractères",
+      "confirmPassword": "Les mots de passe doivent correspondre",
+      "username": "Le nom d'utilisateur doit contenir entre 3 et 20 caractères et ne peut contenir que des lettres, des chiffres et des underscores"
+    },
+    "placeholders": {
+      "search": "Rechercher...",
+      "email": "Entrez votre email",
+      "username": "Entrez votre nom d'utilisateur",
+      "password": "Entrez votre mot de passe",
+      "message": "Tapez votre message..."
+    }
+  },
+  "time": {
+    "now": "Maintenant",
+    "justNow": "À l'instant",
+    "minuteAgo": "Il y a 1 minute",
+    "minutesAgo": "Il y a {minutes} minutes",
+    "hourAgo": "Il y a 1 heure",
+    "hoursAgo": "Il y a {hours} heures",
+    "dayAgo": "Il y a 1 jour",
+    "daysAgo": "Il y a {days} jours",
+    "weekAgo": "Il y a 1 semaine",
+    "weeksAgo": "Il y a {weeks} semaines",
+    "monthAgo": "Il y a 1 mois",
+    "monthsAgo": "Il y a {months} mois",
+    "yearAgo": "Il y a 1 an",
+    "yearsAgo": "Il y a {years} ans"
   },
   "common": {
     "loading": "Chargement...",
     "error": "Erreur",
     "success": "Succès",
+    "warning": "Attention",
+    "info": "Information",
     "cancel": "Annuler",
     "confirm": "Confirmer",
     "save": "Sauvegarder",
@@ -238,9 +403,32 @@
     "back": "Retour",
     "next": "Suivant",
     "previous": "Précédent",
+    "submit": "Soumettre",
+    "reset": "Réinitialiser",
+    "clear": "Effacer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "refresh": "Rafraîchir",
+    "retry": "Réessayer",
+    "yes": "Oui",
+    "no": "Non",
+    "ok": "OK",
     "today": "Aujourd'hui",
     "yesterday": "Hier",
-    "daysAgo": "Il y a {days} jours"
+    "tomorrow": "Demain",
+    "daysAgo": "Il y a {days} jours",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "connecting": "Connexion en cours...",
+    "connected": "Connecté",
+    "disconnected": "Déconnecté",
+    "tryAgain": "Réessayer",
+    "goBack": "Retour",
+    "seeMore": "Voir plus",
+    "showLess": "Voir moins",
+    "expand": "Développer",
+    "collapse": "Réduire"
   },
   "footer": {
     "description": "L'expérience Pong ultime. Jouez, affrontez et discutez avec la communauté.",
