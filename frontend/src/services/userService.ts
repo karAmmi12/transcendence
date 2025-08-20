@@ -102,7 +102,7 @@ export class UserService {
    */
   public async getMatchHistory(userId?: string | null): Promise<any[]> {
     try {
-      const endpoint = userId ? `/users/${userId}/matches` : '/users/me/matches';
+      const endpoint = userId ? `/user/${userId}/matches` : '/user/me/matches';
       const response = await fetch(`${this.baseURL}${endpoint}`, {
         credentials: 'include'
       });
@@ -121,7 +121,7 @@ export class UserService {
    * Change le mot de passe
    */
   public async changePassword(currentPassword: string, newPassword: string): Promise<void> {
-    const response = await fetch(`${this.baseURL}/users/change-password`, {
+    const response = await fetch(`${this.baseURL}/user/change-password`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
