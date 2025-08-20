@@ -11,17 +11,27 @@ export class OAuthController
     private static authEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
     private static getUserGoogle = "https://www.googleapis.com/oauth2/v3/userinfo";
     
+        // Validation au chargement de la classe
+    static {
+        if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || 
+            !process.env.GOOGLE_REDIRECT_URI || !process.env.API_URL_FRONT) {
+                console.error('Missing environnement variable for oauthController Class');
+                throw new Error("Missing required Google OAuth environment variables");
+        }
+    }
+
     static async oauthLogin (req: FastifyRequest, reply: FastifyReply)
     {
         try {
 
-            const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+            const authUrl = new URL(OAuthController.authEndpoint);
 
             authUrl.searchParams.set('client_id', process.env.GOOGLE_CLIENT_ID!);
             authUrl.searchParams.set('redirect_uri', process.env.GOOGLE_REDIRECT_URI!);
             authUrl.searchParams.set('response_type', 'code');
             authUrl.searchParams.set('scope', 'profile email');
             authUrl.searchParams.set('access_type', 'offline');
+            authUrl.searchParams.set('prompt', 'select_account');
 
             console.log('Redirecting to:', authUrl.toString());
 
@@ -39,7 +49,7 @@ export class OAuthController
         try {
             if(error) {
                 console.log('OAuth error received: ', error);
-                return (reply.redirect(`http://localhost:5173/login?error=${error}`))
+                return (reply.redirect(`${process.env.API_URL_FRONT}/login?error=${error}`))
             }
 
             if (!code)
@@ -66,7 +76,7 @@ export class OAuthController
             if (!res)
                 return (reply.status(401).send({error: "Error login fail"}));
             CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
-            return (reply.redirect(`http://localhost:5173`).send(res));
+            return (reply.redirect(process.env.API_URL_FRONT!));
             
         }catch (error){
             console.error("Code generate error:", error);
