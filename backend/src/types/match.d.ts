@@ -1,12 +1,14 @@
-export interface MatchData {
+export interface MatchHistory {
     id: number;
     opponent: string;
-    result: string; // win | loss
+    result: 'win' | 'loss';
     score: {
         player: number;
         opponent: number;
     }
     date: string;
-    duration: string;
-    gameMode: string; // local | online | tournament
+    duration?: string;
+    gameMode: 'local' | 'online' | 'tournament';
+    tournamentId?: number;
+    opponentAvatar?: string;
 }
