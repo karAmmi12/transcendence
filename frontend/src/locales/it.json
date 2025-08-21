@@ -125,8 +125,8 @@
       "opponent": "Avversario"
     },
     "modes": {
-      "classic": "Classico",
-      "ai": "vs IA",
+      "local": "Locale",
+      "remote": "Remoto",
       "tournament": "Torneo"
     },
     "customization": {

@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import { friendService } from '@services/friendsService';
 import { User, Friend } from '../../types/index.js';
 

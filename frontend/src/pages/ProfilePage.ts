@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import { userService } from '@services/userService';
 import { authService } from '@services/authService';
 import { friendService } from '@services/friendsService';
@@ -7,6 +7,7 @@ import { StatsCard } from '@components/profile/StatsCard';
 import { FriendsSection } from '@components/profile/FriendsSection';
 import { MatchHistoryCard } from '@components/profile/MatchHistoryCard';
 import { EditProfileModal } from '@components/profile/EditProfileModal';
+import { ChangePasswordModal } from '@components/profile/ChangePasswordModal';
 import { QuickActionsCard, type ActionCallbacks } from '@components/profile/QuickActionsCard';
 import { ProfileLayout, type ProfileComponents } from '@components/profile/ProfileLayout';
 import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/index.js';
@@ -61,8 +62,8 @@ export class ProfilePage {
         this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
       }
 
-      // Charger l'historique des matchs (pour l'instant mock data)
-      this.matchHistory = this.createMockMatchHistory();
+      // Charger l'historique des matchs:
+      this.matchHistory = await userService.getMatchHistory(this.userId);
 
       // Charger les amis seulement pour son propre profil
       if (!this.userId) {
@@ -109,6 +110,22 @@ export class ProfilePage {
     editModal.show();
   }
 
+  private openChangePasswordModal(): void 
+  {
+    if (!this.user) return;
+
+    const changePasswordModal = new ChangePasswordModal(this.user, () => {
+      // Callback après changement de mot de passe
+      alert(i18n.t('profile.changePassword.success'));
+      // Optionnel : rediriger vers la page de profil ou recharger les données
+      const element = document.querySelector('#page-content');
+      if (element) {
+        this.render(element);
+      }
+    });
+    changePasswordModal.show();
+  }
+
   private render(element: Element): void {
     if (!this.user) return;
 
@@ -133,7 +150,7 @@ export class ProfilePage {
       const actionCallbacks: ActionCallbacks = {
         onEditProfile: () => this.openEditModal(),
         onLogout: () => authService.logout(),
-        onChangePassword: () => console.log('Change password - TODO: Implement')
+        onChangePassword: () => this.openChangePasswordModal()
       };
       
       components.actions = new QuickActionsCard(actionCallbacks);
@@ -142,6 +159,8 @@ export class ProfilePage {
     // Créer et rendre le layout
     const layout = new ProfileLayout(isOwnProfile, components);
     element.innerHTML = layout.render();
+
+    matchHistoryCard.bindFilterEvents(element);
 
     // Attacher les événements
     layout.bindEvents(this.handleFriendAction.bind(this));
@@ -211,29 +230,6 @@ export class ProfilePage {
     });
   }
 
-  // Simulation temporaire de l'historique des matchs
-  private createMockMatchHistory(): MatchHistory[] {
-    return [
-      {
-        id: '1',
-        opponent: 'Alice',
-        result: 'win',
-        score: { player: 5, opponent: 3 },
-        date: new Date(Date.now() - 86400000).toISOString(),
-        duration: 180,
-        gameMode: 'classic'
-      },
-      {
-        id: '2',
-        opponent: 'Bob',
-        result: 'loss',
-        score: { player: 2, opponent: 5 },
-        date: new Date(Date.now() - 172800000).toISOString(),
-        duration: 240,
-        gameMode: 'ai'
-      }
-    ];
-  }
 
   destroy(): void {
     if (this.languageListener) {

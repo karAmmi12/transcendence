@@ -125,8 +125,8 @@
       "opponent": "Opponent"
     },
     "modes": {
-      "classic": "Classic",
-      "ai": "vs AI",
+      "local": "Local",
+      "remote": "Remote",
       "tournament": "Tournament"
     },
     "customization": {
