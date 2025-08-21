@@ -32,6 +32,7 @@ export interface UserData {
   twoFactorEnabled?: boolean;
   createdAt?: string;
   lastLogin?: string;
+  googleId?: string; 
   stats?: UserStats;
 }
 

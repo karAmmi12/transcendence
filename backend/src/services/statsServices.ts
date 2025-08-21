@@ -108,8 +108,8 @@ export class StatsService
                 date: match.ended_at,
                 duration: duration,
                 gameMode: match.mode as 'local' | 'remote' | 'tournament',
-                tournament_id: match.tournament_id,
-                opponent_avatar: match.opponent_avatar
+                tournamentId: match.tournament_id,
+                opponentAvatar: match.opponent_avatar || null
             };
         });
 

@@ -7,6 +7,7 @@ export interface User {
   twoFactorEnabled?: boolean;
   createdAt?: string;
   lastLogin?: string;
+  googleId?: string; 
   stats?: UserStats;
 }
 
@@ -37,6 +38,7 @@ export interface RegisterData {
 export interface MatchHistory {
   id: string;
   opponent: string;
+  opponentAvatar?: string | null; // Nouveau champ pour l'avatar de l'adversaire
   result: 'win' | 'loss';
   score: {
     player: number;
@@ -44,8 +46,22 @@ export interface MatchHistory {
   };
   date: string;
   duration?: number;
-  gameMode?: 'classic' | 'ai' | 'tournament';
+  gameMode?: 'local' | 'remote' | 'tournament';
 }
+
+// export interface MatchData {
+//     id: number;
+//     userId: number;
+//     opponent: string;
+//     result: string; // win | loss
+//     score: {
+//         player: number;
+//         opponent: number;
+//     }
+//     date: string;
+//     duration: string;
+//     gameMode: string; // local | online | tournament
+// }
 
 export interface Friend {
   id: number;

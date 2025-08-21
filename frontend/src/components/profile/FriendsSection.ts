@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import { userService } from '../../services/userService.js';
 import type { Friend } from '../../types/index.js';
 import { FriendsManagementModal } from './FriendsManagementModal.js';

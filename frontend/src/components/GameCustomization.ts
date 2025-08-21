@@ -1,6 +1,6 @@
 import { gameCustomizationService } from '../services/gameCustomizationService.js';
 import { GameSettings } from '../types/gameCustomization.js';
-import { i18n } from '../services/i18n.js';
+import { i18n } from '../services/i18nService.js';
 
 export class GameCustomization {
   private settings: GameSettings;
