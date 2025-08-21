@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import type { MatchHistory } from '../../types/index.js';
 
 export class MatchHistoryCard {
@@ -51,6 +51,7 @@ export class MatchHistoryCard {
     `;
   }
 
+  
   private renderVisualStats(): string {
     if (this.filteredMatches.length === 0) return '';
 
@@ -67,12 +68,6 @@ export class MatchHistoryCard {
           <div class="flex flex-col items-center">
             <div class="relative w-40 h-40 mb-4">
               ${this.renderAdvancedPieChart(winRate)}
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-center bg-gray-800/90 rounded-full p-4 shadow-xl border border-gray-600/50">
-                  <div class="text-2xl font-bold text-white mb-1">${winRate}%</div>
-                  <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.stats.winRate')}</div>
-                </div>
-              </div>
             </div>
             
             <!-- Légende du camembert -->
@@ -117,7 +112,6 @@ export class MatchHistoryCard {
       </div>
     `;
   }
-
   private renderAdvancedPieChart(winRate: number): string {
     const winPercentage = winRate;
     const lossPercentage = 100 - winRate;
@@ -125,40 +119,60 @@ export class MatchHistoryCard {
     // Calcul des angles pour le SVG (commencer à -90° pour avoir le début en haut)
     const startAngle = -90;
     const winAngle = (winPercentage / 100) * 360;
-    const lossAngle = (lossPercentage / 100) * 360;
     
-    // Créer les paths avec un style plus avancé
-    const winPath = this.createAdvancedArcPath(80, 80, 65, startAngle, startAngle + winAngle);
-    const lossPath = this.createAdvancedArcPath(80, 80, 65, startAngle + winAngle, startAngle + winAngle + lossAngle);
+    // Créer les paths pleins pour un camembert épuré
+    const winPath = this.createFilledArcPath(80, 80, 60, startAngle, startAngle + winAngle);
+    const lossPath = this.createFilledArcPath(80, 80, 60, startAngle + winAngle, startAngle + 360);
     
     return `
       <svg class="w-40 h-40 drop-shadow-lg" viewBox="0 0 160 160">
-        <!-- Cercle de fond avec dégradé -->
+        <!-- Dégradés épurés -->
         <defs>
-          <linearGradient id="winGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
-          </linearGradient>
-          <linearGradient id="lossGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
-            <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
-          </linearGradient>
-          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+          <radialGradient id="winGradient" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" style="stop-color:#34d399;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+          </radialGradient>
+          <radialGradient id="lossGradient" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" style="stop-color:#f87171;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+          </radialGradient>
+          <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.15"/>
           </filter>
         </defs>
         
-        <!-- Cercle de base -->
-        <circle cx="80" cy="80" r="65" fill="none" stroke="#374151" stroke-width="12" opacity="0.3"/>
+        <!-- Segment des défaites (fond) -->
+        ${lossPercentage > 0 ? `<path d="${lossPath}" fill="url(#lossGradient)" filter="url(#softShadow)"/>` : ''}
         
-        <!-- Arc des victoires -->
-        ${winPercentage > 0 ? `<path d="${winPath}" fill="none" stroke="url(#winGradient)" stroke-width="12" stroke-linecap="round" filter="url(#shadow)"/>` : ''}
+        <!-- Segment des victoires (par-dessus) -->
+        ${winPercentage > 0 ? `<path d="${winPath}" fill="url(#winGradient)" filter="url(#softShadow)"/>` : ''}
         
-        <!-- Arc des défaites -->
-        ${lossPercentage > 0 ? `<path d="${lossPath}" fill="none" stroke="url(#lossGradient)" stroke-width="12" stroke-linecap="round" filter="url(#shadow)"/>` : ''}
+        <!-- Cercle de base si pas de données -->
+        ${winPercentage === 0 && lossPercentage === 0 ? `
+          <circle cx="80" cy="80" r="60" fill="#374151" stroke="#4B5563" stroke-width="2"/>
+        ` : ''}
       </svg>
     `;
   }
+
+
+  private createFilledArcPath(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number): string {
+    if (startAngle === endAngle) return '';
+    
+    const startAngleRad = (startAngle * Math.PI) / 180;
+    const endAngleRad = (endAngle * Math.PI) / 180;
+    
+    const x1 = centerX + radius * Math.cos(startAngleRad);
+    const y1 = centerY + radius * Math.sin(startAngleRad);
+    const x2 = centerX + radius * Math.cos(endAngleRad);
+    const y2 = centerY + radius * Math.sin(endAngleRad);
+    
+    const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+    
+    // Créer un path rempli qui forme une portion de camembert
+    return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+  }
+
 
   private createAdvancedArcPath(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number): string {
     const startAngleRad = (startAngle * Math.PI) / 180;
@@ -328,7 +342,6 @@ export class MatchHistoryCard {
     const wins = this.filteredMatches.filter(m => m.result === 'win').length;
     const total = this.filteredMatches.length;
     const winRate = Math.round((wins / total) * 100);
-    const recentWins = this.getRecentWinStreak();
 
     return `
       <div class="mt-6 pt-6 border-t border-gray-700">
@@ -341,9 +354,9 @@ export class MatchHistoryCard {
             <div class="text-2xl font-bold ${winRate >= 50 ? 'text-green-400' : 'text-red-400'} mb-1">${winRate}%</div>
             <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.winRate')}</div>
           </div>
-          <div class="bg-gradient-to-br from-yellow-900/40 to-yellow-800/40 rounded-xl p-4 border border-yellow-700/30">
-            <div class="text-2xl font-bold text-yellow-400 mb-1">${recentWins}/5</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.recent')}</div>
+          <div class="bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-4 border border-purple-700/30">
+            <div class="text-2xl font-bold text-purple-400 mb-1">${wins}</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.stats.wins')}</div>
           </div>
         </div>
       </div>
@@ -364,7 +377,7 @@ export class MatchHistoryCard {
     });
   }
 
-  // Méthode pour attacher les événements de filtrage
+ // Méthode pour attacher les événements de filtrage
   bindFilterEvents(container: Element): void {
     const resultFilter = container.querySelector('#match-filter') as HTMLSelectElement;
     const modeFilter = container.querySelector('#mode-filter') as HTMLSelectElement;
@@ -374,21 +387,21 @@ export class MatchHistoryCard {
       const modeValue = modeFilter?.value || 'all';
       this.applyFilters(resultValue, modeValue);
       
-      // Re-render seulement la section des stats et matchs
+      // Re-render complètement les sections stats et matchs
       const statsContainer = container.querySelector('.bg-gradient-to-br');
-      const matchesContainer = container.querySelector('.space-y-3');
+      const matchesSection = container.querySelector('.space-y-3')?.parentElement;
       
-      if (statsContainer && matchesContainer) {
+      if (statsContainer && matchesSection) {
         // Recréer les éléments de stats et matchs
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = this.renderVisualStats() + this.renderMatches();
         
         // Remplacer les sections
-        const newStats = tempDiv.querySelector('.bg-gradient-to-br');
-        const newMatches = tempDiv.querySelector('.space-y-3');
+        const newStats = tempDiv.children[0];
+        const newMatches = tempDiv.children[1];
         
         if (newStats) statsContainer.replaceWith(newStats);
-        if (newMatches) matchesContainer.parentElement?.replaceWith(tempDiv.children[1]);
+        if (newMatches) matchesSection.replaceWith(newMatches);
       }
     };
 

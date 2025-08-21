@@ -1,5 +1,5 @@
 import { GameState } from '../types/game.js'; // Changé de @/types/game.js
-import { i18n } from '../services/i18n.js'; // Changé de @/services/i18n.js
+import { i18n } from '../services/i18nService.js'; // Changé de @/services/i18n.js
 
 export class PongGame {
   private canvas: HTMLCanvasElement;
