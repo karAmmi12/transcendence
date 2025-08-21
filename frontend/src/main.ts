@@ -3,7 +3,7 @@
 import './styles/main.css'
 import { App } from './app'
 import { Router } from './router'
-import { i18n } from '@services/i18n'
+import { i18n } from '@/services/i18nService'
 // import { MobileTestUtils } from './utils/MobileTestUtils'
 // import { ResponsiveTest } from './utils/ResponsiveTest'
 import { authService } from './services/authService'

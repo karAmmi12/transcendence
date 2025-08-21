@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import { authService } from '@services/authService';
 import { globalStatsService } from '@services/globalStatsService';
 import { HeroSection } from '@components/home/HeroSection';
