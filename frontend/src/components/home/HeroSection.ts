@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import type { User } from '../../types/index.js';
 
 export class HeroSection {

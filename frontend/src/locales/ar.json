@@ -125,8 +125,8 @@
       "opponent": "الخصم"
     },
     "modes": {
-      "classic": "كلاسيكي",
-      "ai": "ضد الذكاء الاصطناعي",
+      "local": "محلي",
+      "online": "عبر الإنترنت",
       "tournament": "بطولة"
     },
     "customization": {

@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 import { userService } from '@services/userService';
 import { authService } from '@services/authService';
 import { friendService } from '@services/friendsService';
@@ -240,7 +240,7 @@ export class ProfilePage {
         score: { player: 5, opponent: 3 },
         date: new Date(Date.now() - 86400000).toISOString(),
         duration: 180,
-        gameMode: 'classic'
+        gameMode: 'local'
       },
       {
         id: '2',
@@ -249,7 +249,34 @@ export class ProfilePage {
         score: { player: 2, opponent: 5 },
         date: new Date(Date.now() - 172800000).toISOString(),
         duration: 240,
-        gameMode: 'ai'
+        gameMode: 'online'
+      },
+      {
+        id: '3',
+        opponent: 'Charlie',
+        result: 'win',
+        score: { player: 4, opponent: 4 },
+        date: new Date(Date.now() - 259200000).toISOString(),
+        duration: 300,
+        gameMode: 'local'
+      },
+      {
+        id: '4',
+        opponent: 'David',
+        result: 'win',
+        score: { player: 6, opponent: 2 },
+        date: new Date(Date.now() - 345600000).toISOString(),
+        duration: 150,
+        gameMode: 'tournament'
+      },
+      {
+        id: '5',
+        opponent: 'Eve',
+        result: 'loss',
+        score: { player: 3, opponent: 5 },
+        date: new Date(Date.now() - 432000000).toISOString(),
+        duration: 200,
+        gameMode: 'local'
       }
     ];
   }
