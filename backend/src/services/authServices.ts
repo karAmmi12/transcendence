@@ -139,7 +139,7 @@ export class AuthService
                 }
             
             //Maj lastLogin dans la db
-            const updateStmt = db.prepare("UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
+            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
             updateStmt.run(user.id);
 
             //Generer les tokens JWT
@@ -193,11 +193,11 @@ export class AuthService
             const userExist = findUserByEmail(userData.email); 
             
             if (userExist) {
-                const updateStmt = db.prepare("UPDATE users SET lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
+                const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
                 updateStmt.run(userExist.id);
 
                 
-                const updateGoogleIdStmt = db.prepare("UPDATE users SET googleId = ? WHERE id = ?");
+                const updateGoogleIdStmt = db.prepare("UPDATE users SET google_id = ? WHERE id = ?");
                 updateGoogleIdStmt.run(userData.googleId, userExist.id);
 
                 const PairToken = JWTService.generateTokenPair(userExist.id, userExist.username)
@@ -222,7 +222,7 @@ export class AuthService
             if (!userName){
                 const randomPassword = process.env.RAND_SECRET!;
                 const hashedPassword = await bcrypt.hash(randomPassword, 10);
-                const stmt = db.prepare("INSERT INTO USERS (username, email, password, googleId) VALUES (?, ?, ?, ?) ")
+                const stmt = db.prepare("INSERT INTO USERS (username, email, password, google_id) VALUES (?, ?, ?, ?) ")
                 const res = stmt.run(userData.username, userData.email, hashedPassword, userData.googleId);
     
                 const userId = res.lastInsertRowid as number;

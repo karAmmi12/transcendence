@@ -11,7 +11,7 @@ export class UserServices
     static async getUserDataFromDb(userId: number): Promise <UserData | null>
     {
         const stmt = db.prepare(`
-                SELECT id, username, email, avatar_url, createdAt, lastLogin, is_online
+                SELECT id, username, email, avatar_url, created_at, last_login, is_online
                 FROM users WHERE id = ?
             `);
         const userData = stmt.get(userId) as any | undefined;
@@ -31,8 +31,8 @@ export class UserServices
             id: userData.id,
             username: userData.username,
             email: userData.email,
-            avatar_url: userData.avatar_url,
-            isOnline: userData.is_online,
+            avatarUrl: userData.avatarUrl,
+            isOnline: userData.isOnline,
             twoFactorEnabled: userData.twoFactorEnabled,
             createdAt: userData.createdAt,
             stats: stats
@@ -79,10 +79,10 @@ export class UserServices
                     fieldsToUpdate.push("email = ?");
                     values.push(updateData.email);
                 }
-                if (updateData.avatar_url !== undefined) //mettre null/vide 
+                if (updateData.avatarUrl !== undefined) //mettre null/vide 
                 {
                     fieldsToUpdate.push("avatar_url = ?");
-                    values.push(updateData.avatar_url);
+                    values.push(updateData.avatarUrl);
                 }
                 if (fieldsToUpdate.length === 0)
                         throw new Error("No fields to update");
@@ -96,7 +96,7 @@ export class UserServices
 
                 // Maj de la db reussi recup les nouvelle donnees
                 const selectStmt = db.prepare(`
-                    SELECT id, username, email, avatar_url, createdAt, lastLogin, is_online
+                    SELECT id, username, email, avatar_url, created_at, last_login, is_online
                     FROM users WHERE id = ?
                 `);
 
@@ -114,7 +114,7 @@ export class UserServices
                     id: updatedUserRaw.id,
                     username: updatedUserRaw.username,
                     email: updatedUserRaw.email,
-                    avatar_url: updatedUserRaw.avatar_url,
+                    avatarUrl: updatedUserRaw.avatarUrl,
                     isOnline: updatedUserRaw.isOnline,
                     twoFactorEnabled: false,
                     createdAt: updatedUserRaw.createdAt,
@@ -149,7 +149,7 @@ export class UserServices
     {
         try {
             const stmt = db.prepare(`
-                SELECT id, username, avatar_url,is_online
+                SELECT id, username, avatar_url, is_online
                 FROM users
                 WHERE id != ?
                 ORDER BY username ASC
@@ -171,7 +171,7 @@ export class UserServices
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatar_url: userData.avatar_url,
+                    avatarUrl: userData.avatarUrl,
                     isOnline: userData.isOnline,
                     twoFactorEnabled: false,
                     createdAt: userData.createdAt,
@@ -194,7 +194,7 @@ export class UserServices
     static async searchUsers(query: string): Promise<UserData[]> {
         try {
             const stmt = db.prepare(`
-                SELECT id, username, email, avatar_url, createdAt, lastLogin, is_online
+                SELECT id, username, email, avatar_url, created_at, last_login, is_online
                 FROM users
                 WHERE username LIKE ? OR email LIKE ?
                 ORDER BY username ASC
@@ -216,7 +216,7 @@ export class UserServices
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatar_url: userData.avatar_url,
+                    avatarUrl: userData.avatarUrl,
                     isOnline: userData.isOnline,
                     twoFactorEnabled: false,
                     createdAt: userData.createdAt,

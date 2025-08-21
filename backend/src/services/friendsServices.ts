@@ -59,7 +59,7 @@ export class FriendsService
     {
         try {
             const stmt = db.prepare(`
-                SELECT DISTINCT u.id, u.username, u.avatar_url, u.is_online, u.lastLogin, f.createdAt
+                SELECT DISTINCT u.id, u.username, u.avatar_url, u.is_online, u.last_login, f.created_at
                 FROM users u
                 JOIN friends f ON f.friend_id = u.id
                 WHERE f.user_id = ?
@@ -71,7 +71,7 @@ export class FriendsService
             const friends: FriendProfile[] = friendsRaw.map(friend => ({
                 id: friend.id,
                 username: friend.username,
-                avatar_url: friend.avatar_url,
+                avatarUrl: friend.avatarUrl,
                 isOnline: Boolean(friend.is_online), 
                 lastSeen: friend.lastLogin,
                 friendshipDate: friend.createdAt
