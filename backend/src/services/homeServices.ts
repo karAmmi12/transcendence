@@ -1,5 +1,5 @@
 import db from '../db/index.js';
-import { HomeStats } from '../types/home.js';
+import { HomeStats } from '../types/stats.js';
 
 export class HomeService 
 {
