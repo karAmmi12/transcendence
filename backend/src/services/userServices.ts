@@ -11,7 +11,7 @@ export class UserServices
     static async getUserDataFromDb(userId: number): Promise <UserData | null>
     {
         const stmt = db.prepare(`
-                SELECT id, username, email, avatar_url, createdAt, lastLogin, is_online
+                SELECT id, username, email, avatar_url, createdAt, lastLogin, is_online, googleId
                 FROM users WHERE id = ?
             `);
         const userData = stmt.get(userId) as any | undefined;
@@ -35,9 +35,11 @@ export class UserServices
             isOnline: userData.is_online,
             twoFactorEnabled: userData.twoFactorEnabled,
             createdAt: userData.createdAt,
+            lastLogin: userData.lastLogin,
+            googleId: userData.googleId,
             stats: stats
         }
-        
+        console.log("User profile retrieved:", userProfile);
         return (userProfile);
     }
 
@@ -119,6 +121,7 @@ export class UserServices
                     twoFactorEnabled: false,
                     createdAt: updatedUserRaw.createdAt,
                     lastLogin: updatedUserRaw.lastLogin,
+                    googleId: updatedUserRaw.googleId,
                     stats: stats
                 };
 
@@ -176,6 +179,7 @@ export class UserServices
                     twoFactorEnabled: false,
                     createdAt: userData.createdAt,
                     lastLogin: userData.lastLogin,
+                    googleId: userData.googleId,
                     stats: stats
                 };
             });
@@ -221,6 +225,7 @@ export class UserServices
                     twoFactorEnabled: false,
                     createdAt: userData.createdAt,
                     lastLogin: userData.lastLogin,
+                    googleId: userData.googleId,
                     stats: stats
                 };
             });

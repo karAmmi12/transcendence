@@ -1,4 +1,4 @@
-import { i18n, Language } from '@services/i18n';
+import { i18n, Language } from '@/services/i18nService';
 
 export class LanguageSelector {
   private isOpen = false;

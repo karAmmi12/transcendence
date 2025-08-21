@@ -1,5 +1,5 @@
 import { User } from '../types/index.js';
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 
 export class UserService {
   private static instance: UserService;
@@ -106,6 +106,8 @@ export class UserService {
       const response = await fetch(`${this.baseURL}${endpoint}`, {
         credentials: 'include'
       });
+
+      console.log('response from match history:', response);
 
       if (response.ok) {
         return await response.json();

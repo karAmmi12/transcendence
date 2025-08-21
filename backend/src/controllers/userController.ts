@@ -37,6 +37,8 @@ export class UserController
             const user = req.user!; // grace au middleware
             const changePassword = req.body as ChangePassword;
 
+            console.log("Change password request:", changePassword);
+
             if (changePassword.currentPassword === changePassword.newPassword)
                 return (reply.status(400).send({error: "New password need to be different from old password"}));
 
@@ -48,14 +50,14 @@ export class UserController
                 return (reply.status(400).send({error: "Password must contain 1 lower case, 1 upper case, 1 number, 1 symbole"}));
 
             const stmt = db.prepare("SELECT password FROM users WHERE id = ?");
-            const dbPassword = stmt.get(user.userId) as string | undefined;
+            const dbPassword = stmt.get(user.userId) as {password:string} | undefined;
             if (!dbPassword)
                 return (reply.status(400).send({error: "User not found"}));
 
-            const isCurrentPasswordValid = await bcrypt.compare(changePassword.currentPassword, dbPassword)
+            const isCurrentPasswordValid = await bcrypt.compare(changePassword.currentPassword, dbPassword.password)
             if (!isCurrentPasswordValid)
                 return (reply.status(400).send({error: "Current passWord incorrect"}));
-
+            
             const hashedNewPassword = await bcrypt.hash(changePassword.newPassword, 10);
 
             const updateStmt = db.prepare("UPDATE users SET password = ?, lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
