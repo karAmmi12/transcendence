@@ -10,4 +10,5 @@ export default async function usersRoutes(app: FastifyInstance)
     app.get('/users/search', UserController.searchUsers);
     app.get('/profile/:id', UserController.getProfileById);
     app.put('/change-password', UserController.changePassword);
+    app.get('/me/matches', UserController.getMyMatchHistory);
 }
