@@ -1,4 +1,4 @@
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService';
 import { userService } from '@services/userService';
 import { User } from '@/types/index.js';
 
