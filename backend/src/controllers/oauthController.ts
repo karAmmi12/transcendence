@@ -38,7 +38,7 @@ export class OAuthController
             return (reply.redirect(authUrl.toString()));
 
         } catch (error) {
-            console.error("Google redirect error:", error);
+            console.error("Google OAuth redirect error:", error);
             return (reply.status(500).send({ error: "Google OAuth redirect failed" }));
         }
     }
@@ -53,34 +53,36 @@ export class OAuthController
             }
 
             if (!code)
-                return (reply.status(401).send(error));
+                return (reply.status(400).send('Code required for Google OAuth2'));
     
             const data = await OAuthController.exchangeCodeForToken(code!);
-            console.log("data received from exchange code: ", data)
-            if (!data)
-                return (reply.status(401).send('Error: Required code for OAuth2'));
+            console.log("data received from exchange code: ", data);
+            if (!data.success)
+                return (reply.status(400).send(`${data.success}${data.error}`));
             
             const userData = await OAuthController.getUserData(data.access_token);
-            console.log("userData: ",userData)
-            if (!userData)
+            console.log("userData: ",userData);
+            if (!userData.success)
                 return (reply.status(401).send('Error: Required token access for OAuth2'));
 
+            const userName = userData.email.split('@')[0];
+            
             const oData = {
-                username: userData.given_name + userData.family_name,
+                username: userName,
                 email: userData.email,
                 googleId: userData.sub
             }
 
             const oauth2Data = oData as UserFromDB;
             const res = await AuthService.handleOAuthUser(oauth2Data);
-            if (!res)
-                return (reply.status(401).send({error: "Error login fail"}));
+            if (!res.success)
+                return (reply.status(401).send({error: res.error}));
             CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
-            return (reply.redirect(process.env.API_URL_FRONT!));
+            return (reply.status(201).send({user: res.user}));
             
         }catch (error){
-            console.error("Code generate error:", error);
-            return (reply.status(500).send({error: "Google generate coode failed"}));
+            console.error("Code Google generate error:", error);
+            return (reply.status(500).send({error: "Google generate code failed"}));
         }
     }
 
@@ -102,11 +104,14 @@ export class OAuthController
                 },
                 body: params.toString()
             });
-            return (token.json());
+            if (!token.ok)
+                return {success: false, error: 'Error generate token failed'};
+            const tokenSuccess = await token.json();
+            return (tokenSuccess);
         } 
         catch (error){
             console.error(`Error generate token failed: ${error}`);
-            return (null);
+            return {success: false, error: 'Error get users info'};
         }
       
     }
@@ -119,11 +124,14 @@ export class OAuthController
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            return (userData.json());
+            if (!userData.ok)
+                return {success: false, error: 'Get user profile OAuth failed'};
+            const returnUser = await userData.json();
+            return (returnUser);
         }
         catch(error) {
             console.log(`Error get users info: ${error}`);
-            return (null);
+            return {success: false, error: 'Error get users info'};
         }
     }
 }
