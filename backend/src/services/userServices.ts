@@ -1,6 +1,7 @@
 import db from '../db/index.js'
 import {UserData, AuthenticatedUser, UpdateProfileData, UpdateResult} from "../types/auth.js"
 import {checkUsernameExists, checkEmailExists} from "./authServices.js"
+import { StatsService } from './statsServices.js';
 
 export class UserServices
 {
@@ -17,13 +18,15 @@ export class UserServices
         if (!userData)
             return (null);
 
-        const stats = { //siuuu stats temporaire avant de faire les tables matches
-                wins: 2,
-                losses: 0,
-                totalGames: 2,
-                winRate: 100 // (wins/ totalGames) * 100
-            }
-        
+        // const stats = { //siuuu stats temporaire avant de faire les tables matches
+        //         wins: 2,
+        //         losses: 0,
+        //         totalGames: 2,
+        //         winRate: 100 // (wins/ totalGames) * 100
+        //     }
+        const stats = StatsService.getUserStats(userId);
+        console.log("SIUUUU STATS: ", stats);
+
         const userProfile: UserData = {
             id: userData.id,
             username: userData.username,
@@ -159,12 +162,13 @@ export class UserServices
             
             //siuuu pour attacher els stats temporaire a tous les users
             const users: UserData[] = usersRaw.map(userData => {
-                const stats = { // Stats temporaires
-                    wins: 2,
-                    losses: 0,
-                    totalGames: 2,
-                    winRate: 100
-                };
+                // const stats = { // Stats temporaires
+                //     wins: 2,
+                //     losses: 0,
+                //     totalGames: 2,
+                //     winRate: 100
+                // };
+                const stats = StatsService.getUserStats(userData.id);
                 
                 return {
                     id: userData.id,

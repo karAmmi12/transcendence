@@ -38,6 +38,7 @@ export interface RegisterData {
 export interface MatchHistory {
   id: string;
   opponent: string;
+  opponentAvatar?: string | null; // Nouveau champ pour l'avatar de l'adversaire
   result: 'win' | 'loss';
   score: {
     player: number;
@@ -45,7 +46,7 @@ export interface MatchHistory {
   };
   date: string;
   duration?: number;
-  gameMode?: 'local' | 'online' | 'tournament';
+  gameMode?: 'local' | 'remote' | 'tournament';
 }
 
 // export interface MatchData {
