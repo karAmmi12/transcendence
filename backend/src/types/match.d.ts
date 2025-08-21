@@ -7,8 +7,8 @@ export interface MatchHistory {
         opponent: number;
     }
     date: string;
-    duration?: string;
-    gameMode: 'local' | 'online' | 'tournament';
-    tournamentId?: number;
-    opponentAvatar?: string;
+    duration?: number;
+    gameMode: 'local' | 'remote' | 'tournament';
+    tournament_id?: number;
+    opponent_avatar?: string;
 }
