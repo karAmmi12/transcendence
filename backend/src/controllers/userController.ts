@@ -3,6 +3,7 @@ import { UserServices } from "../services/userServices";
 import { UpdateProfileData, ChangePassword} from "../types/auth";
 import db from "../db/index.js"
 import bcrypt from "bcrypt"
+import { StatsService } from "../services/statsServices";
 
 export class UserController
 {
@@ -270,6 +271,25 @@ export class UserController
         } catch (error) {
             console.error("Get user by ID error:", error);
             reply.status(500).send({ error: "Failed to get user" });
+        }
+    }
+
+    /**
+     * Recupere l'historique des matches d'un user
+     */
+    static async getMyMatchHistory(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const user = req.user!; // grace au middleware
+            const limit = 10 as number;
+
+            const history = StatsService.getUserMatchHistory(user.userId, limit);
+
+            reply.send(history);
+
+        } catch (error) {
+            console.error("Get match history error:", error);
+            reply.status(500).send({error: "Failed to get match history"});
         }
     }
 }
