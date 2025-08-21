@@ -89,13 +89,35 @@ export class StatsService
                 ORDER BY m.ended_at DESC
                 LIMIT ?
             `);
-          const matches = stmt.all(userId, limit) as MatchHistory[];
-          
-          
+          const matchesRaw = stmt.all(userId, limit) as any[];
+          // Transformer les données brutes en format MatchHistory
+          const matches: MatchHistory[] = matchesRaw.map(match => {
+            // Calculer la durée du match en secondes
+            const duration = match.started_at && match.ended_at 
+                ? Math.floor((new Date(match.ended_at).getTime() - new Date(match.started_at).getTime()) / 1000)
+                : undefined;
+
+            return {
+                id: match.id,
+                opponent: match.opponent_name,
+                result: match.is_winner ? 'win' : 'loss',
+                score: {
+                    player: match.user_score,
+                    opponent: match.opponent_score
+                },
+                date: match.ended_at,
+                duration: duration,
+                gameMode: match.mode as 'local' | 'remote' | 'tournament',
+                tournament_id: match.tournament_id,
+                opponent_avatar: match.opponent_avatar
+            };
+        });
+
+        return (matches);
 
       } catch (error) {
-        
-
+        console.error('Error getting match history for user', userId, ':', error);
+        return [];
       }
     }
 }
