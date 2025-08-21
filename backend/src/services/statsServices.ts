@@ -76,7 +76,7 @@ export class StatsService
                     -- Informations de l'adversaire
                     opponent_mp.score as opponent_score,
                     COALESCE(opponent_user.username, opponent_mp.alias, 'IA') as opponent_name,
-                    opponent_user.avatar_url as opponent_avatar
+                    opponent_user.avatar_url as opponentAvatar
                 FROM matches m
                 -- Participation de l'utilisateur
                 JOIN match_participants user_mp ON m.id = user_mp.match_id AND user_mp.user_id = ?
@@ -108,8 +108,8 @@ export class StatsService
                 date: match.ended_at,
                 duration: duration,
                 gameMode: match.mode as 'local' | 'remote' | 'tournament',
-                tournament_id: match.tournament_id,
-                opponent_avatar: match.opponent_avatar
+                tournamentId: match.tournamentId,
+                opponentAvatar: match.opponentAvatar
             };
         });
 
