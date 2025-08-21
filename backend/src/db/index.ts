@@ -52,11 +52,12 @@ db.exec(`
         score INTEGER NOT NULL DEFAULT 0,
         is_winner INTEGER NOT NULL DEFAULT 0,
         FOREIGN KEY (match_id) REFERENCES matches (id) ON DELETE CASCADE,
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL,
+        UNIQUE(match_id, user_id, alias)
     );
 `);
 
-// ✅ Fonction pour insérer les données de test seulement si elles n'existent pas
+// ✅ Fonction IDENTIQUE à reset.ts
 function insertTestDataIfNotExists() {
     // Vérifier si les données de test existent déjà
     const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get() as { count: number };
@@ -66,28 +67,33 @@ function insertTestDataIfNotExists() {
         
         db.exec(`
             -- ============================================
-            -- DONNÉES DE TEST - INSERTION UNIQUE
+            -- DONNÉES DE TEST - IDENTIQUES À reset.ts
             -- ============================================
-            INSERT INTO users (username, email, password, is_online, createdAt) VALUES 
+            INSERT OR IGNORE INTO users (username, email, password, is_online, createdAt) VALUES 
             ('carti', 'carti@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00'),
             ('kanye', 'kanye@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-02 11:00:00'),
             ('travis', 'travis@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-03 12:00:00'),
             ('future', 'future@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-04 13:00:00'),
             ('pnd', 'pnd@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-05 14:00:00');
 
-            -- Matches de test
-            INSERT INTO matches (mode, tournament_id, started_at, ended_at, winner_id) VALUES 
-            ('remote', NULL, '2024-01-15 10:00:00', '2024-01-15 10:05:00', 1), -- carti gagne
-            ('remote', NULL, '2024-01-16 14:00:00', '2024-01-16 14:07:00', 3), -- travis gagne
-            ('remote', NULL, '2024-01-17 16:00:00', '2024-01-17 16:04:00', 2), -- kanye gagne
-            ('remote', NULL, '2024-01-18 18:00:00', '2024-01-18 18:06:00', 4), -- future gagne
-            ('remote', NULL, '2024-01-19 20:00:00', '2024-01-19 20:03:00', 1), -- carti gagne
-            ('local', NULL, '2024-01-20 10:00:00', '2024-01-20 10:05:00', NULL),
-            ('local', NULL, '2024-01-21 14:00:00', '2024-01-21 14:07:00', NULL),
-            ('remote', NULL, '2024-01-28 20:00:00', NULL, NULL); -- En cours
+            -- 🆕 Données IDENTIQUES à reset.ts
+            INSERT OR IGNORE INTO matches (id, mode, tournament_id, started_at, ended_at, winner_id) VALUES 
+            -- Matches remote entre utilisateurs
+            (1, 'remote', NULL, '2024-01-15 10:00:00', '2024-01-15 10:05:00', 1), -- carti gagne
+            (2, 'remote', NULL, '2024-01-16 14:00:00', '2024-01-16 14:07:00', 3), -- travis gagne
+            (3, 'remote', NULL, '2024-01-17 16:00:00', '2024-01-17 16:04:00', 2), -- kanye gagne
+            (4, 'remote', NULL, '2024-01-18 18:00:00', '2024-01-18 18:06:00', 4), -- future gagne
+            (5, 'remote', NULL, '2024-01-19 20:00:00', '2024-01-19 20:03:00', 1), -- carti gagne
 
-            -- Participants aux matches
-            INSERT INTO match_participants (match_id, user_id, alias, score, is_winner) VALUES 
+            -- Matches locaux (pas de winner_id car joueurs invités)
+            (6, 'local', NULL, '2024-01-20 10:00:00', '2024-01-20 10:05:00', NULL),
+            (7, 'local', NULL, '2024-01-21 14:00:00', '2024-01-21 14:07:00', NULL),
+
+            -- Match en cours
+            (8, 'remote', NULL, '2024-01-28 20:00:00', NULL, NULL);
+
+            -- 🆕 Participants IDENTIQUES à reset.ts
+            INSERT OR IGNORE INTO match_participants (match_id, user_id, alias, score, is_winner) VALUES 
             -- Match 1: carti vs kanye (carti gagne 5-3)
             (1, 1, NULL, 5, 1), -- carti gagne
             (1, 2, NULL, 3, 0), -- kanye perd
