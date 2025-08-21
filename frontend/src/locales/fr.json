@@ -126,7 +126,7 @@
     },
     "modes": {
       "local": "Local",
-      "online": "En ligne",
+      "remote": "À distance",
       "tournament": "Tournoi"
     },
     "customization": {

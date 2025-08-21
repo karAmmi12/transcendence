@@ -62,8 +62,8 @@ export class ProfilePage {
         this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
       }
 
-      // Charger l'historique des matchs (pour l'instant mock data)
-      this.matchHistory = this.createMockMatchHistory();
+      // Charger l'historique des matchs:
+      this.matchHistory = await userService.getMatchHistory(this.userId);
 
       // Charger les amis seulement pour son propre profil
       if (!this.userId) {
@@ -230,56 +230,6 @@ export class ProfilePage {
     });
   }
 
-  // Simulation temporaire de l'historique des matchs
-  private createMockMatchHistory(): MatchHistory[] {
-    return [
-      {
-        id: '1',
-        opponent: 'Alice',
-        result: 'win',
-        score: { player: 5, opponent: 3 },
-        date: new Date(Date.now() - 86400000).toISOString(),
-        duration: 180,
-        gameMode: 'local'
-      },
-      {
-        id: '2',
-        opponent: 'Bob',
-        result: 'loss',
-        score: { player: 2, opponent: 5 },
-        date: new Date(Date.now() - 172800000).toISOString(),
-        duration: 240,
-        gameMode: 'online'
-      },
-      {
-        id: '3',
-        opponent: 'Charlie',
-        result: 'win',
-        score: { player: 4, opponent: 4 },
-        date: new Date(Date.now() - 259200000).toISOString(),
-        duration: 300,
-        gameMode: 'local'
-      },
-      {
-        id: '4',
-        opponent: 'David',
-        result: 'win',
-        score: { player: 6, opponent: 2 },
-        date: new Date(Date.now() - 345600000).toISOString(),
-        duration: 150,
-        gameMode: 'tournament'
-      },
-      {
-        id: '5',
-        opponent: 'Eve',
-        result: 'loss',
-        score: { player: 3, opponent: 5 },
-        date: new Date(Date.now() - 432000000).toISOString(),
-        duration: 200,
-        gameMode: 'local'
-      }
-    ];
-  }
 
   destroy(): void {
     if (this.languageListener) {
