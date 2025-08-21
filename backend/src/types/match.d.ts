@@ -9,6 +9,12 @@ export interface MatchHistory {
     date: string;
     duration?: number;
     gameMode: 'local' | 'remote' | 'tournament';
-    tournament_id?: number;
-    opponent_avatar?: string;
+    tournamentId?: number;
+    opponentAvatar?: string;
+}
+
+export interface HomeStats {
+    totalUsers: number;
+    totalMAtches: number;
+    onlineUsers: number;
 }
