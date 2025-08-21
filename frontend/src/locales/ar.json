@@ -126,7 +126,7 @@
     },
     "modes": {
       "local": "محلي",
-      "online": "عبر الإنترنت",
+      "remote": "بعيد",
       "tournament": "بطولة"
     },
     "customization": {

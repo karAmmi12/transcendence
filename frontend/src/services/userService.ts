@@ -107,6 +107,8 @@ export class UserService {
         credentials: 'include'
       });
 
+      console.log('response from match history:', response);
+
       if (response.ok) {
         return await response.json();
       }

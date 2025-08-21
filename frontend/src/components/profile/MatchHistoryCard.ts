@@ -1,5 +1,6 @@
 import { i18n } from '@/services/i18nService.js';
 import type { MatchHistory } from '../../types/index.js';
+import { userService } from '@/services/userService.js';
 
 export class MatchHistoryCard {
   private filteredMatches: MatchHistory[] = [];
@@ -276,12 +277,16 @@ export class MatchHistoryCard {
     `;
   }
 
+  
   private renderMatch(match: MatchHistory): string {
     const isWin = match.result === 'win';
     const resultColor = isWin ? 'text-emerald-400' : 'text-red-400';
     const bgColor = isWin ? 'bg-emerald-900/20 hover:bg-emerald-900/30' : 'bg-red-900/20 hover:bg-red-900/30';
     const borderColor = isWin ? 'border-emerald-500/50' : 'border-red-500/50';
     const iconBg = isWin ? 'bg-emerald-500' : 'bg-red-500';
+    
+    // Utiliser l'avatar de l'adversaire ou l'avatar par défaut
+    const opponentAvatar = userService.getAvatarUrl(match.opponentAvatar) || '/images/default-avatar.png';
     
     return `
       <div class="flex items-center justify-between p-4 ${bgColor} rounded-xl border-l-4 ${borderColor} transition-all group cursor-pointer backdrop-blur-sm" data-match-id="${match.id}">
@@ -297,30 +302,41 @@ export class MatchHistoryCard {
               ${i18n.t(`profile.history.result.${match.result}`)}
             </span>
           </div>
-          <div class="flex-1">
-            <div class="flex items-center space-x-3 mb-2">
-              <span class="text-white font-semibold text-lg">vs ${match.opponent}</span>
-              ${match.gameMode ? `
-                <span class="px-3 py-1 bg-gray-600 rounded-full text-xs text-gray-300 font-medium">
-                  ${i18n.t(`game.modes.${match.gameMode}`)}
-                </span>
-              ` : ''}
-            </div>
-            <div class="text-gray-400 text-sm flex items-center space-x-4">
-              <span class="flex items-center">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                </svg>
-                ${this.formatDate(match.date)}
-              </span>
-              ${match.duration ? `
+          
+          <!-- Nom de l'adversaire suivi de son avatar -->
+          <div class="flex items-center space-x-3">
+            <div class="flex-1">
+              <div class="flex items-center space-x-3 mb-2">
+                <span class="text-white font-semibold text-lg">vs ${match.opponent}</span>
+                <!-- Avatar de l'adversaire après le nom -->
+                <img 
+                  src="${opponentAvatar}" 
+                  alt="${match.opponent}" 
+                  class="w-10 h-10 rounded-full bg-gray-600 object-cover border-2 border-gray-500 shadow-md"
+                  onerror="this.src='/images/default-avatar.png'"
+                />
+                ${match.gameMode ? `
+                  <span class="px-3 py-1 bg-gray-600 rounded-full text-xs text-gray-300 font-medium">
+                    ${i18n.t(`game.modes.${match.gameMode}`)}
+                  </span>
+                ` : ''}
+              </div>
+              <div class="text-gray-400 text-sm flex items-center space-x-4">
                 <span class="flex items-center">
                   <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                   </svg>
-                  ${this.formatDuration(match.duration)}
+                  ${this.formatDate(match.date)}
                 </span>
-              ` : ''}
+                ${match.duration ? `
+                  <span class="flex items-center">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    ${this.formatDuration(match.duration)}
+                  </span>
+                ` : ''}
+              </div>
             </div>
           </div>
         </div>
@@ -335,6 +351,7 @@ export class MatchHistoryCard {
       </div>
     `;
   }
+
 
   private renderQuickStats(): string {
     if (this.filteredMatches.length === 0) return '';
