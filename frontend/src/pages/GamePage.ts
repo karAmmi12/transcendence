@@ -1,6 +1,6 @@
 import { PongGame } from '../components/PongGame.js';
 import { authService } from '../services/authService.js';
-import { i18n } from '../services/i18n.js';
+import { i18n } from '../services/i18nService.js';
 
 export class GamePage {
   private pongGame: PongGame | null = null;

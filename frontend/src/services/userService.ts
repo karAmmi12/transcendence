@@ -1,5 +1,5 @@
 import { User } from '../types/index.js';
-import { i18n } from '@services/i18n';
+import { i18n } from '@/services/i18nService.js';
 
 export class UserService {
   private static instance: UserService;
