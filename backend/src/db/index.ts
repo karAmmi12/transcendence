@@ -11,8 +11,8 @@ db.exec(`
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
         avatar_url TEXT,
         is_online INTEGER NOT NULL DEFAULT 0,
-        lastLogin TEXT,
-        googleId TEXT
+        last_login TEXT,
+        google_id TEXT
     );
     
     CREATE TABLE IF NOT EXISTS sessions (
@@ -28,7 +28,7 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         friend_id INTEGER NOT NULL,
-        createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (friend_id) REFERENCES users(id) ON DELETE CASCADE,
         UNIQUE(user_id, friend_id)
