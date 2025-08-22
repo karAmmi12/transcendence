@@ -22,7 +22,7 @@ const PUBLIC_ROUTES = [
     '/api/auth/users',
     '/api/auth/oauth/google',
     '/api/auth/oauth/google/callback',
-    'api/home/stats'
+    '/api/home/stats'
 ];
 
 /**
@@ -36,7 +36,7 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
     try{
         if (PUBLIC_ROUTES.includes(req.url) || PUBLIC_ROUTES.includes(routePath))
             return; //on ignore certaine route voir liste au dessus
-
+        
         // recupere l'accessToken dans les cookies
         const accessToken = req.cookies.accessToken;
 

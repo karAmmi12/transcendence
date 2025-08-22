@@ -14,7 +14,7 @@ export interface MatchHistory {
 }
 
 export interface HomeStats {
-    totalUsers: number;
-    totalMatches: number;
-    onlineUsers: number;
+    totalPlayers: number;
+    totalGames: number;
+    onlinePlayers: number;
 }
