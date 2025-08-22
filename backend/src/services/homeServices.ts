@@ -9,30 +9,31 @@ export class HomeService
     static getHomeStats(): HomeStats 
     {
         try {
+
             // 1. Nombre total d'utilisateurs
             const totalUsersStmt = db.prepare("SELECT COUNT(*) as count FROM users");
-            const totalUsers = (totalUsersStmt.get() as any).count;
+            const totalPlayers = (totalUsersStmt.get() as any).count;
 
             // 2. Nombre total de matchs (terminés uniquement)
             const totalMatchesStmt = db.prepare("SELECT COUNT(*) as count FROM matches WHERE ended_at IS NOT NULL");
-            const totalMatches = (totalMatchesStmt.get() as any).count;
+            const totalGames = (totalMatchesStmt.get() as any).count;
 
             // 3. Nombre d'utilisateurs en ligne
             const onlineUsersStmt = db.prepare("SELECT COUNT(*) as count FROM users WHERE is_online = 1");
-            const onlineUsers = (onlineUsersStmt.get() as any).count;
+            const onlinePlayers = (onlineUsersStmt.get() as any).count;
 
             return {
-                totalUsers,
-                totalMatches,
-                onlineUsers
+                totalPlayers,
+                totalGames,
+                onlinePlayers
             };
 
         } catch (error) {
             console.error('Error getting home stats:', error);
             return {
-                totalUsers: 0,
-                totalMatches: 0,
-                onlineUsers: 0
+                totalPlayers: 0,
+                totalGames: 0,
+                onlinePlayers: 0
             };
         }
     }
