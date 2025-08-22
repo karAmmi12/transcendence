@@ -71,10 +71,10 @@ export class FriendsService
             const friends: FriendProfile[] = friendsRaw.map(friend => ({
                 id: friend.id,
                 username: friend.username,
-                avatarUrl: friend.avatarUrl,
+                avatarUrl: friend.avatar_url,
                 isOnline: Boolean(friend.is_online), 
-                lastSeen: friend.lastLogin,
-                friendshipDate: friend.createdAt
+                lastSeen: friend.last_login,
+                friendshipDate: friend.created_at
             }));
             return friends;
 
@@ -85,7 +85,7 @@ export class FriendsService
     }
 
     /**
-     * supprimer un ami
+     * supprimer un ami SIUUUUU revoir larequete db
      */
     static async removeFriend(userId: number, friendId: number): Promise<FriendsResult>
     {
