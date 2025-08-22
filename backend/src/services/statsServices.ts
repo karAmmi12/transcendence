@@ -1,4 +1,3 @@
-import { totalmem } from 'os';
 import db from '../db/index.js'
 import { UserStats } from '../types/auth';
 import { MatchHistory } from '../types/stats.js';
