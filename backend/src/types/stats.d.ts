@@ -12,3 +12,9 @@ export interface MatchHistory {
     tournamentId?: number;
     opponentAvatar?: string;
 }
+
+export interface HomeStats {
+    totalUsers: number;
+    totalMatches: number;
+    onlineUsers: number;
+}

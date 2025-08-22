@@ -54,7 +54,7 @@ export class EditProfileModal {
               <div class="relative inline-block group">
                 <img 
                   id="preview-avatar" 
-                  src="${this.user.avatar_url || '/images/default-avatar.png'}" 
+                  src="${this.user.avatarUrl || '/images/default-avatar.png'}" 
                   alt="${this.user.username}" 
                   class="w-24 h-24 rounded-full object-cover border-4 border-primary-500 transition-transform group-hover:scale-105"
                 />

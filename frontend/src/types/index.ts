@@ -2,7 +2,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  avatar_url?: string | null; //siuuu remettre par defaut
+  avatarUrl?: string | null; //siuuu remettre par defaut
   isOnline?: boolean;
   twoFactorEnabled?: boolean;
   createdAt?: string;
@@ -66,7 +66,7 @@ export interface MatchHistory {
 export interface Friend {
   id: number;
   username: string;
-  avatar_url?: string | null;
+  avatarUrl?: string | null;
   isOnline: boolean;
   lastSeen?: string;
   friendshipDate: string;
