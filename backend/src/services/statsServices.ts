@@ -1,7 +1,7 @@
 import { totalmem } from 'os';
 import db from '../db/index.js'
 import { UserStats } from '../types/auth';
-import { MatchHistory } from '../types/match.js';
+import { MatchHistory } from '../types/stats.js';
 
 export class StatsService
 {
@@ -76,7 +76,7 @@ export class StatsService
                     -- Informations de l'adversaire
                     opponent_mp.score as opponent_score,
                     COALESCE(opponent_user.username, opponent_mp.alias, 'IA') as opponent_name,
-                    opponent_user.avatar_url as opponent_avatar
+                    opponent_user.avatar_url as opponentAvatar
                 FROM matches m
                 -- Participation de l'utilisateur
                 JOIN match_participants user_mp ON m.id = user_mp.match_id AND user_mp.user_id = ?
@@ -108,8 +108,8 @@ export class StatsService
                 date: match.ended_at,
                 duration: duration,
                 gameMode: match.mode as 'local' | 'remote' | 'tournament',
-                tournamentId: match.tournament_id,
-                opponentAvatar: match.opponent_avatar || null
+                tournamentId: match.tournamentId,
+                opponentAvatar: match.opponentAvatar
             };
         });
 

@@ -27,7 +27,7 @@ export interface UserData {
   id: number;
   username: string;
   email: string;
-  avatar_url?: string | null; //siuuu remettre par defaut
+  avatarUrl?: string | null; //siuuu remettre par defaut
   isOnline?: boolean;
   twoFactorEnabled?: boolean;
   createdAt?: string;
@@ -60,7 +60,7 @@ export interface UserFromDB {
 export interface UpdateProfileData {
   username?: string;
   email?: string;
-  avatar_url?: string;
+  avatarUrl?: string;
 }
 
 export interface GoogleUserData {
