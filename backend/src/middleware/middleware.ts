@@ -22,7 +22,7 @@ const PUBLIC_ROUTES = [
     '/api/auth/users',
     '/api/auth/oauth/google',
     '/api/auth/oauth/google/callback',
-    'api/home/stats'
+    '/api/home/stats'
 ];
 
 /**
