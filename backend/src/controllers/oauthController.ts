@@ -127,7 +127,6 @@ export class OAuthController
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            console.log('userData response:', userData);
             if (!userData.ok)
                 return {success: false, error: 'Get user profile OAuth failed'};
             const returnUser = await userData.json();

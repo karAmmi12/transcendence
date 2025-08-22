@@ -36,6 +36,13 @@ export interface UserData {
   stats?: UserStats;
 }
 
+export interface UserTwoFactor {
+  id: number;
+  email: string
+  twoFactorEnabled: boolean;
+  googleId: string;
+}
+
 export interface UserStats {
   wins: number;
   losses: number;
@@ -84,4 +91,9 @@ export interface UpdateResult {
 export interface ChangePassword {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface TwoFactorCode {
+    code: string;
+    expiresAt: Date;
 }
