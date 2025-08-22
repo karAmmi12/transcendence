@@ -8,7 +8,7 @@ db.exec(`
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         avatar_url TEXT,
         is_online INTEGER NOT NULL DEFAULT 0,
         last_login TEXT,
@@ -69,7 +69,7 @@ function insertTestDataIfNotExists() {
             -- ============================================
             -- DONNÉES DE TEST - IDENTIQUES À reset.ts
             -- ============================================
-            INSERT OR IGNORE INTO users (username, email, password, is_online, createdAt) VALUES 
+            INSERT OR IGNORE INTO users (username, email, password, is_online, created_at) VALUES 
             ('carti', 'carti@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00'),
             ('kanye', 'kanye@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-02 11:00:00'),
             ('travis', 'travis@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-03 12:00:00'),
