@@ -147,8 +147,8 @@ export class AuthService {
         const userData = await response.json();
 
         // Construire l'url complète de l'avatar
-        if (userData.avatar_url) {
-          userData.avatar_url = userService.getAvatarUrl(userData.avatar_url);
+        if (userData.avatarUrl) {
+          userData.avatarUrl = userService.getAvatarUrl(userData.avatarUrl);
         }
 
         this.currentUser = userData;

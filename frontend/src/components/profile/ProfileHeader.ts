@@ -13,7 +13,7 @@ export class ProfileHeader {
   ) {}
 
   render(): string {
-    const avatarUrl = userService.getAvatarUrl(this.user.avatar_url);
+    const avatarUrl = userService.getAvatarUrl(this.user.avatarUrl);
     const isGoogleUser = !!this.user.googleId;
 
     return `

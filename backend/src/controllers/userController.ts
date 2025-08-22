@@ -60,7 +60,7 @@ export class UserController
             
             const hashedNewPassword = await bcrypt.hash(changePassword.newPassword, 10);
 
-            const updateStmt = db.prepare("UPDATE users SET password = ?, lastLogin = CURRENT_TIMESTAMP WHERE id = ?");
+            const updateStmt = db.prepare("UPDATE users SET password = ?, last_login = CURRENT_TIMESTAMP WHERE id = ?");
             const result = updateStmt.run(hashedNewPassword, user.userId);
             if (result.changes === 0)
                 return (reply.status(500).send({error: "Failed update password"}));
@@ -92,7 +92,7 @@ export class UserController
                     if (part.type === 'file' && part.fieldname === 'avatar') {
                         try {
                             const avatarPath = await UserController.saveAvatarFile(part, user.userId);
-                            updateData.avatar_url = avatarPath;
+                            updateData.avatarUrl = avatarPath;
                         } catch (avatarError) {
                             throw avatarError;
                         }
@@ -128,7 +128,7 @@ export class UserController
             }
 
             // Vérifier qu'au moins un champ est fourni
-            if (!updateData.username && !updateData.email && !updateData.avatar_url) {
+            if (!updateData.username && !updateData.email && !updateData.avatarUrl) {
                 return reply.status(400).send({ error: "No update data provided" });
             }
 
