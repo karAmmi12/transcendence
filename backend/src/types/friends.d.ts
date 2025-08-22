@@ -7,7 +7,7 @@ export interface FriendsResult {
 export interface FriendProfile {
   id: number;
   username: string;
-  avatar_url: string | null;
+  avatarUrl: string | null;
   isOnline: boolean;
   lastLogin?: string;
 }
@@ -16,7 +16,7 @@ export interface FriendProfile {
 export interface FriendSearchResult {
   id: number;
   username: string;
-  avatar_url: string | null;
+  avatarUrl: string | null;
   isOnline: boolean;
   isFriend?: boolean;
 }

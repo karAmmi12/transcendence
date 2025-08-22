@@ -85,8 +85,8 @@ export class UserService {
       if (response.ok) {
         const user = await response.json();
         // Construire l'URL complète de l'avatar
-        if (user.avatar_url) {
-          user.avatar_url = this.getAvatarUrl(user.avatar_url);
+        if (user.avatarUrl) {
+          user.avatarUrl = this.getAvatarUrl(user.avatarUrl);
         }
         return user;
       }

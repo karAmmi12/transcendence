@@ -102,7 +102,7 @@ export class FriendsManagementModal {
           <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
             <div class="flex items-center space-x-3">
               <img 
-                src="${friend.avatar_url || '/images/default-avatar.png'}" 
+                src="${friend.avatarUrl || '/images/default-avatar.png'}" 
                 alt="${friend.username}"
                 class="w-12 h-12 rounded-full object-cover"
               />
@@ -186,7 +186,7 @@ export class FriendsManagementModal {
             <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
               <div class="flex items-center space-x-3">
                 <img 
-                  src="${user.avatar_url || '/images/default-avatar.png'}"
+                  src="${user.avatarUrl || '/images/default-avatar.png'}"
                   alt="${user.username}"
                   class="w-12 h-12 rounded-full object-cover"
                   onerror="this.src='/images/default-avatar.png'"

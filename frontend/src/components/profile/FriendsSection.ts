@@ -186,7 +186,7 @@ export class FriendsSection {
 
 
   private renderFriendItem(friend: Friend): string {
-    const avatarUrl = userService.getAvatarUrl(friend.avatar_url);
+    const avatarUrl = userService.getAvatarUrl(friend.avatarUrl);
     
     return `
       <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors group">

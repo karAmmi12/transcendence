@@ -4,7 +4,7 @@ class GlobalStatsService {
   async getGlobalStats(): Promise<GlobalStats> {
     try {
       // TODO: Remplacer par un vrai appel API
-      const response = await fetch('/api/stats/global');
+      const response = await fetch('/api/home/stats');
       if (response.ok) {
         return await response.json();
       }
