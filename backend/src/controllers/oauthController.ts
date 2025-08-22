@@ -60,17 +60,17 @@ export class OAuthController
             if (!data.success)
                 return (reply.status(400).send(`${data.success}${data.error}`));
             
-            const userData = await OAuthController.getUserData(data.access_token);
+            const userData = await OAuthController.getUserData(data.token.access_token);
             console.log("userData: ",userData);
             if (!userData.success)
-                return (reply.status(401).send('Error: Required token access for OAuth2'));
+                return (reply.status(401).send(`error: ${userData.error}`));
 
-            const userName = userData.email.split('@')[0];
+            const userName = userData.returnUser.email.split('@')[0];
             
             const oData = {
                 username: userName,
-                email: userData.email,
-                googleId: userData.sub
+                email: userData.returnUser.email,
+                googleId: userData.returnUser.sub
             }
 
             const oauth2Data = oData as UserFromDB;
@@ -78,7 +78,7 @@ export class OAuthController
             if (!res.success)
                 return (reply.status(401).send({error: res.error}));
             CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
-            return (reply.status(201).send({user: res.user}));
+            return (reply.status(201).send({sucess: true, username: res.user?.username, email: res.user?.email}));
             
         }catch (error){
             console.error("Code Google generate error:", error);
@@ -107,13 +107,16 @@ export class OAuthController
             if (!token.ok)
                 return {success: false, error: 'Error generate token failed'};
             const tokenSuccess = await token.json();
-            return (tokenSuccess);
+            return {
+                success: true,
+                message: "token generate successfully",
+                token: tokenSuccess,
+            };
         } 
         catch (error){
             console.error(`Error generate token failed: ${error}`);
             return {success: false, error: 'Error get users info'};
-        }
-      
+        }      
     }
 
     static async getUserData(accessToken: string) 
@@ -124,10 +127,14 @@ export class OAuthController
                     Authorization: `Bearer ${accessToken}`
                 }
             });
+            console.log('userData response:', userData);
             if (!userData.ok)
                 return {success: false, error: 'Get user profile OAuth failed'};
             const returnUser = await userData.json();
-            return (returnUser);
+            return {
+                success: true,
+                returnUser: returnUser
+            };
         }
         catch(error) {
             console.log(`Error get users info: ${error}`);
