@@ -31,12 +31,12 @@ export class UserServices
             id: userData.id,
             username: userData.username,
             email: userData.email,
-            avatarUrl: userData.avatarUrl,
-            isOnline: userData.isOnline,
+            avatarUrl: userData.avatar_url,
+            isOnline: userData.is_online,
             twoFactorEnabled: userData.twoFactorEnabled,
-            createdAt: userData.createdAt,
-            lastLogin: userData.lastLogin,
-            googleId: userData.googleId,
+            createdAt: userData.created_at,
+            lastLogin: userData.last_login,
+            googleId: userData.google_id,
             stats: stats
         }
         console.log("User profile retrieved:", userProfile);
@@ -116,12 +116,12 @@ export class UserServices
                     id: updatedUserRaw.id,
                     username: updatedUserRaw.username,
                     email: updatedUserRaw.email,
-                    avatarUrl: updatedUserRaw.avatarUrl,
-                    isOnline: updatedUserRaw.isOnline,
+                    avatarUrl: updatedUserRaw.avatar_url,
+                    isOnline: updatedUserRaw.is_online,
                     twoFactorEnabled: false,
-                    createdAt: updatedUserRaw.createdAt,
-                    lastLogin: updatedUserRaw.lastLogin,
-                    googleId: updatedUserRaw.googleId,
+                    createdAt: updatedUserRaw.created_at,
+                    lastLogin: updatedUserRaw.last_login,
+                    googleId: updatedUserRaw.google_id,
                     stats: stats
                 };
 
@@ -174,12 +174,12 @@ export class UserServices
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatarUrl: userData.avatarUrl,
-                    isOnline: userData.isOnline,
+                    avatarUrl: userData.avatar_url,
+                    isOnline: userData.is_online,
                     twoFactorEnabled: false,
-                    createdAt: userData.createdAt,
-                    lastLogin: userData.lastLogin,
-                    googleId: userData.googleId,
+                    createdAt: userData.created_at,
+                    lastLogin: userData.last_login,
+                    googleId: userData.google_id,
                     stats: stats
                 };
             });
@@ -220,12 +220,12 @@ export class UserServices
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatarUrl: userData.avatarUrl,
-                    isOnline: userData.isOnline,
+                    avatarUrl: userData.avatar_url,
+                    isOnline: userData.is_online,
                     twoFactorEnabled: false,
-                    createdAt: userData.createdAt,
-                    lastLogin: userData.lastLogin,
-                    googleId: userData.googleId,
+                    createdAt: userData.created_at,
+                    lastLogin: userData.last_login,
+                    googleId: userData.google_id,
                     stats: stats
                 };
             });
