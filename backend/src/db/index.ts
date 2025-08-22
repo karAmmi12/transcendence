@@ -13,6 +13,7 @@ db.exec(`
         is_online INTEGER NOT NULL DEFAULT 0,
         last_login TEXT,
         google_id TEXT
+        two_factor_enabled INTEGER NOT NULL DEFAULT 0,
     );
     
     CREATE TABLE IF NOT EXISTS sessions (
