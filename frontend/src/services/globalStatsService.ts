@@ -1,28 +1,46 @@
 import type { GlobalStats } from '@components/home/GlobalStatsCard';
 
 class GlobalStatsService {
+  // Utiliser la même logique d'URL que authService
+  private baseURL = process.env.NODE_ENV === 'production' 
+    ? '/api'  // Via le proxy nginx
+    : `http://${location.hostname}:8000/api`; // Direct en dev
+
   async getGlobalStats(): Promise<GlobalStats> {
     try {
-      // TODO: Remplacer par un vrai appel API
-      const response = await fetch('/api/home/stats');
+      console.log('Fetching global stats from:', `${this.baseURL}/home/stats`);
+      
+      const response = await fetch(`${this.baseURL}/home/stats`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+      
+      console.log('Global stats response status:', response.status);
+      
       if (response.ok) {
-        return await response.json();
+        const stats: GlobalStats = await response.json();
+        console.log('Global stats received:', stats);
+        return stats;
+      } else {
+        console.error('Global stats API error:', response.status, response.statusText);
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
       }
+      
+      // Valeurs par défaut en cas d'erreur
+      return {
+        totalPlayers: 0,
+        totalGames: 0,
+        onlinePlayers: 0
+      };
     } catch (error) {
       console.error('Failed to fetch global stats:', error);
+      return {
+        totalPlayers: 0,
+        totalGames: 0,
+        onlinePlayers: 0
+      };
     }
-
-    // Mock data en attendant
-    return this.getMockGlobalStats();
-  }
-
-  private getMockGlobalStats(): GlobalStats {
-    return {
-      totalPlayers: 15420,
-      totalGames: 78934,
-      onlinePlayers: 234,
-      activeTournaments: 12
-    };
   }
 }
 
