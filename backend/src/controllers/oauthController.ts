@@ -22,6 +22,7 @@ export class OAuthController
 
     static async oauthLogin (req: FastifyRequest, reply: FastifyReply)
     {
+
         try {
 
             const authUrl = new URL(OAuthController.authEndpoint);
@@ -45,6 +46,7 @@ export class OAuthController
 
     static async oauthCallback (req: FastifyRequest, reply: FastifyReply)
     {
+
         const { code, error } = req.query as {code?: string, error?: string};
         try {
             if(error) {
@@ -88,6 +90,7 @@ export class OAuthController
 
     static async exchangeCodeForToken(code: string) 
     {
+
         const params = new URLSearchParams({
             code, 
             client_id: process.env.GOOGLE_CLIENT_ID!,
@@ -121,6 +124,7 @@ export class OAuthController
 
     static async getUserData(accessToken: string) 
     {
+        
         try {
             const userData = await fetch(OAuthController.getUserGoogle, {
                 headers: {

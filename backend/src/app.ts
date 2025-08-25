@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.js";
 import usersRoutes from "./routes/users.js";
 import friendsRoutes from "./routes/friends.js";
 import homeRoutes from "./routes/home.js";
+import twoFaRoutes from "./routes/twoFactorRoute.js";
 import cookie from "@fastify/cookie";
 import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
@@ -53,6 +54,7 @@ const start = async () => {
 
     // Routes (apres etre passer dans le Middleware)
     await app.register(authRoutes, {prefix: '/api/auth'});
+    await app.register(twoFaRoutes, {prefix: '/api/2fa'});
     await app.register(usersRoutes, {prefix: '/api/user'});
     await app.register(friendsRoutes, {prefix: '/api/friends'});
     await app.register(homeRoutes, {prefix: '/api/home'});
