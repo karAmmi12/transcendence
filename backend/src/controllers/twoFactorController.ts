@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { TwoFactorServices } from "../services/twoFactorServices.js";
 
 export class TwoFactorController {
-    static async sendTwoFactor(req: FastifyRequest, reply: FastifyReply) 
+    static async enableTwoFactor(req: FastifyRequest, reply: FastifyReply) 
     {
 
         try {
@@ -10,7 +10,7 @@ export class TwoFactorController {
             const result = await TwoFactorServices.sendCode(userId);
             if (!result.success)
                 return reply.status(400).send({ error: result.message });
-            return reply.send({ success: true, message: result.message });
+            return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
             return reply.status(500).send({ error: error || "Internal error sending 2FA code" });
         }
@@ -23,8 +23,8 @@ export class TwoFactorController {
             const { userId, code } = req.body as { userId: number, code: string };
             const result = await TwoFactorServices.verifyCode(userId, code);
             if (!result.success)
-                return reply.status(401).send({ error: result.message });
-            return reply.send({ success: true, message: result.message });
+                return reply.status(400).send({ error: result.message });
+            return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
             return reply.status(500).send({ error: error || "Internal error verifying 2FA code" });
         }
@@ -38,7 +38,7 @@ export class TwoFactorController {
             const result = await TwoFactorServices.disableTwoFactor(userId, code);
             if (!result.success)
                 return reply.status(400).send({ error: result.message });
-            return reply.send({ success: true, message: result.message });
+            return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
             return reply.status(500).send({ error: error || "Internal error disabling 2FA" });
         }

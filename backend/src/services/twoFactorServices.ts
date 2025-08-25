@@ -13,7 +13,8 @@ export class TwoFactorServices {
         try {
             const stmt = db.prepare("SELECT id, email, two_factor_enabled, google_id FROM users where id = ?");
             const user = stmt.get(userId) as any | undefined;
-            if (!user) return null;
+            if (!user)
+                return null;
             return {
                 id: user.id,
                 email: user.email,
@@ -21,7 +22,8 @@ export class TwoFactorServices {
                 googleId: user.google_id,
             };
         } catch (error) {
-            throw new Error('Get userinfo 2FA failed request');
+            console.error('Get userinfo 2FA failed request');
+            return null;
         }
     }
 
@@ -31,7 +33,8 @@ export class TwoFactorServices {
         return (100000 + (randomNumber % 900000)).toString();
     }
 
-    static async sendEmail(email: string, code: string): Promise<boolean> {
+    static async sendEmail(email: string, code: string): Promise<boolean> 
+    {
         try {
             const transporter = nodemailer.createTransport({
                 host: "smtp.office365.com",
@@ -55,7 +58,8 @@ export class TwoFactorServices {
         }
     }
 
-    static async sendCode(userId: number): Promise<{ success: boolean, message: string }> {
+    static async sendCode(userId: number): Promise<{ success: boolean, message: string }> 
+    {
         const user = await this.getUserById(userId);
         if (!user)
             return { success: false, message: 'User not found' };
@@ -73,7 +77,8 @@ export class TwoFactorServices {
         return { success: true, message: '2FA code sent by email' };
     }
 
-    static async verifyCode(userId: number, code: string): Promise<{ success: boolean, message: string }> {
+    static async verifyCode(userId: number, code: string): Promise<{ success: boolean, message: string }> 
+    {
         const stored = this.storeTwoFactor.get(userId);
         if (!stored)
             return { success: false, message: 'No code found for this user' };
@@ -89,6 +94,7 @@ export class TwoFactorServices {
         if (user && !user.twoFactorEnabled) {
             const stmt = db.prepare("UPDATE users SET two_factor_enabled = 1 WHERE id = ?");
             stmt.run(userId);
+            console.log(`2FA allowed for user: ${user.email}`);
         }
         this.storeTwoFactor.delete(userId);
         return { success: true, message: '2FA validated successfully' };
@@ -109,6 +115,7 @@ export class TwoFactorServices {
         const stmt = db.prepare("UPDATE users SET two_factor_enabled = 0 WHERE id = ?");
         stmt.run(userId);
         this.storeTwoFactor.delete(userId);
+        console.log(`2FA disabled`);
         return { success: true, message: '2FA disabled successfully' };
     }
 }
