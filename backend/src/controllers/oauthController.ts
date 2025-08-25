@@ -80,7 +80,7 @@ export class OAuthController
             if (!res.success)
                 return (reply.status(401).send({error: res.error}));
             CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
-            return (reply.status(201).send({sucess: true, username: res.user?.username, email: res.user?.email}));
+            return reply.redirect(`${process.env.API_URL_FRONT}/dashboard?login=success`);
             
         }catch (error){
             console.error("Code Google generate error:", error);
