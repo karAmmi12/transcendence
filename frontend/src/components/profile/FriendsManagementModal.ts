@@ -1,5 +1,6 @@
 import { i18n } from '@/services/i18nService.js';
 import { friendService } from '@services/friendsService';
+import { userService } from '@services/userService';
 import { User, Friend } from '../../types/index.js';
 
 export class FriendsManagementModal {
@@ -81,6 +82,7 @@ export class FriendsManagementModal {
   }
 
   private renderFriendsList(): string {
+    
     if (this.friends.length === 0) {
       return `
         <div class="text-center py-12">
@@ -102,9 +104,10 @@ export class FriendsManagementModal {
           <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
             <div class="flex items-center space-x-3">
               <img 
-                src="${friend.avatarUrl || '/images/default-avatar.png'}" 
+                src="${userService.getAvatarUrl(friend.avatarUrl)}" 
                 alt="${friend.username}"
                 class="w-12 h-12 rounded-full object-cover"
+                onerror="this.src='/images/default-avatar.png'"
               />
               <div>
                 <h3 class="font-semibold text-white">${friend.username}</h3>
@@ -186,7 +189,7 @@ export class FriendsManagementModal {
             <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
               <div class="flex items-center space-x-3">
                 <img 
-                  src="${user.avatarUrl || '/images/default-avatar.png'}"
+                  src="${userService.getAvatarUrl(user.avatarUrl)}"
                   alt="${user.username}"
                   class="w-12 h-12 rounded-full object-cover"
                   onerror="this.src='/images/default-avatar.png'"

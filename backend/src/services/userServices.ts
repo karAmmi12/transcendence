@@ -11,32 +11,25 @@ export class UserServices
     static async getUserDataFromDb(userId: number): Promise <UserData | null>
     {
         const stmt = db.prepare(`
-                SELECT id, username, email, avatar_url, created_at, last_login, is_online
+                SELECT id, username, email, avatar_url, created_at, last_login, is_online, google_id, two_factor_enabled
                 FROM users WHERE id = ?
             `);
         const userData = stmt.get(userId) as any | undefined;
         if (!userData)
             return (null);
 
-        // const stats = { //siuuu stats temporaire avant de faire les tables matches
-        //         wins: 2,
-        //         losses: 0,
-        //         totalGames: 2,
-        //         winRate: 100 // (wins/ totalGames) * 100
-        //     }
         const stats = StatsService.getUserStats(userId);
-        console.log("SIUUUU STATS: ", stats);
 
         const userProfile: UserData = {
             id: userData.id,
             username: userData.username,
             email: userData.email,
-            avatarUrl: userData.avatarUrl,
-            isOnline: userData.isOnline,
-            twoFactorEnabled: userData.twoFactorEnabled,
-            createdAt: userData.createdAt,
-            lastLogin: userData.lastLogin,
-            googleId: userData.googleId,
+            avatarUrl: userData.avatar_url,
+            isOnline: userData.is_online,
+            twoFactorEnabled: userData.two_factor_enabled,
+            createdAt: userData.created_at,
+            lastLogin: userData.last_login,
+            googleId: userData.google_id,
             stats: stats
         }
         console.log("User profile retrieved:", userProfile);
@@ -98,7 +91,7 @@ export class UserServices
 
                 // Maj de la db reussi recup les nouvelle donnees
                 const selectStmt = db.prepare(`
-                    SELECT id, username, email, avatar_url, created_at, last_login, is_online
+                    SELECT id, username, email, avatar_url, created_at, last_login, is_online, google_id, two_factor_enabled
                     FROM users WHERE id = ?
                 `);
 
@@ -106,22 +99,18 @@ export class UserServices
                 if (!updatedUserRaw)
                     throw new Error("Failed to retrieve updated user data");
 
-                const stats = { // Stats temporaires
-                    wins: 2,
-                    losses: 0,
-                    totalGames: 2,
-                    winRate: 100
-                };
+                const stats = StatsService.getUserStats(userId);
+
                 const formattedUser: UserData = {
                     id: updatedUserRaw.id,
                     username: updatedUserRaw.username,
                     email: updatedUserRaw.email,
-                    avatarUrl: updatedUserRaw.avatarUrl,
-                    isOnline: updatedUserRaw.isOnline,
-                    twoFactorEnabled: false,
-                    createdAt: updatedUserRaw.createdAt,
-                    lastLogin: updatedUserRaw.lastLogin,
-                    googleId: updatedUserRaw.googleId,
+                    avatarUrl: updatedUserRaw.avatar_url,
+                    isOnline: updatedUserRaw.is_online,
+                    twoFactorEnabled: updatedUserRaw.two_factor_enabled,
+                    createdAt: updatedUserRaw.created_at,
+                    lastLogin: updatedUserRaw.last_login,
+                    googleId: updatedUserRaw.google_id,
                     stats: stats
                 };
 
@@ -162,24 +151,19 @@ export class UserServices
             
             //siuuu pour attacher els stats temporaire a tous les users
             const users: UserData[] = usersRaw.map(userData => {
-                // const stats = { // Stats temporaires
-                //     wins: 2,
-                //     losses: 0,
-                //     totalGames: 2,
-                //     winRate: 100
-                // };
+
                 const stats = StatsService.getUserStats(userData.id);
                 
                 return {
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatarUrl: userData.avatarUrl,
-                    isOnline: userData.isOnline,
+                    avatarUrl: userData.avatar_url,
+                    isOnline: userData.is_online,
                     twoFactorEnabled: false,
-                    createdAt: userData.createdAt,
-                    lastLogin: userData.lastLogin,
-                    googleId: userData.googleId,
+                    createdAt: userData.created_at,
+                    lastLogin: userData.last_login,
+                    googleId: userData.google_id,
                     stats: stats
                 };
             });
@@ -209,23 +193,19 @@ export class UserServices
             const usersRaw = stmt.all(searchPattern, searchPattern) as any[];
             
             const users: UserData[] = usersRaw.map(userData => {
-                const stats = {
-                    wins: 2,
-                    losses: 0,
-                    totalGames: 2,
-                    winRate: 100
-                };
+                
+                const stats = StatsService.getUserStats(userData.id);
                 
                 return {
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatarUrl: userData.avatarUrl,
-                    isOnline: userData.isOnline,
+                    avatarUrl: userData.avatar_url,
+                    isOnline: userData.is_online,
                     twoFactorEnabled: false,
-                    createdAt: userData.createdAt,
-                    lastLogin: userData.lastLogin,
-                    googleId: userData.googleId,
+                    createdAt: userData.created_at,
+                    lastLogin: userData.last_login,
+                    googleId: userData.google_id,
                     stats: stats
                 };
             });
