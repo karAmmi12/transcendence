@@ -22,6 +22,7 @@ export class OAuthController
 
     static async oauthLogin (req: FastifyRequest, reply: FastifyReply)
     {
+
         try {
 
             const authUrl = new URL(OAuthController.authEndpoint);
@@ -45,6 +46,7 @@ export class OAuthController
 
     static async oauthCallback (req: FastifyRequest, reply: FastifyReply)
     {
+
         const { code, error } = req.query as {code?: string, error?: string};
         try {
             if(error) {
@@ -78,7 +80,7 @@ export class OAuthController
             if (!res.success)
                 return (reply.status(401).send({error: res.error}));
             CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
-            return (reply.status(201).send({sucess: true, username: res.user?.username, email: res.user?.email}));
+            return reply.redirect(`${process.env.API_URL_FRONT}/dashboard?login=success`);
             
         }catch (error){
             console.error("Code Google generate error:", error);
@@ -88,6 +90,7 @@ export class OAuthController
 
     static async exchangeCodeForToken(code: string) 
     {
+
         const params = new URLSearchParams({
             code, 
             client_id: process.env.GOOGLE_CLIENT_ID!,
@@ -121,13 +124,13 @@ export class OAuthController
 
     static async getUserData(accessToken: string) 
     {
+        
         try {
             const userData = await fetch(OAuthController.getUserGoogle, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            console.log('userData response:', userData);
             if (!userData.ok)
                 return {success: false, error: 'Get user profile OAuth failed'};
             const returnUser = await userData.json();
