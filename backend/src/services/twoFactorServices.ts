@@ -67,6 +67,7 @@ export class TwoFactorServices {
             return { success: false, message: '2FA not available for Google users' };
 
         const code = this.generateCode();
+        const tokenUser = TwoFactorServices.getProfile(code, user.id);
         this.storeTwoFactor.set(user.id, {
             code,
             expiresAt: new Date(Date.now() + 10 * 60 * 1000)
