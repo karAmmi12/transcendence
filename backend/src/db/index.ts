@@ -56,6 +56,13 @@ db.exec(`
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL,
         UNIQUE(match_id, user_id, alias)
     );
+
+    CREATE TABLE IF NOT EXISTS tournaments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        status TEXT CHECK(status IN ('waiting', 'in_progress', 'completed')) DEFAULT 'waiting',
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        completed_at DATETIME
+    );
 `);
 
 // ✅ Fonction IDENTIQUE à reset.ts
