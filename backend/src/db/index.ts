@@ -63,6 +63,14 @@ db.exec(`
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         completed_at DATETIME
     );
+
+    CREATE TABLE IF NOT EXISTS two_factor_tokens (
+        user_id INTEGER PRIMARY KEY,
+        token TEXT NOT NULL,
+        expires_at DATETIME NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    );
 `);
 
 // ✅ Fonction IDENTIQUE à reset.ts
