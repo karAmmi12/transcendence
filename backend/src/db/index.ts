@@ -56,6 +56,14 @@ db.exec(`
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL,
         UNIQUE(match_id, user_id, alias)
     );
+
+    CREATE TABLE IF NOT EXISTS two_factor_codes (
+    user_id INTEGER PRIMARY KEY,
+    token TEXT NOT NULL,
+    expires_at DATETIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
 `);
 
 // ✅ Fonction IDENTIQUE à reset.ts
