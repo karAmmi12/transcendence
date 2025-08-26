@@ -2,12 +2,14 @@ import { i18n } from '@/services/i18nService.js';
 import { userService } from '@services/userService';
 import { authService } from '@services/authService';
 import { friendService } from '@services/friendsService';
+import { twoFactorService } from '@services/twoFactorService';
 import { ProfileHeader } from '@components/profile/ProfileHeader';
 import { StatsCard } from '@components/profile/StatsCard';
 import { FriendsSection } from '@components/profile/FriendsSection';
 import { MatchHistoryCard } from '@components/profile/MatchHistoryCard';
 import { EditProfileModal } from '@components/profile/EditProfileModal';
 import { ChangePasswordModal } from '@components/profile/ChangePasswordModal';
+import { TwoFactorModal } from '@components/auth/TwoFactorModal';
 import { QuickActionsCard, type ActionCallbacks } from '@components/profile/QuickActionsCard';
 import { ProfileLayout, type ProfileComponents } from '@components/profile/ProfileLayout';
 import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/index.js';
@@ -110,8 +112,7 @@ export class ProfilePage {
     editModal.show();
   }
 
-  private openChangePasswordModal(): void 
-  {
+  private openChangePasswordModal(): void {
     if (!this.user) return;
 
     const changePasswordModal = new ChangePasswordModal(this.user, () => {
@@ -124,6 +125,73 @@ export class ProfilePage {
       }
     });
     changePasswordModal.show();
+  }
+
+  private async handleToggle2FA(enabled: boolean): Promise<void> {
+    try {
+      if (enabled) {
+        // Activer 2FA - envoyer le code par email
+        const result = await twoFactorService.enable2FA();
+        
+        if (result.success) {
+          // Ouvrir le modal de vérification
+          const modal = new TwoFactorModal(
+            'enable',
+            () => {
+              // Success callback - actualiser les données utilisateur
+              if (this.user) {
+                this.user.twoFactorEnabled = true;
+              }
+              const element = document.querySelector('#page-content');
+              if (element) {
+                this.render(element);
+              }
+              alert(i18n.t('profile.twoFactor.messages.enabled'));
+            },
+            () => {
+              // Cancel callback - remettre le toggle à false
+              const toggle = document.getElementById('toggle-2fa') as HTMLInputElement;
+              if (toggle) toggle.checked = false;
+            }
+          );
+          modal.show();
+        } else {
+          throw new Error(result.message);
+        }
+      } else {
+        // Désactiver 2FA - demander d'abord le code
+        const result = await twoFactorService.enable2FA(); // Envoyer un code pour confirmer
+        
+        if (result.success) {
+          const modal = new TwoFactorModal(
+            'disable',
+            () => {
+              // Success callback - actualiser les données utilisateur
+              if (this.user) {
+                this.user.twoFactorEnabled = false;
+              }
+              const element = document.querySelector('#page-content');
+              if (element) {
+                this.render(element);
+              }
+              alert(i18n.t('profile.twoFactor.messages.disabled'));
+            },
+            () => {
+              // Cancel callback - remettre le toggle à true
+              const toggle = document.getElementById('toggle-2fa') as HTMLInputElement;
+              if (toggle) toggle.checked = true;
+            }
+          );
+          modal.show();
+        } else {
+          throw new Error(result.message);
+        }
+      }
+    } catch (error) {
+      console.error('2FA toggle error:', error);
+      alert((error as Error).message);
+      throw error; // Permet au ProfileHeader de revert le toggle
+    }
   }
 
   private render(element: Element): void {
@@ -150,7 +218,8 @@ export class ProfilePage {
       const actionCallbacks: ActionCallbacks = {
         onEditProfile: () => this.openEditModal(),
         onLogout: () => authService.logout(),
-        onChangePassword: () => this.openChangePasswordModal()
+        onChangePassword: () => this.openChangePasswordModal(),
+        onToggle2FA: (enabled: boolean) => this.handleToggle2FA(enabled)
       };
       
       components.actions = new QuickActionsCard(actionCallbacks);
@@ -163,7 +232,18 @@ export class ProfilePage {
     matchHistoryCard.bindFilterEvents(element);
 
     // Attacher les événements
-    layout.bindEvents(this.handleFriendAction.bind(this));
+    this.bindEvents(components, isOwnProfile);
+  }
+
+  private bindEvents(components: ProfileComponents, isOwnProfile: boolean): void {
+    // Events existants
+    if (isOwnProfile) {
+      components.friends?.bindEvents();
+      // Nouveau: Bind events 2FA
+      components.header.bind2FAEvents((enabled: boolean) => this.handleToggle2FA(enabled));
+    } else {
+      components.header.bindEvents((action: string) => this.handleFriendAction(action));
+    }
   }
 
   private async handleFriendAction(action: string): Promise<void> {
@@ -229,7 +309,6 @@ export class ProfilePage {
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
     });
   }
-
 
   destroy(): void {
     if (this.languageListener) {
