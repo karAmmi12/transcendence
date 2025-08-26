@@ -57,7 +57,7 @@ db.exec(`
         UNIQUE(match_id, user_id, alias)
     );
 
-    CREATE TABLE IF NOT EXISTS two_factor_codes (
+    CREATE TABLE IF NOT EXISTS two_factor_tokens (
     user_id INTEGER PRIMARY KEY,
     token TEXT NOT NULL,
     expires_at DATETIME NOT NULL,

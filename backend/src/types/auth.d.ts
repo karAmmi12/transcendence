@@ -93,7 +93,7 @@ export interface ChangePassword {
   newPassword: string;
 }
 
-export interface TwoFactorCode {
+export interface TwoFactorToken {
     id: number;
     token: string;
     createdAt: string;
