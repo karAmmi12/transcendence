@@ -4,9 +4,13 @@ import { TwoFactorServices } from "../services/twoFactorServices.js";
 export class TwoFactorController {
     static async enableTwoFactor(req: FastifyRequest, reply: FastifyReply) 
     {
-
+        
         try {
-            const { userId } = req.body as { userId: number };
+
+            // const { userId } = req.body as { userId: number };
+            const user = req.user!;
+            const userId = user.userId; 
+
             const result = await TwoFactorServices.sendCode(userId);
             if (!result.success)
                 return reply.status(400).send({ error: result.message });
