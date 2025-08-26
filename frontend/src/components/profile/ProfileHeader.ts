@@ -59,19 +59,40 @@ export class ProfileHeader {
   }
 
   private renderOwnProfileActions(): string { 
-    
     return `
-      <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+      <div class="flex flex-col gap-4">
+        <!-- Toggle 2FA -->
         ${!this.user.googleId ? `
-        <button id="edit-profile" class="btn-primary">
-          ${i18n.t('profile.actions.editProfile')}
-        </button>
-        <button id="change-password" class="btn-secondary">
-          ${i18n.t('profile.actions.changePassword')}
-        </button> ` : ''}
+          <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
+            <div class="flex flex-col">
+              <span class="text-white font-medium">${i18n.t('profile.twoFactor.title')}</span>
+              <span class="text-gray-400 text-sm">${i18n.t('profile.twoFactor.description')}</span>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                id="toggle-2fa" 
+                class="sr-only peer" 
+                ${this.user.twoFactorEnabled ? 'checked' : ''}
+              >
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        ` : ''}
+        
+        <!-- Boutons existants -->
+        <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+          ${!this.user.googleId ? `
+          <button id="edit-profile" class="btn-primary">
+            ${i18n.t('profile.actions.editProfile')}
+          </button>
+          <button id="change-password" class="btn-secondary">
+            ${i18n.t('profile.actions.changePassword')}
+          </button> ` : ''}
+        </div>
       </div>
     `;
-  } 
+  }
 
   private renderOtherProfileActions(): string {
     // ✅ Gestion simplifiée si pas de friendshipStatus
@@ -156,6 +177,21 @@ export class ProfileHeader {
 
     document.getElementById('header-challenge-user')?.addEventListener('click', () => {
       console.log('Challenge user from header - TODO: Implement');
+    });
+  }
+
+  // Ajouter méthode pour bind events 2FA
+  public bind2FAEvents(onToggle2FA?: (enabled: boolean) => Promise<void>): void {
+    if (!onToggle2FA) return;
+
+    const toggle2FA = document.getElementById('toggle-2fa') as HTMLInputElement;
+    toggle2FA?.addEventListener('change', async () => {
+      try {
+        await onToggle2FA(toggle2FA.checked);
+      } catch (error) {
+        // Revert toggle state on error
+        toggle2FA.checked = !toggle2FA.checked;
+      }
     });
   }
 }
