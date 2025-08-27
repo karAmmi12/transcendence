@@ -5,6 +5,7 @@ import db from "../db/index.js";
 import crypto from "crypto";
 import bcrypt from 'bcrypt'; 
 import 'dotenv/config';
+import { serialize } from '../utils/serialize.js';
 
 export class TwoFactorServices {
 
@@ -106,14 +107,17 @@ export class TwoFactorServices {
     {
         try {
             const stmt = db.prepare("SELECT * FROM two_factor_tokens WHERE user_id = ? ");
-            const tokenData = stmt.get(userId) as any;
-            console.log("OUAIS", tokenData);
-            if (!tokenData) 
+            const tokenRaw = stmt.get(userId) as any;
+            if (!tokenRaw) 
                 return null;
+            // GRRRRR
+            const tokenData = serialize(tokenRaw);
+
             return {
                 id: tokenData.user_id,
                 token: tokenData.token,
-                expiresAt: new Date(tokenData.expires_at)
+                expiresAt: new Date(tokenData.expiresAt),
+                createdAt: new Date(tokenData.createdAt)
             } as TwoFactorToken;
 
         }catch(error) {

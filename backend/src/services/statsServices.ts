@@ -1,6 +1,7 @@
 import db from '../db/index.js'
 import { UserStats } from '../types/auth';
 import { MatchHistory } from '../types/stats.js';
+import { serialize } from '../utils/serialize.js';
 
 export class StatsService
 {
@@ -90,27 +91,28 @@ export class StatsService
             `);
           const matchesRaw = stmt.all(userId, limit) as any[];
           // Transformer les données brutes en format MatchHistory
-          const matches: MatchHistory[] = matchesRaw.map(match => {
-            // Calculer la durée du match en secondes
-            const duration = match.started_at && match.ended_at 
-                ? Math.floor((new Date(match.ended_at).getTime() - new Date(match.started_at).getTime()) / 1000)
-                : undefined;
+          // GRRRRRRRRR
+            const matches: MatchHistory[] = matchesRaw.map(matchRaw => {
+                const match = serialize(matchRaw);
+                
+                const duration = match.startedAt && match.endedAt 
+                    ? Math.floor((new Date(match.endedAt).getTime() - new Date(match.startedAt).getTime()) / 1000)
+                    : undefined;
 
-            return {
-                id: match.id,
-                opponent: match.opponent_name,
-                result: match.is_winner ? 'win' : 'loss',
-                score: {
-                    player: match.user_score,
-                    opponent: match.opponent_score
-                },
-                date: match.ended_at,
-                duration: duration,
-                gameMode: match.mode as 'local' | 'remote' | 'tournament',
-                tournamentId: match.tournamentId,
-                opponentAvatar: match.opponentAvatar
-            };
-        });
+                return {
+                    id: match.id,
+                    opponent: match.opponentName,
+                    opponentAvatar: match.opponentAvatar,
+                    result: match.userWon === 1 ? 'win' : 'loss',
+                    score: {
+                        player: match.userScore,
+                        opponent: match.opponentScore
+                    },
+                    date: match.endedAt,     
+                    duration,
+                    gameMode: match.gameMode 
+                };
+            });
 
         return (matches);
 
