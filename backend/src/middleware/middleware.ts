@@ -1,7 +1,7 @@
 import {FastifyRequest, FastifyReply} from 'fastify'
 import {JWTService} from "../services/jwtServices.js";
 import db from '../db/index.js'
-
+import { serialize } from '../utils/serialize.js';
 
 // augmentation du detail car pas de user dans FastifyRequest de base 
 declare module 'fastify' 
@@ -81,10 +81,13 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
 
         // Sinon recup info user dans la db puis si ok -> generer nouveau accessToken
         const userStmt = db.prepare('SELECT username FROM users WHERE id = ?');
-        const user = userStmt.get(sessionCheck.userId!) as {username: string} | undefined;
+        const userRaw = userStmt.get(sessionCheck.userId!) as {username: string} | undefined;
 
-        if (!user)
+        if (!userRaw)
             return (reply.status(401).send({error: 'User not found'}));
+
+        //GRRRRRRRRR
+        const user = serialize(userRaw);
 
         const newAccessToken = JWTService.generateAccessToken({
             userId: sessionCheck.userId!,

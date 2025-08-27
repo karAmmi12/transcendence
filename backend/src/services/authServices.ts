@@ -4,6 +4,7 @@ import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth"
 import {JWTService} from "./jwtServices.js";
 import { OAuthController } from "../controllers/oauthController.js";
 import 'dotenv/config'
+import { serialize } from '../utils/serialize.js';
 
 /**
  * Verifie si le mail existe deja dans la db
@@ -31,8 +32,8 @@ export function checkUsernameExists(username: string): boolean
 function findUserByEmail(email: string): UserFromDB | null 
 {
     const stmt = db.prepare("SELECT * FROM users WHERE email = ?");
-    const user = stmt.get(email) as UserFromDB | undefined;
-    return (user || null);
+    const userRaw = stmt.get(email) as any | undefined;
+    return userRaw ? serialize<UserFromDB>(userRaw) : null;//GRRRRRR
 }
 
 /**
@@ -41,8 +42,8 @@ function findUserByEmail(email: string): UserFromDB | null
 function findUserByUsername(username: string): UserFromDB | null 
 {
     const stmt = db.prepare("SELECT * FROM users WHERE username = ?");
-    const user = stmt.get(username) as UserFromDB | undefined;
-    return (user || null);
+    const userRaw = stmt.get(username) as any | undefined;
+    return userRaw ? serialize<UserFromDB>(userRaw) : null;//GRRRRR
 }
 
 export class AuthService 
@@ -121,13 +122,16 @@ export class AuthService
         try {
             // chercher le user dans la db via email ou username
             const stmt = db.prepare("SELECT * FROM users WHERE email = ? OR username = ?");
-            const user = stmt.get(loginData.username, loginData.username) as UserFromDB | undefined;
+            const userRaw = stmt.get(loginData.username, loginData.username) as UserFromDB | undefined;
 
-            if (!user)
+            if (!userRaw)
                 return {
                     success: false,
                     error: "Invalid identifier" //siuu surment changer les msg pour la secu
                 };
+
+            // GRRRRRRRR 
+            const user = serialize<UserFromDB>(userRaw);
             
             // Verif mdp
             const validPassword = await bcrypt.compare(loginData.password, user.password);
@@ -193,6 +197,9 @@ export class AuthService
             const userExist = findUserByEmail(userData.email); 
             
             if (userExist) {
+                //GRRRRRRRRR
+                const serializedUser = serialize(userExist);
+
                 const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
                 updateStmt.run(userExist.id);
 
@@ -201,7 +208,6 @@ export class AuthService
                 updateGoogleIdStmt.run(userData.googleId, userExist.id);
 
                 const PairToken = JWTService.generateTokenPair(userExist.id, userExist.username)
-                
                 JWTService.createSession(userExist.id, PairToken.refreshToken);
 
                 const userReturn = {
