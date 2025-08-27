@@ -16,6 +16,8 @@ export class TwoFactorController {
                 return reply.status(400).send({ error: result.message });
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
+            if (error instanceof Error)
+                console.error(error.message);
             return reply.status(500).send({ error: error || "Internal error sending 2FA code" });
         }
     }
@@ -49,6 +51,8 @@ export class TwoFactorController {
                 return reply.status(400).send({ error: result.message });
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
+            if (error instanceof Error)
+                console.error(error.message);
             return reply.status(500).send({ error: error || "Internal error disabling 2FA" });
         }
     }
