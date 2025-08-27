@@ -22,6 +22,7 @@ export class HomePage {
   async mount(selector: string): Promise<void> {
     const element = document.querySelector(selector);
     if (!element) return;
+    
 
     await this.loadGlobalStats();
     this.render(element);
