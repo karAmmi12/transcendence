@@ -12,7 +12,7 @@ export class TwoFactorServices {
     {
             const stmt = db.prepare("SELECT id, email, two_factor_enabled, google_id FROM users where id = ?");
             const user = stmt.get(userId) as any | undefined;
-            if (user)
+            if (!user)
                 throw new Error('Get user infos for 2FA failed');
             return {
                 id: user.id,
