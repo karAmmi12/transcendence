@@ -6,6 +6,7 @@ import friendsRoutes from "./routes/friends.js";
 import homeRoutes from "./routes/home.js";
 import twoFaRoutes from "./routes/twoFactorRoute.js";
 import tournamentRoutes from "./routes/tournament.js";
+import matchesRoutes from "./routes/matches.js";
 import cookie from "@fastify/cookie";
 import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
@@ -59,8 +60,8 @@ const start = async () => {
     await app.register(usersRoutes, {prefix: '/api/user'});
     await app.register(friendsRoutes, {prefix: '/api/friends'});
     await app.register(homeRoutes, {prefix: '/api/home'});
-    await app.register(tournamentRoutes, {prefix: '/api/tournament'});
-    await app.register(matchesRoutes, {prefix: '/api/matches'});
+    // await app.register(tournamentRoutes, {prefix: '/api/tournament'});
+    // await app.register(matchesRoutes, {prefix: '/api/matches'});
 
 
     // Démarrer le serveur 
