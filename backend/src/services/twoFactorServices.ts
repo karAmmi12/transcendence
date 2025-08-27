@@ -12,7 +12,7 @@ export class TwoFactorServices {
     {
             const stmt = db.prepare("SELECT id, email, two_factor_enabled, google_id FROM users where id = ?");
             const user = stmt.get(userId) as any | undefined;
-            if (!user)
+            if (user)
                 throw new Error('Get user infos for 2FA failed');
             return {
                 id: user.id,
@@ -81,8 +81,7 @@ export class TwoFactorServices {
 
     static async sendCode(userId: number): Promise<{ success: boolean, message: string }> 
     {
-        try{
-
+ 
             const user = await this.getUserById(userId);
             if (user.googleId)
                 throw new Error('2FA not available for Google users');
@@ -95,10 +94,6 @@ export class TwoFactorServices {
 
             return { success: true, message: '2FA code sent by email' };
 
-        } catch(error) {
-            console.log(error);
-            return {success: false, message: error instanceof Error ?  error.message: 'Failed to send 2FA code'};
-        }
     }
 
     static async getUserInfo(userId: number): Promise<TwoFactorToken | null>
