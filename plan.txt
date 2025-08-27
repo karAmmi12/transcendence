@@ -10,7 +10,7 @@ Gameplay	Joueurs distants (remote players)	MAJ	2 ⌛
 Customisation du jeu	MIN	1 ⌛
 AI / Stats	Dashboard statistiques utilisateur	MIN	1 ✅
 Cybersecurity	GDPR (suppression + anonymisation)	MIN	1 ❌
-JWT + 2FA	MAJ	2 ⌛
+JWT + 2FA	MAJ	2 ✅
 Accessibilité	Support tous appareils (responsive)	MIN	1 ✅
 Compatibilité navigateurs étendue	MIN	1 ✅
 Support multilingue	MIN	1 ✅
