@@ -90,6 +90,12 @@ export interface FriendshipStatus {
   requestId?: number;
 }
 
+export interface GlobalStats {
+  totalPlayers: number;
+  totalGames: number;
+  onlinePlayers: number;
+}
+
 // Ajouter le type Language manquant :
 export type Language = 'en' | 'fr' | 'it' | 'ar' | 'kab' | 'kab-tfng' | 'sg';
 
