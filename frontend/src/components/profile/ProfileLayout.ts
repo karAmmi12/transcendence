@@ -9,7 +9,6 @@ export interface ProfileComponents {
   stats: StatsCard;
   history: MatchHistoryCard;
   friends?: FriendsSection;
-  actions?: QuickActionsCard;
 }
 
 export class ProfileLayout {
@@ -51,10 +50,6 @@ export class ProfileLayout {
     // Attacher les événements des autres composants
     if (this.components.friends) {
       this.components.friends.bindEvents();
-    }
-
-    if (this.components.actions) {
-      this.components.actions.bindEvents();
     }
   }
 }
