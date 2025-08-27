@@ -1,5 +1,6 @@
 import db from "../db/index.js"
 import {FriendsResult, FriendProfile} from "../types/friends.js";
+import { serialize } from "../utils/serialize.js";
 
 export class FriendsService
 {
@@ -68,14 +69,20 @@ export class FriendsService
 
             const friendsRaw = stmt.all(userId) as any[];
             
-            const friends: FriendProfile[] = friendsRaw.map(friend => ({
-                id: friend.id,
-                username: friend.username,
-                avatarUrl: friend.avatar_url,
-                isOnline: Boolean(friend.is_online), 
-                lastSeen: friend.last_login,
-                friendshipDate: friend.created_at
-            }));
+            // GRRRRRRRRRR
+            const friends: FriendProfile[] = friendsRaw.map(friendRaw => {
+                const friend = serialize(friendRaw);
+                
+                return {
+                    id: friend.id,
+                    username: friend.username,
+                    avatarUrl: friend.avatarUrl,       
+                    isOnline: Boolean(friend.isOnline),
+                    lastSeen: friend.lastLogin,        
+                    friendshipDate: friend.createdAt   
+                };
+            });
+
             return friends;
 
         } catch (error) {

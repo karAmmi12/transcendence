@@ -2,6 +2,7 @@ import db from '../db/index.js'
 import {UserData, AuthenticatedUser, UpdateProfileData, UpdateResult} from "../types/auth.js"
 import {checkUsernameExists, checkEmailExists} from "./authServices.js"
 import { StatsService } from './statsServices.js';
+import { serialize } from '../utils/serialize.js';
 
 export class UserServices
 {
@@ -14,22 +15,23 @@ export class UserServices
                 SELECT id, username, email, avatar_url, created_at, last_login, is_online, google_id, two_factor_enabled
                 FROM users WHERE id = ?
             `);
-        const userData = stmt.get(userId) as any | undefined;
-        if (!userData)
+        const userDataRaw = stmt.get(userId) as any | undefined;
+        if (!userDataRaw)
             return (null);
 
+        const userData = serialize(userDataRaw);
         const stats = StatsService.getUserStats(userId);
 
         const userProfile: UserData = {
             id: userData.id,
             username: userData.username,
             email: userData.email,
-            avatarUrl: userData.avatar_url,
-            isOnline: userData.is_online,
-            twoFactorEnabled: userData.two_factor_enabled,
-            createdAt: userData.created_at,
-            lastLogin: userData.last_login,
-            googleId: userData.google_id,
+            avatarUrl: userData.avatarUrl,
+            isOnline: userData.isOnline,
+            twoFactorEnabled: userData.twoFactorEnabled,
+            createdAt: userData.createdAt,
+            lastLogin: userData.lastLogin,
+            googleId: userData.googleId,
             stats: stats
         }
         console.log("User profile retrieved:", userProfile);
@@ -99,18 +101,20 @@ export class UserServices
                 if (!updatedUserRaw)
                     throw new Error("Failed to retrieve updated user data");
 
+                //GRRRRRR
+                const updatedUser = serialize(updatedUserRaw);
                 const stats = StatsService.getUserStats(userId);
 
                 const formattedUser: UserData = {
-                    id: updatedUserRaw.id,
-                    username: updatedUserRaw.username,
-                    email: updatedUserRaw.email,
-                    avatarUrl: updatedUserRaw.avatar_url,
-                    isOnline: updatedUserRaw.is_online,
-                    twoFactorEnabled: updatedUserRaw.two_factor_enabled,
-                    createdAt: updatedUserRaw.created_at,
-                    lastLogin: updatedUserRaw.last_login,
-                    googleId: updatedUserRaw.google_id,
+                    id: updatedUser.id,
+                    username: updatedUser.username,
+                    email: updatedUser.email,
+                    avatarUrl: updatedUser.avatarUrl,
+                    isOnline: updatedUser.isOnline,
+                    twoFactorEnabled: updatedUser.twoFactorEnabled,
+                    createdAt: updatedUser.createdAt,
+                    lastLogin: updatedUser.lastLogin,
+                    googleId: updatedUser.googleId,
                     stats: stats
                 };
 
@@ -150,20 +154,20 @@ export class UserServices
             const usersRaw = stmt.all(userId) as any[];
             
             //siuuu pour attacher els stats temporaire a tous les users
-            const users: UserData[] = usersRaw.map(userData => {
-
+            const users: UserData[] = usersRaw.map(userRaw => {
+                const userData = serialize(userRaw);
                 const stats = StatsService.getUserStats(userData.id);
                 
                 return {
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatarUrl: userData.avatar_url,
-                    isOnline: userData.is_online,
+                    avatarUrl: userData.avatarUrl,
+                    isOnline: userData.isOnline,
                     twoFactorEnabled: false,
-                    createdAt: userData.created_at,
-                    lastLogin: userData.last_login,
-                    googleId: userData.google_id,
+                    createdAt: userData.createdAt,
+                    lastLogin: userData.lastLogin,
+                    googleId: userData.googleId,
                     stats: stats
                 };
             });
@@ -192,20 +196,20 @@ export class UserServices
             const searchPattern = `${query}%`;
             const usersRaw = stmt.all(searchPattern, searchPattern) as any[];
             
-            const users: UserData[] = usersRaw.map(userData => {
-                
+            const users: UserData[] = usersRaw.map(userRaw => {
+                const userData = serialize(userRaw);
                 const stats = StatsService.getUserStats(userData.id);
                 
                 return {
                     id: userData.id,
                     username: userData.username,
                     email: userData.email,
-                    avatarUrl: userData.avatar_url,
-                    isOnline: userData.is_online,
+                    avatarUrl: userData.avatarUrl,
+                    isOnline: userData.isOnline,
                     twoFactorEnabled: false,
-                    createdAt: userData.created_at,
-                    lastLogin: userData.last_login,
-                    googleId: userData.google_id,
+                    createdAt: userData.createdAt,
+                    lastLogin: userData.lastLogin,
+                    googleId: userData.googleId,
                     stats: stats
                 };
             });
