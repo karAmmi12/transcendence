@@ -9,29 +9,25 @@ import { serialize } from '../utils/serialize.js';
 
 export class TwoFactorServices {
 
-    static async getUserById(userId: number): Promise<UserTwoFactor | null>
+    static async getUserById(userId: number): Promise<UserTwoFactor>
     {
-        try {
             const stmt = db.prepare("SELECT id, email, two_factor_enabled, google_id FROM users where id = ?");
             const user = stmt.get(userId) as any | undefined;
             if (!user)
-                return null;
+                throw new Error('Get user infos for 2FA failed');
             return {
                 id: user.id,
                 email: user.email,
-                twoFactorEnabled: Boolean(user.two_factor_enabled),
+                twoFactorEnabled: user.two_factor_enabled,
                 googleId: user.google_id,
             };
-        } catch (error) {
-            console.error('Get userinfo 2FA failed request');
-            return null;
-        }
     }
 
     static generateCode(): string {
         const randomBytes = crypto.randomBytes(3);
         const randomNumber = randomBytes.readUIntBE(0, 3);
         return (100000 + (randomNumber % 900000)).toString();
+
     }
 
     static async sendEmail(email: string, code: string): Promise<boolean> 
@@ -79,28 +75,26 @@ export class TwoFactorServices {
             return (returnUser);
 
         }catch (error){
-            console.error("Failed query DB 2FA");
+            console.error("Failed query DB 2FA", error);
             return (null);
         }
     }
 
     static async sendCode(userId: number): Promise<{ success: boolean, message: string }> 
     {
-        const user = await this.getUserById(userId);
-        if (!user)
-            return { success: false, message: 'User not found' };
-        if (user.googleId)
-            return { success: false, message: '2FA not available for Google users' };
-        
-        const code = this.generateCode();
-        const tokenUser = await this.storeTwoFactor(userId, code);
+ 
+            const user = await this.getUserById(userId);
+            if (user.googleId)
+                throw new Error('2FA not available for Google users');
+            
+            const code = this.generateCode();
+            if (!code)
+                throw new Error('Generate random pass 2FA failed');
+            const tokenUser = await this.storeTwoFactor(userId, code);
+            const emailValid = await this.sendEmail(user.email, code);
 
-        if (!tokenUser)
-            return ({ success: false, message: "error get TokenUser in DB" });
-        const emailValid = await this.sendEmail(user.email, code);
-        if (!emailValid)
-            return { success: false, message: 'Failed to send email for 2FA' };
-        return { success: true, message: '2FA code sent by email' };
+            return { success: true, message: '2FA code sent by email' };
+
     }
 
     static async getUserInfo(userId: number): Promise<TwoFactorToken | null>
@@ -144,9 +138,11 @@ export class TwoFactorServices {
         // Enable 2FA in DB if not already enabled
         const user = await this.getUserById(userId);
         if (user) {
-            const stmt = db.prepare("UPDATE users SET two_factor_enabled = 1 WHERE id = ?");
-            stmt.run(user.id);
-            
+            if (!user.twoFactorEnabled){
+                const stmt = db.prepare("UPDATE users SET two_factor_enabled = 1 WHERE id = ?");
+                stmt.run(user.id);
+            }
+
             // Supprimer le token utilisé
             const deleteStmt = db.prepare("DELETE FROM two_factor_tokens WHERE user_id = ?");
             deleteStmt.run(userId);
