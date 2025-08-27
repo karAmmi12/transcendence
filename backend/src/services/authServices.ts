@@ -175,8 +175,6 @@ export class AuthService
             // chercher le user dans la db via email ou username
             const stmt = db.prepare("SELECT * FROM users WHERE email = ? OR username = ?");
             const user = stmt.get(loginData.username, loginData.username) as UserFromDB | undefined;
-            console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', user?.password);
-            console.log(user);
             if (!user)
                 return {
                     success: false,
@@ -191,12 +189,14 @@ export class AuthService
                     success: false,
                     error: "Invalid password" //siuu surment changer les msg pour la secu
                 }
-
+            user.twoFactorEnabled = true;
+            console.log('USEEEEEEEEEEEEEEEEEEEEEEEEEEEER', user.twoFactorEnabled);
             if (user.twoFactorEnabled)
             {
                 const getCode = await TwoFactorServices.sendCode(user.id);
                 if (!getCode.success)
                     return { success: getCode.success, error: getCode.message}
+                console.log('SIUUUUUUUUUUUUUUUUUUUUUUUUUUU AUTH');
                 return {
                     success: false,
                     error: "2FA_REQUIRED",
