@@ -13,8 +13,10 @@ export default async function authRoutes(app: FastifyInstance)
   app.get('/test', AuthController.test); //siuu test a supprimer
   app.post('/register', {schema: registerSchema}, AuthController.register);
   app.post('/login', {schema: loginSchema}, AuthController.login);
+  app.post('/loginWith2FA', AuthController.loginWith2FA);
   app.get('/oauth/google', OAuthController.oauthLogin);
   app.get('/oauth/google/callback', OAuthController.oauthCallback);
+  
 
   //Routes protege (passe par le middleware)
   app.post('/logout', AuthController.logout);

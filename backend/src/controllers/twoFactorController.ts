@@ -24,15 +24,16 @@ export class TwoFactorController {
     {
 
         try {
-            const user = req.user!;
-            const userId = user.userId;
+            const { userId } = req.user as {userId: number};
+            // const userId = user.userId;
             const { code }  = req.body as { code: string };
+
             const result = await TwoFactorServices.verifyCode(userId, code);
             if (!result.success)
                 return reply.status(400).send({ error: result.message });
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
-            return reply.status(500).send({ error: error || "Internal error verifying 2FA code" });
+            return reply.status(500).send({ error: "Internal error verifying 2FA code" });
         }
     }
 
