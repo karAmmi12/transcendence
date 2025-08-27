@@ -4,6 +4,7 @@ import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth"
 import {JWTService} from "./jwtServices.js";
 import { OAuthController } from "../controllers/oauthController.js";
 import 'dotenv/config'
+import { TwoFactorServices } from "./twoFactorServices.js";
 import { serialize } from '../utils/serialize.js';
 
 /**
@@ -48,6 +49,57 @@ function findUserByUsername(username: string): UserFromDB | null
 
 export class AuthService 
 {
+    static async loginWith2FA(userId: number, code: string): Promise<AuthResult>
+    {
+        try {
+            const verifyResult = await TwoFactorServices.verifyCode(userId, code);
+            if (!verifyResult.success) {
+                return {
+                    success: false,
+                    error: verifyResult.message
+                };
+            }
+
+            const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
+            const user = stmt.get(userId) as UserFromDB | undefined;
+
+            if (!user) {
+                return {
+                    success: false,
+                    error: "User not found"
+                };
+            }
+
+            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
+            updateStmt.run(user.id);
+
+            const PairToken = JWTService.generateTokenPair(user.id, user.username);
+
+            JWTService.createSession(user.id, PairToken.refreshToken);
+
+            const userReturn = {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                lastLogin: new Date().toISOString()
+            };
+
+            return {
+                success: true,
+                user: userReturn,
+                accessToken: PairToken.accessToken,
+                refreshToken: PairToken.refreshToken
+            };
+
+        } catch (error) {
+            console.error('Login with 2FA error:', error);
+            return {
+                success: false,
+                error: "2FA login failed"
+            };
+        }
+    }
+
     /**
      * Service pour gerer l'inscription d'un nouveau user
      * Validation du format faite par Fastify grace au schemas
@@ -141,7 +193,26 @@ export class AuthService
                     success: false,
                     error: "Invalid password" //siuu surment changer les msg pour la secu
                 }
-            
+            user.twoFactorEnabled = true;
+            console.log('USEEEEEEEEEEEEEEEEEEEEEEEEEEEER', user.twoFactorEnabled);
+            if (user.twoFactorEnabled)
+            {
+                const getCode = await TwoFactorServices.sendCode(user.id);
+                if (!getCode.success)
+                    return { success: getCode.success, error: getCode.message}
+                console.log('SIUUUUUUUUUUUUUUUUUUUUUUUUUUU AUTH');
+                return {
+                    success: false,
+                    error: "2FA_REQUIRED",
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        email: user.email,
+                        twoFactorEnabled: user.twoFactorEnabled
+                    }
+                };
+            }
+
             //Maj lastLogin dans la db
             const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
             updateStmt.run(user.id);
