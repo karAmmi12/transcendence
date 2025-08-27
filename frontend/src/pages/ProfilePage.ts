@@ -213,16 +213,6 @@ export class ProfilePage {
     // Ajouter les composants spécifiques au profil personnel
     if (isOwnProfile) {
       components.friends = new FriendsSection(this.friends, isOwnProfile);
-      
-      // Créer les callbacks pour QuickActionsCard
-      const actionCallbacks: ActionCallbacks = {
-        onEditProfile: () => this.openEditModal(),
-        onLogout: () => authService.logout(),
-        onChangePassword: () => this.openChangePasswordModal(),
-        onToggle2FA: (enabled: boolean) => this.handleToggle2FA(enabled)
-      };
-      
-      components.actions = new QuickActionsCard(actionCallbacks);
     }
 
     // Créer et rendre le layout
@@ -235,14 +225,27 @@ export class ProfilePage {
     this.bindEvents(components, isOwnProfile);
   }
 
-  private bindEvents(components: ProfileComponents, isOwnProfile: boolean): void {
-    // Events existants
+  private bindEvents(components: any, isOwnProfile: boolean): void {
     if (isOwnProfile) {
-      components.friends?.bindEvents();
-      // Nouveau: Bind events 2FA
-      components.header.bind2FAEvents((enabled: boolean) => this.handleToggle2FA(enabled));
+      // ✅ Utiliser la nouvelle méthode bindEvents unifiée
+      components.header.bindEvents({
+        onEditProfile: () => this.openEditModal(),
+        onChangePassword: () => this.openChangePasswordModal(),
+        onToggle2FA: (enabled: boolean) => this.handleToggle2FA(enabled)
+      });
+
+      if (components.friends) {
+        components.friends.bindEvents();
+      }
+
+      
     } else {
-      components.header.bindEvents((action: string) => this.handleFriendAction(action));
+      // Pour les autres profils
+      components.header.bindEvents({
+        onFriendAction: async (action: string) => {
+          await this.handleFriendAction(action);
+        }
+      });
     }
   }
 
