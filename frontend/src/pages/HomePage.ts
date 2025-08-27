@@ -2,11 +2,17 @@ import { i18n } from '@/services/i18nService.js';
 import { authService } from '@services/authService';
 import { globalStatsService } from '@services/globalStatsService';
 import { HeroSection } from '@components/home/HeroSection';
+import { GlobalStatsCard } from '@components/home/GlobalStatsCard';
 import { UserStatsCard } from '@components/home/UserStatsCard';
-import { GlobalStatsCard, type GlobalStats } from '@components/home/GlobalStatsCard';
-import { FeaturesGrid } from '@components/home/FeaturesGrid';
-import { ActionButtons, type ActionCallbacks } from '@components/home/ActionButtons';
-import type { User } from '../types/index.js';
+import { GameModeButtons } from '@components/home/GameModeButtons';
+import type { User, GlobalStats } from '../types/index.js';
+
+export interface GameModeCallbacks {
+  onLocalGame: () => void;
+  onRemoteGame: () => void;
+  onTournament: () => void;
+  onLogin: () => void;
+}
 
 export class HomePage {
   private languageListener: (() => void) | null = null;
@@ -17,13 +23,10 @@ export class HomePage {
     const element = document.querySelector(selector);
     if (!element) return;
 
-    // Charger les statistiques globales
     await this.loadGlobalStats();
-
     this.render(element);
     this.destroy();
-    this.setupEventListeners(element);
-    this.bindEvents();
+    this.setupEventListeners();
   }
 
   private async loadGlobalStats(): Promise<void> {
@@ -31,26 +34,24 @@ export class HomePage {
       this.globalStats = await globalStatsService.getGlobalStats();
     } catch (error) {
       console.error('Failed to load global stats:', error);
-      // Utiliser des stats par défaut en cas d'erreur
       this.globalStats = {
         totalPlayers: 0,
         totalGames: 0,
         onlinePlayers: 0,
-        activeTournaments: 0
       };
     }
   }
 
-  private setupEventListeners(element: Element): void {
+  private setupEventListeners(): void {
     this.languageListener = () => {
-      this.render(element);
-      this.bindEvents();
+      const element = document.querySelector('#page-content');
+      if (element) this.render(element);
     };
     window.addEventListener('languageChanged', this.languageListener);
 
     this.authListener = () => {
-      this.render(element);
-      this.bindEvents();
+      const element = document.querySelector('#page-content');
+      if (element) this.render(element);
     };
     window.addEventListener('authStateChanged', this.authListener);
   }
@@ -60,8 +61,7 @@ export class HomePage {
     const currentUser = authService.getCurrentUser();
 
     // Créer les composants
-    const heroSection = new HeroSection(isAuthenticated, currentUser);
-    const featuresGrid = new FeaturesGrid();
+    const heroSection = new HeroSection();
     
     let userStatsCard = null;
     if (isAuthenticated && currentUser) {
@@ -73,39 +73,73 @@ export class HomePage {
       globalStatsCard = new GlobalStatsCard(this.globalStats);
     }
 
-    // Créer les callbacks pour ActionButtons
-    const actionCallbacks: ActionCallbacks = {
-      onPlay: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' })),
-      onProfile: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' })),
-      onTournaments: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournaments' })),
-      onLogin: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' })),
-      onRegister: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/register' }))
+    // Créer les callbacks pour les modes de jeu
+    const gameModeCallbacks: GameModeCallbacks = {
+      onLocalGame: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=local' })),
+      onRemoteGame: () => {
+        if (isAuthenticated) {
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=remote' }));
+        } else {
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
+        }
+      },
+      onTournament: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament' })),
+      onLogin: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }))
     };
 
-    const actionButtons = new ActionButtons(isAuthenticated, actionCallbacks);
+    const gameModeButtons = new GameModeButtons(isAuthenticated, gameModeCallbacks);
 
-    // Assembler le layout
+    // Assembler le layout responsive
     element.innerHTML = `
       <div class="min-h-screen bg-gray-900 text-white">
         <div class="container mx-auto px-4 py-8">
           ${heroSection.render()}
           
-          ${!isAuthenticated && globalStatsCard ? globalStatsCard.render() : ''}
-          ${isAuthenticated && userStatsCard ? userStatsCard.render() : ''}
+          ${this.renderStatsSection(globalStatsCard, userStatsCard)}
           
-          ${featuresGrid.render()}
-          ${actionButtons.render()}
+          ${gameModeButtons.render()}
         </div>
       </div>
     `;
 
     // Attacher les événements
-    actionButtons.bindEvents();
+    gameModeButtons.bindEvents();
   }
 
-  private bindEvents(): void {
-    // Les événements sont maintenant gérés par les composants
-    // Cette méthode peut être utilisée pour des événements spécifiques à la page
+  private renderStatsSection(globalStatsCard: any, userStatsCard: any): string {
+    // Si aucune stat à afficher
+    if (!globalStatsCard && !userStatsCard) {
+      return '';
+    }
+
+    // Si seulement une carte à afficher, la centrer
+    if (globalStatsCard && !userStatsCard) {
+      return `
+        <div class="flex justify-center mb-12">
+          <div class="w-full max-w-md">
+            ${globalStatsCard.render()}
+          </div>
+        </div>
+      `;
+    }
+
+    if (!globalStatsCard && userStatsCard) {
+      return `
+        <div class="flex justify-center mb-12">
+          <div class="w-full max-w-md">
+            ${userStatsCard.render()}
+          </div>
+        </div>
+      `;
+    }
+
+    // Si les deux cartes sont présentes, utiliser une grille responsive
+    return `
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+        ${globalStatsCard.render()}
+        ${userStatsCard.render()}
+      </div>
+    `;
   }
 
   destroy(): void {
