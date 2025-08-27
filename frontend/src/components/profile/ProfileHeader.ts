@@ -2,14 +2,11 @@ import { User, FriendshipStatus } from '../../types/index.js';
 import { i18n } from '@/services/i18nService.js';
 import { userService } from '../../services/userService.js';
 
-
-
 export class ProfileHeader {
   constructor(
     private user: User, 
     private isOwnProfile: boolean,
     private friendshipStatus?: FriendshipStatus | null 
-    
   ) {}
 
   render(): string {
@@ -66,7 +63,6 @@ export class ProfileHeader {
           <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
             <div class="flex flex-col">
               <span class="text-white font-medium">${i18n.t('profile.twoFactor.title')}</span>
-              <span class="text-gray-400 text-sm">${i18n.t('profile.twoFactor.description')}</span>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
               <input 
@@ -154,45 +150,66 @@ export class ProfileHeader {
     `;
   }
 
-  // ✅ Ajouter une méthode pour attacher les événements
-  public bindEvents(onFriendAction?: (action: string) => Promise<void>): void {
-    if (!onFriendAction) return;
+  // ✅ Méthode principale pour attacher tous les événements du header
+  public bindEvents(callbacks?: {
+    onEditProfile?: () => void;
+    onChangePassword?: () => void;
+    onFriendAction?: (action: string) => Promise<void>;
+    onToggle2FA?: (enabled: boolean) => Promise<void>;
+  }): void {
+    if (!callbacks) return;
 
-    // Actions d'amitié dans le header
-    document.getElementById('header-add-friend')?.addEventListener('click', () => {
-      onFriendAction('add-friend');
-    });
+    // ✅ Événements pour les boutons de profil personnel
+    if (this.isOwnProfile) {
+      document.getElementById('edit-profile')?.addEventListener('click', () => {
+        callbacks.onEditProfile?.();
+      });
 
-    document.getElementById('header-remove-friend')?.addEventListener('click', () => {
-      onFriendAction('remove-friend');
-    });
+      document.getElementById('change-password')?.addEventListener('click', () => {
+        callbacks.onChangePassword?.();
+      });
 
-    document.getElementById('header-accept-friend-request')?.addEventListener('click', () => {
-      onFriendAction('accept-friend-request');
-    });
+      // Toggle 2FA
+      if (callbacks.onToggle2FA) {
+        const toggle2FA = document.getElementById('toggle-2fa') as HTMLInputElement;
+        toggle2FA?.addEventListener('change', async () => {
+          try {
+            await callbacks.onToggle2FA!(toggle2FA.checked);
+          } catch (error) {
+            // Revert toggle state on error
+            toggle2FA.checked = !toggle2FA.checked;
+          }
+        });
+      }
+    } else {
+      // ✅ Événements pour les actions sur d'autres profils
+      if (callbacks.onFriendAction) {
+        document.getElementById('header-add-friend')?.addEventListener('click', () => {
+          callbacks.onFriendAction!('add-friend');
+        });
 
-    document.getElementById('header-decline-friend-request')?.addEventListener('click', () => {
-      onFriendAction('decline-friend-request');
-    });
+        document.getElementById('header-remove-friend')?.addEventListener('click', () => {
+          callbacks.onFriendAction!('remove-friend');
+        });
 
-    document.getElementById('header-challenge-user')?.addEventListener('click', () => {
-      console.log('Challenge user from header - TODO: Implement');
-    });
+        document.getElementById('header-accept-friend-request')?.addEventListener('click', () => {
+          callbacks.onFriendAction!('accept-friend-request');
+        });
+
+        document.getElementById('header-decline-friend-request')?.addEventListener('click', () => {
+          callbacks.onFriendAction!('decline-friend-request');
+        });
+      }
+
+      document.getElementById('header-challenge-user')?.addEventListener('click', () => {
+        console.log('Challenge user from header - TODO: Implement');
+      });
+    }
   }
 
-  // Ajouter méthode pour bind events 2FA
+  // ✅ Méthodes dépréciées - gardées pour compatibilité
+  /** @deprecated Utilisez bindEvents() à la place */
   public bind2FAEvents(onToggle2FA?: (enabled: boolean) => Promise<void>): void {
-    if (!onToggle2FA) return;
-
-    const toggle2FA = document.getElementById('toggle-2fa') as HTMLInputElement;
-    toggle2FA?.addEventListener('change', async () => {
-      try {
-        await onToggle2FA(toggle2FA.checked);
-      } catch (error) {
-        // Revert toggle state on error
-        toggle2FA.checked = !toggle2FA.checked;
-      }
-    });
+    this.bindEvents({ onToggle2FA });
   }
 }
-

@@ -13,51 +13,38 @@
   },
   "home": {
     "welcome": "Welcome to ft_transcendence",
-    "description": "Experience the ultimate Pong game with real-time multiplayer, tournaments, and an immersive gaming experience.",
-    "features": {
-      "multiplayer": {
-        "title": "Real-time Multiplayer",
-        "description": "Play against friends in real-time from anywhere in the world."
+    "description": "Experience the ultimate Pong game with local multiplayer, remote competitions, and tournaments.",
+    "gameModes": {
+      "title": "Choose Your Game Mode",
+      "local": {
+        "title": "Local Game",
+        "description": "Play with a friend on the same computer. Perfect for quick matches!",
+        "button": "Play Local"
       },
-      "tournaments": {
-        "title": "Tournaments",
-        "description": "Compete in tournaments and climb the leaderboard to become the champion."
+      "remote": {
+        "title": "Remote Game",
+        "description": "Challenge players online from around the world.",
+        "button": "Play Online",
+        "loginRequired": "Login required for online play"
       },
-      "chat": {
-        "title": "Live Chat",
-        "description": "Chat with other players and make new friends in the gaming community."
-      },
-      "singleplayer": {
-        "title": "Singleplayer Mode",
-        "description": "Play against AI opponents and improve your skills."
+      "tournament": {
+        "title": "Tournament",
+        "description": "Compete in local tournaments and climb the leaderboard.",
+        "button": "Join Tournament"
       }
     },
     "globalStats": {
-      "title": "Platform Statistics",
+      "title": "Global Statistics",
       "totalPlayers": "Total Players",
       "totalGames": "Games Played",
-      "onlinePlayers": "Online Now",
-      "activeTournaments": "Active Tournaments"
+      "onlinePlayers": "Online Now"
     },
     "stats": {
-      "title": "Your Stats",
+      "title": "Your Statistics",
       "wins": "Wins",
       "losses": "Losses",
       "winRate": "Win Rate",
-      "rank": "Rank",
-      "highestScore": "Highest Score",
-      "currentStreak": "Current Streak",
-      "longestStreak": "Longest Streak",
-      "players": "Players",
-      "games": "Games",
-      "tournaments": "Tournaments",
-      "online": "Online"
-    },
-    "buttons": {
-      "play": "Start Playing",
-      "login": "Login",
-      "register": "Register",
-      "tournaments": "Tournaments"
+      "games": "Games"
     }
   },
   "auth": {
@@ -133,12 +120,22 @@
       "title": "Game Settings",
       "ballSpeed": "Ball Speed",
       "paddleSpeed": "Paddle Speed",
-      "powerUps": "Power-ups",
       "gameMode": "Game Mode",
       "theme": "Theme",
-      "difficulty": "Difficulty",
       "resetToDefault": "Reset to Default",
       "applySettings": "Apply Settings"
+    }
+  },
+  "tournament": {
+    "title": "Tournament",
+    "create": "Create Tournament",
+    "join": "Join Tournament",
+    "bracket": "Tournament Bracket",
+    "players": "Players",
+    "status": {
+      "waiting": "Waiting for players",
+      "inProgress": "In Progress",
+      "finished": "Finished"
     }
   },
   "profile": {
@@ -147,10 +144,10 @@
       "title": "Quick Actions",
       "editProfile": "Edit Profile",
       "changePassword": "Change Password",
-      "changeAvatar": "Change Avatar",
+      "logout": "Logout",
+      "toggle2FA": "Toggle 2FA",
       "addFriend": "Add Friend",
-      "removeFriend": "Remove Friend",
-      "challenge": "Challenge"
+      "removeFriend": "Remove Friend"
     },
     "stats": {
       "title": "Statistics",
@@ -158,22 +155,18 @@
       "losses": "Losses",
       "totalGames": "Total Games",
       "gamesPlayed": "Games Played",
-      "gamesWon": "Games Won",
       "winRate": "Win Rate",
-      "ranking": "Ranking",
       "rank": "Rank",
       "highestScore": "Highest Score",
-      "averageScore": "Average Score",
       "currentStreak": "Current Streak",
       "longestStreak": "Longest Streak",
-      "playtime": "Total Playtime",
       "lastPlayed": "Last Played"
     },
     "history": {
       "title": "Match History",
       "noGames": "No games played yet",
       "noGamesDesc": "Start playing to see your match history here",
-      "playFirstGame": "Play my first game",
+      "playFirstGame": "Play your first game",
       "viewAll": "View all history",
       "viewDetails": "View details",
       "result": {
@@ -184,6 +177,8 @@
         "all": "All",
         "wins": "Wins",
         "losses": "Losses",
+        "local": "Local",
+        "remote": "Remote",
         "tournament": "Tournament"
       },
       "stats": {
@@ -205,8 +200,7 @@
       "hoursAgo": "{hours} hours ago",
       "daysAgo": "{days} days ago",
       "viewProfile": "View Profile",
-      "challenge": "Challenge",
-      "sendMessage": "Send Message"
+      "challenge": "Challenge"
     },
     "edit": {
       "title": "Edit Profile",
@@ -221,8 +215,8 @@
       "uploading": "Uploading...",
       "errors": {
         "updateFailed": "Failed to update profile",
-        "invalidImage": "Invalid image format",
-        "imageTooLarge": "Image too large"
+        "invalidImageType": "Invalid image format",
+        "avatarTooLarge": "Image too large (max 5MB)"
       }
     },
     "changePassword": {
@@ -245,19 +239,27 @@
         "weak": "Password is too weak"
       }
     },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "enable": "Enable 2FA",
+      "disable": "Disable 2FA",
+      "enterCode": "Enter verification code",
+      "codePlaceholder": "6-digit code",
+      "verify": "Verify",
+      "cancel": "Cancel",
+      "messages": {
+        "enabled": "2FA enabled successfully!",
+        "disabled": "2FA disabled successfully!",
+        "codeSent": "Verification code sent to your email",
+        "invalidCode": "Invalid verification code",
+        "error": "2FA operation failed"
+      }
+    },
     "errors": {
       "userNotFound": "User not found",
       "loadFailed": "Failed to load profile",
       "unauthorized": "You don't have permission to view this profile",
       "networkError": "Network error. Please try again."
-    },
-    "settings": {
-      "title": "Settings",
-      "language": "Language",
-      "theme": "Theme",
-      "notifications": "Notifications",
-      "privacy": "Privacy",
-      "security": "Security"
     }
   },
   "friends": {
@@ -271,7 +273,6 @@
     "requests": {
       "title": "Friend Requests",
       "noPending": "No pending requests",
-      "sentRequest": "Sent you a friend request",
       "received": "Received",
       "sent": "Sent"
     },
@@ -280,15 +281,12 @@
       "removeFriend": "Remove Friend",
       "accept": "Accept",
       "decline": "Decline",
-      "acceptRequest": "Accept Request",
-      "cancelRequest": "Cancel Request",
       "remove": "Remove"
     },
     "status": {
       "requestSent": "Request Sent",
       "pending": "Pending",
-      "friends": "Friends",
-      "blocked": "Blocked"
+      "friends": "Friends"
     },
     "messages": {
       "requestSent": "Friend request sent!",
@@ -303,38 +301,6 @@
     "confirmations": {
       "removeFriend": "Are you sure you want to remove this friend?",
       "declineRequest": "Are you sure you want to decline this friend request?"
-    }
-  },
-  "settings": {
-    "title": "Settings",
-    "username": "Username",
-    "email": "Email",
-    "save": "Save Settings",
-    "general": {
-      "title": "General Settings",
-      "language": "Language",
-      "theme": "Theme",
-      "timezone": "Timezone"
-    },
-    "notifications": {
-      "title": "Notifications",
-      "email": "Email Notifications",
-      "push": "Push Notifications",
-      "gameInvites": "Game Invitations",
-      "friendRequests": "Friend Requests",
-      "messages": "Messages"
-    },
-    "privacy": {
-      "title": "Privacy Settings",
-      "profileVisibility": "Profile Visibility",
-      "onlineStatus": "Show Online Status",
-      "gameHistory": "Show Game History"
-    },
-    "account": {
-      "title": "Account",
-      "changePassword": "Change Password",
-      "deleteAccount": "Delete Account",
-      "exportData": "Export Data"
     }
   },
   "modals": {
@@ -368,8 +334,7 @@
       "search": "Search...",
       "email": "Enter your email",
       "username": "Enter your username",
-      "password": "Enter your password",
-      "message": "Type your message..."
+      "password": "Enter your password"
     }
   },
   "time": {
@@ -417,7 +382,6 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "tomorrow": "Tomorrow",
-    "daysAgo": "{days} days ago",
     "online": "Online",
     "offline": "Offline",
     "connecting": "Connecting...",
@@ -431,7 +395,7 @@
     "collapse": "Collapse"
   },
   "footer": {
-    "description": "The ultimate Pong experience. Play, compete, and chat with the community.",
+    "description": "The ultimate Pong experience. Play, compete, and connect with the community.",
     "allRightsReserved": "All rights reserved.",
     "navigation": {
       "title": "Navigation",
