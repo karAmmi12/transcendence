@@ -51,6 +51,14 @@ export class AuthController
             const loginData = req.body as LoginData;
             
             const result = await AuthService.loginUser(loginData);
+            if (!result.success && result.error === "2FA_REQUIRED") {
+                return (reply.status(202).send({
+                    message: "2FA code sent to email",
+                    requiresTwoFactor: true,
+                    userId: result.user?.id
+                }));
+            }
+
             if (!result.success) 
                 return (reply.status(401).send({error: result.error}));
         
@@ -67,6 +75,34 @@ export class AuthController
                 reply.status(500).send({ error: "Login failed" });
         }
     };
+
+    static async loginWith2FA(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const { userId, code } = req.body as { userId: number; code: string };
+
+            if (!userId || !code) {
+                return (reply.status(400).send({ error: "User ID and code are required" }));
+            }
+
+            const result = await AuthService.loginWith2FA(userId, code);
+
+            if (!result.success) {
+                return (reply.status(401).send({ error: result.error }));
+            }
+
+            CookieService.replyAuthTokenCookie(reply, result.accessToken!, result.refreshToken!);
+
+            reply.send({
+                message: "✅ 2FA Login successful",
+                user: result.user,
+            });
+
+        } catch (error) {
+            console.error("2FA Login controller error:", error);
+            reply.status(500).send({ error: "2FA login failed" });
+        }
+    }
 
     /**
      * Route logout 
