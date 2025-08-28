@@ -193,7 +193,6 @@ export class AuthService
                     success: false,
                     error: "Invalid password" //siuu surment changer les msg pour la secu
                 }
-            user.twoFactorEnabled = true;
             console.log('USEEEEEEEEEEEEEEEEEEEEEEEEEEEER', user.twoFactorEnabled);
             if (user.twoFactorEnabled)
             {

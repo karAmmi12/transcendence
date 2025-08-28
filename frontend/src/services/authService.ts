@@ -1,5 +1,7 @@
 import { User } from '../types/index.js';
 import { userService } from './userService.js';
+import { TwoFactorRequiredError } from '../types/errors.js';
+
 
 export interface MatchHistory {
   id: string;
@@ -31,26 +33,76 @@ export class AuthService {
     return AuthService.instance;
   }
 
+  // public async login(username: string, password: string): Promise<{ user: User; token: string }> {
+  //   const response = await fetch(`${this.baseURL}/auth/login`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     credentials: 'include', // Important pour les cookies de session
+  //     body: JSON.stringify({ username, password })
+  //   });
+
+  //   if (!response.ok) {
+  //     const error = await response.json();
+  //     throw new Error(error.message || 'Login failed');
+  //   }
+
+  //   const data = await response.json();
+    
+  //   this.currentUser = data.user;
+
+  //   window.dispatchEvent(new CustomEvent('authStateChanged'));// declencher l'event de changement d'etat
+    
+  //   return data;
+  // }
+  
   public async login(username: string, password: string): Promise<{ user: User; token: string }> {
     const response = await fetch(`${this.baseURL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      credentials: 'include', // Important pour les cookies de session
+      credentials: 'include',
       body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+
+    // ✅ Vérifier d'abord si c'est une réponse 2FA (statut 202)
+    if (response.status === 202 && data.requiresTwoFactor) {
+      throw new TwoFactorRequiredError(data.message, data.userId);
+    }
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Login failed');
+    }
+
+    this.currentUser = data.user;
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
+    
+    return data;
+  }
+
+  // ✅ Méthode pour la connexion 2FA
+  public async loginWith2FA(userId: number, code: string): Promise<{ user: User; token: string }> {
+    const response = await fetch(`${this.baseURL}/auth/loginWith2FA`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({ userId, code })
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Login failed');
+      throw new Error(error.error || '2FA login failed');
     }
 
     const data = await response.json();
-    
     this.currentUser = data.user;
-
-    window.dispatchEvent(new CustomEvent('authStateChanged'));// declencher l'event de changement d'etat
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
     
     return data;
   }
