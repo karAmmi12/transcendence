@@ -101,6 +101,17 @@
       "requiredField": "Ce champ est requis"
     }
   },
+  "tournament": {
+    "create": {
+      "title": "Créer un Tournoi",
+      "youAreIncluded": "Vous êtes automatiquement inclus dans le tournoi !",
+      "enterOtherParticipants": "Saisissez les noms des {count} autres participants :",
+      "enterAllParticipants": "Saisissez les noms des {count} participants :",
+      "participantPlaceholder": "Nom du participant {number}",
+      "confirmed": "Confirmé",
+      "createTournament": "Créer le Tournoi"
+    }
+  },
   "game": {
     "title": "Arène Pong",
     "lobby": {

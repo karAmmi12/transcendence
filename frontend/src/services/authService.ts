@@ -261,6 +261,29 @@ export class AuthService {
   }
 
 
+  // Dans AuthService
+  public async loadCurrentUser(): Promise<User | null> {
+    try {
+      if (!this.isAuthenticated()) return null;
+      
+      const response = await fetch(`${this.baseURL}/user/me`, {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const userData = await response.json();
+        this.currentUser = userData;
+        return userData;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Failed to load current user:', error);
+      return null;
+    }
+  }
+
+
 
 }
 
