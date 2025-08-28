@@ -23,10 +23,14 @@ export class HomePage {
     const element = document.querySelector(selector);
     if (!element) return;
     
-
-    await this.loadGlobalStats();
-    this.render(element);
     this.destroy();
+
+    await Promise.all([
+      this.loadGlobalStats(),
+      this.verifyAuthentication()
+    ]);
+
+    this.render(element);
     this.setupEventListeners();
   }
 
@@ -40,6 +44,22 @@ export class HomePage {
         totalGames: 0,
         onlinePlayers: 0,
       };
+    }
+  }
+
+  // ✅ Nouvelle méthode pour vérifier et attendre l'authentification
+  private async verifyAuthentication(): Promise<void> {
+    try {
+      // Vérifier si l'utilisateur est connecté et charger ses données si nécessaire
+      if (authService.isAuthenticated()) {
+        const currentUser = authService.getCurrentUser();
+        if (!currentUser || !currentUser.stats) {
+          // Recharger les données utilisateur si elles sont incomplètes
+          await authService.loadCurrentUser();
+        }
+      }
+    } catch (error) {
+      console.error('Failed to verify authentication:', error);
     }
   }
 
@@ -81,10 +101,19 @@ export class HomePage {
         if (isAuthenticated) {
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=remote' }));
         } else {
-          window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
+          // Rediriger vers login avec intention de retour
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/login?redirect=/game?mode=remote' }));
         }
       },
-      onTournament: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament' })),
+      onTournament: () => {
+        if (isAuthenticated) {
+          // Utilisateur connecté : saisir 7 autres participants (il sera automatiquement inclus)
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create?participants=7&mode=authenticated' }));
+        } else {
+          // Utilisateur invité : saisir 8 participants complets
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create?participants=8&mode=guest' }));
+        }
+      },
       onLogin: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }))
     };
 
