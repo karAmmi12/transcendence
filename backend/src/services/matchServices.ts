@@ -1,10 +1,10 @@
 import { create } from 'domain';
 import db from '../db/index.js';
-import { MatcheResponse } from '../types/matches.js';
+import { MatchResponse } from '../types/match.js';
 
 export class MatchService 
 {
-    static async createLocalMatch(player1: string, player2: string, userId?: number): Promise<MatcheResponse>
+    static async createLocalMatch(player1: string, player2: string, userId?: number): Promise<MatchResponse>
     {
         // creer match
         const matchStmt = db.prepare(`
