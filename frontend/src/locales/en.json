@@ -169,7 +169,15 @@
   },
   "tournament": {
     "title": "Tournament",
-    "create": "Create Tournament",
+    "create": {
+      "title": "Create Tournament",
+      "youAreIncluded": "You are automatically included in the tournament!",
+      "enterOtherParticipants": "Enter the names of the {count} other participants:",
+      "enterAllParticipants": "Enter the names of all {count} participants:",
+      "participantPlaceholder": "Participant {number} name",
+      "confirmed": "Confirmed",
+      "createTournament": "Create Tournament"
+    },
     "join": "Join Tournament",
     "bracket": "Tournament Bracket",
     "players": "Players",
