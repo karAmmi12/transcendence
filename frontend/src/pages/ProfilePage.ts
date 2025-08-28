@@ -160,7 +160,7 @@ export class ProfilePage {
         }
       } else {
         // Désactiver 2FA - demander d'abord le code
-        const result = await twoFactorService.enable2FA(); // Envoyer un code pour confirmer
+        const result = await twoFactorService.disable2FA(); // Envoyer un code pour confirmer
         
         if (result.success) {
           const modal = new TwoFactorModal(

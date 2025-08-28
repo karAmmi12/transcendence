@@ -235,10 +235,10 @@ export class TwoFactorModal {
       } else {
         // Pour enable/disable, utiliser twoFactorService comme avant
         let result;
-        if (this.mode === 'enable') {
-          result = await twoFactorService.verify2FA(code);
+        if (this.mode === 'enable'){
+          result = await twoFactorService.verify2FA(code, false);
         } else {
-          result = await twoFactorService.disable2FA(code);
+          result = await twoFactorService.verify2FA(code, true);
         }
 
         if (result.success) {
