@@ -1,4 +1,4 @@
-export interface MatcheResponse {
+export interface MatchResponse {
     id: number;
     mode: 'local' | 'online' | 'tournament'
     player1: Player;
