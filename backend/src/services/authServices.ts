@@ -52,7 +52,7 @@ export class AuthService
     static async loginWith2FA(userId: number, code: string): Promise<AuthResult>
     {
         try {
-            const verifyResult = await TwoFactorServices.verifyCode(userId, code);
+            const verifyResult = await TwoFactorServices.verifyCode(userId, code, false);
             if (!verifyResult.success) {
                 return {
                     success: false,
@@ -193,14 +193,12 @@ export class AuthService
                     success: false,
                     error: "Invalid password" //siuu surment changer les msg pour la secu
                 }
-            user.twoFactorEnabled = true;
-            console.log('USEEEEEEEEEEEEEEEEEEEEEEEEEEEER', user.twoFactorEnabled);
+
             if (user.twoFactorEnabled)
             {
                 const getCode = await TwoFactorServices.sendCode(user.id);
                 if (!getCode.success)
                     return { success: getCode.success, error: getCode.message}
-                console.log('SIUUUUUUUUUUUUUUUUUUUUUUUUUUU AUTH');
                 return {
                     success: false,
                     error: "2FA_REQUIRED",
