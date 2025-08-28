@@ -96,7 +96,6 @@ export interface ChangePassword {
 export interface TwoFactorToken {
     id: number;
     token: string;
-    createdAt: Date;
     expiresAt: Date;
 
 }
