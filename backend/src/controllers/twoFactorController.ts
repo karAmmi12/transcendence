@@ -12,8 +12,6 @@ export class TwoFactorController {
             const userId = user.userId; 
 
             const result = await TwoFactorServices.sendCode(userId);
-            if (!result.success)
-                return reply.status(400).send({ error: result.message });
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
             if (error instanceof Error)
@@ -30,11 +28,13 @@ export class TwoFactorController {
             // const userId = user.userId;
             const { code }  = req.body as { code: string };
 
-            const result = await TwoFactorServices.verifyCode(userId, code);
+            const result = await TwoFactorServices.verifyCode(userId, code, false);
             if (!result.success)
                 return reply.status(400).send({ error: result.message });
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
+            if (error instanceof Error)
+                console.error(error.message);
             return reply.status(500).send({ error: "Internal error verifying 2FA code" });
         }
     }
@@ -46,9 +46,7 @@ export class TwoFactorController {
             const user = req.user!;
             const userId = user.userId;
             const { code }  = req.body as { code: string };
-            const result = await TwoFactorServices.disableTwoFactor(userId, code);
-            if (!result.success)
-                return reply.status(400).send({ error: result.message });
+            const result = await TwoFactorServices.verifyCode(userId, code, true);
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
             if (error instanceof Error)
