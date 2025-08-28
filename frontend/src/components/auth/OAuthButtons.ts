@@ -13,15 +13,7 @@ export class OAuthButtons {
           </div>
         </div>
 
-        <div class="mt-6 grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            id="oauth-42"
-            class="w-full inline-flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600"
-          >
-            ${i18n.t('auth.login.oauth42')}
-          </button>
-          
+        <div class="mt-6 grid grid-cols-1 gap-3">  
           <button
             type="button"
             id="oauth-google"
@@ -35,10 +27,6 @@ export class OAuthButtons {
   }
 
   bindEvents(onOAuth: (provider: string) => void): void {
-    document.getElementById('oauth-42')?.addEventListener('click', () => {
-      onOAuth('42');
-    });
-
     document.getElementById('oauth-google')?.addEventListener('click', () => {
       onOAuth('google');
     });
