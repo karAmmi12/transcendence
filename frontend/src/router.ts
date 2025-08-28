@@ -3,8 +3,9 @@ import { authService } from '@services/authService';
 import { HomePage } from '@pages/HomePage';
 import { LoginPage } from '@pages/LoginPage';
 import { RegisterPage } from '@pages/RegisterPage';
-import { GamePage } from '@pages/GamePage';
+// import { GamePage } from '@pages/GamePage';
 import { ProfilePage } from '@pages/ProfilePage';
+import { TournamentCreatePage } from '@pages/TournamentCreatePage';
 // import { TournamentPage } from '@pages/TournamentPage';
 
 interface Route {
@@ -34,12 +35,12 @@ export class Router {
       title: 'Register - ft_transcendence',
       requiresAuth: false
     },
-    {
-      path: ROUTES.GAME,
-      component: () => new GamePage(),
-      title: 'Game - ft_transcendence',
-      requiresAuth: true
-    },
+    // {
+    //   path: ROUTES.GAME,
+    //   component: () => new GamePage(),
+    //   title: 'Game - ft_transcendence',
+    //   requiresAuth: true
+    // },
     {
       path: ROUTES.PROFILE,
       component: () => new ProfilePage(),
@@ -51,6 +52,12 @@ export class Router {
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
       requiresAuth: true
+    },
+    {
+      path: '/tournament/create',
+      component: () => new TournamentCreatePage(),
+      title: 'Create Tournament - ft_transcendence',
+      requiresAuth: false // Accessible aux invités aussi
     }
     // ,
     // {
