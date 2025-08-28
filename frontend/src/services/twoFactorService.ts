@@ -18,7 +18,8 @@ export class TwoFactorService {
     try {
       const response = await fetch(`${this.baseURL}/2fa/enabled`, {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
+        body: JSON.stringify({ disabled: false })
       });
 
       const data = await response.json();
@@ -37,7 +38,7 @@ export class TwoFactorService {
   /**
    * Vérifier le code 2FA
    */
-  public async verify2FA(code: string): Promise<{ success: boolean; message: string }> {
+  public async verify2FA(code: string, disabled: boolean): Promise<{ success: boolean; message: string }> {
     try {
       const response = await fetch(`${this.baseURL}/2fa/verify`, {
         method: 'POST',
@@ -45,7 +46,7 @@ export class TwoFactorService {
           'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify({ code })
+        body: JSON.stringify({ code, disabled })
       });
 
       const data = await response.json();
@@ -64,15 +65,12 @@ export class TwoFactorService {
   /**
    * Désactiver 2FA
    */
-  public async disable2FA(code: string): Promise<{ success: boolean; message: string }> {
+  public async disable2FA(): Promise<{ success: boolean; message: string }> {
     try {
       const response = await fetch(`${this.baseURL}/2fa/disabled`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         credentials: 'include',
-        body: JSON.stringify({ code })
+        body: JSON.stringify({ disabled: true })
       });
 
       const data = await response.json();
