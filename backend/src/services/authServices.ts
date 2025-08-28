@@ -70,7 +70,7 @@ export class AuthService
                 };
             }
 
-            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
+            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP, is_online = 1 WHERE id = ?");
             updateStmt.run(user.id);
 
             const PairToken = JWTService.generateTokenPair(user.id, user.username);
@@ -212,7 +212,7 @@ export class AuthService
             }
 
             //Maj lastLogin dans la db
-            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
+            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP, is_online = 1 WHERE id = ?");
             updateStmt.run(user.id);
 
             //Generer les tokens JWT
@@ -251,9 +251,19 @@ export class AuthService
     static async logout(refreshToken: string): Promise<void> 
     {
         try {
-            //siuu changer isOnline sur flase ??
+            // changer isOnline sur false //siuuuu pe etre gerer si user ferme google
+            // Récupérer l'ID utilisateur depuis le refresh token
+            const sessionCheck = JWTService.isValidSession(refreshToken);
+            
+            if (sessionCheck.valid && sessionCheck.userId) {
+                // Mettre à jour le statut offline
+                const updateStmt = db.prepare("UPDATE users SET is_online = 0 WHERE id = ?");
+                updateStmt.run(sessionCheck.userId);
+            }
+
             // Supprimer la session de la base de données
             JWTService.deleteSession(refreshToken);
+
         } catch (error) {
             console.error("Logout service error:", error);
             throw error;
@@ -269,7 +279,7 @@ export class AuthService
                 //GRRRRRRRRR
                 const serializedUser = serialize(userExist);
 
-                const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?");
+                const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP, is_online = 1 WHERE id = ?");
                 updateStmt.run(userExist.id);
 
                 
