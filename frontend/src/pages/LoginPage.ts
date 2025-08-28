@@ -48,25 +48,6 @@ export class LoginPage extends AuthPageBase {
         ${passwordInput.render()}
       </div>
 
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <input 
-            id="remember-me" 
-            name="remember-me" 
-            type="checkbox" 
-            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-600 bg-gray-700 rounded"
-          />
-          <label for="remember-me" class="ml-2 block text-sm text-gray-300">
-            ${i18n.t('auth.login.rememberMe')}
-          </label>
-        </div>
-        
-        <div class="text-sm">
-          <a href="#" id="forgot-password-link" class="text-primary-400 hover:text-primary-300">
-            ${i18n.t('auth.login.forgotPassword')}
-          </a>
-        </div>
-      </div>
 
       ${this.submitButton.render()}
     `;
