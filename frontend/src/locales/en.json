@@ -33,18 +33,50 @@
         "button": "Join Tournament"
       }
     },
+    "features": {
+      "multiplayer": {
+        "title": "Real-time Multiplayer",
+        "description": "Play against friends in real-time from anywhere in the world."
+      },
+      "tournaments": {
+        "title": "Tournaments",
+        "description": "Compete in tournaments and climb the leaderboard to become champion."
+      },
+      "chat": {
+        "title": "Live Chat",
+        "description": "Chat with other players and make new friends in the gaming community."
+      },
+      "singleplayer": {
+        "title": "Single Player Mode",
+        "description": "Play against AI opponents and improve your skills."
+      }
+    },
     "globalStats": {
-      "title": "Global Statistics",
+      "title": "Platform Statistics",
       "totalPlayers": "Total Players",
       "totalGames": "Games Played",
-      "onlinePlayers": "Online Now"
+      "onlinePlayers": "Online Now",
+      "activeTournaments": "Active Tournaments"
     },
     "stats": {
       "title": "Your Statistics",
       "wins": "Wins",
       "losses": "Losses",
       "winRate": "Win Rate",
-      "games": "Games"
+      "rank": "Rank",
+      "highestScore": "Highest Score",
+      "currentStreak": "Current Streak",
+      "longestStreak": "Longest Streak",
+      "players": "Players",
+      "games": "Games",
+      "tournaments": "Tournaments",
+      "online": "Online"
+    },
+    "buttons": {
+      "play": "Start Playing",
+      "login": "Login",
+      "register": "Register",
+      "tournaments": "Tournaments"
     }
   },
   "auth": {
@@ -56,6 +88,7 @@
       "passwordPlaceholder": "Enter your password",
       "rememberMe": "Remember me",
       "submit": "Log In",
+      "loginButton": "Log In",
       "loading": "Logging in...",
       "forgotPassword": "Forgot Password?",
       "noAccount": "Don't have an account?",
@@ -77,6 +110,12 @@
       "registerButton": "Create Account",
       "haveAccount": "Already have an account?",
       "signIn": "Sign In"
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "description": "A verification code has been sent to your email address. Please enter it below.",
+      "verify": "Verify",
+      "codeSent": "Code sent by email"
     },
     "errors": {
       "loginFailed": "Login failed",
@@ -120,8 +159,10 @@
       "title": "Game Settings",
       "ballSpeed": "Ball Speed",
       "paddleSpeed": "Paddle Speed",
+      "powerUps": "Power-ups",
       "gameMode": "Game Mode",
       "theme": "Theme",
+      "difficulty": "Difficulty",
       "resetToDefault": "Reset to Default",
       "applySettings": "Apply Settings"
     }
@@ -144,10 +185,12 @@
       "title": "Quick Actions",
       "editProfile": "Edit Profile",
       "changePassword": "Change Password",
+      "changeAvatar": "Change Avatar",
       "logout": "Logout",
       "toggle2FA": "Toggle 2FA",
       "addFriend": "Add Friend",
-      "removeFriend": "Remove Friend"
+      "removeFriend": "Remove Friend",
+      "challenge": "Challenge"
     },
     "stats": {
       "title": "Statistics",
@@ -155,11 +198,15 @@
       "losses": "Losses",
       "totalGames": "Total Games",
       "gamesPlayed": "Games Played",
+      "gamesWon": "Games Won",
       "winRate": "Win Rate",
+      "ranking": "Ranking",
       "rank": "Rank",
       "highestScore": "Highest Score",
+      "averageScore": "Average Score",
       "currentStreak": "Current Streak",
       "longestStreak": "Longest Streak",
+      "playtime": "Total Playtime",
       "lastPlayed": "Last Played"
     },
     "history": {
@@ -200,7 +247,8 @@
       "hoursAgo": "{hours} hours ago",
       "daysAgo": "{days} days ago",
       "viewProfile": "View Profile",
-      "challenge": "Challenge"
+      "challenge": "Challenge",
+      "sendMessage": "Send Message"
     },
     "edit": {
       "title": "Edit Profile",
@@ -215,7 +263,9 @@
       "uploading": "Uploading...",
       "errors": {
         "updateFailed": "Failed to update profile",
+        "invalidImage": "Invalid image format",
         "invalidImageType": "Invalid image format",
+        "imageTooLarge": "Image too large",
         "avatarTooLarge": "Image too large (max 5MB)"
       }
     },
@@ -247,6 +297,15 @@
       "codePlaceholder": "6-digit code",
       "verify": "Verify",
       "cancel": "Cancel",
+      "modal": {
+        "enableTitle": "Enable Two-Factor Authentication",
+        "enableDescription": "A verification code has been sent to your email. Please enter it below to enable 2FA.",
+        "enableButton": "Enable 2FA",
+        "disableTitle": "Disable Two-Factor Authentication",
+        "disableDescription": "Please enter your verification code to disable 2FA.",
+        "disableButton": "Disable 2FA",
+        "codeLabel": "Verification Code"
+      },
       "messages": {
         "enabled": "2FA enabled successfully!",
         "disabled": "2FA disabled successfully!",
@@ -260,6 +319,14 @@
       "loadFailed": "Failed to load profile",
       "unauthorized": "You don't have permission to view this profile",
       "networkError": "Network error. Please try again."
+    },
+    "settings": {
+      "title": "Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "security": "Security"
     }
   },
   "friends": {
@@ -273,6 +340,7 @@
     "requests": {
       "title": "Friend Requests",
       "noPending": "No pending requests",
+      "sentRequest": "Sent you a friend request",
       "received": "Received",
       "sent": "Sent"
     },
@@ -301,6 +369,38 @@
     "confirmations": {
       "removeFriend": "Are you sure you want to remove this friend?",
       "declineRequest": "Are you sure you want to decline this friend request?"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "username": "Username",
+    "email": "Email",
+    "save": "Save Settings",
+    "general": {
+      "title": "General Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "timezone": "Timezone"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "email": "Email Notifications",
+      "push": "Push Notifications",
+      "gameInvites": "Game Invitations",
+      "friendRequests": "Friend Requests",
+      "messages": "Messages"
+    },
+    "privacy": {
+      "title": "Privacy Settings",
+      "profileVisibility": "Profile Visibility",
+      "onlineStatus": "Show Online Status",
+      "gameHistory": "Show Game History"
+    },
+    "account": {
+      "title": "Account",
+      "changePassword": "Change Password",
+      "deleteAccount": "Delete Account",
+      "exportData": "Export Data"
     }
   },
   "modals": {
@@ -334,7 +434,8 @@
       "search": "Search...",
       "email": "Enter your email",
       "username": "Enter your username",
-      "password": "Enter your password"
+      "password": "Enter your password",
+      "message": "Type your message..."
     }
   },
   "time": {
@@ -382,6 +483,7 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "tomorrow": "Tomorrow",
+    "daysAgo": "Days ago",
     "online": "Online",
     "offline": "Offline",
     "connecting": "Connecting...",
