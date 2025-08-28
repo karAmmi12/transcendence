@@ -4,6 +4,9 @@ import { AuthPageBase } from '@components/auth/AuthPageBase';
 import { AuthFormInput } from '@components/auth/AuthFormInput';
 import { AuthSubmitButton } from '@components/auth/AuthSubmitButton';
 
+import { TwoFactorModal } from '../components/auth/TwoFactorModal.js';
+import { TwoFactorRequiredError } from '../types/errors.js';
+
 export class LoginPage extends AuthPageBase {
   private submitButton: AuthSubmitButton;
 
@@ -69,6 +72,8 @@ export class LoginPage extends AuthPageBase {
     `;
   }
 
+
+
   protected async handleFormSubmit(formData: FormData): Promise<void> {
     const submitBtn = document.getElementById('login-submit') as HTMLButtonElement;
     const loginText = document.getElementById('login-submit-text') as HTMLSpanElement;
@@ -76,20 +81,52 @@ export class LoginPage extends AuthPageBase {
 
     // Show loading state
     submitBtn.disabled = true;
-    loginText.textContent = i18n.t('auth.login.loading');
+    loginText.textContent = i18n.t('common.loading');
     loginSpinner.classList.remove('hidden');
 
     try {
       const username = formData.get('username') as string;
       const password = formData.get('password') as string;
-      
+
       await authService.login(username, password);
+      
+      // Si on arrive ici, la connexion s'est bien passée sans 2FA
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
+      
+    } catch (error) {
+      if (error instanceof TwoFactorRequiredError) {
+        // ✅ 2FA requis - ouvrir le modal
+        this.handle2FARequired(error.userId);
+      } else {
+        this.errorMessage.show((error as Error).message);
+      }
     } finally {
       // Reset loading state
       submitBtn.disabled = false;
-      loginText.textContent = i18n.t('auth.login.submit');
+      loginText.textContent = i18n.t('auth.login.loginButton');
       loginSpinner.classList.add('hidden');
     }
+  }
+
+  // ✅ Nouvelle méthode pour gérer le 2FA
+  private handle2FARequired(userId: number): void {
+    const modal = new TwoFactorModal(
+      'login', // Nouveau mode pour la connexion
+      async (code: string) => {
+        try {
+          await authService.loginWith2FA(userId, code);
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
+        } catch (error) {
+          throw new Error((error as Error).message);
+        }
+      },
+      () => {
+        // Cancel callback - retour au formulaire de connexion
+        console.log('2FA cancelled');
+      }
+    );
+    
+    modal.show();
   }
 
   protected renderFooterLinks(): string {
