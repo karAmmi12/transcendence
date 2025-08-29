@@ -4,7 +4,7 @@ export const ROUTES = {
   REGISTER: '/register',
   GAME: '/game',
   PROFILE: '/profile',
-  TOURNAMENT: '/tournament'
+  TOURNAMENT: '/tournament',  
 } as const;
 
 export const GAME_CONFIG = {
