@@ -3,7 +3,7 @@ import { authService } from '@services/authService';
 import { HomePage } from '@pages/HomePage';
 import { LoginPage } from '@pages/LoginPage';
 import { RegisterPage } from '@pages/RegisterPage';
-// import { GamePage } from '@pages/GamePage';
+import { GamePage } from '@pages/GamePage';
 import { ProfilePage } from '@pages/ProfilePage';
 import { TournamentCreatePage } from '@pages/TournamentCreatePage';
 // import { TournamentPage } from '@pages/TournamentPage';
@@ -35,12 +35,12 @@ export class Router {
       title: 'Register - ft_transcendence',
       requiresAuth: false
     },
-    // {
-    //   path: ROUTES.GAME,
-    //   component: () => new GamePage(),
-    //   title: 'Game - ft_transcendence',
-    //   requiresAuth: true
-    // },
+    {
+      path: ROUTES.GAME,
+      component: () => new GamePage(),
+      title: 'Pong 3D - ft_transcendence',
+      requiresAuth: false
+    },
     {
       path: ROUTES.PROFILE,
       component: () => new ProfilePage(),
