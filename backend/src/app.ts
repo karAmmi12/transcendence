@@ -12,6 +12,8 @@ import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
 import path from "path";
 import { authMiddleware } from "./middleware/middleware.js";
+import './utils/cleanupTokens';
+// ...existing code...
 
 const app = Fastify({ logger: true });
 
