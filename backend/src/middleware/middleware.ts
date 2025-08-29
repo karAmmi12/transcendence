@@ -40,6 +40,7 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
         
         // recupere l'accessToken dans les cookies
         const accessToken = req.cookies.accessToken;
+        
 
         // check accessToken
         if (accessToken)

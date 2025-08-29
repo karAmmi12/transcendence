@@ -262,6 +262,8 @@ export class AuthService
             }
 
             // Supprimer la session de la base de données
+            const delete2FA = db.prepare("DELETE FROM two_factor_tokens where user_id = ?")
+            const cleanToken = delete2FA.run(sessionCheck.userId);
             JWTService.deleteSession(refreshToken);
 
         } catch (error) {
@@ -275,7 +277,7 @@ export class AuthService
         try {
             const userExist = findUserByEmail(userData.email); 
             
-            if (userExist) {
+            if (userExist && !userExist.googleId) {
                 //GRRRRRRRRR
                 const serializedUser = serialize(userExist);
 
@@ -283,8 +285,8 @@ export class AuthService
                 updateStmt.run(userExist.id);
 
                 
-                const updateGoogleIdStmt = db.prepare("UPDATE users SET google_id = ? WHERE id = ?");
-                updateGoogleIdStmt.run(userData.googleId, userExist.id);
+                // const updateGoogleIdStmt = db.prepare("UPDATE users SET google_id = ? WHERE id = ?");
+                // updateGoogleIdStmt.run(userData.googleId, userExist.id);
 
                 const PairToken = JWTService.generateTokenPair(userExist.id, userExist.username)
                 JWTService.createSession(userExist.id, PairToken.refreshToken);
