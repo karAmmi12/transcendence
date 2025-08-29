@@ -6,8 +6,11 @@ import crypto from "crypto";
 import bcrypt from 'bcrypt'; 
 import 'dotenv/config';
 
-export class TwoFactorServices {
 
+export function toSQLiteDateString(date: Date): string {
+    return date.toISOString().replace('T', ' ').substring(0, 19);
+}
+export class TwoFactorServices {
     static async getUserById(userId: number): Promise<UserTwoFactor>
     {
         const stmt = db.prepare("SELECT id, email, two_factor_enabled, google_id FROM users where id = ?");
@@ -56,7 +59,7 @@ export class TwoFactorServices {
             INSERT OR REPLACE INTO two_factor_tokens 
             (user_id, token, expires_at)
             VALUES (?, ?, ?)`);
-        const res = stmt.run(userId, codeHash, expiresAt.toString());
+            const res = stmt.run(userId, codeHash, expiresAt.toISOString());
         const returnUser = {
             id: userId,
             token: codeHash,
@@ -90,7 +93,7 @@ export class TwoFactorServices {
         return {
             id: tokenData.user_id,
             token: tokenData.token,
-            expiresAt: new Date(tokenData.expires_at)
+            expiresAt: tokenData.expires_at
         } as TwoFactorToken;
     }
 
@@ -98,7 +101,7 @@ export class TwoFactorServices {
     {
         const stored = await this.getUserInfo(userId);
 
-        if (stored.expiresAt < new Date()) {
+        if (new Date(stored.expiresAt).toISOString() < new Date(Date.now() + 0 * 60 * 1000).toISOString()) {
             throw new Error("Code expired for 2FA");
         }
         
