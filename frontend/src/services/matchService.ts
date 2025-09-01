@@ -1,3 +1,5 @@
+import { authService } from "./authService";  
+
 class MatchService {
   private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api'
@@ -53,14 +55,12 @@ class MatchService {
   ): Promise<void> {
     try {
       // Vérifier si un utilisateur est connecté
-      const authToken = document.cookie.includes('accessToken');
-      if (!authToken) {
-        console.log('👤 No authenticated user, skipping match data submission');
+      const isAuthenticated = authService.isAuthenticated();
+      if (!isAuthenticated) {
+        console.log('🔒 User not authenticated, skipping match data send');
         return;
       }
 
-      console.log('📊 Sending local match data to backend...');
-      
       // Créer et terminer le match en une seule opération
       await this.createAndFinishLocalMatch(player1, player2, score1, score2, duration);
       
