@@ -103,7 +103,7 @@ export class StatsService
                     id: match.id,
                     opponent: match.opponentName,
                     opponentAvatar: match.opponentAvatar,
-                    result: match.userWon === 1 ? 'win' : 'loss',
+                    result: match.isWinner === 1 ? 'win' : 'loss',
                     score: {
                         player: match.userScore,
                         opponent: match.opponentScore
