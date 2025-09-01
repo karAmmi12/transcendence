@@ -16,6 +16,8 @@ class MatchService {
     duration: number,
   ): Promise<any> {
     try {
+
+
       
       const response = await fetch(`${this.baseURL}/match/local`, {
         method: 'POST',
