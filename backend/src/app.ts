@@ -63,7 +63,7 @@ const start = async () => {
     await app.register(friendsRoutes, {prefix: '/api/friends'});
     await app.register(homeRoutes, {prefix: '/api/home'});
     // await app.register(tournamentRoutes, {prefix: '/api/tournament'});
-    // await app.register(matchRoutes, {prefix: '/api/match'});
+    await app.register(matchRoutes, {prefix: '/api/match'});
 
 
     // Démarrer le serveur 
