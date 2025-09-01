@@ -2,6 +2,7 @@ import * as BABYLON from '@babylonjs/core';
 import { GameRenderer } from './GameRenderer.js';
 import { GamePhysics } from './GamePhysics.js';
 import { GameControls } from './GameControls.js';
+import { matchService } from '../../services/matchService.js';
 
 export interface GameSettings {
   player1Name: string;
@@ -37,6 +38,10 @@ export class Pong3D {
   
   private settings: GameSettings;
   private isRemoteGame: boolean;
+
+  //proprietes pour tracker le match
+  private matchStatTime : number = 0;
+  private isMatchDataSent : boolean = false;
 
   constructor(canvasId: string, settings: GameSettings, isRemote = false) {
     console.log('🎮 Initializing Pong3D...');
@@ -137,6 +142,50 @@ export class Pong3D {
     this.updateGameStatus(`🏆 ${winnerName} wins!`);
     
     console.log(`🏁 Game finished! Winner: ${winnerName}`);
+
+    // Envoyer les donnees du match si c'est une partie locale
+    if (!this.isRemoteGame && !this.isMatchDataSent) {
+      {
+        this.sendMatchDataToBackend();
+      }
+  }
+
+  /**
+   * Envoie les données du match terminé au backend
+   */
+  private async sendMatchDataToBackend(): Promise<void> {
+    try {
+      // Marquer comme envoyé pour éviter les doublons
+      this.isMatchDataSent = true;
+      
+      // Calculer la durée du match en secondes
+      const duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
+      
+      const matchData = {
+        player1: this.settings.player1Name,
+        player2: this.settings.player2Name,
+        score1: this.gameState.scores.player1,
+        score2: this.gameState.scores.player2,
+        duration
+      };
+
+      console.log('📊 Match data to send:', matchData);
+
+      await matchService.sendLocalMatchData(
+        matchData.player1,
+        matchData.player2,
+        matchData.score1,
+        matchData.score2,
+        matchData.duration
+      );
+      
+      console.log('✅ Match data sent successfully');
+      
+    } catch (error) {
+      console.error('❌ Failed to send match data:', error);
+      // Remettre le flag à false en cas d'erreur pour permettre une nouvelle tentative
+      this.isMatchDataSent = false;
+    }
   }
 
   private updateTimer(): void {
@@ -193,6 +242,10 @@ export class Pong3D {
   private startLocalGame(): void {
     this.updateGameStatus('Démarrage du jeu...');
     this.physics.reset();
+
+    //demarrer le tracking du match
+    this.matchStartTime = Date.now();
+    this.isMatchDataSent = false;
     this.startCountdown();
   }
 
