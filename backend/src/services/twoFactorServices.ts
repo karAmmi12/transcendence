@@ -7,9 +7,9 @@ import bcrypt from 'bcrypt';
 import 'dotenv/config';
 
 
-export function toSQLiteDateString(date: Date): string {
-    return date.toISOString().replace('T', ' ').substring(0, 19);
-}
+// export function toSQLiteDateString(date: Date): string {
+//     return date.toISOString().replace('T', ' ').substring(0, 19);
+// }
 export class TwoFactorServices {
     static async getUserById(userId: number): Promise<UserTwoFactor>
     {
@@ -101,7 +101,7 @@ export class TwoFactorServices {
     {
         const stored = await this.getUserInfo(userId);
 
-        if (new Date(stored.expiresAt).toISOString() < new Date(Date.now() + 0 * 60 * 1000).toISOString()) {
+        if (stored.expiresAt < new Date(Date.now())) {
             throw new Error("Code expired for 2FA");
         }
         
