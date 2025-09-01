@@ -12,15 +12,15 @@ export class MatchController
             const user = req.user; //pas de ! car peux etre null 
             
             const {player1, player2, score1, score2, duration} = req.body as {player1: string; player2: string, score1: number, score2: number, duration: number};
-            if (!player1 || !player2 || !score1 || !score2)
+            if (!player1 || !player2)
             {
                 return (reply.status(400).send({
                     success: false,
-                    error: "both player and score required"
+                    error: "both player required"
                 }))
             }
             
-            const match = await MatchService.createLocalMatch(player1, player2,score1, score2, duration, user?.userId);
+            const match = await MatchService.createLocalMatch(player1, player2, score1, score2, duration, user?.userId);
 
             return (reply.status(200).send({
                 success: true,

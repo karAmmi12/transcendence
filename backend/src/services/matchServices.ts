@@ -8,11 +8,11 @@ export class MatchService
     {
         // creer match
         const matchStmt = db.prepare(`
-            INSERT INTO matches (mode, ended_at)
+            INSERT INTO matches (mode, started_at, ended_at)
             VALUES ('local', datetime('now', '-' || ? || ' seconds'), datetime('now'))
         `);
 
-        const matchResult = matchStmt.run();
+        const matchResult = matchStmt.run(duration);
         const matchId = matchResult.lastInsertRowid as number;
 
         // ajouter participants
