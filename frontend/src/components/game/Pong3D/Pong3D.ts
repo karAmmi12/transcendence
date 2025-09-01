@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core';
 import { GameRenderer } from './GameRenderer.js';
 import { GamePhysics } from './GamePhysics.js';
 import { GameControls } from './GameControls.js';
-import { matchService } from '../../services/matchService.js';
+import { matchService } from '@services/matchService.js';
 
 export interface GameSettings {
   player1Name: string;
@@ -40,7 +40,7 @@ export class Pong3D {
   private isRemoteGame: boolean;
 
   //proprietes pour tracker le match
-  private matchStatTime : number = 0;
+  private matchStartTime : number = 0;
   private isMatchDataSent : boolean = false;
 
   constructor(canvasId: string, settings: GameSettings, isRemote = false) {
@@ -144,7 +144,7 @@ export class Pong3D {
     console.log(`🏁 Game finished! Winner: ${winnerName}`);
 
     // Envoyer les donnees du match si c'est une partie locale
-    if (!this.isRemoteGame && !this.isMatchDataSent) {
+    if (!this.isRemoteGame && !this.isMatchDataSent) 
       {
         this.sendMatchDataToBackend();
       }
