@@ -22,24 +22,32 @@ export interface TournamentMatch {
 export interface TournamentBracket {
     quarterFinals: TournamentMatch[];
     semiFinals: TournamentMatch[];
-    final: TournamentMatch | null;
+    final: TournamentMatch;
 }
 
+// ✅ Type unifié pour les deux opérations (création et fin de match)
 export interface TournamentResponse {
-    id: number;
-    status: 'waiting' | 'in_progress' | 'completed';
-    participants: TournamentParticipant[];
-    bracket: TournamentBracket;
-    currentMatch?: {
+    success: boolean;
+    message: string;
+    tournament: {
         id: number;
-        round: string;
-        player1: string;
-        player2: string;
+        status: 'waiting' | 'in_progress' | 'completed';
+        participants: TournamentParticipant[];
+        bracket: TournamentBracket;
+        nextMatch?: {
+            id: number;
+            matchNumber: number; // ✅ Ajout du tournament_match_number
+            round: string;
+            player1: string;
+            player2: string;
+        } | null;
+        winner?: string; // Nom du gagnant final (si tournoi terminé)
     };
-    winner?: string;
 }
 
 export interface FinishMatchBody {
+    tournamentId: number;
+    matchNumber: number; // ✅ tournament_match_number
     winner: string; // Nom du gagnant (alias ou username)
     scores: {
         player1: number;
@@ -47,21 +55,4 @@ export interface FinishMatchBody {
     };
 }
 
-export interface MatchResult {
-    success: boolean;
-    message: string;
-    result?: {
-        winner: string;
-        scores: { player1: number; player2: number };
-    };
-    tournament?: {
-        status: 'in_progress' | 'completed';
-        nextMatch?: {
-            id: number;
-            round: string;
-            player1: string;
-            player2: string;
-        } | null;
-        tournamentWinner?: string;
-    };
-}
+// ⚠️ Supprimer MatchResult car remplacé par TournamentResponse unifié

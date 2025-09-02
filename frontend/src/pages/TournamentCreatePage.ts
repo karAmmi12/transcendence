@@ -179,6 +179,7 @@ export class TournamentCreatePage {
       }
 
       // ✅ Validation côté client
+     
       if (finalParticipants.length !== 8) {
         throw new Error('Le tournoi doit avoir exactement 8 participants.');
       }
