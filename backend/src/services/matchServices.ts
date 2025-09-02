@@ -4,7 +4,7 @@ import { MatchResponse } from '../types/match.js';
 
 export class MatchService 
 {
-    static async createLocalMatch(player1: string, player2: string, score1: number, score2: number, duration:number, userId?: number): Promise<MatchResponse>
+    static async createLocalMatch(player1: string, player2: string, score1: number, score2: number, duration: number, userId?: number): Promise<MatchResponse>
     {
         // creer match
         const matchStmt = db.prepare(`
