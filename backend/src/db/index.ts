@@ -39,6 +39,7 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         mode TEXT NOT NULL, -- 'local', 'remote', 'tournament'
         tournament_id INTEGER, -- NULL si pas tournoi
+        tournament_match_number INTEGER, -- de 1 a 7 pour reperer quel match c'etait
         started_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         ended_at DATETIME,
         winner_id INTEGER, -- NULL si pas de user connecté ou si invité
@@ -60,8 +61,10 @@ db.exec(`
     CREATE TABLE IF NOT EXISTS tournaments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         status TEXT CHECK(status IN ('waiting', 'in_progress', 'completed')) DEFAULT 'waiting',
+        participants TEXT NOT NULL, -- JSON des 8 participants shufflés dans l'ordre
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        completed_at DATETIME
+        completed_at DATETIME,
+        match_played INTEGER DEFAULT 0
     );
 
     CREATE TABLE IF NOT EXISTS two_factor_tokens (
