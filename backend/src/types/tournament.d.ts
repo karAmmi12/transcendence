@@ -28,8 +28,6 @@ export interface TournamentBracket {
 export interface TournamentResponse {
     id: number;
     status: 'waiting' | 'in_progress' | 'completed';
-    createdAt: string;
-    completedAt?: string;
     participants: TournamentParticipant[];
     bracket: TournamentBracket;
     currentMatch?: {
