@@ -108,7 +108,7 @@ export class HomePage {
       onTournament: () => {
         if (isAuthenticated) {
           // Utilisateur connecté : saisir 7 autres participants (il sera automatiquement inclus)
-          window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create?participants=7&mode=authenticated' }));
+          window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create?participants=8&mode=authenticated' }));
         } else {
           // Utilisateur invité : saisir 8 participants complets
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create?participants=8&mode=guest' }));
