@@ -7,7 +7,8 @@ export class TournamentCreatePage {
   private isAuthenticated: boolean = false;
   private participants: string[] = [];
 
-  async mount(selector: string): Promise<void> {
+  async mount(selector: string): Promise<void> 
+  {
     const element = document.querySelector(selector);
     if (!element) return;
 
@@ -15,7 +16,17 @@ export class TournamentCreatePage {
     const urlParams = new URLSearchParams(window.location.search);
     const mode = urlParams.get('mode');
     this.participantCount = parseInt(urlParams.get('participants') || '8');
-    this.isAuthenticated = mode === 'authenticated';
+    
+    // ✅ Vérification sécurisée de l'authentification
+    this.isAuthenticated = mode === 'authenticated' && authService.isAuthenticated();
+    
+    // ✅ Si le mode indique "authenticated" mais l'utilisateur n'est pas connecté, rediriger
+    if (mode === 'authenticated' && !authService.isAuthenticated()) {
+      window.dispatchEvent(new CustomEvent('navigate', { 
+        detail: '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search)
+      }));
+      return;
+    }
 
     this.render(element);
     this.bindEvents();
@@ -35,7 +46,7 @@ export class TournamentCreatePage {
             <div class="mb-6 p-4 bg-blue-900/30 rounded-lg border border-blue-700/50">
               <p class="text-blue-300">
                 <strong>${i18n.t('tournament.create.youAreIncluded')}</strong><br>
-                ${i18n.t('tournament.create.enterOtherParticipants', { count: this.participantCount - 1 })}
+                ${i18n.t('tournament.create.enterOtherParticipants', { count: (this.participantCount - 1).toString() })}
               </p>
               <div class="mt-2 flex items-center gap-2">
                 <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
@@ -48,7 +59,7 @@ export class TournamentCreatePage {
           ` : `
             <div class="mb-6 p-4 bg-purple-900/30 rounded-lg border border-purple-700/50">
               <p class="text-purple-300">
-                ${i18n.t('tournament.create.enterAllParticipants', { count: this.participantCount })}
+                ${i18n.t('tournament.create.enterAllParticipants', { count: (this.participantCount).toString() })}
               </p>
             </div>
           `}
@@ -94,7 +105,7 @@ export class TournamentCreatePage {
           <input 
             type="text" 
             id="participant-${i}"
-            placeholder="${i18n.t('tournament.create.participantPlaceholder', { number: i })}"
+            placeholder="${i18n.t('tournament.create.participantPlaceholder', { number: i.toString() })}"
             class="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-primary-500 focus:outline-none"
             required
             maxlength="20"
@@ -146,18 +157,39 @@ export class TournamentCreatePage {
       const inputs = document.querySelectorAll('input[id^="participant-"]') as NodeListOf<HTMLInputElement>;
       const enteredParticipants = Array.from(inputs).map(input => input.value.trim());
       
-      // Construire la liste finale des 8 participants
+      // ✅ Construire la liste finale des participants de manière sécurisée
       const finalParticipants: string[] = [];
       
       if (this.isAuthenticated) {
+        // ✅ Double vérification côté client avant envoi
+        if (!authService.isAuthenticated()) {
+          throw new Error('Session expirée. Veuillez vous reconnecter.');
+        }
+        
         const currentUser = authService.getCurrentUser();
-        finalParticipants.push(currentUser?.username || 'Player 1');
+        if (!currentUser || !currentUser.username) {
+          throw new Error('Impossible de récupérer les informations utilisateur.');
+        }
+        
+        // ✅ L'utilisateur connecté est automatiquement le premier
+        finalParticipants.push(currentUser.username);
         finalParticipants.push(...enteredParticipants);
       } else {
         finalParticipants.push(...enteredParticipants);
       }
 
-      // Créer le tournoi via le service
+      // ✅ Validation côté client
+      if (finalParticipants.length !== 8) {
+        throw new Error('Le tournoi doit avoir exactement 8 participants.');
+      }
+
+      // ✅ Vérifier les doublons
+      const uniqueParticipants = new Set(finalParticipants.map(p => p.toLowerCase()));
+      if (uniqueParticipants.size !== finalParticipants.length) {
+        throw new Error('Tous les participants doivent avoir des noms uniques.');
+      }
+
+      // Créer le tournoi via le service (le backend fera ses propres vérifications)
       const tournament = await tournamentService.createTournament(finalParticipants);
       
       // Rediriger vers la page du tournoi
@@ -167,7 +199,30 @@ export class TournamentCreatePage {
       
     } catch (error) {
       console.error('Failed to create tournament:', error);
-      // Afficher erreur à l'utilisateur
+      
+      // ✅ Afficher l'erreur à l'utilisateur
+      const errorMessage = (error as Error).message || 'Une erreur est survenue lors de la création du tournoi.';
+      this.showError(errorMessage);
     }
   }
+
+private showError(message: string): void {
+  // Créer ou mettre à jour un élément d'erreur
+  let errorElement = document.getElementById('tournament-error');
+  if (!errorElement) {
+    errorElement = document.createElement('div');
+    errorElement.id = 'tournament-error';
+    errorElement.className = 'mt-4 p-3 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm';
+    
+    const form = document.getElementById('tournament-form');
+    form?.insertBefore(errorElement, form.firstChild);
+  }
+  
+  errorElement.textContent = message;
+  
+  // Masquer l'erreur après 5 secondes
+  setTimeout(() => {
+    errorElement?.remove();
+  }, 5000);
+}
 }

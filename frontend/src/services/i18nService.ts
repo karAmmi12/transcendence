@@ -123,8 +123,11 @@ export class I18nService {
     
     // Replace parameters
     if (params) {
-      Object.entries(params).forEach(([param, replacement]) => {
-        value = value.replace(`{{${param}}}`, replacement);
+      console.log('🔄 Replacing placeholders in:', value, 'with:', params);
+      return value.replace(/\{(\w+)\}/g, (match, param) => {
+        const replacement = params[param] || match;
+        console.log(`  ${match} -> ${replacement}`);
+        return replacement;
       });
     }
     
