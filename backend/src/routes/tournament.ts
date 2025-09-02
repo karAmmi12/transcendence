@@ -5,13 +5,7 @@ import { createTournamentSchema } from "../schemas/gameSchema";
 export default async function tournamentRoutes(app: FastifyInstance)
 {
     // routes proterger par le middleware
-    app.post('/create', {schema: createTournamentSchema}, TournamentController.createTournament);
-    app.get('/:id', TournamentController.getTournament);
-    app.post('/:tournamentId/matches/:matchId/start',TournamentController.startMatch);
-    app.post('/:tournamentId/matches/:matchId/finish',TournamentController.finishMatch);
-
-    // siuuu peut etre ajouter :
-    // getActiveTournament
-    // getTournamenHistory
-    // deleteTournament
+    app.post('/create', TournamentController.createTournament);
+    app.post('/:tournamentId/matches/:matchId/finish', TournamentController.finishTournamentMatch);
+    // app.get('/:id', TournamentController.getTournament);
 }
