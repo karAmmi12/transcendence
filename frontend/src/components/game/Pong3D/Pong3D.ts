@@ -3,6 +3,7 @@ import { GameRenderer } from './GameRenderer.js';
 import { GamePhysics } from './GamePhysics.js';
 import { GameControls } from './GameControls.js';
 import { matchService } from '@services/matchService.js';
+import { GameEndModal, GameEndStats, GameEndCallbacks } from '@/components/game/GameEndModal.js';
 
 export interface GameSettings {
   player1Name: string;
@@ -42,6 +43,8 @@ export class Pong3D {
   //proprietes pour tracker le match
   private matchStartTime : number = 0;
   private isMatchDataSent : boolean = false;
+
+  private gameEndModal: GameEndModal | null = null;
 
   constructor(canvasId: string, settings: GameSettings, isRemote = false) {
     console.log('🎮 Initializing Pong3D...');
@@ -139,16 +142,97 @@ export class Pong3D {
     this.gameState.winner = winner;
     
     const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
-    this.updateGameStatus(`🏆 ${winnerName} wins!`);
+    const loserName = winner === 'player1' ? this.settings.player2Name : this.settings.player1Name;
     
     console.log(`🏁 Game finished! Winner: ${winnerName}`);
 
-    // Envoyer les donnees du match si c'est une partie locale
-    if (!this.isRemoteGame && !this.isMatchDataSent) 
-      {
-        this.sendMatchDataToBackend();
-      }
+    // Afficher l'écran de fin de partie
+    this.showGameEndModal(winner, winnerName, loserName);
+
+    // Envoyer les données du match si c'est une partie locale
+    if (!this.isRemoteGame && !this.isMatchDataSent) {
+      this.sendMatchDataToBackend();
+    }
   }
+
+  private showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
+    // Masquer le timer et autres éléments de jeu
+    const gameOverlay = document.getElementById('game-overlay');
+    if (gameOverlay) {
+      gameOverlay.style.display = 'none';
+    }
+
+    // Calculer les statistiques du match
+    const matchDuration = Math.floor(this.gameState.timer);
+    const totalScore = this.gameState.scores.player1 + this.gameState.scores.player2;
+    const winnerScore = this.gameState.scores[winner];
+    const loserScore = winner === 'player1' ? this.gameState.scores.player2 : this.gameState.scores.player1;
+
+    // Créer les statistiques pour le modal
+    const stats: GameEndStats = {
+      winnerName,
+      loserName,
+      winnerScore,
+      loserScore,
+      matchDuration,
+      totalScore,
+      gameMode: this.isRemoteGame ? 'remote' : 'local',
+      winScore: this.settings.winScore
+    };
+
+    // Créer les callbacks pour le modal
+    const callbacks: GameEndCallbacks = {
+      onPlayAgain: () => this.restartGame(),
+      onBackToMenu: () => this.backToMenu(),
+      onViewStats: () => this.showMatchStats()
+    };
+
+    // Créer et afficher le modal
+    this.gameEndModal = new GameEndModal(stats, callbacks);
+    this.gameEndModal.show();
+  }
+
+
+
+  private restartGame(): void {
+    console.log('🔄 Restarting game...');
+    
+    // Réafficher l'overlay de jeu
+    const gameOverlay = document.getElementById('game-overlay');
+    if (gameOverlay) {
+      gameOverlay.style.display = 'block';
+    }
+
+    // Réinitialiser l'état du jeu
+    this.gameState = {
+      status: 'waiting',
+      scores: { player1: 0, player2: 0 },
+      timer: 0
+    };
+
+    // Réinitialiser les propriétés de tracking
+    this.isMatchDataSent = false;
+
+    // Redémarrer le jeu
+    this.startGame();
+  }
+
+  private backToMenu(): void {
+    console.log('🏠 Going back to menu...');
+    
+    // Naviguer vers la page de sélection de mode
+    window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+  }
+
+  private showMatchStats(): void {
+    console.log('📊 Showing match statistics...');
+    
+    // Naviguer vers la page de profil/statistiques
+    window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
+  }
+
+
+  
 
   /**
    * Envoie les données du match terminé au backend
@@ -297,6 +381,12 @@ export class Pong3D {
 
   public destroy(): void {
     console.log('🗑️ Destroying Pong3D...');
+    
+    // Fermer le modal de fin de partie s'il est ouvert
+    if (this.gameEndModal) {
+      this.gameEndModal.close();
+      this.gameEndModal = null;
+    }
     
     this.controls.destroy();
     this.renderer.destroy();
