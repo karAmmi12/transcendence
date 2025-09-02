@@ -70,7 +70,6 @@ export class LoginPage extends AuthPageBase {
       const password = formData.get('password') as string;
 
       await authService.login(username, password);
-      
       // Si on arrive ici, la connexion s'est bien passée sans 2FA
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
       
@@ -80,6 +79,7 @@ export class LoginPage extends AuthPageBase {
         this.handle2FARequired(error.userId);
       } else {
         this.errorMessage.show((error as Error).message);
+        throw error;
       }
     } finally {
       // Reset loading state
