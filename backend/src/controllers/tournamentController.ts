@@ -10,7 +10,7 @@ export class TournamentController
     {
         try {
             const user = req.user; //peux etrre vide si personne de co
-            const participants = req.body as string[];
+            const {participants} = req.body as {participants: string[]};
 
             const tournament = await TournamentService.createTournament(participants, user?.userId);
             
