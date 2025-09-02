@@ -133,28 +133,6 @@ export class AuthService {
   }
 
 
-  //   const token = localStorage.getItem('authToken');
-  //   if (!token) {
-  //     return null;
-  //   }
-
-  //   try {
-  //     const response = await fetch(`${this.baseURL}/auth/me`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`
-  //       }
-  //     });
-
-  //     if (response.ok) {
-  //       this.currentUser = await response.json();
-  //       return this.currentUser;
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to get current user:', error);
-  //   }
-
-  //   return null;
-  // }
 
   public initiateGoogleLogin(): void 
   {
