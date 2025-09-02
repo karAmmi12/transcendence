@@ -95,19 +95,29 @@ export class GamePage {
   }
 
   private renderLocalSettings(): string {
+    const isAuthenticated = authService.isAuthenticated();
+    const currentUser = authService.getCurrentUser();
+    
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         <h3 class="text-xl mb-4">Paramètres - Mode Local</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
             <label class="block mb-2">Nom Joueur 1:</label>
-            <input type="text" id="player1-name-input" value="Joueur 1" 
-                   class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
+            ${isAuthenticated && currentUser ? `
+              <input type="text" id="player1-name-input" value="${currentUser.username}" 
+                    readonly
+                    class="bg-gray-600 rounded px-3 py-2 w-full cursor-not-allowed opacity-75 border border-blue-500/50">
+              <div class="text-xs text-blue-400 mt-1">✓ Utilisateur connecté</div>
+            ` : `
+              <input type="text" id="player1-name-input" value="Joueur 1" 
+                    class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
+            `}
           </div>
           <div>
             <label class="block mb-2">Nom Joueur 2:</label>
             <input type="text" id="player2-name-input" value="Joueur 2" 
-                   class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
+                  class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label class="block mb-2">Vitesse de balle:</label>
@@ -414,8 +424,16 @@ export class GamePage {
   }
 
   private getGameSettings(): GameSettings {
+    const isAuthenticated = authService.isAuthenticated();
+    const currentUser = authService.getCurrentUser();
+    
+    // Si l'utilisateur est connecté, utiliser son username pour le joueur 1
+    const player1Name = isAuthenticated && currentUser 
+      ? currentUser.username 
+      : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || 'Joueur 1';
+    
     return {
-      player1Name: (document.getElementById('player1-name-input') as HTMLInputElement)?.value || 'Joueur 1',
+      player1Name,
       player2Name: (document.getElementById('player2-name-input') as HTMLInputElement)?.value || 'Joueur 2',
       ballSpeed: (document.getElementById('ball-speed') as HTMLSelectElement)?.value as 'slow' | 'medium' | 'fast' || 'medium',
       winScore: parseInt((document.getElementById('win-score') as HTMLSelectElement)?.value || '5'),

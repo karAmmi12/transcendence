@@ -10,7 +10,6 @@ export class ErrorMessage {
   show(message: string): void {
     const errorMessage = document.getElementById('error-message');
     const errorDescription = document.getElementById('error-description');
-    
     if (errorMessage && errorDescription) {
       errorDescription.textContent = message;
       errorMessage.classList.remove('hidden');
