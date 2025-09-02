@@ -1,5 +1,5 @@
 import db from '../db/index.js';
-import { MatchResult, TournamentMatch, TournamentResponse, TournamentParticipant, TournamentBracket} from "../types/tournament.js"
+import {TournamentMatch, TournamentResponse, TournamentParticipant, TournamentBracket} from "../types/tournament.js"
 
 export class TournamentService 
 {
@@ -49,15 +49,20 @@ export class TournamentService
             updateStmt.run('in_progress', tournamentId);
 
             return ({
-                id: tournamentId,
-                status: 'in_progress',
-                participants: tournamentParticipants,
-                bracket,
-                currentMatch: {
-                    id: 1,
-                    round: 'Quart de finale 1',
-                    player1: bracket.quarterFinals[0].player1!.name,
-                    player2: bracket.quarterFinals[0].player2!.name
+                success: true,
+                message: 'Tournament created successfully',
+                tournament: {
+                    id: tournamentId,
+                    status: 'in_progress',
+                    participants: tournamentParticipants,
+                    bracket,
+                    nextMatch: {
+                        id: 1,
+                        matchNumber: 1,
+                        round: 'Quart de finale 1',
+                        player1: bracket.quarterFinals[0].player1!.name,
+                        player2: bracket.quarterFinals[0].player2!.name
+                    }
                 }
             });
 
@@ -72,7 +77,7 @@ export class TournamentService
     /**
      * Termine un match de tournoi et avance au suivant
      */
-    static async finishTournamentMatch(tournamentId: number, matchNumber: number, player1: string, player2: string, score1: number, score2: number, duration: number, userId?: number): Promise<MatchResult>
+    static async finishTournamentMatch(tournamentId: number, matchNumber: number, player1: string, player2: string, score1: number, score2: number, duration: number, userId?: number): Promise<TournamentResponse>
     {
         // creer match
         const matchStmt = db.prepare(`
@@ -91,7 +96,6 @@ export class TournamentService
 
         const winner = score1 > score2 ? player1 : player2;
 
-        
         // player1
         if (userId)
         {
@@ -107,6 +111,18 @@ export class TournamentService
         //player2
         participantsStmt.run(matchId, null, player2, score2, score2 > score1 ? 1 : 0);
 
+        // ✅ Récupérer les informations complètes du tournoi pour le retour unifié
+        const tournamentStmt = db.prepare('SELECT participants FROM tournaments WHERE id = ?');
+        const tournament = tournamentStmt.get(tournamentId) as any;
+        const participants = JSON.parse(tournament.participants) as string[];
+        
+        const tournamentParticipants: TournamentParticipant[] = participants.map(name => ({
+            name,
+            isUser: false // Simplification pour l'instant
+        }));
+        
+        const bracket = this.createBracket(tournamentParticipants);
+
         // Déterminer le prochain match ou fin du tournoi
         if (matchNumber === 7) 
         { // Match final
@@ -119,9 +135,12 @@ export class TournamentService
                 success: true,
                 message: 'Tournament completed!',
                 tournament: {
+                    id: tournamentId,
                     status: 'completed',
-                    tournamentWinner: winner, //siuuu defnir reelement vaincoeur
-                    nextMatch: null
+                    participants: tournamentParticipants,
+                    bracket,
+                    nextMatch: null,
+                    winner: winner // ✅ Gagnant final
                 }
             };
         }
@@ -133,12 +152,13 @@ export class TournamentService
             success: true,
             message: 'Match completed successfully',
             tournament: {
+                id: tournamentId,
                 status: 'in_progress',
+                participants: tournamentParticipants,
+                bracket,
                 nextMatch
             }
         };
-
-        
     }
 
     /****************************************** UTILS *************************************************/
@@ -215,7 +235,7 @@ export class TournamentService
         return { quarterFinals, semiFinals, final };
     }
 
-    private static calculateNextMatch(tournamentId: number, currentMatchNumber: number, winner: string): { id: number; round: string; player1: string; player2: string } | null 
+    private static calculateNextMatch(tournamentId: number, currentMatchNumber: number, winner: string): { id: number; matchNumber: number; round: string; player1: string; player2: string } | null 
     {
         let nextMatchNumber: number | null = null;
         
@@ -239,13 +259,14 @@ export class TournamentService
             
             return {
                 id: nextMatchNumber,
+                matchNumber: nextMatchNumber,
                 round: this.getMatchRoundName(nextMatchNumber),
                 player1: participants.player1,
                 player2: participants.player2
             };
         }
         
-        return (null);
+        return null;
     }
 
     private static getRequiredMatches(matchNumber: number): number[] 
