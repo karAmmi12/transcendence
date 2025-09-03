@@ -30,53 +30,53 @@ export class TournamentController
     }
 
     /**
-     * Route qui enrigistre un match et renvoi le prochain
-     */
-    static async finishTournamentMatch(req: FastifyRequest, reply: FastifyReply)
-    {
-        try {  
-            const user = req.user; // peux etre vide si personne de co
-            const { tournamentId, matchNumber, player1, player2, score1, score2, duration } = req.body as {
-                tournamentId: number;
-                matchNumber: number;
-                player1: string;
-                player2: string;
-                score1: number;
-                score2: number;
-                duration: number;
-            };
+ * Route qui enregistre un match et renvoie le prochain
+ */
+static async finishTournamentMatch(req: FastifyRequest, reply: FastifyReply)
+{
+    console.log("🏆 Processing tournament match finish...");
+    try {  
+        const user = req.user;
+        const { tournamentId, matchNumber, player1, player2, score1, score2, duration } = req.body as {
+            tournamentId: number;
+            matchNumber: number;
+            player1: string;
+            player2: string;
+            score1: number;
+            score2: number;
+            duration: number;
+        };
 
-            // Validation des paramètres requis
-            if (!tournamentId || !matchNumber || !player1 || !player2 || score1 === undefined || score2 === undefined || !duration) {
-                return reply.status(400).send({
-                    success: false,
-                    error: "Missing required parameters"
-                });
-            }
-        
-            const nextMatch = await TournamentService.finishTournamentMatch(
-                tournamentId, 
-                matchNumber, 
-                player1, 
-                player2, 
-                score1, 
-                score2, 
-                duration, 
-                user?.userId
-            );
-
-            return (reply.status(200).send({
-                success: true,
-                message: "Tournament match finished successfully",
-                nextMatch
-            }));
-
-        } catch (error) {
-            console.error("Finish tournament match error:", error);
-            return (reply.status(500).send({
+        // Validation des paramètres requis
+        if (!tournamentId || !matchNumber || !player1 || !player2 || score1 === undefined || score2 === undefined || !duration) {
+            return reply.status(400).send({
                 success: false,
-                error: "Failed to finish tournament match"
-            }));
+                error: "Missing required parameters"
+            });
         }
+    
+        const result = await TournamentService.finishTournamentMatch(
+            tournamentId, 
+            matchNumber, 
+            player1, 
+            player2, 
+            score1, 
+            score2, 
+            duration, 
+            user?.userId
+        );
+
+        console.log('✅ Tournament service result:', JSON.stringify(result, null, 2));
+        
+        // ✅ Retourner la structure complète du tournoi
+        return reply.status(200).send(result);
+
+    } catch (error) {
+        console.error("Finish tournament match error:", error);
+        return reply.status(500).send({
+            success: false,
+            error: "Failed to finish tournament match"
+        });
     }
+}
 }
