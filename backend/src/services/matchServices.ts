@@ -6,13 +6,17 @@ export class MatchService
 {
     static async createLocalMatch(player1: string, player2: string, score1: number, score2: number, duration: number, userId?: number): Promise<MatchResponse>
     {
+        // SIUUUUUUUUUU TEST
+        const winner = score1 > score2 ? player1 : player2;
+        const userWinner = userId && winner === player1 ? userId : null
+
         // creer match
         const matchStmt = db.prepare(`
-            INSERT INTO matches (mode, started_at, ended_at)
-            VALUES ('local', datetime('now', '-' || ? || ' seconds'), datetime('now'))
+            INSERT INTO matches (mode, started_at, ended_at, winner_id)
+            VALUES ('local', datetime('now', '-' || ? || ' seconds'), datetime('now'), ?)
         `);
 
-        const matchResult = matchStmt.run(duration);
+        const matchResult = matchStmt.run(duration, userWinner);
         const matchId = matchResult.lastInsertRowid as number;
 
         // ajouter participants
