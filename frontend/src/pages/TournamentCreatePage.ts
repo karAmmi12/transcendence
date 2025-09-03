@@ -1,6 +1,7 @@
 import { i18n } from '@/services/i18nService.js';
 import { authService } from '@services/authService';
 import { tournamentService } from '@services/tournamentService';
+import { TournamentPage } from '@pages/TournamentPage';
 
 export class TournamentCreatePage {
   private participantCount: number = 8;
@@ -191,12 +192,18 @@ export class TournamentCreatePage {
       }
 
       // Créer le tournoi via le service (le backend fera ses propres vérifications)
-      const tournament = await tournamentService.createTournament(finalParticipants);
+      const tournamentResponse = await tournamentService.createTournament(finalParticipants);
       
-      // Rediriger vers la page du tournoi
-      window.dispatchEvent(new CustomEvent('navigate', { 
-        detail: `/tournament/${tournament.id}` 
-      }));
+      /// ✅ Passer directement les données du tournoi à la page
+      const tournamentPage = new TournamentPage();
+      await tournamentPage.mount('#page-content', tournamentResponse.tournament);
+      
+      // ✅ Optionnel : mettre à jour l'URL sans rechargement
+      window.history.pushState(
+        { tournamentId: tournamentResponse.tournament.id }, 
+        '', 
+        `/tournament/${tournamentResponse.tournament.id}`
+      );
       
     } catch (error) {
       console.error('Failed to create tournament:', error);
