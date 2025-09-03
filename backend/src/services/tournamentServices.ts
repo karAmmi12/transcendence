@@ -299,6 +299,7 @@ export class TournamentService
             
             const tournament = stmt.get(tournamentId) as any;
             if (!tournament) {
+                console.log('Tournament not found for ID:', tournamentId);
                 throw new Error('Tournament not found');
             }
 

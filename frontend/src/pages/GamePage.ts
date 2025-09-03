@@ -191,12 +191,16 @@ export class GamePage {
   }
 
   private renderTournamentSettings(): string {
+
+    const isAuthenticated = authService.isAuthenticated();
     return `
       <div class="bg-gray-800 rounded-lg p-6 text-center">
         <h3 class="text-xl mb-4">Mode Tournoi</h3>
         <p class="text-gray-300 mb-6">Créez ou rejoignez un tournoi à 8 joueurs</p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <button onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create' }))"
+          <button onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '${isAuthenticated
+            ? '/tournament/create?participants=8&mode=authenticated'
+            : '/tournament/create?participants=8&mode=guest'}' }))"
                   class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors">
             Créer un Tournoi
           </button>
