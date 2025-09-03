@@ -24,6 +24,8 @@ const PUBLIC_ROUTES = [
     '/api/auth/oauth/google/callback',
     '/api/home/stats',
     '/api/auth/loginWith2FA',
+    '/api/tournament/create',
+    'api/tournament'
 ];
 
 /**
@@ -37,6 +39,71 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
     try{
         if (PUBLIC_ROUTES.includes(req.url) || PUBLIC_ROUTES.includes(routePath))
             return; //on ignore certaine route voir liste au dessus
+
+        // ✅ Routes de tournoi : authentification optionnelle
+        if (routePath.startsWith('/api/tournament')) 
+        {
+            const accessToken = req.cookies.accessToken;
+            const refreshToken = req.cookies.refreshToken;
+            
+            // Si des tokens sont présents, essayer de les valider
+            if (accessToken)
+            {
+                const accessPayload = JWTService.verifyAccessToken(accessToken);
+                if (accessPayload) 
+                {
+                    req.user = {
+                        userId: accessPayload.userId,
+                        username: accessPayload.username
+                    };
+                    return; // Utilisateur authentifié
+                }
+            }
+            
+            // Si accessToken invalide mais refreshToken présent
+            if (refreshToken) 
+            {
+                try {
+                    const refreshPayload = JWTService.verifyRefreshToken(refreshToken);
+                    if (refreshPayload) 
+                    {
+                        const sessionCheck = JWTService.isValidSession(refreshToken);
+                        if (sessionCheck.valid) 
+                        {
+                            // Récupérer les infos utilisateur et générer nouveau accessToken
+                            const userStmt = db.prepare('SELECT username FROM users WHERE id = ?');
+                            const userRaw = userStmt.get(sessionCheck.userId!) as {username: string} | undefined;
+                            
+                            if (userRaw) 
+                            {
+                                const user = serialize(userRaw);
+                                const newAccessToken = JWTService.generateAccessToken({
+                                    userId: sessionCheck.userId!,
+                                    username: user.username
+                                });
+                                
+                                reply.setCookie('accessToken', newAccessToken, {
+                                    httpOnly: true,
+                                    secure: process.env.NODE_ENV === 'production',
+                                    sameSite: 'strict',
+                                    maxAge: 15 * 60 * 1000,
+                                    path: '/'
+                                });
+                                
+                                req.user = {
+                                    userId: sessionCheck.userId!,
+                                    username: user.username
+                                };
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log('Optional auth failed for tournament route, continuing without user...');
+                }
+            }
+            // Continuer dans tous les cas (avec ou sans req.user)
+            return;
+        }
         
         // recupere l'accessToken dans les cookies
         const accessToken = req.cookies.accessToken;
