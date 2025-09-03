@@ -46,6 +46,8 @@ export class Pong3D {
 
   private gameEndModal: GameEndModal | null = null;
 
+  public onGameEnd?: (winner: string, scores: any, duration : number) => void;
+
   constructor(canvasId: string, settings: GameSettings, isRemote = false) {
     console.log('🎮 Initializing Pong3D...');
     
@@ -146,10 +148,18 @@ export class Pong3D {
     
     console.log(`🏁 Game finished! Winner: ${winnerName}`);
 
-    // Afficher l'écran de fin de partie
+    // ✅ Si c'est un tournoi (callback défini), ne pas afficher le modal
+    if (this.onGameEnd) {
+      const duration = (Date.now() - this.matchStartTime) / 1000;
+      console.log('🏆 Tournament match ended, calling callback');
+      this.onGameEnd(winnerName, this.gameState.scores, duration);
+      return;
+    }
+
+    // ✅ Sinon, comportement normal pour un match local
     this.showGameEndModal(winner, winnerName, loserName);
 
-    // Envoyer les données du match si c'est une partie locale
+    // Envoyer les données du match si c'est une partie locale (pas un tournoi)
     if (!this.isRemoteGame && !this.isMatchDataSent) {
       this.sendMatchDataToBackend();
     }

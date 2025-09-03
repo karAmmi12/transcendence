@@ -159,3 +159,36 @@ html.tifinagh .rtl-support {
 .pie-segment:hover {
   opacity: 0.9;
 }
+
+/* Styles pour le bracket de tournoi */
+.tournament-bracket-svg {
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.tournament-match {
+  transition: all 0.3s ease;
+}
+
+.tournament-match:hover {
+  filter: brightness(1.1);
+}
+
+/* Animation pour les connexions */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+.tournament-bracket-svg path {
+  animation: dash 2s linear infinite;
+}
+
+/* Responsive pour le bracket */
+@media (max-width: 768px) {
+  .tournament-bracket-svg svg {
+    min-width: 800px;
+  }
+}
