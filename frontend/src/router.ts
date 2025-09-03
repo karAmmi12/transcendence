@@ -6,7 +6,7 @@ import { RegisterPage } from '@pages/RegisterPage';
 import { GamePage } from '@pages/GamePage';
 import { ProfilePage } from '@pages/ProfilePage';
 import { TournamentCreatePage } from '@pages/TournamentCreatePage';
-// import { TournamentPage } from '@pages/TournamentPage';
+import { TournamentPage } from '@pages/TournamentPage';
 
 interface Route {
   path: string;
@@ -58,6 +58,12 @@ export class Router {
       component: () => new TournamentCreatePage(),
       title: 'Create Tournament - ft_transcendence',
       requiresAuth: false // Accessible aux invités aussi
+    },
+    {
+      path: '/tournament/:id',
+      component: () => new TournamentPage(),
+      title: 'Tournament - ft_transcendence',
+      requiresAuth: false
     }
     // ,
     // {
