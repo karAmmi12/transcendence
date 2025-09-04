@@ -147,7 +147,7 @@ static async finishTournamentMatch(tournamentId: number, matchNumber: number, pl
             isUser: false // Simplification
         }));
 
-        const bracket = this.createBracket(tournamentParticipants);
+        const bracket = this.createBracket(tournamentParticipants, tournamentId);
 
         // ✅ Vérifier si c'est le match final
         if (matchNumber === 7) {
@@ -216,55 +216,88 @@ static async finishTournamentMatch(tournamentId: number, matchNumber: number, pl
         return [firstElement, ...restElements];
     }
 
-    private static createBracket(participants: TournamentParticipant[]): TournamentBracket 
-    {
-        // Quarts de finale (matches 1-4)
-        const quarterFinals: TournamentMatch[] = [
-            {
-                id: 1, round: 1, position: 1,
-                player1: participants[0], player2: participants[1],
-                winner: null, status: 'pending'
-            },
-            {
-                id: 2, round: 1, position: 2,
-                player1: participants[2], player2: participants[3],
-                winner: null, status: 'pending'
-            },
-            {
-                id: 3, round: 1, position: 3,
-                player1: participants[4], player2: participants[5],
-                winner: null, status: 'pending'
-            },
-            {
-                id: 4, round: 1, position: 4,
-                player1: participants[6], player2: participants[7],
-                winner: null, status: 'pending'
-            }
-        ];
-
-        // Demi-finales (matches 5-6)
-        const semiFinals: TournamentMatch[] = [
-            {
-                id: 5, round: 2, position: 1,
-                player1: null, player2: null, // Gagnants matches 1 et 2
-                winner: null, status: 'pending'
-            },
-            {
-                id: 6, round: 2, position: 2,
-                player1: null, player2: null, // Gagnants matches 3 et 4
-                winner: null, status: 'pending'
-            }
-        ];
-
-        // Finale (match 7)
-        const final: TournamentMatch = {
-            id: 7, round: 3, position: 1,
-            player1: null, player2: null, // Gagnants matches 5 et 6
-            winner: null, status: 'pending'
-        };
-
-        return { quarterFinals, semiFinals, final };
+private static createBracket(participants: TournamentParticipant[], tournamentId?: number): TournamentBracket 
+{
+    // Récupérer les matchs terminés si on a un tournamentId
+    let completedMatches: any[] = [];
+    let winners: { [key: number]: string } = {};
+    
+    if (tournamentId) {
+        const matchesStmt = db.prepare(`
+            SELECT 
+                m.tournament_match_number,
+                COALESCE(mp.alias, u.username) as winner_name
+            FROM matches m
+            JOIN match_participants mp ON m.id = mp.match_id AND mp.is_winner = 1
+            LEFT JOIN users u ON mp.user_id = u.id
+            WHERE m.tournament_id = ? AND m.ended_at IS NOT NULL
+        `);
+        
+        completedMatches = matchesStmt.all(tournamentId) as any[];
+        
+        // Créer un mapping des gagnants par numéro de match
+        completedMatches.forEach(match => {
+            winners[match.tournament_match_number] = match.winner_name;
+        });
     }
+
+    // Quarts de finale (matches 1-4)
+    const quarterFinals: TournamentMatch[] = [
+        {
+            id: 1, round: 1, position: 1,
+            player1: participants[0], player2: participants[1],
+            winner: winners[1] ? { name: winners[1], isUser: false } : null, 
+            status: winners[1] ? 'completed' : 'pending'
+        },
+        {
+            id: 2, round: 1, position: 2,
+            player1: participants[2], player2: participants[3],
+            winner: winners[2] ? { name: winners[2], isUser: false } : null,
+            status: winners[2] ? 'completed' : 'pending'
+        },
+        {
+            id: 3, round: 1, position: 3,
+            player1: participants[4], player2: participants[5],
+            winner: winners[3] ? { name: winners[3], isUser: false } : null,
+            status: winners[3] ? 'completed' : 'pending'
+        },
+        {
+            id: 4, round: 1, position: 4,
+            player1: participants[6], player2: participants[7],
+            winner: winners[4] ? { name: winners[4], isUser: false } : null,
+            status: winners[4] ? 'completed' : 'pending'
+        }
+    ];
+
+    // Demi-finales (matches 5-6)
+    const semiFinals: TournamentMatch[] = [
+        {
+            id: 5, round: 2, position: 1,
+            player1: winners[1] ? { name: winners[1], isUser: false } : null,
+            player2: winners[2] ? { name: winners[2], isUser: false } : null,
+            winner: winners[5] ? { name: winners[5], isUser: false } : null,
+            status: winners[5] ? 'completed' : (winners[1] && winners[2] ? 'pending' : 'pending')
+        },
+        {
+            id: 6, round: 2, position: 2,
+            player1: winners[3] ? { name: winners[3], isUser: false } : null,
+            player2: winners[4] ? { name: winners[4], isUser: false } : null,
+            winner: winners[6] ? { name: winners[6], isUser: false } : null,
+            status: winners[6] ? 'completed' : (winners[3] && winners[4] ? 'pending' : 'pending')
+        }
+    ];
+
+    // Finale (match 7)
+    const final: TournamentMatch = {
+        id: 7, round: 3, position: 1,
+        player1: winners[5] ? { name: winners[5], isUser: false } : null,
+        player2: winners[6] ? { name: winners[6], isUser: false } : null,
+        winner: winners[7] ? { name: winners[7], isUser: false } : null,
+        status: winners[7] ? 'completed' : (winners[5] && winners[6] ? 'pending' : 'pending')
+    };
+
+    return { quarterFinals, semiFinals, final };
+}
 
     private static calculateNextMatch(tournamentId: number, currentMatchNumber: number, winner: string): { id: number; matchNumber: number; round: string; player1: string; player2: string } | null 
     {
