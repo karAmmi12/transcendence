@@ -13,7 +13,26 @@
   },
   "home": {
     "welcome": "Bienvenue sur ft_transcendence",
-    "description": "Découvrez le jeu Pong ultime avec du multijoueur en temps réel, des tournois et une expérience de jeu immersive.",
+    "description": "Découvrez le jeu Pong ultime avec du multijoueur local, des compétitions à distance et des tournois.",
+    "gameModes": {
+      "title": "Choisissez votre mode de jeu",
+      "local": {
+        "title": "Jeu Local",
+        "description": "Jouez avec un ami sur le même ordinateur. Parfait pour des parties rapides !",
+        "button": "Jouer en Local"
+      },
+      "remote": {
+        "title": "Jeu à Distance",
+        "description": "Défiez des joueurs en ligne du monde entier.",
+        "button": "Jouer en Ligne",
+        "loginRequired": "Connexion requise pour jouer en ligne"
+      },
+      "tournament": {
+        "title": "Tournoi",
+        "description": "Participez à des tournois locaux et grimpez dans le classement.",
+        "button": "Rejoindre un Tournoi"
+      }
+    },
     "features": {
       "multiplayer": {
         "title": "Multijoueur temps réel",
@@ -34,9 +53,9 @@
     },
     "globalStats": {
       "title": "Statistiques de la plateforme",
-      "totalPlayers": "Joueurs inscrits",
+      "totalPlayers": "Joueurs totaux",
       "totalGames": "Parties jouées",
-      "onlinePlayers": "Joueurs en ligne",
+      "onlinePlayers": "En ligne maintenant",
       "activeTournaments": "Tournois actifs"
     },
     "stats": {
@@ -69,6 +88,7 @@
       "passwordPlaceholder": "Entrez votre mot de passe",
       "rememberMe": "Se souvenir de moi",
       "submit": "Se connecter",
+      "loginButton": "Se connecter",
       "loading": "Connexion...",
       "forgotPassword": "Mot de passe oublié ?",
       "noAccount": "Pas de compte ?",
@@ -91,6 +111,12 @@
       "haveAccount": "Déjà un compte ?",
       "signIn": "Se connecter"
     },
+    "twoFactor": {
+      "title": "Authentification à deux facteurs",
+      "description": "Un code de vérification a été envoyé à votre adresse email. Veuillez l'entrer ci-dessous.",
+      "verify": "Vérifier",
+      "codeSent": "Code envoyé par email"
+    },
     "errors": {
       "loginFailed": "Échec de la connexion",
       "missingFields": "Veuillez remplir tous les champs",
@@ -98,18 +124,8 @@
       "usernameTaken": "Ce nom d'utilisateur est déjà pris",
       "emailTaken": "Cet email est déjà enregistré",
       "passwordMismatch": "Les mots de passe ne correspondent pas",
-      "requiredField": "Ce champ est requis"
-    }
-  },
-  "tournament": {
-    "create": {
-      "title": "Créer un Tournoi",
-      "youAreIncluded": "Vous êtes automatiquement inclus dans le tournoi !",
-      "enterOtherParticipants": "Saisissez les noms des {count} autres participants :",
-      "enterAllParticipants": "Saisissez les noms des {count} participants :",
-      "participantPlaceholder": "Nom du participant {number}",
-      "confirmed": "Confirmé",
-      "createTournament": "Créer le Tournoi"
+      "requiredField": "Ce champ est requis",
+      "loginRequired": "Vous devez être connecté pour accéder à cette fonctionnalité"
     }
   },
   "game": {
@@ -122,8 +138,10 @@
       "leaveGame": "Quitter la partie"
     },
     "controls": {
+      "title": "Contrôles du jeu",
       "instructions": "Utilisez W/S ou les flèches pour déplacer votre raquette",
-      "pause": "Appuyez sur ESPACE pour faire une pause"
+      "pause": "Appuyez sur ESPACE pour faire une pause",
+      "touch": "Contrôles tactiles"
     },
     "status": {
       "waiting": "En attente",
@@ -135,10 +153,17 @@
       "you": "Vous",
       "opponent": "Adversaire"
     },
+    "placeholder": {
+      "player": "Joueur"
+    },
     "modes": {
       "local": "Local",
       "remote": "À distance",
-      "tournament": "Tournoi"
+      "tournament": "Tournoi",
+      "classic": "Classique",
+      "turbo": "Turbo",
+      "powerup": "Power-up",
+      "elimination": "Élimination"
     },
     "customization": {
       "title": "Paramètres de jeu",
@@ -150,6 +175,55 @@
       "difficulty": "Difficulté",
       "resetToDefault": "Remettre par défaut",
       "applySettings": "Appliquer les paramètres"
+    },
+    "speeds": {
+      "slow": "Lent",
+      "medium": "Moyen",
+      "fast": "Rapide"
+    },
+    "themes": {
+      "classic": "Classique",
+      "neon": "Néon",
+      "retro": "Rétro"
+    }
+  },
+  "tournament": {
+    "title": "Tournoi",
+    "create": {
+      "title": "Créer un tournoi",
+      "youAreIncluded": "Vous êtes automatiquement inclus dans le tournoi !",
+      "enterOtherParticipants": "Entrez les noms des {count} autres participants :",
+      "enterAllParticipants": "Entrez les noms des {count} participants :",
+      "participantPlaceholder": "Nom du participant {number}",
+      "confirmed": "Confirmé",
+      "createTournament": "Créer le tournoi"
+    },
+    "join": "Rejoindre le tournoi",
+    "waiting": "En attente de joueurs",
+    "inProgress": "Tournoi en cours",
+    "finished": "Tournoi terminé",
+    "bracket": "Tableau du tournoi",
+    "currentMatch": "Match actuel",
+    "nextMatch": "Prochain match",
+    "winner": "Vainqueur du tournoi",
+    "player1": "Joueur 1",
+    "player2": "Joueur 2",
+    "startMatch": "Commencer le match",
+    "round": "Tour",
+    "finals": "Finale",
+    "semifinals": "Demi-finales",
+    "quarterfinals": "Quarts de finale",
+    "status": "Statut du tournoi",
+    "players": "Joueurs",
+    "matchNumber": "Match {number}",
+    "vs": "vs",
+    "waitingForMatch": "En attente du début du match",
+    "matchInProgress": "Match en cours",
+    "matchCompleted": "Match terminé",
+    "status": {
+      "waiting": "En attente de joueurs",
+      "inProgress": "En cours",
+      "finished": "Terminé"
     }
   },
   "profile": {
@@ -159,6 +233,8 @@
       "editProfile": "Modifier le profil",
       "changePassword": "Changer le mot de passe",
       "changeAvatar": "Changer l'avatar",
+      "logout": "Déconnexion",
+      "toggle2FA": "Activer/Désactiver 2FA",
       "addFriend": "Ajouter comme ami",
       "removeFriend": "Supprimer l'ami",
       "challenge": "Défier"
@@ -187,6 +263,7 @@
       "playFirstGame": "Jouer ma première partie",
       "viewAll": "Voir tout l'historique",
       "viewDetails": "Voir les détails",
+      "noMatchesFilter": "Aucun match trouvé pour ce filtre",
       "result": {
         "win": "Victoire",
         "loss": "Défaite"
@@ -195,6 +272,8 @@
         "all": "Tous",
         "wins": "Victoires",
         "losses": "Défaites",
+        "local": "Local",
+        "remote": "À distance",
         "tournament": "Tournoi"
       },
       "stats": {
@@ -211,10 +290,10 @@
       "viewAll": "Voir tout",
       "online": "En ligne",
       "offline": "Hors ligne",
-      "justOffline": "À l'instant",
-      "minsAgo": "Il y a {mins} min",
-      "hoursAgo": "Il y a {hours}h",
-      "daysAgo": "Il y a {days}j",
+      "justOffline": "Vient de se déconnecter",
+      "minsAgo": "Il y a {mins} minutes",
+      "hoursAgo": "Il y a {hours} heures",
+      "daysAgo": "Il y a {days} jours",
       "viewProfile": "Voir le profil",
       "challenge": "Défier",
       "sendMessage": "Envoyer un message"
@@ -233,7 +312,9 @@
       "errors": {
         "updateFailed": "Échec de la mise à jour du profil",
         "invalidImage": "Format d'image invalide",
-        "imageTooLarge": "Image trop volumineuse"
+        "invalidImageType": "Format d'image invalide",
+        "imageTooLarge": "Image trop volumineuse",
+        "avatarTooLarge": "Image trop volumineuse (max 5MB)"
       }
     },
     "changePassword": {
@@ -254,6 +335,31 @@
         "minLength": "Le mot de passe doit contenir au moins 8 caractères",
         "mismatch": "Les mots de passe ne correspondent pas",
         "weak": "Le mot de passe est trop faible"
+      }
+    },
+    "twoFactor": {
+      "title": "Authentification à deux facteurs",
+      "enable": "Activer 2FA",
+      "disable": "Désactiver 2FA",
+      "enterCode": "Entrez le code de vérification",
+      "codePlaceholder": "Code à 6 chiffres",
+      "verify": "Vérifier",
+      "cancel": "Annuler",
+      "modal": {
+        "enableTitle": "Activer l'authentification à deux facteurs",
+        "enableDescription": "Un code de vérification a été envoyé à votre email. Veuillez l'entrer ci-dessous pour activer 2FA.",
+        "enableButton": "Activer 2FA",
+        "disableTitle": "Désactiver l'authentification à deux facteurs",
+        "disableDescription": "Veuillez entrer votre code de vérification pour désactiver 2FA.",
+        "disableButton": "Désactiver 2FA",
+        "codeLabel": "Code de vérification"
+      },
+      "messages": {
+        "enabled": "2FA activé avec succès !",
+        "disabled": "2FA désactivé avec succès !",
+        "codeSent": "Code de vérification envoyé à votre email",
+        "invalidCode": "Code de vérification invalide",
+        "error": "Opération 2FA échouée"
       }
     },
     "errors": {
@@ -289,17 +395,16 @@
     "actions": {
       "addFriend": "Ajouter comme ami",
       "removeFriend": "Supprimer l'ami",
-      "accept": "Accepter",
-      "decline": "Refuser",
       "acceptRequest": "Accepter la demande",
       "cancelRequest": "Annuler la demande",
+      "accept": "Accepter",
+      "decline": "Refuser",
       "remove": "Supprimer"
     },
     "status": {
       "requestSent": "Demande envoyée",
       "pending": "En attente",
-      "friends": "Amis",
-      "blocked": "Bloqué"
+      "friends": "Amis"
     },
     "messages": {
       "requestSent": "Demande d'ami envoyée !",
@@ -363,6 +468,15 @@
     "success": {
       "title": "Succès",
       "close": "Fermer"
+    },
+    "gameEnd": {
+      "title": "Fin de partie",
+      "winner": "Vainqueur",
+      "finalScore": "Score final",
+      "duration": "Durée",
+      "playAgain": "Rejouer",
+      "backToMenu": "Retour au menu",
+      "tournamentContinue": "Continuer le tournoi"
     }
   },
   "forms": {
@@ -439,10 +553,37 @@
     "seeMore": "Voir plus",
     "showLess": "Voir moins",
     "expand": "Développer",
-    "collapse": "Réduire"
+    "collapse": "Réduire",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "time": "Temps",
+    "status": "Statut",
+    "gameInfo": "Infos du jeu",
+    "or": "ou",
+    "score": "Score",
+    "toWin": "pour gagner",
+    "points": "points",
+    "medium": "Moyen",
+    "slow": "Lent",
+    "fast": "Rapide",
+    "modeSelection": "Sélection du mode",
+    "chooseModeDescription": "Choisissez comment vous voulez jouer",
+    "changeMode": "Changer de mode",
+    "confirmQuitGame": "Êtes-vous sûr de vouloir quitter la partie ?",
+    "canvasNotSupported": "Votre navigateur ne supporte pas l'élément HTML5 Canvas."
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "it": "Italiano",
+    "es": "Español",
+    "ar": "العربية",
+    "kab": "Taqbaylit",
+    "kab-tfng": "ⵜⴰⵇⴱⴰⵢⵍⵉⵜ",
+    "sg": "Sängö"
   },
   "footer": {
-    "description": "L'expérience Pong ultime. Jouez, affrontez et discutez avec la communauté.",
+    "description": "L'expérience Pong ultime. Jouez, affrontez et connectez-vous avec la communauté.",
     "allRightsReserved": "Tous droits réservés.",
     "navigation": {
       "title": "Navigation",
