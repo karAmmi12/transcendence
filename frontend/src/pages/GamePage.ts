@@ -1,11 +1,12 @@
 import { authService } from '@/services/authService.js';
 import { i18n } from '@/services/i18nService.js';
-import { Pong3D } from '@/components/game/Pong3D/Pong3D.js';
+import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
+import { matchService } from '@/services/matchService';
 import type { GameSettings } from '@/components/game/Pong3D/Pong3D.js';
 
 export class GamePage {
-  private gameMode: 'local' | 'remote' | 'tournament' = 'local';
-  private pong3D: Pong3D | null = null;
+  private gameMode: 'local' | 'remote' | 'tournament' | null = null;
+  private gameManager: GameManager | null = null;
 
   constructor() {
     this.parseGameMode();
@@ -21,7 +22,7 @@ export class GamePage {
 
   private parseGameMode(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    this.gameMode = urlParams.get('mode') as 'local' | 'remote' | 'tournament' || 'local';
+    this.gameMode = urlParams.get('mode') as 'local' | 'remote' | 'tournament' || null;
   }
 
   private render(element: Element): void {
@@ -62,19 +63,19 @@ export class GamePage {
   private renderModeSelection(): string {
     return `
       <div class="bg-gray-800 rounded-lg p-6 mb-6">
-        <h3 class="text-xl mb-4">Choisissez votre mode de jeu</h3>
+        <h3 class="text-xl mb-4">${i18n.t('home.gameModes.title')}</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button id="mode-local" class="bg-blue-600 hover:bg-blue-700 p-4 rounded-lg transition-colors">
-            <h4 class="font-bold mb-2">Mode Local</h4>
-            <p class="text-sm text-gray-300">Jouez à deux sur la même machine</p>
+            <h4 class="font-bold mb-2">${i18n.t('home.gameModes.local.title')}</h4>
+            <p class="text-sm text-gray-300">${i18n.t('home.gameModes.local.description')}</p>
           </button>
           <button id="mode-remote" class="bg-green-600 hover:bg-green-700 p-4 rounded-lg transition-colors">
-            <h4 class="font-bold mb-2">Mode En Ligne</h4>
-            <p class="text-sm text-gray-300">Affrontez des joueurs du monde entier</p>
+            <h4 class="font-bold mb-2">${i18n.t('home.gameModes.remote.title')}</h4>
+            <p class="text-sm text-gray-300">${i18n.t('home.gameModes.remote.description')}</p>
           </button>
           <button id="mode-tournament" class="bg-purple-600 hover:bg-purple-700 p-4 rounded-lg transition-colors">
-            <h4 class="font-bold mb-2">Tournoi</h4>
-            <p class="text-sm text-gray-300">Participez à un tournoi à 8 joueurs</p>
+            <h4 class="font-bold mb-2">${i18n.t('home.gameModes.tournament.title')}</h4>
+            <p class="text-sm text-gray-300">${i18n.t('home.gameModes.tournament.description')}</p>
           </button>
         </div>
       </div>
@@ -100,39 +101,39 @@ export class GamePage {
     
     return `
       <div class="bg-gray-800 rounded-lg p-6">
-        <h3 class="text-xl mb-4">Paramètres - Mode Local</h3>
+        <h3 class="text-xl mb-4">${i18n.t('game.customization.title')} - ${i18n.t('game.modes.local')}</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <label class="block mb-2">Nom Joueur 1:</label>
+            <label class="block mb-2">${i18n.t('forms.placeholders.username')} 1:</label>
             ${isAuthenticated && currentUser ? `
               <input type="text" id="player1-name-input" value="${currentUser.username}" 
                     readonly
                     class="bg-gray-600 rounded px-3 py-2 w-full cursor-not-allowed opacity-75 border border-blue-500/50">
-              <div class="text-xs text-blue-400 mt-1">✓ Utilisateur connecté</div>
+              <div class="text-xs text-blue-400 mt-1">✓ ${i18n.t('auth.login.username')}</div>
             ` : `
-              <input type="text" id="player1-name-input" value="Joueur 1" 
+              <input type="text" id="player1-name-input" value="${i18n.t('game.placeholder.player')} 1" 
                     class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
             `}
           </div>
           <div>
-            <label class="block mb-2">Nom Joueur 2:</label>
-            <input type="text" id="player2-name-input" value="Joueur 2" 
+            <label class="block mb-2">${i18n.t('forms.placeholders.username')} 2:</label>
+            <input type="text" id="player2-name-input" value="${i18n.t('game.placeholder.player')} 2" 
                   class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
-            <label class="block mb-2">Vitesse de balle:</label>
+            <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
             <select id="ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
-              <option value="slow">Lent</option>
-              <option value="medium" selected>Moyen</option>
-              <option value="fast">Rapide</option>
+              <option value="slow">${i18n.t('common.slow')}</option>
+              <option value="medium" selected>${i18n.t('common.medium')}</option>
+              <option value="fast">${i18n.t('common.fast')}</option>
             </select>
           </div>
           <div>
-            <label class="block mb-2">Points pour gagner:</label>
+            <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
             <select id="win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
-              <option value="3">3 points</option>
-              <option value="5" selected>5 points</option>
-              <option value="10">10 points</option>
+              <option value="3">3 ${i18n.t('common.points')}</option>
+              <option value="5" selected>5 ${i18n.t('common.points')}</option>
+              <option value="10">10 ${i18n.t('common.points')}</option>
             </select>
           </div>
         </div>
@@ -140,11 +141,11 @@ export class GamePage {
         <div class="flex flex-col sm:flex-row gap-3">
           <button id="start-local-game" 
                   class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors flex-1">
-            Démarrer la Partie
+            ${i18n.t('game.lobby.startGame')}
           </button>
           <button id="back-to-modes" 
                   class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
-            Changer de Mode
+            ${i18n.t('common.changeMode')}
           </button>
         </div>
       </div>
@@ -157,16 +158,16 @@ export class GamePage {
     if (!isAuthenticated) {
       return `
         <div class="bg-gray-800 rounded-lg p-6 text-center">
-          <h3 class="text-xl mb-4 text-yellow-400">Connexion Requise</h3>
-          <p class="text-gray-300 mb-6">Vous devez être connecté pour jouer en ligne</p>
+          <h3 class="text-xl mb-4 text-yellow-400">${i18n.t('home.gameModes.remote.loginRequired')}</h3>
+          <p class="text-gray-300 mb-6">${i18n.t('auth.errors.loginRequired')}</p>
           <div class="flex flex-col sm:flex-row gap-3 justify-center">
             <button onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '/login?redirect=/game?mode=remote' }))"
                     class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
-              Se Connecter
+              ${i18n.t('auth.login.loginButton')}
             </button>
             <button id="back-to-modes" 
                     class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
-              Changer de Mode
+              ${i18n.t('common.changeMode')}
             </button>
           </div>
         </div>
@@ -175,15 +176,15 @@ export class GamePage {
 
     return `
       <div class="bg-gray-800 rounded-lg p-6 text-center">
-        <h3 class="text-xl mb-4">Mode En Ligne</h3>
+        <h3 class="text-xl mb-4">${i18n.t('game.modes.remote')}</h3>
         <div id="matchmaking-status">
           <div class="mb-4">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p class="text-gray-300">Recherche d'un adversaire...</p>
+            <p class="text-gray-300">${i18n.t('game.lobby.waitingForPlayer')}</p>
           </div>
           <button id="cancel-matchmaking" 
                   class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors">
-            Annuler
+            ${i18n.t('common.cancel')}
           </button>
         </div>
       </div>
@@ -191,22 +192,21 @@ export class GamePage {
   }
 
   private renderTournamentSettings(): string {
-
     const isAuthenticated = authService.isAuthenticated();
     return `
       <div class="bg-gray-800 rounded-lg p-6 text-center">
-        <h3 class="text-xl mb-4">Mode Tournoi</h3>
-        <p class="text-gray-300 mb-6">Créez ou rejoignez un tournoi à 8 joueurs</p>
+        <h3 class="text-xl mb-4">${i18n.t('game.modes.tournament')}</h3>
+        <p class="text-gray-300 mb-6">${i18n.t('home.gameModes.tournament.description')}</p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
           <button onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '${isAuthenticated
             ? '/tournament/create?participants=8&mode=authenticated'
             : '/tournament/create?participants=8&mode=guest'}' }))"
                   class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors">
-            Créer un Tournoi
+            ${i18n.t('tournament.create.title')}
           </button>
           <button id="back-to-modes" 
                   class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
-            Changer de Mode
+            ${i18n.t('common.changeMode')}
           </button>
         </div>
       </div>
@@ -215,46 +215,81 @@ export class GamePage {
 
   private renderGameContainer(): string {
     return `
-      <!-- Canvas Container -->
-      <div class="relative w-full bg-gray-800 rounded-lg overflow-hidden" style="padding-bottom: 56.25%;">
-        <canvas id="pong-3d-canvas" 
-                class="absolute top-0 left-0 w-full h-full"
-                style="background: linear-gradient(45deg, #1a1a2e, #16213e);">
-        </canvas>
-        
-        <!-- Game Overlay -->
-        ${this.renderGameOverlay()}
+      <!-- Header du jeu -->
+      <div class="bg-gray-800/50 backdrop-blur-sm rounded-t-lg p-3 md:p-4 flex justify-between items-center border-b border-gray-700/50">
+        <h2 class="text-lg md:text-xl font-bold">${this.getGameModeTitle()}</h2>
+        <div class="flex gap-2 md:gap-3">
+          <button id="pause-game" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm transition-colors">
+            ⏸️ <span class="hidden sm:inline">${i18n.t('common.pause')}</span>
+          </button>
+          <button id="quit-game" class="bg-red-600 hover:bg-red-700 px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm transition-colors">
+            <span class="hidden sm:inline">${i18n.t('game.lobby.leaveGame')}</span><span class="sm:hidden">✕</span>
+          </button>
+        </div>
       </div>
-      
-      <!-- Game Controls -->
-      ${this.renderGameControls()}
+
+      <!-- Zone de jeu responsive -->
+      <div class="relative bg-gray-800 rounded-b-lg overflow-hidden">
+        <!-- Canvas Container avec aspect ratio préservé -->
+        <div class="relative w-full aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
+          <canvas id="game-canvas" 
+                  class="absolute top-0 left-0 w-full h-full"
+                  style="background: linear-gradient(45deg, #1a1a2e, #16213e); border-radius: 0 0 0.5rem 0.5rem;">
+            ${i18n.t('common.canvasNotSupported')}
+          </canvas>
+          
+          <!-- Game Overlay responsive -->
+          ${this.renderGameOverlay()}
+        </div>
+        
+        <!-- Game Controls -->
+        ${this.renderGameControls()}
+      </div>
     `;
   }
 
   private renderGameOverlay(): string {
     return `
-      <div id="game-overlay" class="absolute top-4 left-4 right-4 flex justify-between items-start pointer-events-none">
-        <div class="bg-black bg-opacity-60 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-blue-500/30">
-          <div id="player1-info" class="text-white">
-            <div class="font-bold text-blue-400" id="player1-name">Joueur 1</div>
-            <div class="text-3xl font-mono font-bold" id="player1-score">0</div>
+      <div id="game-overlay" class="absolute inset-0 pointer-events-none">
+        <!-- Overlay responsive pour les scores -->
+        <div class="absolute top-2 left-2 right-2 md:top-4 md:left-4 md:right-4 flex justify-between items-start">
+          <!-- Score Joueur 1 -->
+          <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-blue-500/30 min-w-0 flex-shrink-0">
+            <div id="player1-info" class="text-white">
+              <div class="font-bold text-blue-400 text-xs md:text-sm truncate" id="player1-name">${i18n.t('game.score.you')} 1</div>
+              <div class="text-xl md:text-3xl font-mono font-bold" id="player1-score">0</div>
+            </div>
+          </div>
+          
+          <!-- Timer central -->
+          <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-gray-500/30 mx-2 min-w-0 flex-shrink-0">
+            <div id="game-timer" class="text-white text-center">
+              <div class="text-xs md:text-sm opacity-75 uppercase tracking-wide">${i18n.t('common.time')}</div>
+              <div class="text-lg md:text-2xl font-mono font-bold">00:00</div>
+            </div>
+            <div class="text-xs text-center mt-1 text-gray-400 hidden md:block">
+              ${this.getGameModeTitle()}
+            </div>
+          </div>
+          
+          <!-- Score Joueur 2 -->
+          <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-red-500/30 min-w-0 flex-shrink-0">
+            <div id="player2-info" class="text-white text-right">
+              <div class="font-bold text-red-400 text-xs md:text-sm truncate" id="player2-name">${i18n.t('game.score.you')} 2</div>
+              <div class="text-xl md:text-3xl font-mono font-bold" id="player2-score">0</div>
+            </div>
           </div>
         </div>
         
-        <div class="bg-black bg-opacity-60 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-gray-500/30">
-          <div id="game-timer" class="text-white text-center">
-            <div class="text-sm opacity-75 uppercase tracking-wide">Temps</div>
-            <div class="text-2xl font-mono font-bold">00:00</div>
-          </div>
-          <div class="text-xs text-center mt-1 text-gray-400">
-            ${this.getGameModeTitle()}
-          </div>
-        </div>
-        
-        <div class="bg-black bg-opacity-60 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-red-500/30">
-          <div id="player2-info" class="text-white text-right">
-            <div class="font-bold text-red-400" id="player2-name">Joueur 2</div>
-            <div class="text-3xl font-mono font-bold" id="player2-score">0</div>
+        <!-- Status mobile en bas (visible uniquement sur mobile) -->
+        <div class="absolute bottom-2 left-2 right-2 md:hidden">
+          <div class="bg-black/60 backdrop-blur-sm rounded-lg p-2 text-center border border-gray-500/30">
+            <div id="game-status-mobile" class="text-green-400 text-xs">
+              ${i18n.t('game.status.waiting')}...
+            </div>
+            <div class="text-xs text-gray-400 mt-1">
+              ${this.getGameModeTitle()}
+            </div>
           </div>
         </div>
       </div>
@@ -263,36 +298,41 @@ export class GamePage {
 
   private renderGameControls(): string {
     return `
-      <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div class="p-3 md:p-4 grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
         <!-- Desktop Controls -->
-        <div class="bg-gray-800 rounded-lg p-4 hidden md:block">
-          <h4 class="text-lg mb-3">Contrôles Clavier</h4>
+        <div class="bg-gray-700/50 rounded-lg p-3 md:p-4 hidden md:block">
+          <h4 class="text-base md:text-lg mb-3">${i18n.t('game.controls.title')}</h4>
           <div class="grid grid-cols-2 gap-4 text-sm">
-            <div><strong>Joueur 1:</strong> W/S ou ↑/↓</div>
-            <div><strong>Joueur 2:</strong> I/K</div>
+            <div><strong>${i18n.t('game.score.you')} 1:</strong> W/S ${i18n.t('common.or')} ↑/↓</div>
+            <div><strong>${i18n.t('game.score.you')} 2:</strong> I/K</div>
           </div>
           <div class="mt-2 text-xs text-gray-400">
-            Appuyez sur ESPACE pour pause
+            ${i18n.t('game.controls.pause')}
           </div>
         </div>
         
-        <!-- Game Status -->
-        <div class="bg-gray-800 rounded-lg p-4">
-          <h4 class="text-lg mb-3">Status</h4>
+        <!-- Game Status (visible sur desktop) -->
+        <div class="bg-gray-700/50 rounded-lg p-3 md:p-4 hidden md:block">
+          <h4 class="text-base md:text-lg mb-3">${i18n.t('common.status')}</h4>
           <div id="game-status" class="text-green-400 text-sm">
-            Prêt à jouer
+            ${i18n.t('game.status.waiting')}...
           </div>
-          <div class="mt-2">
-            <button id="pause-game" 
-                    class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm">
-              ⏸️ Pause
-            </button>
+          <div id="game-scores" class="text-lg mt-2">0 - 0</div>
+          <div id="game-timer-display" class="text-sm text-gray-300 mt-1">00:00</div>
+        </div>
+
+        <!-- Mobile Game Info (visible sur mobile) -->
+        <div class="bg-gray-700/50 rounded-lg p-3 md:hidden">
+          <h4 class="text-base mb-2">${i18n.t('common.gameInfo')}</h4>
+          <div class="flex justify-between items-center text-sm">
+            <div id="game-scores-mobile" class="font-mono">0 - 0</div>
+            <div id="game-timer-mobile" class="text-gray-300">00:00</div>
           </div>
         </div>
       </div>
 
       <!-- Mobile Touch Controls -->
-      <div id="mobile-controls" class="mt-4 md:hidden">
+      <div id="mobile-controls" class="p-3 md:hidden">
         ${this.renderMobileControls()}
       </div>
     `;
@@ -300,29 +340,29 @@ export class GamePage {
 
   private renderMobileControls(): string {
     return `
-      <div class="bg-gray-800 rounded-lg p-4">
-        <h4 class="text-lg mb-3 text-center">Contrôles Tactiles</h4>
+      <div class="bg-gray-700/50 rounded-lg p-4">
+        <h4 class="text-lg mb-3 text-center">${i18n.t('game.controls.touch')}</h4>
         <div class="flex justify-between items-center">
           <div class="text-center">
-            <div class="text-xs mb-2 text-blue-300 font-semibold">Joueur 1</div>
+            <div class="text-xs mb-2 text-blue-300 font-semibold">${i18n.t('game.score.you')} 1</div>
             <div class="flex flex-col gap-3">
-              <button id="p1-up" class="bg-blue-600 text-white p-4 rounded-xl touch-manipulation" 
+              <button id="p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation" 
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-              <button id="p1-down" class="bg-blue-600 text-white p-4 rounded-xl touch-manipulation"
+              <button id="p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
             </div>
           </div>
           
           <div class="text-center px-4 flex-1">
-            <div class="text-xs text-gray-400 mb-2">Maintenez pour bouger</div>
+            <div class="text-xs text-gray-400 mb-2">${i18n.t('game.controls.instructions')}</div>
           </div>
           
           <div class="text-center">
-            <div class="text-xs mb-2 text-red-300 font-semibold">Joueur 2</div>
+            <div class="text-xs mb-2 text-red-300 font-semibold">${i18n.t('game.score.you')} 2</div>
             <div class="flex flex-col gap-3">
-              <button id="p2-up" class="bg-red-600 text-white p-4 rounded-xl touch-manipulation"
+              <button id="p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-              <button id="p2-down" class="bg-red-600 text-white p-4 rounded-xl touch-manipulation"
+              <button id="p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
             </div>
           </div>
@@ -345,14 +385,47 @@ export class GamePage {
     // Start local game
     document.getElementById('start-local-game')?.addEventListener('click', () => this.startLocalGame());
 
-    // Pause game
-    document.getElementById('pause-game')?.addEventListener('click', () => this.togglePause());
+    // Game interface controls
+    this.bindGameInterfaceEvents();
 
     // Mobile controls
     this.setupMobileControls();
 
     // Responsive resize
     window.addEventListener('resize', () => this.handleResize());
+  }
+
+  private bindGameInterfaceEvents(): void {
+    const pauseBtn = document.getElementById('pause-game');
+    const quitBtn = document.getElementById('quit-game');
+
+    pauseBtn?.addEventListener('click', () => {
+      if (this.gameManager) {
+        this.gameManager.pauseGame();
+        this.updatePauseButton();
+      }
+    });
+
+    quitBtn?.addEventListener('click', () => {
+      if (confirm(i18n.t('common.confirmQuitGame'))) {
+        this.quitGame();
+      }
+    });
+  }
+
+  private updatePauseButton(): void {
+    const pauseBtn = document.getElementById('pause-game');
+    if (!pauseBtn || !this.gameManager) return;
+
+    const status = this.gameManager.getGameStatus();
+    
+    if (status === 'playing') {
+      pauseBtn.innerHTML = `⏸️ ${i18n.t('common.pause')}`;
+      pauseBtn.className = 'bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg text-sm transition-colors';
+    } else if (status === 'paused') {
+      pauseBtn.innerHTML = `▶️ ${i18n.t('common.resume')}`;
+      pauseBtn.className = 'bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition-colors';
+    }
   }
 
   private selectMode(mode: 'local' | 'remote' | 'tournament'): void {
@@ -370,7 +443,7 @@ export class GamePage {
   }
 
   private showModeSelection(): void {
-    this.gameMode = null as any;
+    this.gameMode = null;
     
     const url = new URL(window.location.href);
     url.searchParams.delete('mode');
@@ -381,49 +454,86 @@ export class GamePage {
     this.bindEvents();
   }
 
-  private startLocalGame(): void {
-    console.log('🎮 Starting local game...');
-    
-    // Hide settings, show game
+  private async startLocalGame(): Promise<void> {
+    try {
+      console.log('🎮 Starting local game...');
+      
+      // Récupérer les paramètres de jeu
+      const gameSettings = this.getGameSettings();
+      
+      // Configuration du GameManager pour le mode local
+      const gameConfig: GameManagerConfig = {
+        mode: 'local',
+        canvasId: 'game-canvas',
+        settings: gameSettings,
+        onGameStart: () => {
+          console.log('✅ Local game started');
+          this.updateGameInterface(gameSettings);
+        },
+        onGameEnd: async (winner: string, scores: any, duration: number) => {
+          console.log('🏁 Local game ended (callback):', { winner, scores, duration });
+          // ✅ En mode local, on laisse Pong3D gérer le modal
+          // Ici on gère seulement la sauvegarde des données
+          await this.handleGameEnd(winner, scores, duration, gameSettings);
+        }
+      };
+
+      // Créer le gestionnaire de jeu
+      this.gameManager = new GameManager(gameConfig);
+      
+      // Afficher l'interface de jeu
+      this.showGameInterface();
+      
+      // Démarrer le jeu
+      await this.gameManager.startGame();
+
+    } catch (error) {
+      console.error('❌ Failed to start local game:', error);
+      this.showError(i18n.t('common.error'));
+    }
+  }
+
+  private showGameInterface(): void {
     const settings = document.getElementById('game-settings');
     const container = document.getElementById('game-container');
     
     if (settings && container) {
       settings.classList.add('hidden');
       container.classList.remove('hidden');
-      
-      // Get game settings
-      const gameSettings = this.getGameSettings();
-      
-      // Initialize Pong3D
-      this.initPong3D(gameSettings);
     }
   }
 
-  private initPong3D(settings: GameSettings): void {
+  private updateGameInterface(settings: GameSettings): void {
+    // Mettre à jour les noms des joueurs
+    const p1Name = document.getElementById('player1-name');
+    const p2Name = document.getElementById('player2-name');
+    if (p1Name) p1Name.textContent = settings.player1Name;
+    if (p2Name) p2Name.textContent = settings.player2Name;
+
+    // Mettre à jour le statut
+    const statusEl = document.getElementById('game-status');
+    if (statusEl) {
+      statusEl.textContent = i18n.t('game.status.playing');
+      statusEl.className = 'text-green-400 text-sm';
+    }
+  }
+
+  private async handleGameEnd(winner: string, scores: any, duration: number, settings: GameSettings): Promise<void> {
     try {
-      this.pong3D = new Pong3D('pong-3d-canvas', settings, this.gameMode === 'remote');
-      
-      setTimeout(() => {
-        if (this.pong3D) {
-          this.pong3D.startGame();
-        }
-        
-        // Update player names in overlay
-        const p1Name = document.getElementById('player1-name');
-        const p2Name = document.getElementById('player2-name');
-        if (p1Name) p1Name.textContent = settings.player1Name;
-        if (p2Name) p2Name.textContent = settings.player2Name;
-      }, 500);
-      
-    } catch (error) {
-      console.error('❌ Failed to initialize Pong3D:', error);
-      
-      const statusEl = document.getElementById('game-status');
-      if (statusEl) {
-        statusEl.textContent = 'Erreur lors de l\'initialisation du jeu 3D';
-        statusEl.className = 'text-red-400 text-sm';
+      // Envoyer les données du match au backend si utilisateur connecté
+      if (authService.isAuthenticated()) {
+        await matchService.sendLocalMatchData(
+          settings.player1Name,
+          settings.player2Name,
+          scores.player1,
+          scores.player2,
+          Math.floor(duration)
+        );
+        console.log('✅ Match data saved to backend');
       }
+
+    } catch (error) {
+      console.error('❌ Failed to save match data:', error);
     }
   }
 
@@ -434,36 +544,38 @@ export class GamePage {
     // Si l'utilisateur est connecté, utiliser son username pour le joueur 1
     const player1Name = isAuthenticated && currentUser 
       ? currentUser.username 
-      : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || 'Joueur 1';
+      : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 1';
     
     return {
       player1Name,
-      player2Name: (document.getElementById('player2-name-input') as HTMLInputElement)?.value || 'Joueur 2',
+      player2Name: (document.getElementById('player2-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 2',
       ballSpeed: (document.getElementById('ball-speed') as HTMLSelectElement)?.value as 'slow' | 'medium' | 'fast' || 'medium',
       winScore: parseInt((document.getElementById('win-score') as HTMLSelectElement)?.value || '5'),
       enableEffects: false // Pour l'instant, désactivés
     };
   }
 
-  private togglePause(): void {
-    if (this.pong3D) {
-      const currentStatus = this.pong3D.getGameStatus();
-      
-      if (currentStatus === 'playing') {
-        this.pong3D.togglePause();
-        const pauseBtn = document.getElementById('pause-game');
-        if (pauseBtn) {
-          pauseBtn.innerHTML = '▶️ Reprendre';
-          pauseBtn.className = 'bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm';
-        }
-      } else if (currentStatus === 'paused') {
-        this.pong3D.togglePause();
-        const pauseBtn = document.getElementById('pause-game');
-        if (pauseBtn) {
-          pauseBtn.innerHTML = '⏸️ Pause';
-          pauseBtn.className = 'bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm';
-        }
-      }
+  private quitGame(): void {
+    if (this.gameManager) {
+      this.gameManager.destroy();
+      this.gameManager = null;
+    }
+    
+    // Retourner à la sélection des paramètres
+    const settings = document.getElementById('game-settings');
+    const container = document.getElementById('game-container');
+    
+    if (settings && container) {
+      container.classList.add('hidden');
+      settings.classList.remove('hidden');
+    }
+  }
+
+  private showError(message: string): void {
+    const statusEl = document.getElementById('game-status');
+    if (statusEl) {
+      statusEl.textContent = message;
+      statusEl.className = 'text-red-400 text-sm';
     }
   }
 
@@ -499,51 +611,51 @@ export class GamePage {
   }
 
   private handleMobileControlStart(controlId: string): void {
-    if (this.pong3D) {
+    if (this.gameManager) {
       const isUp = controlId.includes('up');
       const player = controlId.includes('p1') ? 'player1' : 'player2';
-      this.pong3D.handleMobileInput(player, isUp ? 'up' : 'down', true);
+      this.gameManager.handleMobileInput(player, isUp ? 'up' : 'down', true);
     }
   }
 
   private handleMobileControlEnd(controlId: string): void {
-    if (this.pong3D) {
+    if (this.gameManager) {
       const isUp = controlId.includes('up');
       const player = controlId.includes('p1') ? 'player1' : 'player2';
-      this.pong3D.handleMobileInput(player, isUp ? 'up' : 'down', false);
+      this.gameManager.handleMobileInput(player, isUp ? 'up' : 'down', false);
     }
   }
 
   private handleResize(): void {
-    if (this.pong3D) {
-      this.pong3D.handleResize();
+    if (this.gameManager) {
+      this.gameManager.handleResize();
     }
   }
 
   private getGameModeTitle(): string {
     switch (this.gameMode) {
-      case 'local': return 'Mode Local';
-      case 'remote': return 'Mode En Ligne';
-      case 'tournament': return 'Mode Tournoi';
-      default: return 'Sélection du Mode';
+      case 'local': return i18n.t('game.modes.local');
+      case 'remote': return i18n.t('game.modes.remote');
+      case 'tournament': return i18n.t('game.modes.tournament');
+      default: return i18n.t('common.modeSelection');
     }
   }
 
   private getGameModeDescription(): string {
     switch (this.gameMode) {
-      case 'local': return 'Affrontez-vous à deux sur la même machine';
-      case 'remote': return 'Défiez des joueurs du monde entier';
-      case 'tournament': return 'Participez à un tournoi épique';
-      default: return 'Choisissez votre mode de jeu préféré';
+      case 'local': return i18n.t('home.gameModes.local.description');
+      case 'remote': return i18n.t('home.gameModes.remote.description');
+      case 'tournament': return i18n.t('home.gameModes.tournament.description');
+      default: return i18n.t('common.chooseModeDescription');
     }
   }
 
   destroy(): void {
     window.removeEventListener('resize', () => this.handleResize());
     
-    if (this.pong3D) {
-      this.pong3D.destroy();
-      this.pong3D = null;
+    if (this.gameManager) {
+      this.gameManager.destroy();
+      this.gameManager = null;
     }
   }
 }
