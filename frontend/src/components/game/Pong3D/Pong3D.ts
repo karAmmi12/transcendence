@@ -46,11 +46,11 @@ export class Pong3D {
 
   private gameEndModal: GameEndModal | null = null;
 
+  private mode: 'local' | 'tournament' | 'remote' = 'local';
+
   public onGameEnd?: (winner: string, scores: any, duration : number) => void;
 
-  constructor(canvasId: string, settings: GameSettings, isRemote = false) {
-    console.log('🎮 Initializing Pong3D...');
-    
+  constructor(canvasId: string, settings: GameSettings, isRemote = false, mode: 'local' | 'tournament' | 'remote' = 'local') {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     if (!this.canvas) {
       throw new Error(`Canvas with id "${canvasId}" not found`);
@@ -58,13 +58,15 @@ export class Pong3D {
     
     this.settings = settings;
     this.isRemoteGame = isRemote;
+    this.mode = mode;
+    
+    console.log(`🎮 Initializing Pong3D in ${mode} mode on canvas:`, canvasId);
     
     this.initEngine();
     this.initComponents();
     this.bindEvents();
-    
-    console.log('✅ Pong3D initialized successfully');
   }
+
 
   private initEngine(): void {
     // Créer le moteur Babylon.js
@@ -83,15 +85,28 @@ export class Pong3D {
     });
   }
 
+  // private initComponents(): void {
+  //   // Initialiser les composants
+  //   this.renderer = new GameRenderer(this.scene, this.settings);
+  //   this.physics = new GamePhysics(this.settings);
+  //   this.controls = new GameControls();
+    
+  //   // Démarrer la boucle de rendu
+  //   this.startRenderLoop();
+  // }
+
   private initComponents(): void {
-    // Initialiser les composants
-    this.renderer = new GameRenderer(this.scene, this.settings);
+    console.log('🔧 Initializing game components...');
+    
+    // Initialiser les composants avec les bons paramètres
+    this.renderer = new GameRenderer(this.scene, this.canvas);
     this.physics = new GamePhysics(this.settings);
     this.controls = new GameControls();
     
     // Démarrer la boucle de rendu
     this.startRenderLoop();
   }
+
 
   private startRenderLoop(): void {
     this.engine.runRenderLoop(() => {
@@ -153,14 +168,18 @@ export class Pong3D {
       const duration = (Date.now() - this.matchStartTime) / 1000;
       console.log('🏆 Tournament match ended, calling callback');
       this.onGameEnd(winnerName, this.gameState.scores, duration);
-      return;
     }
 
-    // ✅ Sinon, comportement normal pour un match local
-    this.showGameEndModal(winner, winnerName, loserName);
+    // ✅ Afficher le modal seulement en mode local
+    if (this.mode === 'local') {
+      console.log('🎮 Local game - showing end modal');
+      this.showGameEndModal(winner, winnerName, loserName);
+    } else {
+      console.log(`🏆 ${this.mode} game - modal handled by parent component`);
+    }
 
     // Envoyer les données du match si c'est une partie locale (pas un tournoi)
-    if (!this.isRemoteGame && !this.isMatchDataSent) {
+    if (this.mode === 'local' && !this.isMatchDataSent) {
       this.sendMatchDataToBackend();
     }
   }
@@ -289,23 +308,48 @@ export class Pong3D {
     const seconds = Math.floor(this.gameState.timer % 60);
     const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     
-    const timerEl = document.querySelector('#game-timer .text-2xl');
+    // Mettre à jour les timers dans les deux modes
+    const timerEl = document.querySelector('#game-timer .text-lg, #game-timer .text-2xl') || 
+                   document.querySelector('#tournament-game-timer .text-lg, #tournament-game-timer .text-2xl');
     if (timerEl) timerEl.textContent = timeString;
+    
+    const timerDisplayEl = document.getElementById('game-timer-display') || 
+                          document.getElementById('tournament-game-timer-display');
+    if (timerDisplayEl) timerDisplayEl.textContent = timeString;
+    
+    // Mettre à jour le timer mobile
+    const timerMobile = document.getElementById('game-timer-mobile');
+    if (timerMobile) timerMobile.textContent = timeString;
   }
 
-  private updateUI(): void {
-    // Mettre à jour les scores
-    const p1Score = document.getElementById('player1-score');
-    const p2Score = document.getElementById('player2-score');
+
+  private updateUI(): void 
+  {
+    // Mettre à jour les scores (compatible avec les deux modes)
+    const p1Score = document.getElementById('player1-score') || document.getElementById('tournament-player1-score');
+    const p2Score = document.getElementById('player2-score') || document.getElementById('tournament-player2-score');
     
     if (p1Score) p1Score.textContent = this.gameState.scores.player1.toString();
     if (p2Score) p2Score.textContent = this.gameState.scores.player2.toString();
+
+     // Mettre à jour les scores mobiles
+    const scoresMobile = document.getElementById('game-scores-mobile');
+    if (scoresMobile) {
+      scoresMobile.textContent = `${this.gameState.scores.player1} - ${this.gameState.scores.player2}`;
+    }
   }
 
   private updateGameStatus(status: string): void {
-    const statusEl = document.getElementById('game-status');
+    // Chercher les éléments de statut dans les deux modes
+    const statusEl = document.getElementById('game-status') || document.getElementById('tournament-game-status');
     if (statusEl) {
       statusEl.textContent = status;
+    }
+    
+    // Mettre à jour le statut mobile
+    const statusMobile = document.getElementById('game-status-mobile') || document.getElementById('tournament-game-status-mobile');
+    if (statusMobile) {
+      statusMobile.textContent = status;
     }
   }
 

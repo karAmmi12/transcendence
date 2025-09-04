@@ -18,15 +18,19 @@ export class GameRenderer {
   private scene: BABYLON.Scene;
   private camera: BABYLON.ArcRotateCamera;
   private gameObjects: GameObjects;
-  private settings: GameSettings;
+  private canvas: HTMLCanvasElement;
+  // private settings: GameSettings;
 
-  constructor(scene: BABYLON.Scene, settings: GameSettings) {
+  constructor(scene: BABYLON.Scene, canvas: HTMLCanvasElement) {
     this.scene = scene;
-    this.settings = settings;
-    
+    this.canvas = canvas;
+
     this.setupCamera();
     this.setupLighting();
     this.createGameObjects();
+    this.createFieldBorders();
+
+    this.adjustCameraForScreen();
   }
 
   private setupCamera(): void {

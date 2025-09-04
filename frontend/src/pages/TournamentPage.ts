@@ -230,27 +230,28 @@ export class TournamentPage {
     }
   }
 
-  private renderTournamentHeader(): string {
-    return `
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-xl font-semibold mb-2">${i18n.t('tournament.status.title')}</h2>
-          <span class="px-3 py-1 rounded-full text-sm font-medium ${this.getStatusClasses()}">
-            ${i18n.t(`tournament.status.${this.tournament.status}`)}
-          </span>
-        </div>
-        <div class="text-right">
-          <p class="text-gray-400 text-sm">${i18n.t('tournament.participants')}</p>
-          <p class="text-2xl font-bold">${this.tournament.participants.length}/8</p>
-        </div>
-      </div>
-    `;
-  }
+  // private renderTournamentHeader(): string {
+  //   return `
+  //     <div class="flex justify-between items-center">
+  //       <div>
+  //         <h2 class="text-xl font-semibold mb-2">${i18n.t('tournament.status.title')}</h2>
+  //         <span class="px-3 py-1 rounded-full text-sm font-medium ${this.getStatusClasses()}">
+  //           ${i18n.t(`tournament.status.${this.tournament.status}`)}
+  //         </span>
+  //       </div>
+  //       <div class="text-right">
+  //         <p class="text-gray-400 text-sm">${i18n.t('tournament.participants')}</p>
+  //         <p class="text-2xl font-bold">${this.tournament.participants.length}/8</p>
+  //       </div>
+  //     </div>
+  //   `;
+  // }
 
   private renderCurrentMatch(): string {
     if (!this.currentMatch) return '';
+   
 
-    const match = new TournamentMatch(this.currentMatch, this.tournamentId);
+    const match = new TournamentMatch(this.currentMatch, this.tournament.id);
     const html = match.render();
 
     setTimeout(() => {
@@ -291,7 +292,7 @@ export class TournamentPage {
 
     // Rafraîchir les données du tournoi
     window.addEventListener('refreshTournament', () => {
-      this.loadTournamentData().then(() => {
+      this.loadTournamentData(this.tournament.id).then(() => {
         const element = document.querySelector('#page-content');
         if (element) this.render(element);
       });
