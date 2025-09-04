@@ -124,7 +124,8 @@
       "usernameTaken": "Username is already taken",
       "emailTaken": "Email is already registered",
       "passwordMismatch": "Passwords do not match",
-      "requiredField": "This field is required"
+      "requiredField": "This field is required",
+      "loginRequired": "You must be logged in to access this feature"
     }
   },
   "game": {
@@ -137,8 +138,10 @@
       "leaveGame": "Leave Game"
     },
     "controls": {
+      "title": "Game Controls",
       "instructions": "Use W/S or Arrow Keys to move your paddle",
-      "pause": "Press SPACE to pause"
+      "pause": "Press SPACE to pause",
+      "touch": "Touch Controls"
     },
     "status": {
       "waiting": "Waiting",
@@ -150,10 +153,17 @@
       "you": "You",
       "opponent": "Opponent"
     },
+    "placeholder": {
+      "player": "Player"
+    },
     "modes": {
       "local": "Local",
       "remote": "Remote",
-      "tournament": "Tournament"
+      "tournament": "Tournament",
+      "classic": "Classic",
+      "turbo": "Turbo",
+      "powerup": "Power-up",
+      "elimination": "Elimination"
     },
     "customization": {
       "title": "Game Settings",
@@ -165,6 +175,16 @@
       "difficulty": "Difficulty",
       "resetToDefault": "Reset to Default",
       "applySettings": "Apply Settings"
+    },
+    "speeds": {
+      "slow": "Slow",
+      "medium": "Medium",
+      "fast": "Fast"
+    },
+    "themes": {
+      "classic": "Classic",
+      "neon": "Neon",
+      "retro": "Retro"
     }
   },
   "tournament": {
@@ -179,8 +199,27 @@
       "createTournament": "Create Tournament"
     },
     "join": "Join Tournament",
+    "waiting": "Waiting for players",
+    "inProgress": "Tournament in progress",
+    "finished": "Tournament finished",
     "bracket": "Tournament Bracket",
+    "currentMatch": "Current Match",
+    "nextMatch": "Next Match",
+    "winner": "Tournament Winner",
+    "player1": "Player 1",
+    "player2": "Player 2",
+    "startMatch": "Start Match",
+    "round": "Round",
+    "finals": "Finals",
+    "semifinals": "Semifinals",
+    "quarterfinals": "Quarterfinals",
+    "status": "Tournament Status",
     "players": "Players",
+    "matchNumber": "Match {number}",
+    "vs": "vs",
+    "waitingForMatch": "Waiting for match to start",
+    "matchInProgress": "Match in progress",
+    "matchCompleted": "Match completed",
     "status": {
       "waiting": "Waiting for players",
       "inProgress": "In Progress",
@@ -224,6 +263,7 @@
       "playFirstGame": "Play your first game",
       "viewAll": "View all history",
       "viewDetails": "View details",
+      "noMatchesFilter": "No matches found for this filter",
       "result": {
         "win": "Victory",
         "loss": "Defeat"
@@ -355,6 +395,8 @@
     "actions": {
       "addFriend": "Add Friend",
       "removeFriend": "Remove Friend",
+      "acceptRequest": "Accept Request",
+      "cancelRequest": "Cancel Request",
       "accept": "Accept",
       "decline": "Decline",
       "remove": "Remove"
@@ -426,6 +468,15 @@
     "success": {
       "title": "Success",
       "close": "Close"
+    },
+    "gameEnd": {
+      "title": "Game Over",
+      "winner": "Winner",
+      "finalScore": "Final Score",
+      "duration": "Duration",
+      "playAgain": "Play Again",
+      "backToMenu": "Back to Menu",
+      "tournamentContinue": "Continue Tournament"
     }
   },
   "forms": {
@@ -491,7 +542,7 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "tomorrow": "Tomorrow",
-    "daysAgo": "Days ago",
+    "daysAgo": "{days} days ago",
     "online": "Online",
     "offline": "Offline",
     "connecting": "Connecting...",
@@ -502,7 +553,34 @@
     "seeMore": "See More",
     "showLess": "Show Less",
     "expand": "Expand",
-    "collapse": "Collapse"
+    "collapse": "Collapse",
+    "pause": "Pause",
+    "resume": "Resume",
+    "time": "Time",
+    "status": "Status",
+    "gameInfo": "Game Info",
+    "or": "or",
+    "score": "Score",
+    "toWin": "to Win",
+    "points": "points",
+    "medium": "Medium",
+    "slow": "Slow",
+    "fast": "Fast",
+    "modeSelection": "Mode Selection",
+    "chooseModeDescription": "Choose how you want to play",
+    "changeMode": "Change Mode",
+    "confirmQuitGame": "Are you sure you want to quit the game?",
+    "canvasNotSupported": "Your browser does not support the HTML5 Canvas element."
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "it": "Italiano",
+    "es": "Español",
+    "ar": "العربية",
+    "kab": "Taqbaylit",
+    "kab-tfng": "ⵜⴰⵇⴱⴰⵢⵍⵉⵜ",
+    "sg": "Sängö"
   },
   "footer": {
     "description": "The ultimate Pong experience. Play, compete, and connect with the community.",

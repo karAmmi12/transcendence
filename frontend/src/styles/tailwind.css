@@ -192,3 +192,110 @@ html.tifinagh .rtl-support {
     min-width: 800px;
   }
 }
+
+
+/* Styles spécifiques pour les matchs de tournoi */
+.tournament-game-interface {
+  min-height: 400px;
+}
+
+#tournament-game-canvas {
+  border-radius: 0.5rem;
+}
+
+.tournament-match .bg-gray-800 {
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+/* Animation pour les boutons tactiles de tournoi */
+.tournament-mobile-controls button:active {
+  transform: scale(0.95);
+}
+
+/* Styles pour le modal de fin de partie */
+#game-end-modal {
+  z-index: 9999; /* S'assurer qu'il est au-dessus de tout */
+}
+
+#game-end-modal .modal-content {
+  border: 1px solid #374151;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Animation spéciale pour le modal de fin */
+.game-end-animation {
+  animation: gameEndSlideIn 0.5s ease-out;
+}
+
+@keyframes gameEndSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Styles spécifiques pour les matchs de tournoi */
+.tournament-game-interface {
+  min-height: 400px;
+}
+
+#tournament-game-canvas {
+  border-radius: 0.5rem;
+}
+
+.tournament-match .bg-gray-800 {
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+/* Animation pour les boutons tactiles de tournoi */
+.tournament-mobile-controls button:active {
+  transform: scale(0.95);
+}
+
+/* Overlay responsive pour le jeu */
+#game-overlay, #tournament-game-overlay {
+  z-index: 10;
+}
+
+/* Assurer que les textes ne débordent pas */
+#game-overlay .truncate,
+#tournament-game-overlay .truncate {
+  max-width: 100px;
+}
+
+@media (min-width: 768px) {
+  #game-overlay .truncate,
+  #tournament-game-overlay .truncate {
+    max-width: 150px;
+  }
+}
+
+/* Canvas responsive */
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 768px) {
+  .aspect-video {
+    aspect-ratio: 4 / 3; /* Plus carré sur mobile */
+  }
+}
+
+/* Marges réduites sur mobile pour l'overlay */
+@media (max-width: 640px) {
+  #game-overlay > div:first-child,
+  #tournament-game-overlay > div:first-child {
+    gap: 0.25rem; /* Réduire l'espace entre les éléments */
+  }
+  
+  #game-overlay .min-w-0,
+  #tournament-game-overlay .min-w-0 {
+    min-width: 0;
+    flex: 1;
+    max-width: 30%; /* Limiter la largeur sur mobile */
+  }
+}
