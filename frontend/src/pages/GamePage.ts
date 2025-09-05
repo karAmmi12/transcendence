@@ -3,10 +3,12 @@ import { i18n } from '@/services/i18nService.js';
 import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
 import { matchService } from '@/services/matchService';
 import type { GameSettings } from '@/components/game/Pong3D/Pong3D.js';
+import { RemotePong } from '@/components/game/RemotePong.js';
 
 export class GamePage {
   private gameMode: 'local' | 'remote' | 'tournament' | null = null;
   private gameManager: GameManager | null = null;
+  private remotePong: RemotePong | null = null;
 
   constructor() {
     this.parseGameMode();
@@ -180,7 +182,7 @@ export class GamePage {
         <div id="matchmaking-status">
           <div class="mb-4">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p class="text-gray-300">${i18n.t('game.lobby.waitingForPlayer')}</p>
+            <p class="text-gray-300" id="matchmaking-text">${i18n.t('game.lobby.waitingForPlayer')}</p>
           </div>
           <button id="cancel-matchmaking" 
                   class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors">
@@ -385,6 +387,9 @@ export class GamePage {
     // Start local game
     document.getElementById('start-local-game')?.addEventListener('click', () => this.startLocalGame());
 
+    // Cancel matchmaking
+    document.getElementById('cancel-matchmaking')?.addEventListener('click', () => this.cancelMatchmaking());
+
     // Game interface controls
     this.bindGameInterfaceEvents();
 
@@ -440,6 +445,11 @@ export class GamePage {
     const element = document.querySelector('#page-content');
     if (element) this.render(element);
     this.bindEvents();
+
+    // Auto-start remote matchmaking if authenticated
+    if (mode === 'remote' && authService.isAuthenticated()) {
+      setTimeout(() => this.startRemoteGame(), 100);
+    }
   }
 
   private showModeSelection(): void {
@@ -490,6 +500,47 @@ export class GamePage {
     } catch (error) {
       console.error('❌ Failed to start local game:', error);
       this.showError(i18n.t('common.error'));
+    }
+  }
+
+  private async startRemoteGame(): Promise<void> {
+    try {
+      console.log('🌐 Starting remote game...');
+      
+      // Afficher l'interface de jeu
+      this.showGameInterface();
+      
+      // Récupérer les paramètres de jeu
+      const gameSettings = this.getGameSettings();
+      
+      // Créer le jeu remote
+      this.remotePong = new RemotePong('game-canvas', gameSettings);
+      
+      // Démarrer la partie remote
+      await this.remotePong.startRemoteGame();
+
+    } catch (error) {
+      console.error('❌ Failed to start remote game:', error);
+      this.showError('Impossible de démarrer la partie en ligne');
+    }
+  }
+
+  private cancelMatchmaking(): void {
+    console.log('❌ Canceling matchmaking...');
+    
+    if (this.remotePong) {
+      this.remotePong.destroy();
+      this.remotePong = null;
+    }
+    
+    // Retourner à la sélection de mode
+    this.showModeSelection();
+  }
+
+  private updateMatchmakingStatus(message: string): void {
+    const statusElement = document.getElementById('matchmaking-text');
+    if (statusElement) {
+      statusElement.textContent = message;
     }
   }
 
@@ -559,6 +610,11 @@ export class GamePage {
     if (this.gameManager) {
       this.gameManager.destroy();
       this.gameManager = null;
+    }
+
+    if (this.remotePong) {
+      this.remotePong.destroy();
+      this.remotePong = null;
     }
     
     // Retourner à la sélection des paramètres
@@ -656,6 +712,11 @@ export class GamePage {
     if (this.gameManager) {
       this.gameManager.destroy();
       this.gameManager = null;
+    }
+
+    if (this.remotePong) {
+      this.remotePong.destroy();
+      this.remotePong = null;
     }
   }
 }

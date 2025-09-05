@@ -26,23 +26,23 @@ export class Pong3D {
   private scene: BABYLON.Scene;
   
   // Composants modulaires
-  private renderer: GameRenderer;
-  private physics: GamePhysics;
-  private controls: GameControls;
+  protected renderer: GameRenderer;
+  protected physics: GamePhysics;
+  protected controls: GameControls;
   
   // État du jeu
-  private gameState: GameState = {
+  protected gameState: GameState = {
     status: 'waiting',
     scores: { player1: 0, player2: 0 },
     timer: 0
   };
   
-  private settings: GameSettings;
-  private isRemoteGame: boolean;
+  protected settings: GameSettings;
+  protected isRemoteGame: boolean;
 
   //proprietes pour tracker le match
-  private matchStartTime : number = 0;
-  private isMatchDataSent : boolean = false;
+  protected matchStartTime : number = 0;
+  protected isMatchDataSent : boolean = false;
 
   private gameEndModal: GameEndModal | null = null;
 
@@ -117,7 +117,7 @@ export class Pong3D {
     });
   }
 
-  private updateGame(): void {
+  protected updateGame(): void {
     // Mettre à jour les contrôles
     const paddleInputs = this.controls.getInputs();
     
@@ -154,7 +154,7 @@ export class Pong3D {
     }
   }
 
-  private endGame(winner: 'player1' | 'player2'): void {
+  protected endGame(winner: 'player1' | 'player2'): void {
     this.gameState.status = 'finished';
     this.gameState.winner = winner;
     
@@ -184,7 +184,7 @@ export class Pong3D {
     }
   }
 
-  private showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
+  protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
     // Masquer le timer et autres éléments de jeu
     const gameOverlay = document.getElementById('game-overlay');
     if (gameOverlay) {
@@ -323,7 +323,7 @@ export class Pong3D {
   }
 
 
-  private updateUI(): void 
+  protected updateUI(): void 
   {
     // Mettre à jour les scores (compatible avec les deux modes)
     const p1Score = document.getElementById('player1-score') || document.getElementById('tournament-player1-score');
@@ -337,9 +337,29 @@ export class Pong3D {
     if (scoresMobile) {
       scoresMobile.textContent = `${this.gameState.scores.player1} - ${this.gameState.scores.player2}`;
     }
+
+    // Mettre à jour le timer (pour les jeux remote)
+    if (this.isRemoteGame && this.gameState.timer !== undefined) {
+      const totalSeconds = Math.floor(this.gameState.timer); // Arrondir aux secondes
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      // Mettre à jour le timer principal
+      const timerEl = document.querySelector('#game-timer .text-lg, #game-timer .text-2xl, #tournament-game-timer .text-lg, #tournament-game-timer .text-2xl');
+      if (timerEl) timerEl.textContent = timeString;
+      
+      // Mettre à jour le timer desktop
+      const timerDisplay = document.getElementById('game-timer-display') || document.getElementById('tournament-game-timer-display');
+      if (timerDisplay) timerDisplay.textContent = timeString;
+      
+      // Mettre à jour le timer mobile
+      const timerMobile = document.getElementById('game-timer-mobile') || document.getElementById('tournament-game-timer-mobile');
+      if (timerMobile) timerMobile.textContent = timeString;
+    }
   }
 
-  private updateGameStatus(status: string): void {
+  protected updateGameStatus(status: string): void {
     // Chercher les éléments de statut dans les deux modes
     const statusEl = document.getElementById('game-status') || document.getElementById('tournament-game-status');
     if (statusEl) {
@@ -377,7 +397,7 @@ export class Pong3D {
     }
   }
 
-  private startLocalGame(): void {
+  protected startLocalGame(): void {
     this.updateGameStatus('Démarrage du jeu...');
     this.physics.reset();
 
