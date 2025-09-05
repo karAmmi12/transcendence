@@ -16,6 +16,8 @@ import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/inde
 
 export class ProfilePage {
   private languageListener: (() => void) | null = null;
+  private friendsUpdateListener: (() => void) | null = null;
+
   private user: User | null = null;
   private matchHistory: MatchHistory[] = [];
   private friends: Friend[] = [];
@@ -40,6 +42,33 @@ export class ProfilePage {
       if (element) this.render(element);
     };
     window.addEventListener('languageChanged', this.languageListener);
+
+    // ✅ Écouter les mises à jour des amis
+    this.friendsUpdateListener = async () => {
+      await this.refreshFriendsData();
+    };
+    window.addEventListener('friendsUpdated', this.friendsUpdateListener);
+  }
+
+  private async refreshFriendsData(): Promise<void> {
+    try {
+      // Recharger les données des amis
+      this.friends = await friendService.getFriends();
+      
+      // Recalculer le statut d'amitié si on regarde le profil d'un autre utilisateur
+      if (this.userId) {
+        this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
+      }
+      
+      // Re-render la page
+      const element = document.querySelector('#page-content');
+      if (element) {
+        this.render(element);
+      }
+      
+    } catch (error) {
+      console.error('Failed to refresh friends data:', error);
+    }
   }
 
   private async loadUserData(): Promise<void> {
@@ -57,18 +86,14 @@ export class ProfilePage {
         return;
       }
 
-      this.friends = await friendService.getFriends();
-
       // Si c'est le profil d'un autre utilisateur, charger le statut d'amitié
       if (this.userId) {
         this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
       }
 
-      // Charger l'historique des matchs:
-      this.matchHistory = await userService.getMatchHistory(this.userId);
-
-      // Charger les amis seulement pour son propre profil
+      // ✅ Charger l'historique des matchs et les amis seulement pour son propre profil
       if (!this.userId) {
+        this.matchHistory = await userService.getMatchHistory(this.userId);
         this.friends = await friendService.getFriends();
       }
 
@@ -83,15 +108,7 @@ export class ProfilePage {
   private calculateFriendshipStatus(userId: number): FriendshipStatus {
     // Vérifier si l'utilisateur est dans la liste d'amis
     const isFriend = this.friends.some(friend => friend.id === userId);
-
-    // Pour l'instant, on n'a pas de système de demandes d'amis implémenté
-    // Donc on retourne un statut simple : ami ou pas ami
-    return {
-      isFriend,
-      isPending: false,
-      isRequestSent: false,
-      isRequestReceived: false
-    };
+    return { isFriend };
   }
 
   private openEditModal(): void {
@@ -202,16 +219,15 @@ export class ProfilePage {
     // Créer les composants
     const profileHeader = new ProfileHeader(this.user, isOwnProfile, this.friendshipStatus);
     const statsCard = new StatsCard(this.user);
-    const matchHistoryCard = new MatchHistoryCard(this.matchHistory, isOwnProfile);
     
     const components: ProfileComponents = {
       header: profileHeader,
-      stats: statsCard,
-      history: matchHistoryCard
+      stats: statsCard
     };
 
     // Ajouter les composants spécifiques au profil personnel
     if (isOwnProfile) {
+      components.history = new MatchHistoryCard(this.matchHistory, isOwnProfile);
       components.friends = new FriendsSection(this.friends, isOwnProfile);
     }
 
@@ -219,7 +235,9 @@ export class ProfilePage {
     const layout = new ProfileLayout(isOwnProfile, components);
     element.innerHTML = layout.render();
 
-    matchHistoryCard.bindFilterEvents(element);
+    if (components.history) {
+      components.history.bindFilterEvents(element);
+    }
 
     // Attacher les événements
     this.bindEvents(components, isOwnProfile);
@@ -317,6 +335,12 @@ export class ProfilePage {
     if (this.languageListener) {
       window.removeEventListener('languageChanged', this.languageListener);
       this.languageListener = null;
+    }
+
+    // ✅ Nettoyer le listener des amis
+    if (this.friendsUpdateListener) {
+      window.removeEventListener('friendsUpdated', this.friendsUpdateListener);
+      this.friendsUpdateListener = null;
     }
   }
 }
