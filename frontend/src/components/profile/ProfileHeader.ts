@@ -105,7 +105,7 @@ export class ProfileHeader {
       `;
     }
 
-    const { isFriend, isRequestSent, isRequestReceived } = this.friendshipStatus;
+    const { isFriend } = this.friendshipStatus;
 
     let friendButton = '';
     
@@ -114,23 +114,6 @@ export class ProfileHeader {
         <button id="header-remove-friend" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
           ${i18n.t('friends.actions.removeFriend')}
         </button>
-      `;
-    } else if (isRequestSent) {
-      friendButton = `
-        <button disabled class="bg-gray-600 text-gray-400 font-medium py-2 px-4 rounded-lg cursor-not-allowed">
-          ${i18n.t('friends.status.requestSent')}
-        </button>
-      `;
-    } else if (isRequestReceived) {
-      friendButton = `
-        <div class="flex gap-2">
-          <button id="header-accept-friend-request" class="btn-primary">
-            ${i18n.t('friends.actions.accept')}
-          </button>
-          <button id="header-decline-friend-request" class="btn-secondary">
-            ${i18n.t('friends.actions.decline')}
-          </button>
-        </div>
       `;
     } else {
       friendButton = `

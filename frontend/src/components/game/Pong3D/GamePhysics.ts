@@ -25,7 +25,7 @@ export class GamePhysics {
   };
   
   // Physique de la balle
-  private ballVelocity = { x: 0, z: 0 };
+  private ballVelocity = { x: 0, z: 0 }; 
   private ballSpeed = 0.05;
   private paddleSpeed = 0.1;
 
@@ -143,8 +143,8 @@ export class GamePhysics {
   }
 
   public launchBall(): void {
-    const direction = Math.random() > 0.5 ? 1 : -1;
-    const angle = (Math.random() - 0.5) * 0.5;
+    const direction = Math.random() > 0.5 ? 1 : -1; 
+    const angle = (Math.random() - 0.5) * 0.5; 
     
     this.ballVelocity.x = direction * this.ballSpeed;
     this.ballVelocity.z = angle * this.ballSpeed;

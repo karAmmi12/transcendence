@@ -1,9 +1,12 @@
 import { i18n } from '@/services/i18nService.js';
 import { userService } from '../../services/userService.js';
+import { friendService } from '@/services/friendsService.js';
 import type { Friend } from '../../types/index.js';
 import { FriendsManagementModal } from './FriendsManagementModal.js';
 
 export class FriendsSection {
+
+  private friendsUpdateListener: (() => void) | null = null;
   constructor(private friends: Friend[], private isOwnProfile: boolean) {}
   
   render(): string {
@@ -70,6 +73,11 @@ export class FriendsSection {
           break;
       }
     });
+
+    this.friendsUpdateListener = async () => {
+      await this.refreshFriendsList();
+    };
+    window.addEventListener('friendsUpdated', this.friendsUpdateListener);
   }
 
   /**
@@ -105,12 +113,16 @@ export class FriendsSection {
    */
   private async refreshFriendsList(): Promise<void> {
     try {
-      // Ici vous devriez recharger les amis depuis votre service
-      // const updatedFriends = await friendService.getFriends();
-      // this.friends = updatedFriends;
+      // Recharger les amis depuis le service
+      const updatedFriends = await friendService.getFriends();
+      this.friends = updatedFriends;
       
-      // Pour l'instant, on déclenche juste un événement pour notifier le parent
-      window.dispatchEvent(new CustomEvent('refreshProfile'));
+      // Re-render la section amis
+      const friendsContainer = document.querySelector('.friends-section');
+      if (friendsContainer) {
+        friendsContainer.innerHTML = this.render();
+        this.bindEvents(); // Re-attacher les événements
+      }
       
     } catch (error) {
       console.error('Failed to refresh friends list:', error);
@@ -260,5 +272,15 @@ export class FriendsSection {
     if (diffMins < 60) return i18n.t('profile.friends.minsAgo', { mins: diffMins.toString() });
     if (diffHours < 24) return i18n.t('profile.friends.hoursAgo', { hours: diffHours.toString() });
     return i18n.t('profile.friends.daysAgo', { days: diffDays.toString() });
+  }
+
+  /**
+   * ✅ Nettoyer les event listeners
+   */
+  destroy(): void {
+    if (this.friendsUpdateListener) {
+      window.removeEventListener('friendsUpdated', this.friendsUpdateListener);
+      this.friendsUpdateListener = null;
+    }
   }
 }
