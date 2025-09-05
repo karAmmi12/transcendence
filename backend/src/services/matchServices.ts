@@ -40,6 +40,37 @@ export class MatchService
         });
     }
 
+    static async createRemoteMatch(player1UserId: number, player2UserId: number, score1: number, score2: number, duration: number): Promise<MatchResponse>
+    {
+        const winnerId = score1 > score2 ? player1UserId : player2UserId;
+
+        // creer match remote
+        const matchStmt = db.prepare(`
+            INSERT INTO matches (mode, started_at, ended_at, winner_id)
+            VALUES ('remote', datetime('now', '-' || ? || ' seconds'), datetime('now'), ?)
+        `);
+
+        const matchResult = matchStmt.run(duration, winnerId);
+        const matchId = matchResult.lastInsertRowid as number;
+
+        // ajouter participants - les deux sont des utilisateurs avec ID
+        const participantsStmt = db.prepare(`
+            INSERT INTO match_participants (match_id, user_id, alias, score, is_winner)
+            VALUES (?, ?, ?, ?, ?)    
+        `);
+        
+        // player1
+        participantsStmt.run(matchId, player1UserId, null, score1, score1 > score2 ? 1 : 0);
+        
+        // player2
+        participantsStmt.run(matchId, player2UserId, null, score2, score2 > score1 ? 1 : 0);
+
+        return ({
+            success: true,
+            message: "Remote match register success"
+        });
+    }
+
     static async getMatch(matchId: number) 
     {
     }
