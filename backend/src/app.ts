@@ -13,12 +13,16 @@ import fastifyStatic from "@fastify/static";
 import path from "path";
 import { authMiddleware } from "./middleware/middleware.js";
 import './utils/cleanupTokens';
+import { WebSocketService } from "./services/webSocketService.js";
 // ...existing code...
 
 const app = Fastify({ logger: true });
 
 const start = async () => {
   try {
+    // Démarrer le serveur WebSocket pour le matchmaking remote
+    new WebSocketService(8001);
+    
     // Autoriser CORS pour le dev frontend
     await app.register(cors, {
       origin: process.env.NODE_ENV === 'production' 
@@ -69,6 +73,7 @@ const start = async () => {
     // Démarrer le serveur 
     await app.listen({ port: 8000, host: "0.0.0.0" });
     console.log("✅ Backend running on http://localhost:8000");
+    console.log("✅ WebSocket signaling on ws://localhost:8001");
     
   } catch (err) {
     console.error("💥 Failed to start server:", err);

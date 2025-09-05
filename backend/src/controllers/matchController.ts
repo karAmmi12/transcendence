@@ -37,4 +37,44 @@ export class MatchController
         }
     }
 
+    /**
+     * route pour enregistrer un match remote termine
+     */
+    static async registerRemoteMatch(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const user = req.user;
+            if (!user) {
+                return reply.status(401).send({
+                    success: false,
+                    error: "Authentication required"
+                });
+            }
+            
+            const {opponentUserId, score1, score2, duration} = req.body as {opponentUserId: number; score1: number, score2: number, duration: number};
+            if (!opponentUserId || score1 === undefined || score2 === undefined)
+            {
+                return (reply.status(400).send({
+                    success: false,
+                    error: "opponentUserId, score1, score2 required"
+                }))
+            }
+            
+            const match = await MatchService.createRemoteMatch(user.userId, opponentUserId, score1, score2, duration);
+
+            return (reply.status(200).send({
+                success: true,
+                message: "remote match register",
+                match
+            }));
+
+        } catch (error) {
+            console.error("Register remote match error:", error);
+            return (reply.status(500).send({
+                success: false,
+                error: "Failed to register remote match"
+            }));
+        }
+    }
+
 }

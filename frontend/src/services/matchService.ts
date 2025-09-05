@@ -73,6 +73,48 @@ class MatchService {
       // Ne pas bloquer l'expérience utilisateur si l'envoi échoue
     }
   }
+
+  /**
+   * Envoi des données de match remote
+   */
+  async sendRemoteMatchData(
+    opponentUserId: number,
+    score1: number,
+    score2: number,
+    duration: number,
+  ): Promise<void> {
+    try {
+      const isAuthenticated = authService.isAuthenticated();
+      if (!isAuthenticated) {
+        console.log('🔒 User not authenticated, cannot send remote match data');
+        return;
+      }
+
+      const response = await fetch(`${this.baseURL}/match/remote`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          opponentUserId,
+          score1,
+          score2,
+          duration 
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create remote match');
+      }
+
+      console.log('✅ Remote match data sent successfully');
+      
+    } catch (error) {
+      console.error('❌ Failed to send remote match data:', error);
+      // Ne pas bloquer l'expérience utilisateur si l'envoi échoue
+    }
+  }
 }
 
 export const matchService = new MatchService();
