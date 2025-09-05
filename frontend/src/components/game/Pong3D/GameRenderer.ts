@@ -2,10 +2,10 @@ import * as BABYLON from '@babylonjs/core';
 import type { GameSettings } from './Pong3D.js';
 
 export interface GameObjects {
-  field: BABYLON.Mesh;
-  player1Paddle: BABYLON.Mesh;
-  player2Paddle: BABYLON.Mesh;
-  ball: BABYLON.Mesh;
+  field: BABYLON.Mesh; 
+  player1Paddle: BABYLON.Mesh; // La palette du joueur 1
+  player2Paddle: BABYLON.Mesh; // La palette du joueur 2
+  ball: BABYLON.Mesh; // La balle
 }
 
 export interface ObjectPositions {
@@ -157,7 +157,7 @@ export class GameRenderer {
     
     const ballMaterial = new BABYLON.StandardMaterial('ballMaterial', this.scene);
     ballMaterial.diffuseColor = new BABYLON.Color3(1, 1, 0.2); // Jaune
-    ballMaterial.specularColor = new BABYLON.Color3(1, 1, 1);
+    ballMaterial.specularColor = new BABYLON.Color3(1, 1, 1); // Brillant
     ball.material = ballMaterial;
     
     return ball;

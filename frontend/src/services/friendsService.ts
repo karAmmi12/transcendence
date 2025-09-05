@@ -37,36 +37,7 @@ public async searchUsers(query: string): Promise<User[]> {
   }
 }
 
-  /**
-   * Obtenir le statut d'amitié avec un utilisateur
-   */
-  public async getFriendshipStatus(userId: number): Promise<FriendshipStatus> {
-    try {
-      const response = await fetch(`${this.baseURL}/friends/status/${userId}`, {
-        credentials: 'include'
-      });
-      
-      if (response.ok) {
-        return await response.json();
-      }
-      
-      return {
-        isFriend: false,
-        isPending: false,
-        isRequestSent: false,
-        isRequestReceived: false
-      };
-    } catch (error) {
-      console.error('Failed to get friendship status:', error);
-      return {
-        isFriend: false,
-        isPending: false,
-        isRequestSent: false,
-        isRequestReceived: false
-      };
-    }
-  }
-
+  
   /**
    * Envoyer une demande d'ami
    */
@@ -88,39 +59,6 @@ public async searchUsers(query: string): Promise<User[]> {
     }
   }
 
-  /**
-   * Accepter une demande d'ami
-   */
-  public async acceptFriendRequest(requestId: number): Promise<boolean> {
-    try {
-      const response = await fetch(`${this.baseURL}/friends/request/${requestId}/accept`, {
-        method: 'PUT',
-        credentials: 'include'
-      });
-      
-      return response.ok;
-    } catch (error) {
-      console.error('Failed to accept friend request:', error);
-      return false;
-    }
-  }
-
-  /**
-   * Refuser une demande d'ami
-   */
-  public async declineFriendRequest(requestId: number): Promise<boolean> {
-    try {
-      const response = await fetch(`${this.baseURL}/friends/request/${requestId}/decline`, {
-        method: 'PUT',
-        credentials: 'include'
-      });
-      
-      return response.ok;
-    } catch (error) {
-      console.error('Failed to decline friend request:', error);
-      return false;
-    }
-  }
 
   /**
    * Supprimer un ami
@@ -158,24 +96,7 @@ public async searchUsers(query: string): Promise<User[]> {
     }
   }
 
-  /**
-   * Obtenir les demandes d'amis en attente
-   */
-  public async getPendingRequests(): Promise<FriendRequest[]> {
-    try {
-      const response = await fetch(`${this.baseURL}/friends/requests/pending`, {
-        credentials: 'include'
-      });
-      
-      if (response.ok) {
-        return await response.json();
-      }
-      return [];
-    } catch (error) {
-      console.error('Failed to get pending requests:', error);
-      return [];
-    }
-  }
+  
 }
 
 export const friendService = FriendService.getInstance();
