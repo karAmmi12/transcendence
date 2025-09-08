@@ -4,12 +4,14 @@ import { GamePhysics } from './GamePhysics.js';
 import { GameControls } from './GameControls.js';
 import { matchService } from '@services/matchService.js';
 import { GameEndModal, GameEndStats, GameEndCallbacks } from '@/components/game/GameEndModal.js';
+import { GameThemes } from '../themes/GameThemes.js';
 
 export interface GameSettings {
   player1Name: string;
   player2Name: string;
   ballSpeed: 'slow' | 'medium' | 'fast';
   winScore: number;
+  theme?: string;
   enableEffects?: boolean;
 }
 
@@ -59,6 +61,9 @@ export class Pong3D {
     this.settings = settings;
     this.isRemoteGame = isRemote;
     this.mode = mode;
+
+    // Initialiser les themes
+    GameThemes.initialize();
     
     console.log(`🎮 Initializing Pong3D in ${mode} mode on canvas:`, canvasId);
     
@@ -90,12 +95,19 @@ export class Pong3D {
     console.log('🔧 Initializing game components...');
     
     // Initialiser les composants avec les bons paramètres
-    this.renderer = new GameRenderer(this.scene, this.canvas);
+    this.renderer = new GameRenderer(this.scene, this.canvas, this.settings.theme || 'classic');
     this.physics = new GamePhysics(this.settings);
     this.controls = new GameControls();
     
     // Démarrer la boucle de rendu
     this.startRenderLoop();
+  }
+
+  // Méthode pour changer de thème en cours de jeu
+  public changeTheme(themeId: string): void {
+    if (this.renderer) {
+      this.renderer.changeTheme(themeId);
+    }
   }
 
 
