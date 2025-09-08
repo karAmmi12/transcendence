@@ -100,6 +100,63 @@ export class GamePage {
     }
   }
 
+  // private renderLocalSettings(): string {
+  //   const isAuthenticated = authService.isAuthenticated();
+  //   const currentUser = authService.getCurrentUser();
+    
+  //   return `
+  //     <div class="bg-gray-800 rounded-lg p-6">
+  //       <h3 class="text-xl mb-4">${i18n.t('game.customization.title')} - ${i18n.t('game.modes.local')}</h3>
+  //       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+  //         <div>
+  //           <label class="block mb-2">${i18n.t('forms.placeholders.username')} 1:</label>
+  //           ${isAuthenticated && currentUser ? `
+  //             <input type="text" id="player1-name-input" value="${currentUser.username}" 
+  //                   readonly
+  //                   class="bg-gray-600 rounded px-3 py-2 w-full cursor-not-allowed opacity-75 border border-blue-500/50">
+  //             <div class="text-xs text-blue-400 mt-1">✓ ${i18n.t('auth.login.username')}</div>
+  //           ` : `
+  //             <input type="text" id="player1-name-input" value="${i18n.t('game.placeholder.player')} 1" 
+  //                   class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
+  //           `}
+  //         </div>
+  //         <div>
+  //           <label class="block mb-2">${i18n.t('forms.placeholders.username')} 2:</label>
+  //           <input type="text" id="player2-name-input" value="${i18n.t('game.placeholder.player')} 2" 
+  //                 class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
+  //         </div>
+  //         <div>
+  //           <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
+  //           <select id="ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
+  //             <option value="slow">${i18n.t('common.slow')}</option>
+  //             <option value="medium" selected>${i18n.t('common.medium')}</option>
+  //             <option value="fast">${i18n.t('common.fast')}</option>
+  //           </select>
+  //         </div>
+  //         <div>
+  //           <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
+  //           <select id="win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
+  //             <option value="3">3 ${i18n.t('common.points')}</option>
+  //             <option value="5" selected>5 ${i18n.t('common.points')}</option>
+  //             <option value="10">10 ${i18n.t('common.points')}</option>
+  //           </select>
+  //         </div>
+  //       </div>
+        
+  //       <div class="flex flex-col sm:flex-row gap-3">
+  //         <button id="start-local-game" 
+  //                 class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+  //           ${i18n.t('game.lobby.startGame')}
+  //         </button>
+  //         <button id="back-to-modes" 
+  //                 class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+  //           ${i18n.t('common.changeMode')}
+  //         </button>
+  //       </div>
+  //     </div>
+  //   `;
+  // }
+
   private renderLocalSettings(): string {
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
@@ -140,6 +197,26 @@ export class GamePage {
               <option value="5" selected>5 ${i18n.t('common.points')}</option>
               <option value="10">10 ${i18n.t('common.points')}</option>
             </select>
+          </div>
+          <div>
+            <label class="block mb-2">${i18n.t('game.customization.theme')}:</label>
+            <select id="game-theme" class="bg-gray-700 rounded px-3 py-2 w-full">
+              <option value="classic" selected>${i18n.t('game.themes.classic')}</option>
+              <option value="neon">${i18n.t('game.themes.neon')}</option>
+              <option value="retro">${i18n.t('game.themes.retro')}</option>
+              <option value="cyberpunk">Cyberpunk</option>
+              <option value="space">Space</option>
+              <option value="italian">${i18n.t('game.themes.italian')}</option>
+              <option value="matrix">${i18n.t('game.themes.matrix')}</option>
+              <option value="lava">${i18n.t('game.themes.lava')}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
+            <div class="flex items-center">
+              <input type="checkbox" id="enable-effects" class="mr-2">
+              <label for="enable-effects" class="text-sm">${i18n.t('game.customization.powerUps')}</label>
+            </div>
           </div>
         </div>
         
@@ -560,7 +637,8 @@ export class GamePage {
       player2Name: (document.getElementById('player2-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 2',
       ballSpeed: (document.getElementById('ball-speed') as HTMLSelectElement)?.value as 'slow' | 'medium' | 'fast' || 'medium',
       winScore: parseInt((document.getElementById('win-score') as HTMLSelectElement)?.value || '5'),
-      enableEffects: false // Pour l'instant, désactivés
+      theme: (document.getElementById('game-theme') as HTMLSelectElement)?.value || 'classic',
+      enableEffects: (document.getElementById('enable-effects') as HTMLInputElement)?.checked || false
     };
   }
 
