@@ -7,9 +7,14 @@ import type { GameSettings } from '@/components/game/Pong3D/Pong3D.js';
 export class GamePage {
   private gameMode: 'local' | 'remote' | 'tournament' | null = null;
   private gameManager: GameManager | null = null;
+  private isLandscape: boolean = false;
 
   constructor() {
     this.parseGameMode();
+    // Gestion de l'orientation
+    this.handleOrientationChange = this.handleOrientationChange.bind(this);
+    window.addEventListener('orientationchange', this.handleOrientationChange);
+    window.addEventListener('resize', this.handleOrientationChange);
   }
 
   async mount(selector: string): Promise<void> {
@@ -213,6 +218,8 @@ export class GamePage {
     `;
   }
 
+
+
   private renderGameContainer(): string {
     return `
       <!-- Header du jeu -->
@@ -229,11 +236,11 @@ export class GamePage {
       </div>
 
       <!-- Zone de jeu responsive -->
-      <div class="relative bg-gray-800 rounded-b-lg overflow-hidden">
+      <div class="relative bg-gray-800 rounded-b-lg overflow-hidden orientation-transition">
         <!-- Canvas Container avec aspect ratio préservé -->
-        <div class="relative w-full aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
+        <div id="canvas-container" class="relative w-full aspect-video bg-gradient-to-br from-gray-900 to-gray-800">
           <canvas id="game-canvas" 
-                  class="absolute top-0 left-0 w-full h-full"
+                  class="absolute top-0 left-0 w-full h-full orientation-transition"
                   style="background: linear-gradient(45deg, #1a1a2e, #16213e); border-radius: 0 0 0.5rem 0.5rem;">
             ${i18n.t('common.canvasNotSupported')}
           </canvas>
@@ -248,26 +255,59 @@ export class GamePage {
     `;
   }
 
+  private renderMobileControls(): string {
+    return `
+      <div class="bg-gray-700/50 rounded-lg p-4 orientation-transition">
+        <h4 class="text-lg mb-3 text-center hidden-landscape">${i18n.t('game.controls.touch')}</h4>
+        <div class="flex justify-between items-center">
+          <div class="text-center player-controls">
+            <div class="text-xs mb-2 text-blue-300 font-semibold hidden-landscape">${i18n.t('game.score.you')} 1</div>
+            <div class="flex gap-3 landscape:flex-row portrait:flex-col">
+              <button id="p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition" 
+                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
+              <button id="p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
+                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
+            </div>
+          </div>
+          
+          <div class="text-center px-4 flex-1 hidden-landscape">
+            <div class="text-xs text-gray-400 mb-2">${i18n.t('game.controls.instructions')}</div>
+          </div>
+          
+          <div class="text-center player-controls">
+            <div class="text-xs mb-2 text-red-300 font-semibold hidden-landscape">${i18n.t('game.score.you')} 2</div>
+            <div class="flex gap-3 landscape:flex-row portrait:flex-col">
+              <button id="p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
+                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
+              <button id="p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
+                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   private renderGameOverlay(): string {
     return `
-      <div id="game-overlay" class="absolute inset-0 pointer-events-none">
+      <div id="game-overlay" class="absolute inset-0 pointer-events-none orientation-transition">
         <!-- Overlay responsive pour les scores -->
         <div class="absolute top-2 left-2 right-2 md:top-4 md:left-4 md:right-4 flex justify-between items-start">
           <!-- Score Joueur 1 -->
           <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-blue-500/30 min-w-0 flex-shrink-0">
             <div id="player1-info" class="text-white">
               <div class="font-bold text-blue-400 text-xs md:text-sm truncate" id="player1-name">${i18n.t('game.score.you')} 1</div>
-              <div class="text-xl md:text-3xl font-mono font-bold" id="player1-score">0</div>
+              <div class="text-xl md:text-3xl score-display font-mono font-bold" id="player1-score">0</div>
             </div>
           </div>
           
           <!-- Timer central -->
           <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-gray-500/30 mx-2 min-w-0 flex-shrink-0">
             <div id="game-timer" class="text-white text-center">
-              <div class="text-xs md:text-sm opacity-75 uppercase tracking-wide">${i18n.t('common.time')}</div>
+              <div class="text-xs md:text-sm opacity-75 uppercase tracking-wide hidden-landscape">${i18n.t('common.time')}</div>
               <div class="text-lg md:text-2xl font-mono font-bold">00:00</div>
             </div>
-            <div class="text-xs text-center mt-1 text-gray-400 hidden md:block">
+            <div class="text-xs text-center mt-1 text-gray-400 hidden md:block hidden-landscape">
               ${this.getGameModeTitle()}
             </div>
           </div>
@@ -276,13 +316,13 @@ export class GamePage {
           <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-red-500/30 min-w-0 flex-shrink-0">
             <div id="player2-info" class="text-white text-right">
               <div class="font-bold text-red-400 text-xs md:text-sm truncate" id="player2-name">${i18n.t('game.score.you')} 2</div>
-              <div class="text-xl md:text-3xl font-mono font-bold" id="player2-score">0</div>
+              <div class="text-xl md:text-3xl score-display font-mono font-bold" id="player2-score">0</div>
             </div>
           </div>
         </div>
         
-        <!-- Status mobile en bas (visible uniquement sur mobile) -->
-        <div class="absolute bottom-2 left-2 right-2 md:hidden">
+        <!-- Status mobile en bas (visible uniquement en portrait) -->
+        <div class="absolute bottom-2 left-2 right-2 md:hidden hidden-landscape">
           <div class="bg-black/60 backdrop-blur-sm rounded-lg p-2 text-center border border-gray-500/30">
             <div id="game-status-mobile" class="text-green-400 text-xs">
               ${i18n.t('game.status.waiting')}...
@@ -296,9 +336,10 @@ export class GamePage {
     `;
   }
 
+
   private renderGameControls(): string {
     return `
-      <div class="p-3 md:p-4 grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
+      <div class="p-3 md:p-4 grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4 landscape-hidden">
         <!-- Desktop Controls -->
         <div class="bg-gray-700/50 rounded-lg p-3 md:p-4 hidden md:block">
           <h4 class="text-base md:text-lg mb-3">${i18n.t('game.controls.title')}</h4>
@@ -321,8 +362,8 @@ export class GamePage {
           <div id="game-timer-display" class="text-sm text-gray-300 mt-1">00:00</div>
         </div>
 
-        <!-- Mobile Game Info (visible sur mobile) -->
-        <div class="bg-gray-700/50 rounded-lg p-3 md:hidden">
+        <!-- Mobile Game Info (visible sur mobile portrait uniquement) -->
+        <div class="bg-gray-700/50 rounded-lg p-3 md:hidden hidden-landscape">
           <h4 class="text-base mb-2">${i18n.t('common.gameInfo')}</h4>
           <div class="flex justify-between items-center text-sm">
             <div id="game-scores-mobile" class="font-mono">0 - 0</div>
@@ -338,38 +379,6 @@ export class GamePage {
     `;
   }
 
-  private renderMobileControls(): string {
-    return `
-      <div class="bg-gray-700/50 rounded-lg p-4">
-        <h4 class="text-lg mb-3 text-center">${i18n.t('game.controls.touch')}</h4>
-        <div class="flex justify-between items-center">
-          <div class="text-center">
-            <div class="text-xs mb-2 text-blue-300 font-semibold">${i18n.t('game.score.you')} 1</div>
-            <div class="flex flex-col gap-3">
-              <button id="p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation" 
-                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-              <button id="p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation"
-                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
-            </div>
-          </div>
-          
-          <div class="text-center px-4 flex-1">
-            <div class="text-xs text-gray-400 mb-2">${i18n.t('game.controls.instructions')}</div>
-          </div>
-          
-          <div class="text-center">
-            <div class="text-xs mb-2 text-red-300 font-semibold">${i18n.t('game.score.you')} 2</div>
-            <div class="flex flex-col gap-3">
-              <button id="p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
-                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-              <button id="p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
-                      style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
 
   private bindEvents(): void {
     // Mode selection
@@ -650,8 +659,58 @@ export class GamePage {
     }
   }
 
+
+  //Gestion de l'orientation
+
+  private handleOrientationChange(): void {
+    setTimeout(() => {
+      const wasLandscape = this.isLandscape;
+      this.isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 768;
+      
+      if (wasLandscape !== this.isLandscape && this.gameManager) {
+        this.updateGameInterfaceForOrientation();
+      }
+    }, 100); // Délai pour que l'orientation soit appliquée
+  }
+
+  private updateGameInterfaceForOrientation(): void {
+    const gameContainer = document.getElementById('game-container');
+    const mobileControls = document.getElementById('mobile-controls');
+    const gameOverlay = document.getElementById('game-overlay');
+    const canvasContainer = document.getElementById('canvas-container');
+    
+    if (this.isLandscape) {
+      // Mode paysage
+      gameContainer?.classList.add('landscape-game-interface');
+      mobileControls?.classList.add('landscape-mobile-controls');
+      gameOverlay?.classList.add('landscape-game-overlay');
+      canvasContainer?.classList.add('landscape-game-canvas');
+      
+      // Masquer certains éléments en paysage
+      const hiddenElements = document.querySelectorAll('.hidden-landscape');
+      hiddenElements.forEach(el => el.classList.add('hidden'));
+    } else {
+      // Mode portrait
+      gameContainer?.classList.remove('landscape-game-interface');
+      mobileControls?.classList.remove('landscape-mobile-controls');
+      gameOverlay?.classList.remove('landscape-game-overlay');
+      canvasContainer?.classList.remove('landscape-game-canvas');
+      
+      // Réafficher les éléments
+      const hiddenElements = document.querySelectorAll('.hidden-landscape');
+      hiddenElements.forEach(el => el.classList.remove('hidden'));
+    }
+    
+    // Redimensionner le jeu
+    if (this.gameManager) {
+      this.gameManager.handleResize();
+    }
+  }
+
   destroy(): void {
     window.removeEventListener('resize', () => this.handleResize());
+    window.removeEventListener('orientationchange', this.handleOrientationChange);
+    window.removeEventListener('resize', this.handleOrientationChange);
     
     if (this.gameManager) {
       this.gameManager.destroy();
