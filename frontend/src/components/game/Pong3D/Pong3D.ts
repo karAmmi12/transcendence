@@ -142,6 +142,7 @@ export class Pong3D {
       if (this.gameState.status === 'playing') {
         this.updateGame();
       }
+      console.log('SIUUUUUUUUUUUUUUUUUUUU');
       this.scene.render();
     });
   }
@@ -152,7 +153,6 @@ export class Pong3D {
       console.warn('🚨 Renderer not fully initialized yet');
       return;
     }
-
     // Mettre à jour les contrôles avec les effets actifs
     const paddleInputs = this.getModifiedInputs();
 
