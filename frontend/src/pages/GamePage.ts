@@ -212,12 +212,12 @@ export class GamePage {
             </select>
           </div>
           <div>
-            <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
-            <div class="flex items-center">
-              <input type="checkbox" id="enable-effects" class="mr-2">
-              <label for="enable-effects" class="text-sm">${i18n.t('game.customization.powerUps')}</label>
-            </div>
+          <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
+          <div class="flex items-center">
+            <input type="checkbox" id="enable-powerups" class="mr-2" ${this.settings?.powerUps ? 'checked' : ''}>
+            <label for="enable-powerups" class="text-sm">${i18n.t('game.customization.powerUps')}</label>
           </div>
+        </div>
         </div>
         
         <div class="flex flex-col sm:flex-row gap-3">
@@ -471,6 +471,19 @@ export class GamePage {
     // Start local game
     document.getElementById('start-local-game')?.addEventListener('click', () => this.startLocalGame());
 
+    // power ups
+    document.getElementById('enable-powerups')?.addEventListener('change', (e) => {
+      const checkbox = e.target as HTMLInputElement;
+      console.log(`🔋 Power-ups ${checkbox.checked ? 'enabled' : 'disabled'}`);
+      
+      // Si le jeu est déjà en cours, appliquer le changement immédiatement
+      if (this.gameManager) {
+        this.gameManager.togglePowerUps(checkbox.checked);
+      }
+    });
+
+    
+    
     // Game interface controls
     this.bindGameInterfaceEvents();
 
@@ -638,7 +651,9 @@ export class GamePage {
       ballSpeed: (document.getElementById('ball-speed') as HTMLSelectElement)?.value as 'slow' | 'medium' | 'fast' || 'medium',
       winScore: parseInt((document.getElementById('win-score') as HTMLSelectElement)?.value || '5'),
       theme: (document.getElementById('game-theme') as HTMLSelectElement)?.value || 'classic',
-      enableEffects: (document.getElementById('enable-effects') as HTMLInputElement)?.checked || false
+      enableEffects: (document.getElementById('enable-effects') as HTMLInputElement)?.checked || false,
+      powerUps: (document.getElementById('enable-powerups') as HTMLInputElement)?.checked || false
+
     };
   }
 
