@@ -12,7 +12,7 @@ import multipart from "@fastify/multipart";
 import fastifyStatic from "@fastify/static";
 import path from "path";
 import { authMiddleware } from "./middleware/middleware.js";
-import './utils/cleanupTokens';
+import { startTokenCleanup } from "./utils/cleanupTokens.js";
 import { WebSocketService } from "./services/webSocketService.js";
 // ...existing code...
 
@@ -20,6 +20,10 @@ const app = Fastify({ logger: true });
 
 const start = async () => {
   try {
+
+    // Cleanup des tokens 2FA restant dans la DB tout les 24H
+    startTokenCleanup();
+
     // Démarrer le serveur WebSocket pour le matchmaking remote
     new WebSocketService(8001);
     

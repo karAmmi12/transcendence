@@ -1,5 +1,5 @@
 import {FastifyRequest, FastifyReply} from "fastify";
-import { FriendsService } from "../services/friendsServices";
+import { FriendsService } from "../services/friendsServices.js";
 
 export class FriendsController
 {

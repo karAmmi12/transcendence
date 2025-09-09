@@ -1,5 +1,5 @@
 import { Pong3D } from './Pong3D/Pong3D';
-import { GameSettings } from './Pong3D/Pong3D.js';
+import { GameSettings } from './Pong3D/Pong3D';
 
 export interface GameManagerConfig {
   mode: 'local' | 'tournament' | 'remote';

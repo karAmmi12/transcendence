@@ -1,5 +1,5 @@
 import {FastifyRequest, FastifyReply} from "fastify";
-import { TournamentService } from "../services/tournamentServices";
+import { TournamentService } from "../services/tournamentServices.js";
 
 export class TournamentController
 {

@@ -9,6 +9,7 @@ export interface ProfileComponents {
   stats: StatsCard;
   history: MatchHistoryCard;
   friends?: FriendsSection;
+  actions?: QuickActionsCard;
 }
 
 export class ProfileLayout {
@@ -44,7 +45,7 @@ export class ProfileLayout {
   bindEvents(onFriendAction?: (action: string) => Promise<void>): void {
     // Attacher les événements du ProfileHeader pour les autres profils
     if (!this.isOwnProfile && onFriendAction) {
-      this.components.header.bindEvents(onFriendAction);
+      this.components.header.bindEvents();
     }
 
     // Attacher les événements des autres composants

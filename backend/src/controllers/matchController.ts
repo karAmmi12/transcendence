@@ -1,5 +1,5 @@
 import {FastifyRequest, FastifyReply} from "fastify";
-import { MatchService } from "../services/matchServices";
+import { MatchService } from "../services/matchServices.js";
 
 export class MatchController
 {

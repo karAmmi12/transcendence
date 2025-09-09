@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import db from "../db/index.js"
-import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth"
+import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth.js"
 import {JWTService} from "./jwtServices.js";
 import { OAuthController } from "../controllers/oauthController.js";
 import 'dotenv/config'
