@@ -4,10 +4,15 @@ import { userService } from '@/services/userService.js';
 
 export class MatchHistoryCard {
   private filteredMatches: MatchHistory[] = [];
-  private currentFilter: string = 'all';
+  private currentResultFilter: string = 'all';
+  private currentModeFilter: string = 'all';
 
   constructor(private matchHistory: MatchHistory[], private isOwnProfile: boolean) {
     this.filteredMatches = [...this.matchHistory];
+    
+    // Debug pour voir les données disponibles
+    console.log('MatchHistoryCard - Match history data:', this.matchHistory);
+    console.log('MatchHistoryCard - Game modes found:', [...new Set(this.matchHistory.map(m => m.gameMode).filter(Boolean))]);
   }
   
   render(): string {
@@ -31,35 +36,46 @@ export class MatchHistoryCard {
 
   private renderFilters(): string {
     const gameModes = [...new Set(this.matchHistory.map(m => m.gameMode).filter(Boolean))];
+    console.log('Rendering filters with game modes:', gameModes);
     
     return `
       <div class="flex flex-col sm:flex-row gap-2">
         <select id="match-filter" class="bg-gray-700 text-white text-sm rounded px-3 py-1 border border-gray-600 focus:border-primary-500 focus:outline-none">
-          <option value="all">${i18n.t('profile.history.filters.all')}</option>
-          <option value="wins">${i18n.t('profile.history.filters.wins')}</option>
-          <option value="losses">${i18n.t('profile.history.filters.losses')}</option>
-          <option value="tournament">${i18n.t('profile.history.filters.tournament')}</option>
+          <option value="all" ${this.currentResultFilter === 'all' ? 'selected' : ''}>${i18n.t('profile.history.filters.all')}</option>
+          <option value="wins" ${this.currentResultFilter === 'wins' ? 'selected' : ''}>${i18n.t('profile.history.filters.wins')}</option>
+          <option value="losses" ${this.currentResultFilter === 'losses' ? 'selected' : ''}>${i18n.t('profile.history.filters.losses')}</option>
         </select>
-        ${gameModes.length > 0 ? `
-          <select id="mode-filter" class="bg-gray-700 text-white text-sm rounded px-3 py-1 border border-gray-600 focus:border-primary-500 focus:outline-none">
-            <option value="all">${i18n.t('game.customization.gameMode')}</option>
-            ${gameModes.map(mode => `
-              <option value="${mode}">${i18n.t(`game.modes.${mode}`)}</option>
-            `).join('')}
-          </select>
-        ` : ''}
+        
+        <select id="mode-filter" class="bg-gray-700 text-white text-sm rounded px-3 py-1 border border-gray-600 focus:border-primary-500 focus:outline-none">
+          <option value="all" ${this.currentModeFilter === 'all' ? 'selected' : ''}>${i18n.t('profile.history.filters.all')} (Modes)</option>
+          ${gameModes.length > 0 ? gameModes.map(mode => `
+            <option value="${mode}" ${this.currentModeFilter === mode ? 'selected' : ''}>${this.getModeDisplayName(mode)}</option>
+          `).join('') : `
+            <option value="local" ${this.currentModeFilter === 'local' ? 'selected' : ''}>Local</option>
+            <option value="remote" ${this.currentModeFilter === 'remote' ? 'selected' : ''}>Remote</option>
+            <option value="tournament" ${this.currentModeFilter === 'tournament' ? 'selected' : ''}>Tournament</option>
+          `}
+        </select>
       </div>
     `;
   }
 
-  
+  private getModeDisplayName(mode: string): string {
+    const modeNames: Record<string, string> = {
+      'local': 'Local',
+      'remote': 'Remote', 
+      'tournament': 'Tournament'
+    };
+    return modeNames[mode] || mode.charAt(0).toUpperCase() + mode.slice(1);
+  }
+
   private renderVisualStats(): string {
     if (this.filteredMatches.length === 0) return '';
 
     const wins = this.filteredMatches.filter(m => m.result === 'win').length;
     const losses = this.filteredMatches.filter(m => m.result === 'loss').length;
     const total = this.filteredMatches.length;
-    const winRate = Math.round((wins / total) * 100);
+    const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
 
     return `
       <div class="bg-gradient-to-br from-gray-700/50 to-gray-800/50 rounded-xl p-6 mb-6 border border-gray-600/30">
@@ -75,11 +91,11 @@ export class MatchHistoryCard {
             <div class="flex gap-4 text-sm">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-lg"></div>
-                <span class="text-gray-300">${i18n.t('profile.stats.wins')} (${wins})</span>
+                <span class="text-gray-300">Victoires (${wins})</span>
               </div>
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-red-500 shadow-lg"></div>
-                <span class="text-gray-300">${i18n.t('profile.stats.losses')} (${losses})</span>
+                <span class="text-gray-300">Défaites (${losses})</span>
               </div>
             </div>
           </div>
@@ -88,22 +104,22 @@ export class MatchHistoryCard {
           <div class="grid grid-cols-2 gap-4">
             <div class="text-center p-4 bg-emerald-900/30 rounded-lg border border-emerald-700/50 hover:bg-emerald-900/40 transition-colors">
               <div class="text-3xl font-bold text-emerald-400 mb-2">${wins}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.stats.wins')}</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">Victoires</div>
             </div>
             
             <div class="text-center p-4 bg-red-900/30 rounded-lg border border-red-700/50 hover:bg-red-900/40 transition-colors">
               <div class="text-3xl font-bold text-red-400 mb-2">${losses}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.stats.losses')}</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">Défaites</div>
             </div>
             
             <div class="text-center p-4 bg-blue-900/30 rounded-lg border border-blue-700/50 hover:bg-blue-900/40 transition-colors">
               <div class="text-3xl font-bold text-blue-400 mb-2">${total}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.totalGames')}</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">Total</div>
             </div>
             
             <div class="text-center p-4 bg-purple-900/30 rounded-lg border border-purple-700/50 hover:bg-purple-900/40 transition-colors">
-              <div class="text-3xl font-bold text-purple-400 mb-2">${this.getRecentWinStreak()}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.recent')}</div>
+              <div class="text-3xl font-bold text-purple-400 mb-2">${winRate}%</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">Taux victoires</div>
             </div>
           </div>
         </div>
@@ -113,6 +129,7 @@ export class MatchHistoryCard {
       </div>
     `;
   }
+
   private renderAdvancedPieChart(winRate: number): string {
     const winPercentage = winRate;
     const lossPercentage = 100 - winRate;
@@ -156,7 +173,6 @@ export class MatchHistoryCard {
     `;
   }
 
-
   private createFilledArcPath(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number): string {
     if (startAngle === endAngle) return '';
     
@@ -172,27 +188,6 @@ export class MatchHistoryCard {
     
     // Créer un path rempli qui forme une portion de camembert
     return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
-  }
-
-
-  private createAdvancedArcPath(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number): string {
-    const startAngleRad = (startAngle * Math.PI) / 180;
-    const endAngleRad = (endAngle * Math.PI) / 180;
-    
-    const x1 = centerX + radius * Math.cos(startAngleRad);
-    const y1 = centerY + radius * Math.sin(startAngleRad);
-    const x2 = centerX + radius * Math.cos(endAngleRad);
-    const y2 = centerY + radius * Math.sin(endAngleRad);
-    
-    const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-    
-    return `M ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`;
-  }
-
-  private getRecentWinStreak(): number {
-    // Calculer la série de victoires récente (derniers 5 matchs)
-    const recentMatches = this.filteredMatches.slice(0, 5);
-    return recentMatches.filter(m => m.result === 'win').length;
   }
 
   private renderGameModeChart(): string {
@@ -214,7 +209,7 @@ export class MatchHistoryCard {
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
           </svg>
-          ${i18n.t('game.customization.gameMode')}
+          Modes de jeu
         </h4>
         <div class="space-y-3">
           ${Object.entries(modes).map(([mode, count], index) => {
@@ -225,7 +220,7 @@ export class MatchHistoryCard {
             return `
               <div class="group hover:bg-gray-700/30 p-3 rounded-lg transition-all duration-200">
                 <div class="flex items-center justify-between text-sm mb-2">
-                  <span class="text-gray-200 font-medium">${i18n.t(`game.modes.${mode}`)}</span>
+                  <span class="text-gray-200 font-medium">${this.getModeDisplayName(mode)}</span>
                   <span class="text-gray-400 bg-gray-700 px-2 py-1 rounded text-xs font-mono">${count} (${Math.round(percentage)}%)</span>
                 </div>
                 <div class="bg-gray-600 rounded-full h-3 overflow-hidden">
@@ -244,11 +239,11 @@ export class MatchHistoryCard {
       return `
         <div class="text-center py-12">
           <div class="text-gray-400 text-6xl mb-4">🏓</div>
-          <h3 class="text-lg font-medium text-gray-300 mb-2">${i18n.t('profile.history.noGames')}</h3>
-          <p class="text-gray-500 mb-6">${i18n.t('profile.history.noGamesDesc')}</p>
+          <h3 class="text-lg font-medium text-gray-300 mb-2">Aucune partie jouée</h3>
+          <p class="text-gray-500 mb-6">Commencez à jouer pour voir votre historique ici</p>
           ${this.isOwnProfile ? `
             <button class="btn-primary">
-              ${i18n.t('profile.history.playFirstGame')}
+              Jouer ma première partie
             </button>
           ` : ''}
         </div>
@@ -262,14 +257,14 @@ export class MatchHistoryCard {
         ${recentMatches.length > 0 ? recentMatches.map(match => this.renderMatch(match)).join('') : `
           <div class="text-center py-8">
             <div class="text-gray-400 text-4xl mb-2">🔍</div>
-            <p class="text-gray-500">${i18n.t('profile.history.noMatchesFilter')}</p>
+            <p class="text-gray-500">Aucun match trouvé pour ce filtre</p>
           </div>
         `}
       </div>
       ${this.filteredMatches.length > 10 ? `
         <div class="mt-6 pt-4 border-t border-gray-700">
           <button id="view-all-matches" class="w-full btn-secondary">
-            ${i18n.t('profile.history.viewAll')} (${this.filteredMatches.length})
+            Voir tout l'historique (${this.filteredMatches.length})
           </button>
         </div>
       ` : ''}
@@ -277,7 +272,6 @@ export class MatchHistoryCard {
     `;
   }
 
-  
   private renderMatch(match: MatchHistory): string {
     const isWin = match.result === 'win';
     const resultColor = isWin ? 'text-emerald-400' : 'text-red-400';
@@ -289,7 +283,7 @@ export class MatchHistoryCard {
     const opponentAvatar = userService.getAvatarUrl(match.opponentAvatar) || '/images/default-avatar.png';
     
     return `
-      <div class="flex items-center justify-between p-4 ${bgColor} rounded-xl border-l-4 ${borderColor} transition-all group cursor-pointer backdrop-blur-sm" data-match-id="${match.id}">
+      <div class="flex items-center justify-between p-4 ${bgColor} rounded-xl border-l-4 ${borderColor} transition-all backdrop-blur-sm" data-match-id="${match.id}">
         <div class="flex items-center space-x-4">
           <div class="flex flex-col items-center">
             <div class="w-4 h-4 rounded-full ${iconBg} mb-2 shadow-lg flex items-center justify-center">
@@ -299,7 +293,7 @@ export class MatchHistoryCard {
               }
             </div>
             <span class="${resultColor} font-bold text-xs uppercase tracking-wider">
-              ${i18n.t(`profile.history.result.${match.result}`)}
+              ${isWin ? 'Victoire' : 'Défaite'}
             </span>
           </div>
           
@@ -317,7 +311,7 @@ export class MatchHistoryCard {
                 />
                 ${match.gameMode ? `
                   <span class="px-3 py-1 bg-gray-600 rounded-full text-xs text-gray-300 font-medium">
-                    ${i18n.t(`game.modes.${match.gameMode}`)}
+                    ${this.getModeDisplayName(match.gameMode)}
                   </span>
                 ` : ''}
               </div>
@@ -341,39 +335,35 @@ export class MatchHistoryCard {
           </div>
         </div>
         <div class="text-right">
-          <div class="text-white font-bold text-2xl mb-2 font-mono">
+          <div class="text-white font-bold text-2xl font-mono">
             ${match.score.player} - ${match.score.opponent}
           </div>
-          <button class="text-blue-400 hover:text-blue-300 text-sm opacity-0 group-hover:opacity-100 transition-all duration-200 bg-blue-900/20 hover:bg-blue-900/40 px-3 py-1 rounded-full">
-            ${i18n.t('profile.history.viewDetails')} →
-          </button>
         </div>
       </div>
     `;
   }
-
 
   private renderQuickStats(): string {
     if (this.filteredMatches.length === 0) return '';
 
     const wins = this.filteredMatches.filter(m => m.result === 'win').length;
     const total = this.filteredMatches.length;
-    const winRate = Math.round((wins / total) * 100);
+    const winRate = total > 0 ? Math.round((wins / total) * 100) : 0;
 
     return `
       <div class="mt-6 pt-6 border-t border-gray-700">
         <div class="grid grid-cols-3 gap-4 text-center">
           <div class="bg-gradient-to-br from-blue-900/40 to-blue-800/40 rounded-xl p-4 border border-blue-700/30">
             <div class="text-2xl font-bold text-blue-400 mb-1">${total}</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.totalGames')}</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">Total parties</div>
           </div>
           <div class="bg-gradient-to-br from-green-900/40 to-green-800/40 rounded-xl p-4 border border-green-700/30">
             <div class="text-2xl font-bold ${winRate >= 50 ? 'text-green-400' : 'text-red-400'} mb-1">${winRate}%</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.winRate')}</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">Taux victoires</div>
           </div>
           <div class="bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-4 border border-purple-700/30">
             <div class="text-2xl font-bold text-purple-400 mb-1">${wins}</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.stats.wins')}</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">Victoires</div>
           </div>
         </div>
       </div>
@@ -382,48 +372,108 @@ export class MatchHistoryCard {
 
   // Méthode pour appliquer les filtres
   applyFilters(resultFilter: string = 'all', modeFilter: string = 'all'): void {
+    console.log('Applying filters:', { resultFilter, modeFilter });
+    
+    this.currentResultFilter = resultFilter;
+    this.currentModeFilter = modeFilter;
+    
     this.filteredMatches = this.matchHistory.filter(match => {
-      const matchesResult = resultFilter === 'all' || 
-                          (resultFilter === 'wins' && match.result === 'win') ||
-                          (resultFilter === 'losses' && match.result === 'loss') ||
-                          (resultFilter === 'tournament' && match.gameMode === 'tournament');
+      // Filtre par résultat
+      let matchesResult = true;
+      if (resultFilter !== 'all') {
+        if (resultFilter === 'wins') {
+          matchesResult = match.result === 'win';
+        } else if (resultFilter === 'losses') {
+          matchesResult = match.result === 'loss';
+        }
+      }
       
-      const matchesMode = modeFilter === 'all' || match.gameMode === modeFilter;
+      // Filtre par mode
+      let matchesMode = true;
+      if (modeFilter !== 'all') {
+        matchesMode = match.gameMode === modeFilter;
+      }
       
       return matchesResult && matchesMode;
     });
+    
+    console.log('Filtered matches:', this.filteredMatches.length, 'out of', this.matchHistory.length);
   }
 
- // Méthode pour attacher les événements de filtrage
   bindFilterEvents(container: Element): void {
     const resultFilter = container.querySelector('#match-filter') as HTMLSelectElement;
     const modeFilter = container.querySelector('#mode-filter') as HTMLSelectElement;
 
+    if (!resultFilter || !modeFilter) {
+      console.error('Filter elements not found');
+      return;
+    }
+
     const updateFilters = () => {
-      const resultValue = resultFilter?.value || 'all';
-      const modeValue = modeFilter?.value || 'all';
+      const resultValue = resultFilter.value || 'all';
+      const modeValue = modeFilter.value || 'all';
+      
+      console.log('Filter change:', { resultValue, modeValue });
+      
       this.applyFilters(resultValue, modeValue);
       
-      // Re-render complètement les sections stats et matchs
-      const statsContainer = container.querySelector('.bg-gradient-to-br');
-      const matchesSection = container.querySelector('.space-y-3')?.parentElement;
-      
-      if (statsContainer && matchesSection) {
-        // Recréer les éléments de stats et matchs
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = this.renderVisualStats() + this.renderMatches();
-        
-        // Remplacer les sections
-        const newStats = tempDiv.children[0];
-        const newMatches = tempDiv.children[1];
-        
-        if (newStats) statsContainer.replaceWith(newStats);
-        if (newMatches) matchesSection.replaceWith(newMatches);
-      }
+      // Mettre à jour seulement les sections nécessaires
+      this.updateVisualContent(container);
     };
 
-    resultFilter?.addEventListener('change', updateFilters);
-    modeFilter?.addEventListener('change', updateFilters);
+    resultFilter.addEventListener('change', updateFilters);
+    modeFilter.addEventListener('change', updateFilters);
+    
+    console.log('Filter events bound successfully');
+  }
+
+  private updateVisualContent(container: Element): void {
+    // Mettre à jour les statistiques visuelles
+    const statsContainer = container.querySelector('.bg-gradient-to-br.from-gray-700\\/50');
+    if (statsContainer) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = this.renderVisualStats();
+      const newStats = tempDiv.children[0];
+      if (newStats) {
+        statsContainer.replaceWith(newStats);
+      }
+    }
+    
+    // Mettre à jour la liste des matchs
+    const matchesContainer = container.querySelector('.space-y-3.max-h-96');
+    if (matchesContainer) {
+      const recentMatches = this.filteredMatches.slice(0, 10);
+      matchesContainer.innerHTML = recentMatches.length > 0 ? 
+        recentMatches.map(match => this.renderMatch(match)).join('') : 
+        `<div class="text-center py-8">
+          <div class="text-gray-400 text-4xl mb-2">🔍</div>
+          <p class="text-gray-500">Aucun match trouvé pour ce filtre</p>
+        </div>`;
+    }
+    
+    // Mettre à jour le bouton "Voir tout"
+    const viewAllContainer = container.querySelector('#view-all-matches')?.parentElement;
+    if (viewAllContainer) {
+      if (this.filteredMatches.length > 10) {
+        const viewAllBtn = viewAllContainer.querySelector('#view-all-matches');
+        if (viewAllBtn) {
+          viewAllBtn.textContent = `Voir tout l'historique (${this.filteredMatches.length})`;
+        }
+      } else {
+        viewAllContainer.remove();
+      }
+    }
+    
+    // Mettre à jour les stats rapides
+    const quickStatsContainer = container.querySelector('.mt-6.pt-6.border-t');
+    if (quickStatsContainer) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = this.renderQuickStats();
+      const newQuickStats = tempDiv.children[0];
+      if (newQuickStats) {
+        quickStatsContainer.replaceWith(newQuickStats);
+      }
+    }
   }
 
   private formatDate(dateString: string): string {
@@ -431,11 +481,11 @@ export class MatchHistoryCard {
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return i18n.t('common.today');
-    if (diffDays === 1) return i18n.t('common.yesterday');
-    if (diffDays < 7) return i18n.t('common.daysAgo', { days: diffDays.toString() });
+    if (diffDays === 0) return 'Aujourd\'hui';
+    if (diffDays === 1) return 'Hier';
+    if (diffDays < 7) return `Il y a ${diffDays} jours`;
     
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('fr-FR');
   }
 
   private formatDuration(seconds: number): string {

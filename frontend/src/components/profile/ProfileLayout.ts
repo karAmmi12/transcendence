@@ -2,14 +2,12 @@ import type { ProfileHeader } from './ProfileHeader';
 import type { StatsCard } from './StatsCard';
 import type { MatchHistoryCard } from './MatchHistoryCard';
 import type { FriendsSection } from './FriendsSection';
-import type { QuickActionsCard } from './QuickActionsCard';
 
 export interface ProfileComponents {
   header: ProfileHeader;
   stats: StatsCard;
-  history: MatchHistoryCard;
+  history?: MatchHistoryCard;
   friends?: FriendsSection;
-  actions?: QuickActionsCard;
 }
 
 export class ProfileLayout {
@@ -19,33 +17,38 @@ export class ProfileLayout {
   ) {}
 
   render(): string {
-    return `
-      <div class="max-w-6xl mx-auto px-4 py-8">
-        ${this.components.header.render()}
-        
-        <div class="grid ${this.isOwnProfile ? 'lg:grid-cols-3' : 'lg:grid-cols-1'} gap-8">
-          <!-- Colonne principale -->
-          <div class="${this.isOwnProfile ? 'lg:col-span-2' : 'w-full'} space-y-8">
-            ${this.components.stats.render()}
-            ${this.components.history.render()}
-          </div>
-          
-          <!-- Sidebar - seulement pour son propre profil -->
-          ${this.isOwnProfile ? `
-            <div class="space-y-8">
-              ${this.components.friends?.render() || ''}
-              ${this.components.actions?.render() || ''}
+    if (this.isOwnProfile) {
+      return `
+        <div class="max-w-6xl mx-auto px-4 py-8">
+          <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <div class="xl:col-span-2 space-y-8">
+              ${this.components.header.render()}
+              ${this.components.stats.render()}
+              ${this.components.history ? this.components.history.render() : ''}
             </div>
-          ` : ''}
+            <div class="space-y-8">
+              ${this.components.friends ? this.components.friends.render() : ''}
+            </div>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    } else {
+      // Layout pour les autres profils (sans historique des matchs)
+      return `
+        <div class="max-w-4xl mx-auto px-4 py-8">
+          <div class="space-y-8">
+            ${this.components.header.render()}
+            ${this.components.stats.render()}
+          </div>
+        </div>
+      `;
+    }
   }
 
   bindEvents(onFriendAction?: (action: string) => Promise<void>): void {
     // Attacher les événements du ProfileHeader pour les autres profils
     if (!this.isOwnProfile && onFriendAction) {
-      this.components.header.bindEvents();
+      this.components.header.bindEvents({ onFriendAction });
     }
 
     // Attacher les événements des autres composants
