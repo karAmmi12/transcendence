@@ -146,7 +146,7 @@ export class Pong3D {
     });
   }
 
-  private updateGame(): void {
+  protected updateGame(): void {
     // ✅ CORRECTION: Vérifier que le renderer est initialisé
     if (!this.renderer.isInitialized()) {
       console.warn('🚨 Renderer not fully initialized yet');
@@ -521,7 +521,7 @@ export class Pong3D {
   }
 
 
-  private updateUI(): void {
+  protected updateUI(): void {
     // Mettre à jour les scores (compatible avec les deux modes)
     const p1Score = document.getElementById('player1-score') || document.getElementById('tournament-player1-score');
     const p2Score = document.getElementById('player2-score') || document.getElementById('tournament-player2-score');
@@ -590,7 +590,7 @@ export class Pong3D {
     return names[type] || type;
   }
 
-  private updateGameStatus(status: string): void {
+  protected updateGameStatus(status: string): void {
     // Chercher les éléments de statut dans les deux modes
     const statusEl = document.getElementById('game-status') || document.getElementById('tournament-game-status');
     if (statusEl) {
