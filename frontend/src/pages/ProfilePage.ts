@@ -96,6 +96,7 @@ export class ProfilePage {
         this.matchHistory = await userService.getMatchHistory(this.userId);
         this.friends = await friendService.getFriends();
       }
+      
 
       this.render(element);
       

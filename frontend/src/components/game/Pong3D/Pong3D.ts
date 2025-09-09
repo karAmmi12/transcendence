@@ -4,13 +4,18 @@ import { GamePhysics } from './GamePhysics.js';
 import { GameControls } from './GameControls.js';
 import { matchService } from '@services/matchService.js';
 import { GameEndModal, GameEndStats, GameEndCallbacks } from '@/components/game/GameEndModal.js';
+import { GameThemes } from '../themes/GameThemes.js';
+import { PowerUpManager } from '../powerups/PowerUpManager.js';
+import { PowerUpType } from '../../../types/powerups.js';
 
 export interface GameSettings {
   player1Name: string;
   player2Name: string;
   ballSpeed: 'slow' | 'medium' | 'fast';
   winScore: number;
+  theme?: string;
   enableEffects?: boolean;
+  powerUps?: boolean;
 }
 
 export interface GameState {
@@ -40,6 +45,9 @@ export class Pong3D {
   protected settings: GameSettings;
   protected isRemoteGame: boolean;
 
+  protected powerUpManager: PowerUpManager;
+
+
   //proprietes pour tracker le match
   protected matchStartTime : number = 0;
   protected isMatchDataSent : boolean = false;
@@ -59,6 +67,9 @@ export class Pong3D {
     this.settings = settings;
     this.isRemoteGame = isRemote;
     this.mode = mode;
+
+    // Initialiser les themes
+    GameThemes.initialize();
     
     console.log(`🎮 Initializing Pong3D in ${mode} mode on canvas:`, canvasId);
     
@@ -99,12 +110,30 @@ export class Pong3D {
     console.log('🔧 Initializing game components...');
     
     // Initialiser les composants avec les bons paramètres
-    this.renderer = new GameRenderer(this.scene, this.canvas);
+    this.renderer = new GameRenderer(this.scene, this.canvas, this.settings.theme || 'classic');
     this.physics = new GamePhysics(this.settings);
     this.controls = new GameControls();
+
+
+    //initialiser le gestionnaire de power ups
+    this.powerUpManager = new PowerUpManager(this.scene);
+    
+
+    // Activer les power-ups si demandé dans les settings
+    if (this.settings.powerUps) {
+      this.powerUpManager.enable();
+      console.log('🔋 Power-ups activated!');
+    }
     
     // Démarrer la boucle de rendu
     this.startRenderLoop();
+  }
+
+  // Méthode pour changer de thème en cours de jeu
+  public changeTheme(themeId: string): void {
+    if (this.renderer) {
+      this.renderer.changeTheme(themeId);
+    }
   }
 
 
@@ -117,12 +146,27 @@ export class Pong3D {
     });
   }
 
-  protected updateGame(): void {
-    // Mettre à jour les contrôles
-    const paddleInputs = this.controls.getInputs();
+  private updateGame(): void {
+    // ✅ CORRECTION: Vérifier que le renderer est initialisé
+    if (!this.renderer.isInitialized()) {
+      console.warn('🚨 Renderer not fully initialized yet');
+      return;
+    }
+
+    // Mettre à jour les contrôles avec les effets actifs
+    const paddleInputs = this.getModifiedInputs();
+
+    this.applyPhysicsEffects();
     
-    // Mettre à jour la physique
+    // Mettre à jour la physique avec les effets actifs
     const physicsUpdate = this.physics.update(paddleInputs);
+    
+    // ✅ Mettre à jour les power-ups
+    const deltaTime = this.engine.getDeltaTime() / 1000;
+    this.powerUpManager.update(deltaTime);
+    
+    // ✅ Vérifier les collisions avec les power-ups
+    this.checkPowerUpCollisions(physicsUpdate.positions.ball);
     
     // Mettre à jour le rendu
     this.renderer.updatePositions(physicsUpdate.positions);
@@ -138,6 +182,160 @@ export class Pong3D {
     // Mettre à jour l'interface
     this.updateUI();
   }
+
+  private applyPhysicsEffects(): void {
+    if (!this.powerUpManager) return;
+    
+    const activeEffects = this.powerUpManager.getActiveEffects();
+    console.log(`🔮 Active effects count: ${activeEffects.size}`);
+    
+    // Réinitialiser les valeurs par défaut
+    this.physics.resetSpeed();
+    this.physics.resetPaddleSpeed();
+    this.renderer.resetPaddleSize();
+    
+    // Calculer les multiplicateurs actuels
+    const sizeMultipliers = { player1: 1.0, player2: 1.0 };
+    
+    // Appliquer les effets de modification
+    for (const effect of activeEffects.values()) {
+      console.log(`🔥 Applying effect: ${effect.type} for ${effect.targetPlayer}`);
+      
+      switch (effect.type) {
+        case PowerUpType.BALL_SLOW:
+          this.physics.applySpeedModifier(0.6);
+          break;
+          
+        case PowerUpType.SPEED_BOOST:
+          this.physics.applyPaddleSpeedModifier(effect.targetPlayer, 1.5);
+          break;
+          
+        case PowerUpType.PADDLE_SIZE:
+          sizeMultipliers[effect.targetPlayer] = 1.4;
+          this.renderer.applyPaddleSizeModifier(effect.targetPlayer, 1.4);
+          break;
+          
+        case PowerUpType.FREEZE_OPPONENT:
+          const frozenPlayer = effect.targetPlayer === 'player1' ? 'player2' : 'player1';
+          this.physics.applyPaddleSpeedModifier(frozenPlayer, 0);
+          break;
+      }
+    }
+    
+    // ✅ Synchroniser les multiplicateurs de taille avec la physique
+    this.physics.setPaddleSizeMultipliers(sizeMultipliers);
+  }
+
+  private getModifiedInputs(): any {
+    const baseInputs = this.controls.getInputs();
+    const activeEffects = this.powerUpManager.getActiveEffects();
+    
+    // Créer une copie pour éviter la mutation
+    const modifiedInputs = JSON.parse(JSON.stringify(baseInputs));
+    
+    // Appliquer les effets de modification des contrôles
+    for (const effect of activeEffects.values()) {
+      const targetPlayer = effect.targetPlayer;
+      const oppositePlayer = targetPlayer === 'player1' ? 'player2' : 'player1';
+      
+      switch (effect.type) {
+        case PowerUpType.REVERSE_CONTROLS:
+          // Inverser les contrôles de l'adversaire
+          const temp = modifiedInputs[oppositePlayer].up;
+          modifiedInputs[oppositePlayer].up = modifiedInputs[oppositePlayer].down;
+          modifiedInputs[oppositePlayer].down = temp;
+          break;
+          
+        case PowerUpType.FREEZE_OPPONENT:
+          // Geler l'adversaire
+          modifiedInputs[oppositePlayer].up = false;
+          modifiedInputs[oppositePlayer].down = false;
+          break;
+          
+        case PowerUpType.SPEED_BOOST:
+          // Augmenter la vitesse de réaction (simulé par des inputs plus sensibles)
+          if (modifiedInputs[targetPlayer].up) {
+            modifiedInputs[targetPlayer].up = true; // Plus réactif
+          }
+          if (modifiedInputs[targetPlayer].down) {
+            modifiedInputs[targetPlayer].down = true;
+          }
+          break;
+      }
+    }
+    
+    return modifiedInputs;
+  }
+
+  private checkPowerUpCollisions(ballPosition: { x: number; y: number; z: number }): void {
+    if (!this.powerUpManager) return;
+    
+    const collidedPowerUp = this.powerUpManager.checkCollision(ballPosition);
+    
+    if (collidedPowerUp) {
+      console.log(`🎯 Power-up collision detected: ${collidedPowerUp.type} at`, ballPosition);
+      
+      // Déterminer quel joueur récupère le power-up (celui le plus proche)
+      const targetPlayer = ballPosition.x < 0 ? 'player1' : 'player2';
+      
+      // Activer le power-up
+      this.powerUpManager.activatePowerUp(collidedPowerUp.id, targetPlayer);
+      
+      // Afficher une notification
+      this.showPowerUpNotification(collidedPowerUp.type, targetPlayer);
+    }
+  }
+
+  private showPowerUpNotification(type: PowerUpType, player: 'player1' | 'player2'): void {
+    // Obtenir le nom lisible du power-up
+    const powerUpNames = {
+      [PowerUpType.SPEED_BOOST]: 'Vitesse +',
+      [PowerUpType.PADDLE_SIZE]: 'Grande Palette',
+      [PowerUpType.BALL_SLOW]: 'Balle Lente',
+      [PowerUpType.REVERSE_CONTROLS]: 'Contrôles Inversés',
+      [PowerUpType.FREEZE_OPPONENT]: 'Gel Adversaire',
+      [PowerUpType.INVISIBLE_BALL]: 'Balle Invisible',
+      [PowerUpType.MULTI_BALL]: 'Multi-Balles'
+    };
+
+    const playerName = player === 'player1' ? this.settings.player1Name : this.settings.player2Name;
+    const powerUpName = powerUpNames[type] || type;
+    
+    // Créer une notification stylée
+    const notification = document.createElement('div');
+    notification.className = `
+      fixed top-20 left-1/2 transform -translate-x-1/2 
+      bg-gradient-to-r from-purple-600 to-blue-600 
+      text-white px-6 py-3 rounded-lg z-50 
+      transition-all duration-500 ease-in-out
+      shadow-lg border-2 border-white/20
+      animate-pulse
+    `;
+    
+    notification.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <span class="text-xl">⚡</span>
+        <span class="font-bold">${playerName}</span>
+        <span>a récupéré</span>
+        <span class="font-bold text-yellow-300">${powerUpName}</span>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animation d'entrée
+    setTimeout(() => {
+      notification.style.transform = 'translate(-50%, 0) scale(1.1)';
+    }, 100);
+    
+    // Animation de sortie et suppression
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transform = 'translate(-50%, -20px) scale(0.8)';
+      setTimeout(() => notification.remove(), 300);
+    }, 2700);
+  }
+
 
   private handleGoal(scorer: 'player1' | 'player2'): void {
     this.gameState.scores[scorer]++;
@@ -323,8 +521,7 @@ export class Pong3D {
   }
 
 
-  protected updateUI(): void 
-  {
+  private updateUI(): void {
     // Mettre à jour les scores (compatible avec les deux modes)
     const p1Score = document.getElementById('player1-score') || document.getElementById('tournament-player1-score');
     const p2Score = document.getElementById('player2-score') || document.getElementById('tournament-player2-score');
@@ -332,34 +529,68 @@ export class Pong3D {
     if (p1Score) p1Score.textContent = this.gameState.scores.player1.toString();
     if (p2Score) p2Score.textContent = this.gameState.scores.player2.toString();
 
-     // Mettre à jour les scores mobiles
+    // Mettre à jour les scores mobiles
     const scoresMobile = document.getElementById('game-scores-mobile');
     if (scoresMobile) {
       scoresMobile.textContent = `${this.gameState.scores.player1} - ${this.gameState.scores.player2}`;
     }
+    
+    // ✅ Mettre à jour l'affichage des effets actifs
+    this.updateActiveEffectsDisplay();
+  }
 
-    // Mettre à jour le timer (pour les jeux remote)
-    if (this.isRemoteGame && this.gameState.timer !== undefined) {
-      const totalSeconds = Math.floor(this.gameState.timer); // Arrondir aux secondes
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
-      const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-      
-      // Mettre à jour le timer principal
-      const timerEl = document.querySelector('#game-timer .text-lg, #game-timer .text-2xl, #tournament-game-timer .text-lg, #tournament-game-timer .text-2xl');
-      if (timerEl) timerEl.textContent = timeString;
-      
-      // Mettre à jour le timer desktop
-      const timerDisplay = document.getElementById('game-timer-display') || document.getElementById('tournament-game-timer-display');
-      if (timerDisplay) timerDisplay.textContent = timeString;
-      
-      // Mettre à jour le timer mobile
-      const timerMobile = document.getElementById('game-timer-mobile') || document.getElementById('tournament-game-timer-mobile');
-      if (timerMobile) timerMobile.textContent = timeString;
+  private updateActiveEffectsDisplay(): void {
+    if (!this.powerUpManager) return;
+    
+    const activeEffects = this.powerUpManager.getActiveEffects();
+    
+    // Nettoyer l'affichage précédent
+    const existingEffects = document.querySelectorAll('.active-effect-indicator');
+    existingEffects.forEach(el => el.remove());
+    
+    // Afficher les effets actifs
+    for (const effect of activeEffects.values()) {
+      this.createEffectIndicator(effect);
     }
   }
 
-  protected updateGameStatus(status: string): void {
+  private createEffectIndicator(effect: any): void {
+    const indicator = document.createElement('div');
+    indicator.className = `
+      active-effect-indicator fixed top-32 z-40
+      bg-black/70 text-white px-3 py-1 rounded-lg text-sm
+      transition-all duration-300
+    `;
+    
+    const timeLeft = Math.ceil((effect.startTime + effect.duration - Date.now()) / 1000);
+    const side = effect.targetPlayer === 'player1' ? 'left-4' : 'right-4';
+    
+    indicator.className += ` ${side}`;
+    indicator.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+        <span>${this.getEffectName(effect.type)}</span>
+        <span class="text-xs text-gray-300">${timeLeft}s</span>
+      </div>
+    `;
+    
+    document.body.appendChild(indicator);
+  }
+
+  private getEffectName(type: PowerUpType): string {
+    const names = {
+      [PowerUpType.SPEED_BOOST]: 'Vitesse+',
+      [PowerUpType.PADDLE_SIZE]: 'Grande Palette',
+      [PowerUpType.BALL_SLOW]: 'Balle Lente',
+      [PowerUpType.REVERSE_CONTROLS]: 'Contrôles Inversés',
+      [PowerUpType.FREEZE_OPPONENT]: 'Gelé',
+      [PowerUpType.INVISIBLE_BALL]: 'Balle Invisible',
+      [PowerUpType.MULTI_BALL]: 'Multi-Balles'
+    };
+    return names[type] || type;
+  }
+
+  private updateGameStatus(status: string): void {
     // Chercher les éléments de statut dans les deux modes
     const statusEl = document.getElementById('game-status') || document.getElementById('tournament-game-status');
     if (statusEl) {
@@ -453,8 +684,33 @@ export class Pong3D {
     this.updateGameStatus('Connexion au serveur...');
   }
 
+
+  public togglePowerUps(enabled: boolean): void 
+  {
+    this.settings.powerUps = enabled;
+    
+    if (this.powerUpManager) {
+      if (enabled) {
+        this.powerUpManager.enable();
+        console.log('🔋 Power-ups enabled');
+      } else {
+        this.powerUpManager.disable();
+        console.log('🚫 Power-ups disabled');
+      }
+    }
+  }
+
+  public arePowerUpsEnabled(): boolean {
+    return this.settings.powerUps || false;
+  }
+
   public destroy(): void {
     console.log('🗑️ Destroying Pong3D...');
+
+    // ✅ Nettoyer le gestionnaire de power-ups
+    if (this.powerUpManager) {
+      this.powerUpManager.dispose();
+    }
     
     // Fermer le modal de fin de partie s'il est ouvert
     if (this.gameEndModal) {

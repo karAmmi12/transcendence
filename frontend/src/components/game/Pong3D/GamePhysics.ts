@@ -29,9 +29,23 @@ export class GamePhysics {
   private ballSpeed = 0.05;
   private paddleSpeed = 0.1;
 
+  private basePaddleSpeed = 0.1;
+  private paddleSpeedMultipliers = {
+    player1: 1.0,
+    player2: 1.0
+  };
+
+  private paddleSizeMultipliers = {
+    player1: 1.0,
+    player2: 1.0
+  };
+
+
+
   constructor(settings: GameSettings) {
     this.settings = settings;
     this.setBallSpeed(settings.ballSpeed);
+    this.basePaddleSpeed = this.paddleSpeed;
   }
 
   private setBallSpeed(speed: 'slow' | 'medium' | 'fast'): void {
@@ -45,10 +59,10 @@ export class GamePhysics {
   public update(inputs: PaddleInputs): PhysicsUpdate {
     const events: PhysicsUpdate['events'] = {};
     
-    // Mettre à jour les paddles
+    // Mettre à jour les paddles avec les modificateurs actifs
     this.updatePaddles(inputs);
     
-    // Mettre à jour la balle
+    // Mettre à jour la balle avec les modificateurs actifs
     this.updateBall();
     
     // Vérifier les collisions
@@ -68,24 +82,60 @@ export class GamePhysics {
     };
   }
 
+
+  public applyPaddleSpeedModifier(player: 'player1' | 'player2', multiplier: number): void {
+    this.paddleSpeedMultipliers[player] = multiplier;
+    console.log(`🏓 ${player} paddle speed multiplier: ${multiplier}`);
+  }
+
+  public resetSpeed(): void {
+    this.setBallSpeed(this.settings.ballSpeed);
+  }
+
+  public getPaddleSpeed(): number {
+    return this.paddleSpeed;
+  }
+
+  public setPaddleSpeed(speed: number): void {
+    this.paddleSpeed = speed;
+  }
+
+  // ✅ Nouvelles méthodes pour appliquer les modificateurs
+  public applySpeedModifier(multiplier: number): void {
+    this.ballSpeed *= multiplier;
+  }
+
   private updatePaddles(inputs: PaddleInputs): void {
     const maxZ = 2.2;
     const minZ = -2.2;
     
+    // ✅ Calculer la vitesse avec multiplicateur
+    const player1Speed = this.basePaddleSpeed * this.paddleSpeedMultipliers.player1;
+    const player2Speed = this.basePaddleSpeed * this.paddleSpeedMultipliers.player2;
+    
     // Paddle joueur 1
     if (inputs.player1.up && this.positions.player1Paddle.z < maxZ) {
-      this.positions.player1Paddle.z += this.paddleSpeed;
+      this.positions.player1Paddle.z += player1Speed;
     }
     if (inputs.player1.down && this.positions.player1Paddle.z > minZ) {
-      this.positions.player1Paddle.z -= this.paddleSpeed;
+      this.positions.player1Paddle.z -= player1Speed;
     }
     
     // Paddle joueur 2
     if (inputs.player2.up && this.positions.player2Paddle.z < maxZ) {
-      this.positions.player2Paddle.z += this.paddleSpeed;
+      this.positions.player2Paddle.z += player2Speed;
     }
     if (inputs.player2.down && this.positions.player2Paddle.z > minZ) {
-      this.positions.player2Paddle.z -= this.paddleSpeed;
+      this.positions.player2Paddle.z -= player2Speed;
+    }
+  }
+
+  public resetPaddleSpeed(player?: 'player1' | 'player2'): void {
+    if (player) {
+      this.paddleSpeedMultipliers[player] = 1.0;
+    } else {
+      this.paddleSpeedMultipliers.player1 = 1.0;
+      this.paddleSpeedMultipliers.player2 = 1.0;
     }
   }
 
@@ -105,9 +155,14 @@ export class GamePhysics {
     const p1 = this.positions.player1Paddle;
     const p2 = this.positions.player2Paddle;
     
+    // ✅ Calculer les zones de collision en tenant compte des multiplicateurs
+    const basePaddleHeight = 0.8;
+    const player1Height = basePaddleHeight * this.paddleSizeMultipliers.player1;
+    const player2Height = basePaddleHeight * this.paddleSizeMultipliers.player2;
+    
     // Collision avec paddle joueur 1
     if (ball.x <= -4.2 && ball.x >= -4.8 &&
-        Math.abs(ball.z - p1.z) < 0.8) {
+        Math.abs(ball.z - p1.z) < player1Height) {
       this.ballVelocity.x *= -1.1;
       this.ballVelocity.z += (ball.z - p1.z) * 0.1;
       return true;
@@ -115,13 +170,18 @@ export class GamePhysics {
     
     // Collision avec paddle joueur 2
     if (ball.x >= 4.2 && ball.x <= 4.8 &&
-        Math.abs(ball.z - p2.z) < 0.8) {
+        Math.abs(ball.z - p2.z) < player2Height) {
       this.ballVelocity.x *= -1.1;
       this.ballVelocity.z += (ball.z - p2.z) * 0.1;
       return true;
     }
     
     return false;
+  }
+
+  // ✅ Méthode pour synchroniser les multiplicateurs avec le renderer
+  public setPaddleSizeMultipliers(multipliers: { player1: number; player2: number }): void {
+    this.paddleSizeMultipliers = { ...multipliers };
   }
 
   private checkGoals(): 'player1' | 'player2' | null {

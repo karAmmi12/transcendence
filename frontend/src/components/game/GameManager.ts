@@ -90,4 +90,17 @@ export class GameManager {
       this.game.handleMobileInput(player, direction, pressed);
     }
   }
+
+
+  public togglePowerUps(enabled: boolean): void {
+    if (this.game) {
+      this.game.togglePowerUps(enabled);
+      console.log(`🔋 Power-ups ${enabled ? 'enabled' : 'disabled'} via GameManager`);
+    }
+  }
+
+  public arePowerUpsEnabled(): boolean {
+    return this.game?.arePowerUpsEnabled() || false;
+  }
+
 }
