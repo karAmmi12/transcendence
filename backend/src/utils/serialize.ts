@@ -1,7 +1,7 @@
 // utils/serialize.ts
 export function serialize<T = any>(data: Record<string, any>): T {
   if (!data || typeof data !== 'object' || data instanceof Date) {
-    return data;
+    return data as T;
   }
 
   if (Array.isArray(data)) {
@@ -25,7 +25,7 @@ export function serialize<T = any>(data: Record<string, any>): T {
 // Pour les requêtes vers la DB (camelCase -> snake_case)
 export function deserialize<T = any>(data: Record<string, any>): T {
   if (!data || typeof data !== 'object' || data instanceof Date) {
-    return data;
+    return data as T;
   }
 
   if (Array.isArray(data)) {

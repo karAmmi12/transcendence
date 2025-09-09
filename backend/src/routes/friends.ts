@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import { FriendsController } from "../controllers/friendsController";
+import { FriendsController } from "../controllers/friendsController.js";
 
 export default async function friendsRoutes(app: FastifyInstance)
 {

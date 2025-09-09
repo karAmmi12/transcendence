@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import { MatchController } from "../controllers/matchController";
+import { MatchController } from "../controllers/matchController.js";
 
 export default async function matchRoutes(app: FastifyInstance)
 {
