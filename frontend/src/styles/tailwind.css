@@ -299,3 +299,168 @@ html.tifinagh .rtl-support {
     max-width: 30%; /* Limiter la largeur sur mobile */
   }
 }
+
+
+/* Styles spécifiques pour le mode paysage sur mobile */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  /* Interface de jeu en paysage */
+  .landscape-game-interface {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100vh;
+  }
+  
+  /* Canvas prend la majeure partie de l'écran en paysage */
+  .landscape-game-canvas {
+    flex: 1;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    min-height: 60vh;
+    max-height: 70vh;
+  }
+  
+  /* Ajuster le canvas pour remplir l'espace disponible */
+  .landscape-game-canvas canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+  
+  /* Contrôles mobiles en mode paysage - disposition latérale */
+  .landscape-mobile-controls {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+    height: 80px; /* Hauteur réduite en paysage */
+    background: rgba(55, 65, 81, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 10px;
+  }
+  
+  .landscape-mobile-controls .player-controls {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .landscape-mobile-controls button {
+    min-width: 50px !important;
+    min-height: 50px !important;
+    font-size: 1.2rem !important;
+    padding: 8px !important;
+  }
+  
+  /* Overlay scores en mode paysage - plus compact */
+  .landscape-game-overlay {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 15;
+  }
+  
+  .landscape-game-overlay > div:first-child {
+    gap: 8px !important;
+  }
+  
+  .landscape-game-overlay > div > div {
+    padding: 8px 12px !important;
+    font-size: 0.75rem;
+  }
+  
+  .landscape-game-overlay .score-display {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Masquer les éléments inutiles en paysage */
+  .landscape-game-overlay .hidden-landscape {
+    display: none;
+  }
+  
+  /* Réduire les marges pour optimiser l'espace */
+  .landscape-game-interface .p-3,
+  .landscape-game-interface .p-4 {
+    padding: 8px !important;
+  }
+  
+  /* Masquer les contrôles desktop et game info en paysage */
+  .landscape-game-interface .hidden.md\\:block,
+  .landscape-game-interface .md\\:hidden {
+    display: none !important;
+  }
+}
+
+/* Animation pour la transition d'orientation */
+@media screen and (max-width: 768px) {
+  .orientation-transition {
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  /* Masquer complètement la section des contrôles en paysage */
+  .landscape-hidden {
+    display: none !important;
+  }
+  
+  /* Le canvas occupe tout l'espace disponible */
+  .landscape-game-interface > div:last-child {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Le header reste visible mais compact */
+  .landscape-game-interface > div:first-child {
+    flex-shrink: 0;
+    padding: 8px 12px !important;
+  }
+  
+  .landscape-game-interface > div:first-child h2 {
+    font-size: 1rem !important;
+  }
+  
+  .landscape-game-interface > div:first-child button {
+    padding: 6px 8px !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Styles pour le profil utilisateur dans le header */
+.header-user-profile {
+  transition: all 0.2s ease-in-out;
+}
+
+.header-user-profile:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+}
+
+.header-user-avatar {
+  transition: all 0.2s ease-in-out;
+}
+
+.header-user-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive pour le profil utilisateur */
+@media (max-width: 768px) {
+  .header-user-profile {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background-color: rgba(55, 65, 81, 0.3);
+    border-radius: 0.5rem;
+  }
+}

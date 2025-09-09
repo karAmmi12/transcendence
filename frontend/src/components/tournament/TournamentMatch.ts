@@ -4,7 +4,19 @@ import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
 export class TournamentMatch {
   private gameManager: GameManager | null = null;
 
-  constructor(private match: any, private tournamentId: number) {}
+  private isLandscape: boolean = false;
+
+  constructor(private match: any, private tournamentId: number) {
+    this.match = match;
+    this.tournamentId = tournamentId;
+
+    // Gérer l'orientation
+    this.handleOrientationChange = this.handleOrientationChange.bind(this);
+    window.addEventListener('orientationchange', this.handleOrientationChange);
+    window.addEventListener('resize', this.handleOrientationChange);
+
+
+  }
 
   render(): string {
     return `
@@ -160,29 +172,29 @@ export class TournamentMatch {
 
   private renderTournamentMobileControls(): string {
     return `
-      <div class="bg-gray-700/50 rounded-lg p-4">
-        <h4 class="text-lg mb-3 text-center">Contrôles Tactiles</h4>
+      <div class="bg-gray-700/50 rounded-lg p-4 orientation-transition">
+        <h4 class="text-lg mb-3 text-center hidden-landscape">Contrôles Tactiles</h4>
         <div class="flex justify-between items-center">
-          <div class="text-center">
-            <div class="text-xs mb-2 text-blue-300 font-semibold">${this.match.player1}</div>
-            <div class="flex flex-col gap-3">
-              <button id="tournament-p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation" 
+          <div class="text-center player-controls">
+            <div class="text-xs mb-2 text-blue-300 font-semibold hidden-landscape">${this.match.player1}</div>
+            <div class="flex gap-3 landscape:flex-row portrait:flex-col">
+              <button id="tournament-p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition" 
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-              <button id="tournament-p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation"
+              <button id="tournament-p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
             </div>
           </div>
           
-          <div class="text-center px-4 flex-1">
+          <div class="text-center px-4 flex-1 hidden-landscape">
             <div class="text-xs text-gray-400 mb-2">Maintenez pour bouger</div>
           </div>
           
-          <div class="text-center">
-            <div class="text-xs mb-2 text-red-300 font-semibold">${this.match.player2}</div>
-            <div class="flex flex-col gap-3">
-              <button id="tournament-p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
+          <div class="text-center player-controls">
+            <div class="text-xs mb-2 text-red-300 font-semibold hidden-landscape">${this.match.player2}</div>
+            <div class="flex gap-3 landscape:flex-row portrait:flex-col">
+              <button id="tournament-p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-              <button id="tournament-p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
+              <button id="tournament-p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
             </div>
           </div>
@@ -190,6 +202,39 @@ export class TournamentMatch {
       </div>
     `;
   }
+
+  // private renderTournamentMobileControls(): string {
+  //   return `
+  //     <div class="bg-gray-700/50 rounded-lg p-4">
+  //       <h4 class="text-lg mb-3 text-center">Contrôles Tactiles</h4>
+  //       <div class="flex justify-between items-center">
+  //         <div class="text-center">
+  //           <div class="text-xs mb-2 text-blue-300 font-semibold">${this.match.player1}</div>
+  //           <div class="flex flex-col gap-3">
+  //             <button id="tournament-p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation" 
+  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
+  //             <button id="tournament-p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation"
+  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
+  //           </div>
+  //         </div>
+          
+  //         <div class="text-center px-4 flex-1">
+  //           <div class="text-xs text-gray-400 mb-2">Maintenez pour bouger</div>
+  //         </div>
+          
+  //         <div class="text-center">
+  //           <div class="text-xs mb-2 text-red-300 font-semibold">${this.match.player2}</div>
+  //           <div class="flex flex-col gap-3">
+  //             <button id="tournament-p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
+  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
+  //             <button id="tournament-p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
+  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   `;
+  // }
 
   bindEvents(): void {
     setTimeout(() => {
@@ -226,6 +271,39 @@ export class TournamentMatch {
         this.quitMatch();
       }
     });
+  }
+ 
+
+  // Gérer l'orientation et les changements de taille
+  private handleOrientationChange(): void {
+    setTimeout(() => {
+      const wasLandscape = this.isLandscape;
+      this.isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 768;
+      
+      if (wasLandscape !== this.isLandscape && this.gameManager) {
+        this.updateTournamentInterfaceForOrientation();
+      }
+    }, 100);
+  }
+
+  private updateTournamentInterfaceForOrientation(): void {
+    const gameInterface = document.getElementById('tournament-game-interface');
+    const mobileControls = document.getElementById('tournament-mobile-controls');
+    const gameOverlay = document.getElementById('tournament-game-overlay');
+    
+    if (this.isLandscape) {
+      gameInterface?.classList.add('landscape-game-interface');
+      mobileControls?.classList.add('landscape-mobile-controls');
+      gameOverlay?.classList.add('landscape-game-overlay');
+    } else {
+      gameInterface?.classList.remove('landscape-game-interface');
+      mobileControls?.classList.remove('landscape-mobile-controls');
+      gameOverlay?.classList.remove('landscape-game-overlay');
+    }
+    
+    if (this.gameManager) {
+      this.gameManager.handleResize();
+    }
   }
 
   private bindMobileControls(): void {
@@ -394,6 +472,8 @@ export class TournamentMatch {
     }));
   }
 
+  
+
   private showMatchEndNotification(winner: string, scores: any): void {
     const gameInterface = document.getElementById('tournament-game-interface');
     if (!gameInterface) return;
@@ -424,5 +504,15 @@ export class TournamentMatch {
     setTimeout(() => {
       overlay.remove();
     }, 3000);
+  }
+
+  destroy(): void {
+    window.removeEventListener('orientationchange', this.handleOrientationChange);
+    window.removeEventListener('resize', this.handleOrientationChange);
+    
+    if (this.gameManager) {
+      this.gameManager.destroy();
+      this.gameManager = null;
+    }
   }
 }
