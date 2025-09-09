@@ -85,6 +85,15 @@ export class Pong3D {
     });
   }
 
+  // private initComponents(): void {
+  //   // Initialiser les composants
+  //   this.renderer = new GameRenderer(this.scene, this.settings);
+  //   this.physics = new GamePhysics(this.settings);
+  //   this.controls = new GameControls();
+    
+  //   // Démarrer la boucle de rendu
+  //   this.startRenderLoop();
+  // }
 
   private initComponents(): void {
     console.log('🔧 Initializing game components...');
