@@ -1,5 +1,5 @@
 
-import { UserTwoFactor, TwoFactorToken } from "../types/auth";
+import { UserTwoFactor, TwoFactorToken } from "../types/auth.js";
 import nodemailer from 'nodemailer';
 import db from "../db/index.js";
 import crypto from "crypto";

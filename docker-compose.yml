@@ -3,13 +3,15 @@ services:
   backend:
     container_name: backend
     build: ./backend
-    env_file: .env
+    env_file: 
+      - .env
     ports:
       - "8000:8000"
       - "8001:8001" #port pour remote
     volumes: #siuuu a revoir 
       - ./backend:/app
       - /app/node_modules
+      - /app/dist
       - ./backend/database:/app/database
     depends_on:
       - database
@@ -20,7 +22,8 @@ services:
   frontend:
     build: ./frontend
     container_name: frontend
-    env_file: .env
+    env_file: 
+      - .env
     ports:
       - "8080:80" #http
       - "8443:443" #https

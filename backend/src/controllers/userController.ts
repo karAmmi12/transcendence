@@ -1,9 +1,9 @@
 import {FastifyRequest, FastifyReply} from "fastify";
-import { UserServices } from "../services/userServices";
-import { UpdateProfileData, ChangePassword} from "../types/auth";
+import { UserServices } from "../services/userServices.js";
+import { UpdateProfileData, ChangePassword} from "../types/auth.js";
 import db from "../db/index.js"
 import bcrypt from "bcrypt"
-import { StatsService } from "../services/statsServices";
+import { StatsService } from "../services/statsServices.js";
 
 export class UserController
 {

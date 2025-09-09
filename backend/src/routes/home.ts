@@ -1,5 +1,5 @@
 import {FastifyInstance} from "fastify";
-import { HomeController } from "../controllers/homeController";
+import { HomeController } from "../controllers/homeController.js";
 
 export default async function homeRoutes(app: FastifyInstance)
 {
