@@ -1,5 +1,5 @@
 import { Pong3D } from './Pong3D/Pong3D.js';
-import { GameSettings } from '../../types/game.js';
+import { GameSettings } from './Pong3D/Pong3D.js';
 import { authService } from '../../services/authService.js';
 import { matchService } from '../../services/matchService.js';
 

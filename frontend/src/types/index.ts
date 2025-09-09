@@ -20,6 +20,7 @@ export interface UserStats {
   highestScore: number;
   currentStreak: number;
   longestStreak: number;
+  gamesPlayed: number;
 }
 
 export interface LoginData {

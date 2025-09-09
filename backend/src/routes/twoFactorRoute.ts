@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
-import { TwoFactorController } from "../controllers/twoFactorController"
+import { TwoFactorController } from "../controllers/twoFactorController.js"
 
 export default async function twoFaRoutes (app: FastifyInstance) {
     app.post('/enabled', TwoFactorController.sendTwoFactor);

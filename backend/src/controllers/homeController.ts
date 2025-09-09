@@ -1,5 +1,5 @@
 import {FastifyRequest, FastifyReply} from "fastify";
-import { HomeService } from "../services/homeServices";
+import { HomeService } from "../services/homeServices.js";
 
 export class HomeController
 {

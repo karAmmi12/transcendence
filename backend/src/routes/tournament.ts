@@ -1,6 +1,6 @@
 import {FastifyInstance} from "fastify";
-import { TournamentController } from "../controllers/tournamentController";
-import { createTournamentSchema } from "../schemas/gameSchema";
+import { TournamentController } from "../controllers/tournamentController.js";
+import { createTournamentSchema } from "../schemas/gameSchema.js";
 
 export default async function tournamentRoutes(app: FastifyInstance)
 {
