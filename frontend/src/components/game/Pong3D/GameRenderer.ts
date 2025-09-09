@@ -22,9 +22,20 @@ export class GameRenderer {
   private camera: BABYLON.ArcRotateCamera;
   private gameObjects: GameObjects;
   private canvas: HTMLCanvasElement;
+  private meshes: any = {};
   private currentTheme: ThemeConfig;
   private effectsManager: EffectsManager | null = null;
   // private settings: GameSettings;
+
+  // ✅ Nouvelles propriétés pour les modificateurs de paddles
+  private paddleSizeMultipliers = {
+    player1: 1.0,
+    player2: 1.0
+  };
+  private basePaddleScales = {
+    player1: { x: 1, y: 1, z: 1 },
+    player2: { x: 1, y: 1, z: 1 }
+  };
 
   constructor(scene: BABYLON.Scene, canvas: HTMLCanvasElement, theme: string = 'classic') 
   {
@@ -92,7 +103,7 @@ export class GameRenderer {
       pizzaSpotLight.diffuse = new BABYLON.Color3(1, 0.9, 0.7); // Lumière chaude
     }
     
-    // Ombres si activées dans le thème
+    // ✅ CORRECTION: Vérifier que gameObjects existe avant d'ajouter les ombres
     if (theme.lighting.shadowsEnabled && this.gameObjects) {
       const shadowGenerator = new BABYLON.ShadowGenerator(1024, dirLight);
       shadowGenerator.addShadowCaster(this.gameObjects.ball);
@@ -106,16 +117,44 @@ export class GameRenderer {
     this.scene.clearColor = theme.colors.background;
   }
 
+  public isInitialized(): boolean {
+    return this.gameObjects !== undefined && 
+          this.gameObjects.player1Paddle !== undefined &&
+          this.gameObjects.player2Paddle !== undefined &&
+          this.gameObjects.ball !== undefined &&
+          this.gameObjects.field !== undefined;
+  }
+
+
   private createGameObjects(): void {
+    // ✅ CORRECTION: Initialiser gameObjects avant de créer les objets
     this.gameObjects = {
       field: this.createField(),
       player1Paddle: this.createPaddle('player1', -4.5),
       player2Paddle: this.createPaddle('player2', 4.5),
       ball: this.createBall()
     };
+
+    // Stocker aussi dans meshes pour compatibilité
+    this.meshes.field = this.gameObjects.field;
+    this.meshes.player1Paddle = this.gameObjects.player1Paddle;
+    this.meshes.player2Paddle = this.gameObjects.player2Paddle;
+    this.meshes.ball = this.gameObjects.ball;
+
+    // ✅ Sauvegarder les tailles de base des paddles
+    this.basePaddleScales.player1 = {
+      x: this.gameObjects.player1Paddle.scaling.x,
+      y: this.gameObjects.player1Paddle.scaling.y,
+      z: this.gameObjects.player1Paddle.scaling.z
+    };
+    this.basePaddleScales.player2 = {
+      x: this.gameObjects.player2Paddle.scaling.x,
+      y: this.gameObjects.player2Paddle.scaling.y,
+      z: this.gameObjects.player2Paddle.scaling.z
+    };
   }
 
-   private createField(): BABYLON.Mesh {
+  private createField(): BABYLON.Mesh {
     const field = BABYLON.MeshBuilder.CreateGround(
       'field',
       { width: 10, height: 6 },
@@ -132,6 +171,7 @@ export class GameRenderer {
       this.createStandardFieldElements();
     }
     
+    // ✅ CORRECTION: Retourner le mesh field
     return field;
   }
 
@@ -331,95 +371,7 @@ export class GameRenderer {
     bottomBorder.position = new BABYLON.Vector3(0, 0.1, -3);
     bottomBorder.material = borderMaterial.clone('bottomBorderMaterial');
   }
-  // private createPaddle(player: 'player1' | 'player2', xPosition: number): BABYLON.Mesh {
-  //   const paddle = BABYLON.MeshBuilder.CreateBox(
-  //     `${player}Paddle`,
-  //     { width: 0.2, height: 0.4, depth: 1 },
-  //     this.scene
-  //   );
-  //   paddle.position = new BABYLON.Vector3(xPosition, 0.05, 0);
-    
-  //   const paddleMaterial = this.createMaterialFromConfig(`${player}Paddle`, this.currentTheme.materials.paddles);
-  //   paddleMaterial.diffuseColor = this.currentTheme.colors[`${player}Paddle`];
-  //   paddle.material = paddleMaterial;
-    
-  //   return paddle;
-  // }
-
-  // private createPaddle(player: 'player1' | 'player2', xPosition: number): BABYLON.Mesh {
-  //   let paddle: BABYLON.Mesh;
-    
-  //   if (this.currentTheme.id === 'italian') {
-  //     // Créer un rouleau de pâtisserie cylindrique
-  //     paddle = BABYLON.MeshBuilder.CreateCylinder(
-  //       `${player}Paddle`,
-  //       { 
-  //         height: 1.2,        // Longueur du rouleau
-  //         diameter: 0.20,     // Diamètre du rouleau
-  //         tessellation: 16    // Pour un cylindre lisse
-  //       },
-  //       this.scene
-  //     );
-      
-  //     // Orientation horizontale pour ressembler à un vrai rouleau
-  //     paddle.rotation.x = Math.PI / 2; // Rotation de 90° pour l'orienter horizontalement
-      
-  //     // ✅ Poignées simples aux extrémités (plus petites et mieux positionnées)
-  //     const handle1 = BABYLON.MeshBuilder.CreateSphere(
-  //       `${player}Handle1`,
-  //       { diameter: 0.08 }, // Poignée sphérique simple
-  //       this.scene
-  //     );
-  //     // ✅ Positionner aux vrais bouts du rouleau (axe Y car le cylindre est tourné)
-  //     handle1.position = new BABYLON.Vector3(0, 0.65, 0); // Un bout
-  //     handle1.parent = paddle;
-      
-  //     const handle2 = BABYLON.MeshBuilder.CreateSphere(
-  //       `${player}Handle2`,
-  //       { diameter: 0.08 }, // Poignée sphérique simple
-  //       this.scene
-  //     );
-  //     handle2.position = new BABYLON.Vector3(0, -0.65, 0); // Autre bout
-  //     handle2.parent = paddle;
-      
-  //     // Matériau des poignées (bois plus foncé)
-  //     const handleMaterial = new BABYLON.StandardMaterial(`${player}HandleMaterial`, this.scene);
-  //     handleMaterial.diffuseColor = new BABYLON.Color3(0.4, 0.25, 0.1); // Bois foncé
-  //     handleMaterial.specularColor = new BABYLON.Color3(0.3, 0.2, 0.1);
-      
-  //     // Appliquer le matériau aux poignées
-  //     handle1.material = handleMaterial;
-  //     handle2.material = handleMaterial.clone(`${player}Handle2Material`);
-      
-  //   } else {
-  //     // Paddle standard pour les autres thèmes
-  //     paddle = BABYLON.MeshBuilder.CreateBox(
-  //       `${player}Paddle`,
-  //       { width: 0.2, height: 0.4, depth: 1 },
-  //       this.scene
-  //     );
-  //   }
-    
-  //   paddle.position = new BABYLON.Vector3(xPosition, 0.15, 0); // Légèrement plus haut pour le cylindre
-    
-  //   const paddleMaterial = this.createMaterialFromConfig(`${player}Paddle`, this.currentTheme.materials.paddles);
-    
-  //   // Appliquer la couleur spécifique au joueur selon le type de matériau
-  //   if (paddleMaterial instanceof BABYLON.StandardMaterial) {
-  //     paddleMaterial.diffuseColor = this.currentTheme.colors[`${player}Paddle`];
-  //     // Ajouter de la brillance pour l'effet bois poli
-  //     if (this.currentTheme.id === 'italian') {
-  //       paddleMaterial.specularColor = new BABYLON.Color3(0.3, 0.2, 0.15);
-  //     }
-  //   } else if (paddleMaterial instanceof BABYLON.PBRMaterial) {
-  //     paddleMaterial.albedoColor = this.currentTheme.colors[`${player}Paddle`];
-  //   }
-    
-  //   paddle.material = paddleMaterial;
-    
-  //   return paddle;
-  // }
-
+  
   private createPaddle(player: 'player1' | 'player2', xPosition: number): BABYLON.Mesh {
     let paddle: BABYLON.Mesh;
     
@@ -516,7 +468,40 @@ export class GameRenderer {
     
     return paddle;
   }
-  
+
+  public applyPaddleSizeModifier(player: 'player1' | 'player2', multiplier: number): void {
+    this.paddleSizeMultipliers[player] = multiplier;
+    
+    // ✅ CORRECTION: Utiliser gameObjects au lieu de meshes
+    const paddle = this.gameObjects?.[`${player}Paddle`];
+    if (paddle) {
+      const baseScale = this.basePaddleScales[player];
+      paddle.scaling = new BABYLON.Vector3(
+        baseScale.x,
+        baseScale.y * multiplier, // Augmenter la hauteur du paddle
+        baseScale.z * multiplier  // Augmenter la profondeur du paddle
+      );
+      console.log(`📏 ${player} paddle size multiplier: ${multiplier}`);
+    } else {
+      console.warn(`🚨 ${player}Paddle not found in gameObjects`);
+    }
+  }
+
+
+  public resetPaddleSize(player?: 'player1' | 'player2'): void {
+    if (player) {
+      this.paddleSizeMultipliers[player] = 1.0;
+      // ✅ CORRECTION: Utiliser gameObjects au lieu de meshes
+      const paddle = this.gameObjects?.[`${player}Paddle`];
+      if (paddle) {
+        const baseScale = this.basePaddleScales[player];
+        paddle.scaling = new BABYLON.Vector3(baseScale.x, baseScale.y, baseScale.z);
+      }
+    } else {
+      this.resetPaddleSize('player1');
+      this.resetPaddleSize('player2');
+    }
+  }
 
   // ✅ Nouvelle méthode pour créer des cristaux de lave
   private createLavaCrystals(paddle: BABYLON.Mesh, player: string): void {
@@ -782,13 +767,26 @@ export class GameRenderer {
 
 
   public updatePositions(positions: ObjectPositions): void {
+    // ✅ CORRECTION: Vérifier que gameObjects existe avant de l'utiliser
+    if (!this.gameObjects) {
+      console.warn('🚨 GameObjects not initialized yet');
+      return;
+    }
+
     // Mettre à jour les positions des objets
-    this.gameObjects.player1Paddle.position.z = positions.player1Paddle.z;
-    this.gameObjects.player2Paddle.position.z = positions.player2Paddle.z;
+    if (this.gameObjects.player1Paddle) {
+      this.gameObjects.player1Paddle.position.z = positions.player1Paddle.z;
+    }
     
-    this.gameObjects.ball.position.x = positions.ball.x;
-    this.gameObjects.ball.position.y = positions.ball.y;
-    this.gameObjects.ball.position.z = positions.ball.z;
+    if (this.gameObjects.player2Paddle) {
+      this.gameObjects.player2Paddle.position.z = positions.player2Paddle.z;
+    }
+    
+    if (this.gameObjects.ball) {
+      this.gameObjects.ball.position.x = positions.ball.x;
+      this.gameObjects.ball.position.y = positions.ball.y;
+      this.gameObjects.ball.position.z = positions.ball.z;
+    }
   }
 
   public adjustCameraForScreen(): void {
