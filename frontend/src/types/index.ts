@@ -85,9 +85,6 @@ export interface FriendRequest {
 
 export interface FriendshipStatus {
   isFriend: boolean;
-  isPending: boolean;
-  isRequestSent: boolean;
-  isRequestReceived: boolean;
   requestId?: number;
 }
 

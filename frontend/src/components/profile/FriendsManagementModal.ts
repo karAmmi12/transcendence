@@ -311,6 +311,8 @@ export class FriendsManagementModal {
               await this.loadData();
               this.updateTabContent();
               this.updateSearchResults();
+
+              window.dispatchEvent(new CustomEvent('friendsUpdated'));
             }
             break;
             
@@ -328,6 +330,8 @@ export class FriendsManagementModal {
                 await this.loadData();
                 this.updateTabContent();
                 this.updateSearchResults();
+
+                window.dispatchEvent(new CustomEvent('friendsUpdated'));
               }
             }
             break;
@@ -472,7 +476,11 @@ export class FriendsManagementModal {
     content?.classList.remove('scale-100');
     content?.classList.add('scale-95');
 
+    window.dispatchEvent(new CustomEvent('friendsUpdated'));
+
     setTimeout(() => {
+
+
       this.modal?.remove();
       this.modal = null;
     }, 300);
