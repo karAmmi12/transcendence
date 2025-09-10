@@ -1,5 +1,3 @@
-
-
 import './styles/main.css'
 import { App } from './app'
 import { Router } from './router'
@@ -7,6 +5,11 @@ import { i18n } from '@/services/i18nService'
 // import { MobileTestUtils } from './utils/MobileTestUtils'
 // import { ResponsiveTest } from './utils/ResponsiveTest'
 import { authService } from './services/authService'
+import { ApiConfig } from './config/api.js';
+
+// ✅ Debug de la configuration au démarrage
+console.log('🚀 Application starting...');
+ApiConfig.logUrls();
 
 class Main {
   private app: App
