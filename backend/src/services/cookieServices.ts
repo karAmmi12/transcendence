@@ -15,7 +15,7 @@ export class CookieService
             maxAge: 15 * 60 * 1000, // 15 minutes
             path: '/',
             // ✅ Permettre les cookies cross-domain en dev
-            domain: process.env.NODE_ENV === 'production' ? undefined : undefined
+            domain: undefined
         }) 
 
         reply.setCookie('refreshToken', refreshToken, {
@@ -25,7 +25,7 @@ export class CookieService
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 jours
             path: '/',
             // ✅ Permettre les cookies cross-domain en dev
-            domain: process.env.NODE_ENV === 'production' ? undefined : undefined
+            domain: undefined
         });
     }
 
