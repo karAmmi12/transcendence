@@ -536,6 +536,13 @@ export class Pong3D {
     if (p1Name) p1Name.textContent = this.settings.player1Name;
     if (p2Name) p2Name.textContent = this.settings.player2Name;
 
+    //mettre a jour les scores desktop
+    const scoresDesktop = document.getElementById('game-scores');
+    if (scoresDesktop)
+    {
+      scoresDesktop.textContent = `${this.gameState.scores.player1} - ${this.gameState.scores.player2}`;
+    }
+
     // Mettre à jour les scores mobiles avec noms
     const scoresMobile = document.getElementById('game-scores-mobile');
     if (scoresMobile) {
