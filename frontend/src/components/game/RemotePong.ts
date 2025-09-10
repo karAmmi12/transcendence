@@ -38,8 +38,8 @@ export class RemotePong extends Pong3D {
 
   private async connectToSignalingServer(): Promise<void> {
     return new Promise((resolve, reject) => {
-      // En mode dev, connexion directe au backend
-      const wsUrl = 'ws://localhost:8001';
+      // ✅ Utiliser l'IP de votre machine backend
+      const wsUrl = 'ws://10.16.7.7:8001';
       console.log('🔗 Connecting to WebSocket:', wsUrl);
         
       this.signalingWS = new WebSocket(wsUrl);

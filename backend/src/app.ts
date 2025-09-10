@@ -25,7 +25,7 @@ const start = async () => {
     startTokenCleanup();
 
     // Démarrer le serveur WebSocket pour le matchmaking remote
-    new WebSocketService(8001);
+    new WebSocketService(8001, '0.0.0.0');
     
     // Autoriser CORS pour le dev frontend
     await app.register(cors, {
@@ -35,7 +35,9 @@ const start = async () => {
           'http://localhost:5173',  // Vite dev
          'http://localhost:3000',  // Autres frontends
           'http://localhost:8080',  // Nginx frontend
-          'http://localhost:8000'   // Backend direct
+          'http://localhost:8000',   // Backend direct
+          'http://10.16.7.7:8080',  // ✅ Votre IP pour le frontend
+          'http://10.16.6.6:8080'   // ✅ IP de l'autre machine
         ],
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
