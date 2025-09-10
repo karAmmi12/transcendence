@@ -1,10 +1,9 @@
 import { authService } from "./authService";  
 
 class MatchService {
-  private baseURL = process.env.NODE_ENV === 'production' 
+ private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api'
-    : `http://${location.hostname}:8000/api`;
-
+    : 'http://10.16.7.7:8000/api'; // ✅ IP de votre machine backend
   /**
    * Crée et termine un match local en une seule opération
    */
