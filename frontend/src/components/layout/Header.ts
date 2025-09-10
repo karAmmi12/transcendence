@@ -22,10 +22,13 @@ export class Header {
     };
     window.addEventListener('languageChanged', this.languageListener);
 
-    // ecouter les changements d'authentification
+    // ✅ Écouter les changements d'authentification avec un délai pour permettre la synchronisation
     window.addEventListener('authStateChanged', () => {
-      this.render(element);
-      this.bindEvents();
+        // Petit délai pour permettre la mise à jour des données utilisateur
+        setTimeout(() => {
+            this.render(element);
+            this.bindEvents();
+        }, 100);
     });
   }
 
