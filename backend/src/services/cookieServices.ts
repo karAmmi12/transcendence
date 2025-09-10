@@ -11,17 +11,21 @@ export class CookieService
         reply.setCookie('accessToken', accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // ✅ Plus permissif en dev
             maxAge: 15 * 60 * 1000, // 15 minutes
-            path: '/'
+            path: '/',
+            // ✅ Permettre les cookies cross-domain en dev
+            domain: process.env.NODE_ENV === 'production' ? undefined : undefined
         }) 
 
         reply.setCookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // ✅ Plus permissif en dev
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 jours
-            path: '/'
+            path: '/',
+            // ✅ Permettre les cookies cross-domain en dev
+            domain: process.env.NODE_ENV === 'production' ? undefined : undefined
         });
     }
 

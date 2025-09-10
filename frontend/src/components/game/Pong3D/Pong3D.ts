@@ -529,10 +529,17 @@ export class Pong3D {
     if (p1Score) p1Score.textContent = this.gameState.scores.player1.toString();
     if (p2Score) p2Score.textContent = this.gameState.scores.player2.toString();
 
-    // Mettre à jour les scores mobiles
+    // ✅ Mettre à jour les noms des joueurs
+    const p1Name = document.getElementById('player1-name') || document.getElementById('tournament-player1-name');
+    const p2Name = document.getElementById('player2-name') || document.getElementById('tournament-player2-name');
+    
+    if (p1Name) p1Name.textContent = this.settings.player1Name;
+    if (p2Name) p2Name.textContent = this.settings.player2Name;
+
+    // Mettre à jour les scores mobiles avec noms
     const scoresMobile = document.getElementById('game-scores-mobile');
     if (scoresMobile) {
-      scoresMobile.textContent = `${this.gameState.scores.player1} - ${this.gameState.scores.player2}`;
+      scoresMobile.textContent = `${this.settings.player1Name} ${this.gameState.scores.player1} - ${this.gameState.scores.player2} ${this.settings.player2Name}`;
     }
     
     // ✅ Mettre à jour l'affichage des effets actifs

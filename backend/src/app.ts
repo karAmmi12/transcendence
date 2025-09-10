@@ -36,6 +36,10 @@ const start = async () => {
          'http://localhost:3000',  // Autres frontends
           'http://localhost:8080',  // Nginx frontend
           'http://localhost:8000',   // Backend direct
+          // ✅ Accepter toutes les IPs du réseau local
+          /^http:\/\/10\.16\.\d+\.\d+:8080$/,
+          /^http:\/\/192\.168\.\d+\.\d+:8080$/,
+          /^http:\/\/172\.16\.\d+\.\d+:8080$/,
           'http://10.16.7.7:8080',  // ✅ Votre IP pour le frontend
           'http://10.16.6.6:8080'   // ✅ IP de l'autre machine
         ],
