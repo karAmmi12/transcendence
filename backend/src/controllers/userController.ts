@@ -294,5 +294,54 @@ export class UserController
             reply.status(500).send({error: "Failed to get match history"});
         }
     }
+
+    /**
+     * Route pour mettre à jour le thème par défaut de l'utilisateur
+     */
+    static async updateTheme(req: FastifyRequest, reply: FastifyReply)
+    {
+        try {
+            const user = req.user!; // assuré par le middleware
+            const { theme } = req.body as { theme: string };
+
+            // Validation du thème
+            const validThemes = ['classic', 'neon', 'retro', 'cyberpunk', 'space', 'italian', 'matrix', 'lava'];
+            if (!theme || !validThemes.includes(theme)) {
+                return reply.status(400).send({ 
+                    error: "Invalid theme. Valid themes are: " + validThemes.join(', ') 
+                });
+            }
+
+            // Mettre à jour le thème dans la base de données
+            const stmt = db.prepare("UPDATE users SET theme = ? WHERE id = ?");
+            const result = stmt.run(theme, user.userId);
+
+            if (result.changes === 0) {
+                return reply.status(404).send({ error: "User not found" });
+            }
+
+            // Récupérer les données utilisateur mises à jour
+            const userStmt = db.prepare("SELECT id, username, email, avatar_url, theme, is_online, two_factor_enabled, created_at FROM users WHERE id = ?");
+            const updatedUser = userStmt.get(user.userId) as any;
+
+            reply.send({
+                message: "Theme updated successfully",
+                user: {
+                    id: updatedUser.id,
+                    username: updatedUser.username,
+                    email: updatedUser.email,
+                    avatarUrl: updatedUser.avatar_url,
+                    theme: updatedUser.theme,
+                    isOnline: Boolean(updatedUser.is_online),
+                    twoFactorEnabled: Boolean(updatedUser.two_factor_enabled),
+                    createdAt: updatedUser.created_at
+                }
+            });
+
+        } catch (error) {
+            console.error("Update theme error:", error);
+            reply.status(500).send({ error: "Failed to update theme" });
+        }
+    }
 }
 
