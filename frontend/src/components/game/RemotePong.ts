@@ -2,6 +2,7 @@ import { Pong3D } from './Pong3D/Pong3D.js';
 import { GameSettings } from './Pong3D/Pong3D.js';
 import { authService } from '../../services/authService.js';
 import { matchService } from '../../services/matchService.js';
+import { ApiConfig } from '../../config/api.js';
 
 export class RemotePong extends Pong3D {
   private signalingWS: WebSocket | null = null;
@@ -38,9 +39,10 @@ export class RemotePong extends Pong3D {
 
   private async connectToSignalingServer(): Promise<void> {
     return new Promise((resolve, reject) => {
-      // ✅ Utiliser l'IP de votre machine backend
-      const wsUrl = 'ws://10.16.7.7:8001';
+      // ✅ Utiliser la configuration dynamique
+      const wsUrl = ApiConfig.WS_URL;
       console.log('🔗 Connecting to WebSocket:', wsUrl);
+      ApiConfig.logUrls(); // Debug des URLs
         
       this.signalingWS = new WebSocket(wsUrl);
       
@@ -337,12 +339,34 @@ export class RemotePong extends Pong3D {
     
     // Mettre à jour l'affichage des scores et du timer pour le guest
     this.updateUI();
+    this.updateTimerDisplay(); // nouvelle methode pour forcer la maj
 
     // Vérifier la fin de partie
     if (state.status === 'finished') {
       console.log('🏁 Remote game ended for guest');
       this.handleRemoteGameEnd();
     }
+  }
+
+  // ✅ Nouvelle méthode pour forcer la mise à jour du timer
+  private updateTimerDisplay(): void {
+    const minutes = Math.floor(this.gameState.timer / 60);
+    const seconds = Math.floor(this.gameState.timer % 60);
+    const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    // Mettre à jour tous les éléments de timer possibles
+    const timerElements = [
+      document.querySelector('#game-timer .text-lg'),
+      document.querySelector('#game-timer .text-2xl'),
+      document.getElementById('game-timer-display'),
+      document.getElementById('game-timer-mobile')
+    ];
+    
+    timerElements.forEach(el => {
+      if (el) el.textContent = timeString;
+    });
+    
+    console.log('🕐 Guest timer updated:', timeString);
   }
 
   private applyRemoteInput(input: any): void {

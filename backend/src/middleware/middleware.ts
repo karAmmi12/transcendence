@@ -85,9 +85,11 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
                                 reply.setCookie('accessToken', newAccessToken, {
                                     httpOnly: true,
                                     secure: process.env.NODE_ENV === 'production',
-                                    sameSite: 'strict',
+                                    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // ✅ Plus permissif en dev
                                     maxAge: 15 * 60 * 1000,
-                                    path: '/'
+                                    path: '/',
+                                    // ✅ Permettre les cookies cross-domain en dev
+                                    domain: process.env.NODE_ENV === 'production' ? undefined : undefined
                                 });
                                 
                                 req.user = {
@@ -167,9 +169,11 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
         reply.setCookie('accessToken', newAccessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // ✅ Plus permissif en dev
             maxAge: 15 * 60 * 1000,
-            path: '/'
+            path: '/',
+            // ✅ Permettre les cookies cross-domain en dev
+            domain: process.env.NODE_ENV === 'production' ? undefined : undefined
         });
 
         // Definir req.user pour des routes securiser

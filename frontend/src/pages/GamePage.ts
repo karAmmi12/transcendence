@@ -661,16 +661,17 @@ export class GamePage {
   private async handleGameEnd(winner: string, scores: any, duration: number, settings: GameSettings): Promise<void> {
     try {
       // Envoyer les données du match au backend si utilisateur connecté
-      if (authService.isAuthenticated()) {
-        await matchService.sendLocalMatchData(
-          settings.player1Name,
-          settings.player2Name,
-          scores.player1,
-          scores.player2,
-          Math.floor(duration)
-        );
-        console.log('✅ Match data saved to backend');
-      }
+      // if (authService.isAuthenticated()) {
+      //   await matchService.sendLocalMatchData(
+      //     settings.player1Name,
+      //     settings.player2Name,
+      //     scores.player1,
+      //     scores.player2,
+      //     Math.floor(duration)
+      //   );
+      //   console.log('✅ Match data saved to backend');
+      // }
+      console.log('🎮 Game ended, data already saved by Pong3D');
 
     } catch (error) {
       console.error('❌ Failed to save match data:', error);
