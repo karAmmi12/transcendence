@@ -28,6 +28,7 @@ export interface UserData {
   username: string;
   email: string;
   avatarUrl?: string | null; //siuuu remettre par defaut
+  theme?: string;
   isOnline?: boolean;
   twoFactorEnabled?: boolean;
   createdAt?: string;
@@ -68,6 +69,7 @@ export interface UpdateProfileData {
   username?: string;
   email?: string;
   avatarUrl?: string;
+  theme?: string;
 }
 
 export interface GoogleUserData {

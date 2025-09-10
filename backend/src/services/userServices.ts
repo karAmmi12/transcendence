@@ -27,6 +27,7 @@ export class UserServices
             username: userData.username,
             email: userData.email,
             avatarUrl: userData.avatarUrl,
+            theme: user.theme | 'classic',
             isOnline: userData.isOnline,
             twoFactorEnabled: userData.twoFactorEnabled,
             createdAt: userData.createdAt,
@@ -80,6 +81,11 @@ export class UserServices
                 {
                     fieldsToUpdate.push("avatar_url = ?");
                     values.push(updateData.avatarUrl);
+                }
+                if (updateData.theme !== undefined) 
+                {
+                    fieldsToUpdate.push("theme = ?");
+                    values.push(updateData.theme);
                 }
                 if (fieldsToUpdate.length === 0)
                         throw new Error("No fields to update");
