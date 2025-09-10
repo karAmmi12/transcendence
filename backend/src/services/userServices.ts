@@ -12,7 +12,7 @@ export class UserServices
     static async getUserDataFromDb(userId: number): Promise <UserData | null>
     {
         const stmt = db.prepare(`
-                SELECT id, username, email, avatar_url, created_at, last_login, is_online, google_id, two_factor_enabled
+                SELECT id, username, email, avatar_url, theme, created_at, last_login, is_online, google_id, two_factor_enabled
                 FROM users WHERE id = ?
             `);
         const userDataRaw = stmt.get(userId) as any | undefined;
@@ -27,6 +27,7 @@ export class UserServices
             username: userData.username,
             email: userData.email,
             avatarUrl: userData.avatarUrl,
+            theme: userData.theme,
             isOnline: userData.isOnline,
             twoFactorEnabled: userData.twoFactorEnabled,
             createdAt: userData.createdAt,
@@ -81,6 +82,11 @@ export class UserServices
                     fieldsToUpdate.push("avatar_url = ?");
                     values.push(updateData.avatarUrl);
                 }
+                if (updateData.theme !== undefined) 
+                {
+                    fieldsToUpdate.push("theme = ?");
+                    values.push(updateData.theme);
+                }
                 if (fieldsToUpdate.length === 0)
                         throw new Error("No fields to update");
                 values.push(userId);
@@ -93,7 +99,7 @@ export class UserServices
 
                 // Maj de la db reussi recup les nouvelle donnees
                 const selectStmt = db.prepare(`
-                    SELECT id, username, email, avatar_url, created_at, last_login, is_online, google_id, two_factor_enabled
+                    SELECT id, username, email, avatar_url, theme, created_at, last_login, is_online, google_id, two_factor_enabled
                     FROM users WHERE id = ?
                 `);
 
@@ -110,6 +116,7 @@ export class UserServices
                     username: updatedUser.username,
                     email: updatedUser.email,
                     avatarUrl: updatedUser.avatarUrl,
+                    theme: updatedUser.theme,
                     isOnline: updatedUser.isOnline,
                     twoFactorEnabled: updatedUser.twoFactorEnabled,
                     createdAt: updatedUser.createdAt,
