@@ -40,8 +40,6 @@ const start = async () => {
           /^http:\/\/10\.16\.\d+\.\d+:8080$/,
           /^http:\/\/192\.168\.\d+\.\d+:8080$/,
           /^http:\/\/172\.16\.\d+\.\d+:8080$/,
-          'http://10.16.7.7:8080',  // ✅ Votre IP pour le frontend
-          'http://10.16.6.6:8080'   // ✅ IP de l'autre machine
         ],
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
