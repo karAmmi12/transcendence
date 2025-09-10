@@ -21,9 +21,9 @@ export class WebSocketService {
   private waitingQueue: Player[] = [];
   private matches: Map<string, Match> = new Map();
 
-  constructor(port: number = 8001) {
-    this.wss = new WebSocketServer({ port });
-    console.log(`🚀 WebSocket signaling server started on port ${port}`);
+  constructor(port: number = 8001, host: string = '0.0.0.0') {
+    this.wss = new WebSocketServer({ port, host });
+    console.log(`🎮 WebSocket Signaling Server running on ${host}:${port}`);
     
     this.wss.on('connection', (ws: WebSocket) => {
       this.handleConnection(ws);
