@@ -225,6 +225,8 @@ export class AuthService
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                avatarUrl: user.avatar,
+                isOnline: user.isOnline,
                 lastLogin: new Date().toISOString()
             };
 
