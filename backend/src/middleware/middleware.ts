@@ -89,7 +89,7 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
                                     maxAge: 15 * 60 * 1000,
                                     path: '/',
                                     // ✅ Permettre les cookies cross-domain en dev
-                                    domain: process.env.NODE_ENV === 'production' ? undefined : undefined
+                                    domain: undefined
                                 });
                                 
                                 req.user = {

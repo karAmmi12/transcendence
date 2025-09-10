@@ -13,7 +13,8 @@ db.exec(`
         is_online INTEGER NOT NULL DEFAULT 0,
         last_login TEXT,
         google_id TEXT,
-        two_factor_enabled INTEGER NOT NULL DEFAULT 0
+        two_factor_enabled INTEGER NOT NULL DEFAULT 0,
+        theme TEXT DEFAULT classic
     );
     
     CREATE TABLE IF NOT EXISTS sessions (
@@ -87,12 +88,12 @@ function insertTestDataIfNotExists() {
             -- ============================================
             -- DONNÉES DE TEST - IDENTIQUES À reset.ts
             -- ============================================
-            INSERT OR IGNORE INTO users (username, email, password, is_online, created_at, avatar_url) VALUES 
-            ('carti', 'carti@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/carti.jpeg'),
-            ('kanye', 'kanye@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-02 11:00:00', '/uploads/avatars/kanye.jpeg'),
-            ('travis', 'travis@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-03 12:00:00', '/uploads/avatars/travis.jpeg' ),
-            ('future', 'future@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-04 13:00:00', '/uploads/avatars/future.jpeg'),
-            ('pnd', 'pnd@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-05 14:00:00', '/uploads/avatars/pnd.jpeg');
+            INSERT OR IGNORE INTO users (username, email, password, is_online, created_at, avatar_url, theme) VALUES 
+            ('carti', 'carti@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/carti.jpeg', 'lava'),
+            ('kanye', 'kanye@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-02 11:00:00', '/uploads/avatars/kanye.jpeg', 'lava'),
+            ('travis', 'travis@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-03 12:00:00', '/uploads/avatars/travis.jpeg', 'lava'),
+            ('future', 'future@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-04 13:00:00', '/uploads/avatars/future.jpeg', 'lava'),
+            ('pnd', 'pnd@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-05 14:00:00', '/uploads/avatars/pnd.jpeg', 'lava');
 
             -- 🆕 Données IDENTIQUES à reset.ts
             INSERT OR IGNORE INTO matches (id, mode, tournament_id, started_at, ended_at, winner_id) VALUES 
