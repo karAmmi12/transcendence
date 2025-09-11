@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import { PowerUp, PowerUpType, PowerUpConfig, ActiveEffect, PowerUpEffects } from '../../../types/powerups.js';
+import { i18n } from '@services/i18nService.js';
 
 export class PowerUpManager {
   private scene: BABYLON.Scene;
@@ -11,40 +12,22 @@ export class PowerUpManager {
   private enabled: boolean = false;
 
   private configs: Map<PowerUpType, PowerUpConfig> = new Map([
-    [PowerUpType.SPEED_BOOST, {
-      type: PowerUpType.SPEED_BOOST,
-      name: 'Vitesse',
-      description: 'Augmente la vitesse de votre paddle',
-      color: new BABYLON.Color3(0, 1, 0), // Vert
-      spawnWeight: 20,
-      duration: 8,
-      lifespan: 15,
-      effects: { paddleSpeedMultiplier: 1.5 }
-    }],
+  
     [PowerUpType.PADDLE_SIZE, {
       type: PowerUpType.PADDLE_SIZE,
-      name: 'Grande Palette',
-      description: 'Augmente la taille de votre paddle',
+      name: i18n.t('powerups.paddle_size'),
+      description: i18n.t('powerups.paddle_size_description'),
       color: new BABYLON.Color3(0, 0, 1), // Bleu
       spawnWeight: 15,
       duration: 10,
       lifespan: 15,
-      effects: { paddleSizeMultiplier: 1.4 }
+      effects: { paddleSizeMultiplier: 1.7 }
     }],
-    [PowerUpType.BALL_SLOW, {
-      type: PowerUpType.BALL_SLOW,
-      name: 'Ralentir',
-      description: 'Ralentit la balle',
-      color: new BABYLON.Color3(1, 1, 0), // Jaune
-      spawnWeight: 18,
-      duration: 6,
-      lifespan: 12,
-      effects: { ballSpeedMultiplier: 0.6 }
-    }],
+  
     [PowerUpType.REVERSE_CONTROLS, {
       type: PowerUpType.REVERSE_CONTROLS,
-      name: 'Contrôles Inversés',
-      description: 'Inverse les contrôles de l\'adversaire',
+      name: i18n.t('powerups.reverse_controls'),
+      description: i18n.t('powerups.reverse_controls_description'),
       color: new BABYLON.Color3(1, 0, 1), // Magenta
       spawnWeight: 12,
       duration: 7,
@@ -53,8 +36,8 @@ export class PowerUpManager {
     }],
     [PowerUpType.FREEZE_OPPONENT, {
       type: PowerUpType.FREEZE_OPPONENT,
-      name: 'Gel',
-      description: 'Gèle l\'adversaire temporairement',
+      name: i18n.t('powerups.freeze_opponent'),
+      description: i18n.t('powerups.freeze_opponent_description'),
       color: new BABYLON.Color3(0, 1, 1), // Cyan
       spawnWeight: 8,
       duration: 3,
@@ -139,18 +122,11 @@ export class PowerUpManager {
     // ✅ Créer un mesh spécifique selon le type de power-up
     let mesh: BABYLON.Mesh;
     
-    switch (type) {
-      case PowerUpType.SPEED_BOOST:
-        mesh = this.createSpeedBoostMesh(id);
-        console.log('⚡ Created speed boost mesh');
-        break;
+    switch (type) 
+    {
       case PowerUpType.PADDLE_SIZE:
         mesh = this.createPaddleSizeMesh(id);
         console.log('📏 Created paddle size mesh');
-        break;
-      case PowerUpType.BALL_SLOW:
-        mesh = this.createBallSlowMesh(id);
-        console.log('🕒 Created ball slow mesh');
         break;
       case PowerUpType.REVERSE_CONTROLS:
         mesh = this.createReverseControlsMesh(id);
@@ -185,37 +161,7 @@ export class PowerUpManager {
     console.log(`🔋 Spawned power-up: ${config.name} at`, position);
   }
 
-  // ✅ Power-up Vitesse : Triple flèche simple
-  private createSpeedBoostMesh(id: string): BABYLON.Mesh {
-    const parent = new BABYLON.Mesh(`speed_boost_${id}`, this.scene);
-    
-    // Créer 3 cônes simples alignés comme des flèches
-    for (let i = 0; i < 3; i++) {
-      const arrow = BABYLON.MeshBuilder.CreateCylinder(
-        `speed_arrow_${id}_${i}`,
-        {
-          height: 0.4,
-          diameterTop: 0,
-          diameterBottom: 0.2,
-          tessellation: 8
-        },
-        this.scene
-      );
-      
-      // Positionner les flèches en ligne
-      arrow.position.x = (i - 1) * 0.15;
-      arrow.rotation.z = Math.PI / 2; // Pointer vers la droite
-      arrow.parent = parent;
-      
-      // Matériau vert simple
-      const material = new BABYLON.StandardMaterial(`speed_mat_${id}_${i}`, this.scene);
-      material.diffuseColor = new BABYLON.Color3(0, 1, 0);
-      material.emissiveColor = new BABYLON.Color3(0, 0.5, 0);
-      arrow.material = material;
-    }
-    
-    return parent;
-  }
+  
 
   // ✅ Power-up Taille de Palette : Paddle géant simple
   private createPaddleSizeMesh(id: string): BABYLON.Mesh {
@@ -237,53 +183,6 @@ export class PowerUpManager {
     paddle.material = material;
     
     return paddle;
-  }
-
-  // ✅ Power-up Ralentissement : Horloge simple
-  private createBallSlowMesh(id: string): BABYLON.Mesh {
-    const parent = new BABYLON.Mesh(`ball_slow_${id}`, this.scene);
-    
-    // Base circulaire (cadran)
-    const clock = BABYLON.MeshBuilder.CreateCylinder(
-      `clock_${id}`,
-      {
-        height: 0.1,
-        diameter: 0.5,
-        tessellation: 16
-      },
-      this.scene
-    );
-    clock.parent = parent;
-    
-    // Aiguille des heures (courte)
-    const hourHand = BABYLON.MeshBuilder.CreateBox(
-      `hour_hand_${id}`,
-      { width: 0.04, height: 0.15, depth: 0.02 },
-      this.scene
-    );
-    hourHand.position.y = 0.075;
-    hourHand.parent = parent;
-    
-    // Aiguille des minutes (longue)
-    const minuteHand = BABYLON.MeshBuilder.CreateBox(
-      `minute_hand_${id}`,
-      { width: 0.03, height: 0.2, depth: 0.02 },
-      this.scene
-    );
-    minuteHand.position.y = 0.1;
-    minuteHand.rotation.z = Math.PI / 3; // Angle différent
-    minuteHand.parent = parent;
-    
-    // Matériau jaune uniforme
-    const material = new BABYLON.StandardMaterial(`slow_mat_${id}`, this.scene);
-    material.diffuseColor = new BABYLON.Color3(1, 1, 0);
-    material.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0);
-    
-    clock.material = material;
-    hourHand.material = material;
-    minuteHand.material = material;
-    
-    return parent;
   }
 
   // ✅ Power-up Contrôles Inversés : Flèches circulaires
