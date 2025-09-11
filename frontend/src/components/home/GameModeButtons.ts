@@ -41,7 +41,7 @@ export class GameModeButtons {
   private renderRemoteGameCard(): string {
     const isDisabled = !this.isAuthenticated;
     const buttonClass = isDisabled 
-      ? 'w-full bg-gray-600 text-gray-400 font-semibold py-3 px-4 rounded-lg cursor-not-allowed touch-manipulation'
+      ? 'w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors touch-manipulation cursor-pointer' // ✅ Retirer cursor-not-allowed
       : 'w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors touch-manipulation';
 
     return `
@@ -59,7 +59,6 @@ export class GameModeButtons {
           <button 
             id="remote-game-btn" 
             class="${buttonClass}"
-            ${isDisabled ? 'disabled' : ''}
           >
             ${isDisabled ? i18n.t('nav.login') : i18n.t('home.gameModes.remote.button')}
           </button>
@@ -92,7 +91,12 @@ export class GameModeButtons {
     });
 
     document.getElementById('remote-game-btn')?.addEventListener('click', () => {
-      this.callbacks.onRemoteGame();
+      // ✅ Si non connecté, rediriger vers la connexion
+      if (!this.isAuthenticated) {
+        this.callbacks.onLogin?.();
+      } else {
+        this.callbacks.onRemoteGame();
+      }
     });
 
     document.getElementById('tournament-btn')?.addEventListener('click', () => {
