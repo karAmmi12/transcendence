@@ -140,6 +140,44 @@ export class UserService {
       throw new Error(error.message || i18n.t('profile.errors.changePasswordFailed'));
     }
   }
+
+  /**
+   * Sauvegarder le thème préféré de l'utilisateur
+   */
+
+    public async saveUserTheme(theme: string): Promise<boolean> {
+    try {
+      console.log('🎨 Sending theme update request:', theme);
+      
+      const response = await fetch(`${this.baseURL}/user/updateTheme`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ theme })
+      });
+
+      console.log('🎨 Response status:', response.status, response.statusText);
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Unknown server error' }));
+        console.error('❌ Theme save failed:', error);
+        throw new Error(error.error || 'Failed to save theme');
+      }
+
+      const data = await response.json();
+      console.log('✅ Theme save successful:', data);
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Theme save error:', error);
+      return false;
+    }
+  }
+
+
 }
 
 export const userService = UserService.getInstance();

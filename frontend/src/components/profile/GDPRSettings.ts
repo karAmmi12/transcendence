@@ -1,1 +1,0 @@
-// GDPRSettings.ts
