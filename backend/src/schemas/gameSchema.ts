@@ -10,7 +10,16 @@ export const createTournamentSchema = {
                 minItems: 8,
                 maxItems: 8
             },
-            userId: {type: 'number'} //siuuu peut etre deja recup par middleware
+            userId: {type: 'number'}, //siuuu peut etre deja recup par middleware
+            gameSettings: {
+                type: 'object',
+                properties: {
+                    ballSpeed: {type: 'string', enum: ['slow', 'medium', 'fast']},
+                    winScore: {type: 'number', minimum: 3, maximum: 10},
+                    theme: {type: 'string'},
+                    powerUps: {type: 'boolean'}
+                }
+            }
         }
     }
 };
