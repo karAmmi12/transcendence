@@ -1,14 +1,16 @@
 import { i18n } from '@/services/i18nService';
 import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
+import { GameSettings } from '../../types/index';
 
 export class TournamentMatch {
   private gameManager: GameManager | null = null;
-
   private isLandscape: boolean = false;
+  private gameSettings: GameSettings;
 
-  constructor(private match: any, private tournamentId: number) {
+  constructor(private match: any, private tournamentId: number, gameSettings?: GameSettings) {
     this.match = match;
     this.tournamentId = tournamentId;
+    this.gameSettings = gameSettings;
 
     // Gérer l'orientation
     this.handleOrientationChange = this.handleOrientationChange.bind(this);
@@ -385,8 +387,10 @@ export class TournamentMatch {
       settings: {
         player1Name: this.match.player1,
         player2Name: this.match.player2,
-        winScore: 5,
-        ballSpeed: 'medium',
+        winScore: this.gameSettings?.winScore || 5, // ✅ Utiliser les paramètres
+        ballSpeed: this.gameSettings?.ballSpeed || 'medium', // ✅ Utiliser les paramètres
+        theme: this.gameSettings?.theme || 'classic', // ✅ Utiliser les paramètres
+        powerUps: this.gameSettings?.powerUps || false, // ✅ Utiliser les paramètres
         enableEffects: false
       },
       onGameStart: () => {
@@ -395,7 +399,6 @@ export class TournamentMatch {
       },
       onGameEnd: (winner: string, scores: any, duration: number) => {
         console.log('🏁 Tournament match ended (callback):', { winner, scores, duration });
-        // ✅ En mode tournoi, on gère le modal nous-mêmes
         this.handleMatchEnd(winner, scores, duration);
       }
     };
