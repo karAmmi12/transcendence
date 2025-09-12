@@ -12,12 +12,8 @@ export interface PowerUp {
 }
 
 export enum PowerUpType {
-  SPEED_BOOST = 'speed_boost',
   PADDLE_SIZE = 'paddle_size',
-  BALL_SLOW = 'ball_slow',
-  MULTI_BALL = 'multi_ball',
   REVERSE_CONTROLS = 'reverse_controls',
-  INVISIBLE_BALL = 'invisible_ball',
   FREEZE_OPPONENT = 'freeze_opponent'
 }
 
