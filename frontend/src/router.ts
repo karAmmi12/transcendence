@@ -16,6 +16,7 @@ interface Route {
 }
 
 export class Router {
+  private currentPage: any = null;
   private routes: Route[] = [
     {
       path: ROUTES.HOME,
@@ -75,6 +76,9 @@ export class Router {
   ];
 
   async navigate(path: string): Promise<void> {
+    // Émettre l'événement de navigation avant de changer de route
+    window.dispatchEvent(new CustomEvent('beforeNavigate', { detail: path }));
+    
     history.pushState({}, '', path);
     await this.handleRoute();
   }
@@ -123,7 +127,13 @@ export class Router {
     document.title = route.title;
     
     // Charger et monter la page
+    // Nettoyer la page précédente si elle existe
+    if (this.currentPage && typeof this.currentPage.destroy === 'function') {
+      this.currentPage.destroy();
+    }
+    
     const component = route.component(); // Maintenant ça retourne une instance
+    this.currentPage = component;
     component.mount('#page-content');
   }
 
