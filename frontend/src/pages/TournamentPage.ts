@@ -251,7 +251,7 @@ export class TournamentPage {
     if (!this.currentMatch) return '';
    
 
-    const match = new TournamentMatch(this.currentMatch, this.tournament.id);
+    const match = new TournamentMatch(this.currentMatch, this.tournament.id, this.tournament.gameSettings);
     const html = match.render();
 
     setTimeout(() => {

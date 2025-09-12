@@ -3,15 +3,24 @@ class TournamentService {
     ? '/api'
     : `http://${location.hostname}:8000/api`;
 
-  async createTournament(participants: string[]): Promise<any> {
+  async createTournament(participants: string[], gameSettings?: {
+    ballSpeed: string;
+    winScore: number;
+    theme: string;
+    powerUps: boolean;
+  }): Promise<any> {
     const response = await fetch(`${this.baseURL}/tournament/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify({ participants }) // ✅ Envoyer un objet avec la propriété participants
+      body: JSON.stringify({ 
+        participants,
+        gameSettings // ✅ Ajouter les paramètres
+      })
     });
+
 
     if (!response.ok) {
       throw new Error('Failed to create tournament');
@@ -35,39 +44,6 @@ class TournamentService {
 
     return await response.json();
   }
-
-  // async finishMatch(
-  //   tournamentId: number,
-  //   matchNumber: number,
-  //   player1: string,
-  //   player2: string,
-  //   score1: number,
-  //   score2: number,
-  //   duration: number
-  // ): Promise<any> {
-  //   const response = await fetch(`${this.baseURL}/tournament/${tournamentId}/matches/${matchNumber}/finish`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     credentials: 'include',
-  //     body: JSON.stringify({
-  //       tournamentId,
-  //       matchNumber,
-  //       player1,
-  //       player2,
-  //       score1,
-  //       score2,
-  //       duration
-  //     })
-  //   });
-
-  //   if (!response.ok) {
-  //     throw new Error('Failed to finish match');
-  //   }
-
-  //   return await response.json();
-  // }
 
   /**
    * Terminer un match de tournoi
