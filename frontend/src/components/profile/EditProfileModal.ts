@@ -218,7 +218,6 @@ export class EditProfileModal {
     errorMessage.classList.add('hidden');
 
     try {
-    //   const formData = new FormData(form);
       const avatarFile = (form.querySelector('#avatar-upload') as HTMLInputElement).files?.[0];
       const username = (form.querySelector('#edit-username') as HTMLInputElement).value.trim();
       const email = (form.querySelector('#edit-email') as HTMLInputElement).value.trim();
@@ -246,6 +245,9 @@ export class EditProfileModal {
       
       // Appeler le callback avec les données mises à jour
       this.onSave(updatedUser);
+      
+      // ❌ SUPPRIMER cette ligne qui cause la redirection vers home
+      // window.dispatchEvent(new CustomEvent('authStateChanged'));
       
       this.close();
       

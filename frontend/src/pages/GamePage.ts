@@ -294,7 +294,8 @@ export class GamePage {
     `;
   }
 
-  private renderRemoteSettings(): string {
+  private renderRemoteSettings(): string 
+  {
     const isAuthenticated = authService.isAuthenticated();
     
     if (!isAuthenticated) {
@@ -344,46 +345,78 @@ export class GamePage {
       `;
     }
 
+    const currentUser = authService.getCurrentUser();
+    const defaultTheme = this.userPreferredTheme || 'classic';
+
     return `
-      <div class="bg-gray-800 rounded-lg p-6 text-center">
-        <h3 class="text-xl mb-4">${i18n.t('game.modes.remote')}</h3>
-        
-        <!-- ✅ Afficher le thème qui sera utilisé -->
-        ${this.userPreferredTheme ? `
-          <div class="mb-4 p-3 bg-gray-700/50 rounded-lg border border-purple-500/30">
-            <div class="flex items-center justify-center text-purple-300 text-sm">
-              <span class="mr-2">🎨</span>
-              <span>${i18n.t('game.customization.willUseTheme')}: <strong>${this.getThemeName(this.userPreferredTheme)}</strong></span>
+      <div class="bg-gray-800 rounded-lg p-6">
+        <h3 class="text-xl mb-4">${i18n.t('game.customization.title')} - ${i18n.t('game.modes.remote')}</h3>
+
+        <!-- Informations utilisateur -->
+        <div class="mb-6 p-4 bg-gray-700/50 rounded-lg border border-blue-500/30">
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-white font-medium">${i18n.t('game.remote.yourProfile')}</h4>
+              <p class="text-blue-400">${currentUser?.username}</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-gray-400">${i18n.t('game.customization.theme')}</div>
+              <div class="text-purple-300">🎨 ${this.getThemeName(defaultTheme)}</div>
             </div>
           </div>
-        ` : ''}
-        
-        <div id="matchmaking-status">
-          <div class="mb-4">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p class="text-gray-300" id="matchmaking-text">${i18n.t('game.lobby.waitingForPlayer')}</p>
-          </div>
-          <button id="cancel-matchmaking" 
-                  class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg font-medium transition-colors">
-            ${i18n.t('common.cancel')}
-          </button>
         </div>
-      </div>
-    `;
-  }
 
-  private renderTournamentSettings(): string {
-    const isAuthenticated = authService.isAuthenticated();
-    return `
-      <div class="bg-gray-800 rounded-lg p-6 text-center">
-        <h3 class="text-xl mb-4">${i18n.t('game.modes.tournament')}</h3>
-        <p class="text-gray-300 mb-6">${i18n.t('home.gameModes.tournament.description')}</p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <button onclick="window.dispatchEvent(new CustomEvent('navigate', { detail: '${isAuthenticated
-            ? '/tournament/create?participants=8&mode=authenticated'
-            : '/tournament/create?participants=8&mode=guest'}' }))"
-                  class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors">
-            ${i18n.t('tournament.create.title')}
+        <!-- Paramètres de matchmaking -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
+            <select id="remote-ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
+              <option value="slow">${i18n.t('common.slow')}</option>
+              <option value="medium" selected>${i18n.t('common.medium')}</option>
+              <option value="fast">${i18n.t('common.fast')}</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">${i18n.t('game.remote.speedNote')}</p>
+          </div>
+
+          <div>
+            <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
+            <select id="remote-win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
+              <option value="3">3 ${i18n.t('common.points')}</option>
+              <option value="5" selected>5 ${i18n.t('common.points')}</option>
+              <option value="10">10 ${i18n.t('common.points')}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
+            <div class="flex items-center">
+              <input type="checkbox" id="remote-enable-powerups" class="mr-2">
+              <label for="remote-enable-powerups" class="text-sm">${i18n.t('game.customization.enablePowerUps')}</label>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">${i18n.t('game.remote.powerUpsNote')}</p>
+          </div>
+
+          
+        </div>
+
+        <!-- Informations de thème (lecture seule) -->
+        <div class="mb-6 p-3 bg-gray-700/50 rounded-lg border border-purple-500/30">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-sm text-gray-300">${i18n.t('game.customization.willUseTheme')}:</span>
+              <span class="text-purple-300 font-medium ml-2">${this.getThemeName(defaultTheme)}</span>
+            </div>
+            <button id="change-theme-profile-remote" class="text-xs bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">
+              ${i18n.t('game.customization.changeInProfile')}
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button id="start-remote-game" 
+                  class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+            ${i18n.t('game.remote.findOpponent')}
           </button>
           <button id="back-to-modes" 
                   class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
@@ -393,6 +426,134 @@ export class GamePage {
       </div>
     `;
   }
+
+  private renderTournamentSettings(): string 
+  {
+    const isAuthenticated = authService.isAuthenticated();
+    const currentUser = authService.getCurrentUser();
+    const defaultTheme = this.userPreferredTheme || 'classic';
+
+    return `
+      <div class="bg-gray-800 rounded-lg p-6">
+        <h3 class="text-xl mb-4">${i18n.t('game.customization.title')} - ${i18n.t('game.modes.tournament')}</h3>
+
+        <!-- Informations participant -->
+        ${isAuthenticated && currentUser ? `
+          <div class="mb-6 p-4 bg-gray-700/50 rounded-lg border border-purple-500/30">
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="text-white font-medium">${i18n.t('tournament.yourParticipation')}</h4>
+                <p class="text-purple-400">${currentUser.username} (${i18n.t('tournament.authenticatedPlayer')})</p>
+              </div>
+              <div class="text-right">
+                <div class="text-xs text-gray-400">${i18n.t('game.customization.theme')}</div>
+                <div class="text-purple-300">🎨 ${this.getThemeName(defaultTheme)}</div>
+              </div>
+            </div>
+          </div>
+        ` : `
+          <div class="mb-6 p-4 bg-gray-700/50 rounded-lg border border-yellow-500/30">
+            <div class="text-center">
+              <h4 class="text-white font-medium mb-2">${i18n.t('tournament.guestMode')}</h4>
+              <p class="text-yellow-400 text-sm">${i18n.t('tournament.guestModeDescription')}</p>
+            </div>
+          </div>
+        `}
+
+        <!-- Paramètres du tournoi -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label class="block mb-2">${i18n.t('tournament.participants')}:</label>
+            <select id="tournament-participants" class="bg-gray-700 rounded px-3 py-2 w-full" disabled>
+              <option value="8" selected>8 ${i18n.t('tournament.participantsCount')}</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">${i18n.t('tournament.participantsNote')}</p>
+          </div>
+
+          <div>
+            <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
+            <select id="tournament-ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
+              <option value="slow">${i18n.t('common.slow')}</option>
+              <option value="medium" selected>${i18n.t('common.medium')}</option>
+              <option value="fast">${i18n.t('common.fast')}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
+            <select id="tournament-win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
+              <option value="3">3 ${i18n.t('common.points')}</option>
+              <option value="5" selected>5 ${i18n.t('common.points')}</option>
+              <option value="7">7 ${i18n.t('common.points')}</option>
+            </select>
+            <p class="text-xs text-gray-400 mt-1">${i18n.t('tournament.winScoreNote')}</p>
+          </div>
+
+          <div>
+            <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
+            <div class="flex items-center">
+              <input type="checkbox" id="tournament-enable-powerups" class="mr-2">
+              <label for="tournament-enable-powerups" class="text-sm">${i18n.t('game.customization.enablePowerUps')}</label>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">${i18n.t('tournament.powerUpsNote')}</p>
+          </div>
+        </div>
+
+        <!-- Thème (lecture seule pour utilisateurs connectés) -->
+        ${isAuthenticated && this.userPreferredTheme ? `
+          <div class="mb-6 p-3 bg-gray-700/50 rounded-lg border border-purple-500/30">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-sm text-gray-300">${i18n.t('game.customization.tournamentTheme')}:</span>
+                <span class="text-purple-300 font-medium ml-2">${this.getThemeName(defaultTheme)}</span>
+              </div>
+              <button id="change-theme-profile-tournament" class="text-xs bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">
+                ${i18n.t('game.customization.changeInProfile')}
+              </button>
+            </div>
+          </div>
+        ` : `
+          <div class="mb-6">
+            <label class="block mb-2">${i18n.t('game.customization.theme')}:</label>
+            <select id="tournament-theme" class="bg-gray-700 rounded px-3 py-2 w-full">
+              <option value="classic" selected>${i18n.t('game.themes.classic')}</option>
+              <option value="neon">${i18n.t('game.themes.neon')}</option>
+              <option value="retro">${i18n.t('game.themes.retro')}</option>
+              <option value="cyberpunk">Cyberpunk</option>
+              <option value="space">Space</option>
+              <option value="italian">${i18n.t('game.themes.italian')}</option>
+              <option value="matrix">${i18n.t('game.themes.matrix')}</option>
+              <option value="lava">${i18n.t('game.themes.lava')}</option>
+            </select>
+          </div>
+        `}
+
+        <!-- Description du tournoi -->
+        <div class="mb-6 p-4 bg-blue-900/20 rounded-lg border border-blue-700/30">
+          <h4 class="text-blue-300 font-medium mb-2">${i18n.t('tournament.howItWorks')}</h4>
+          <ul class="text-sm text-gray-300 space-y-1">
+            <li>• ${i18n.t('tournament.step1')}</li>
+            <li>• ${i18n.t('tournament.step2')}</li>
+            <li>• ${i18n.t('tournament.step3')}</li>
+            <li>• ${i18n.t('tournament.step4')}</li>
+          </ul>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button id="create-tournament" 
+                  class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+            ${i18n.t('tournament.create.createTournament')}
+          </button>
+          <button id="back-to-modes" 
+                  class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
+            ${i18n.t('common.changeMode')}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
 
   private renderGameContainer(): string {
     return `
@@ -563,7 +724,7 @@ export class GamePage {
       btn.addEventListener('click', () => this.showModeSelection());
     });
 
-    // Start local game
+    // Start games
     document.getElementById('start-local-game')?.addEventListener('click', () => this.startLocalGame());
 
     // ✅ Bouton cancel pour annuler le matchmaking
@@ -576,21 +737,30 @@ export class GamePage {
       sessionStorage.removeItem('remote_game_data');
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
     });
+    document.getElementById('start-remote-game')?.addEventListener('click', () => this.startRemoteGame());
+    document.getElementById('create-tournament')?.addEventListener('click', () => this.createTournament());
 
-    // ✅ Redirection vers le profil pour changer le thème
+    // ✅ Redirection vers le profil pour changer le thème (tous modes)
     document.getElementById('change-theme-profile')?.addEventListener('click', () => {
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
     });
+    document.getElementById('change-theme-profile-remote')?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
+    });
+    document.getElementById('change-theme-profile-tournament')?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
+    });
 
-    // power ups
-    document.getElementById('enable-powerups')?.addEventListener('change', (e) => {
-      const checkbox = e.target as HTMLInputElement;
-      console.log(`🔋 Power-ups ${checkbox.checked ? 'enabled' : 'disabled'}`);
-      
-      // Si le jeu est déjà en cours, appliquer le changement immédiatement
-      if (this.gameManager) {
-        this.gameManager.togglePowerUps(checkbox.checked);
-      }
+    // Power ups (tous modes)
+    ['enable-powerups', 'remote-enable-powerups', 'tournament-enable-powerups'].forEach(id => {
+      document.getElementById(id)?.addEventListener('change', (e) => {
+        const checkbox = e.target as HTMLInputElement;
+        console.log(`🔋 Power-ups ${checkbox.checked ? 'enabled' : 'disabled'} for ${id}`);
+        
+        if (this.gameManager) {
+          this.gameManager.togglePowerUps(checkbox.checked);
+        }
+      });
     });
 
     // Game interface controls
@@ -607,7 +777,6 @@ export class GamePage {
       this.startRemoteGame();
     }, { once: true });
   }
-
   
   private bindGameInterfaceEvents(): void {
     const pauseBtn = document.getElementById('pause-game');
@@ -625,6 +794,26 @@ export class GamePage {
         this.quitGame();
       }
     });
+  }
+
+
+  private createTournament(): void {
+    const gameSettings = this.getGameSettings();
+    const isAuthenticated = authService.isAuthenticated();
+    
+    // Construire l'URL avec les paramètres
+    const params = new URLSearchParams({
+      participants: '8',
+      mode: isAuthenticated ? 'authenticated' : 'guest',
+      ballSpeed: gameSettings.ballSpeed,
+      winScore: gameSettings.winScore.toString(),
+      theme: gameSettings.theme,
+      powerUps: gameSettings.powerUps.toString()
+    });
+    
+    window.dispatchEvent(new CustomEvent('navigate', { 
+      detail: `/tournament/create?${params.toString()}` 
+    }));
   }
 
   private updatePauseButton(): void {
@@ -655,17 +844,17 @@ export class GamePage {
     if (element) this.render(element);
     this.bindEvents();
 
-    // Auto-start remote matchmaking if authenticated and not interrupted
-    if (mode === 'remote' && authService.isAuthenticated()) {
+    // // Auto-start remote matchmaking if authenticated and not interrupted
+    // if (mode === 'remote' && authService.isAuthenticated()) {
       // ✅ Vérifier s'il y a une interruption avant de lancer le matchmaking
       const wasInGame = sessionStorage.getItem('remote_game_active');
       if (wasInGame !== 'true') {
         console.log('🎮 Auto-starting remote matchmaking');
-        setTimeout(() => this.startRemoteGame(), 100);
+      //   setTimeout(() => this.startRemoteGame(), 100);
       } else {
         console.log('🚫 Not auto-starting due to game interruption - showing forfeit modal');
       }
-    }
+    // }
   }
 
   private showModeSelection(): void {
@@ -811,28 +1000,54 @@ export class GamePage {
     }
   }
 
-  private getGameSettings(): GameSettings {
+  private getGameSettings(): GameSettings 
+  {
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
     
-    // Si l'utilisateur est connecté, utiliser son username pour le joueur 1
-    const player1Name = isAuthenticated && currentUser 
-      ? currentUser.username 
-      : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 1';
+    // Noms des joueurs selon le mode
+    let player1Name: string;
+    let player2Name: string;
     
-    // ✅ Utiliser le thème préféré de l'utilisateur ou la sélection manuelle
-    const selectedTheme = isAuthenticated && this.userPreferredTheme 
-      ? this.userPreferredTheme 
-      : (document.getElementById('game-theme') as HTMLSelectElement)?.value || 'classic';
+    if (this.gameMode === 'remote') {
+      player1Name = currentUser?.username || 'Player';
+      player2Name = 'Opponent'; // Sera mis à jour lors du matchmaking
+    } else if (this.gameMode === 'tournament') {
+      player1Name = currentUser?.username || 'Player';
+      player2Name = 'Opponent'; // Sera mis à jour lors du tournoi
+    } else {
+      // Mode local
+      player1Name = isAuthenticated && currentUser 
+        ? currentUser.username 
+        : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || 'Player 1';
+      player2Name = (document.getElementById('player2-name-input') as HTMLInputElement)?.value || 'Player 2';
+    }
+    
+    // Récupérer les paramètres selon le mode
+    const prefix = this.gameMode === 'remote' ? 'remote-' : 
+                  this.gameMode === 'tournament' ? 'tournament-' : '';
+    
+    const ballSpeedEl = document.getElementById(`${prefix}ball-speed`) as HTMLSelectElement;
+    const winScoreEl = document.getElementById(`${prefix}win-score`) as HTMLSelectElement;
+    const powerUpsEl = document.getElementById(`${prefix}enable-powerups`) as HTMLInputElement;
+    const themeEl = document.getElementById(`${prefix}theme`) as HTMLSelectElement;
+    
+    // Thème : préféré utilisateur ou sélection manuelle
+    let selectedTheme: string;
+    if (isAuthenticated && this.userPreferredTheme) {
+      selectedTheme = this.userPreferredTheme;
+    } else {
+      selectedTheme = themeEl?.value || 'classic';
+    }
     
     return {
       player1Name,
-      player2Name: (document.getElementById('player2-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 2',
-      ballSpeed: (document.getElementById('ball-speed') as HTMLSelectElement)?.value as 'slow' | 'medium' | 'fast' || 'medium',
-      winScore: parseInt((document.getElementById('win-score') as HTMLSelectElement)?.value || '5'),
-      theme: selectedTheme, // ✅ Thème automatique ou manuel
-      enableEffects: (document.getElementById('enable-effects') as HTMLInputElement)?.checked || false,
-      powerUps: (document.getElementById('enable-powerups') as HTMLInputElement)?.checked || false
+      player2Name,
+      ballSpeed: ballSpeedEl?.value as 'slow' | 'medium' | 'fast' || 'medium',
+      winScore: parseInt(winScoreEl?.value || '5'),
+      theme: selectedTheme,
+      enableEffects: false, // Toujours false pour l'instant
+      powerUps: powerUpsEl?.checked || false
     };
   }
 

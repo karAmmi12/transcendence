@@ -117,7 +117,7 @@ export class ProfilePage {
   private openEditModal(): void {
     if (!this.user) return;
 
-    const editModal = new EditProfileModal(this.user, (updatedUser: User) => {
+    const editModal = new EditProfileModal(this.user, async (updatedUser: User) => {
       this.user = updatedUser;
       
       const element = document.querySelector('#page-content');
@@ -125,7 +125,10 @@ export class ProfilePage {
         this.render(element);
       }
       
-      // Déclencher un événement pour mettre à jour l'en-tête
+      // ✅ Recharger les données utilisateur dans authService
+      await authService.loadCurrentUser();
+      
+      // ✅ Déclencher la mise à jour du header
       window.dispatchEvent(new CustomEvent('authStateChanged'));
     });
 
