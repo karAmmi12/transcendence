@@ -1,4 +1,5 @@
 import { authService } from '@/services/authService.js';
+import { userService } from '@/services/userService.js'; // ✅ Ajouter l'import
 import { i18n } from '@/services/i18nService.js';
 import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
 import { matchService } from '@/services/matchService';
@@ -10,6 +11,8 @@ export class GamePage {
   private gameManager: GameManager | null = null;
   private remotePong: RemotePong | null = null;
   private settings: GameSettings | null = null;
+  private userPreferredTheme: string | null = null;
+
   private beforeNavigateHandler: ((event: CustomEvent) => void) | null = null;
 
   constructor() {
@@ -19,6 +22,8 @@ export class GamePage {
   async mount(selector: string): Promise<void> {
     const element = document.querySelector(selector);
     if (!element) return;
+
+    await this.loadUserPreferredTheme();
 
     this.render(element);
     this.bindEvents();
@@ -44,6 +49,28 @@ export class GamePage {
     // Vérifier si on a une instance RemotePong active
     return this.remotePong !== null;
   }
+
+  /**
+   * ✅ Charger le thème préféré de l'utilisateur connecté
+   */
+  private async loadUserPreferredTheme(): Promise<void> {
+    const isAuthenticated = authService.isAuthenticated();
+    
+    if (isAuthenticated) {
+      try {
+        // ✅ Récupérer directement depuis l'utilisateur actuel
+        const currentUser = authService.getCurrentUser();
+        this.userPreferredTheme = currentUser?.theme || null;
+        console.log('🎨 User preferred theme loaded:', this.userPreferredTheme);
+      } catch (error) {
+        console.error('❌ Failed to load user theme:', error);
+        this.userPreferredTheme = null;
+      }
+    } else {
+      this.userPreferredTheme = null;
+    }
+  }
+
 
   private parseGameMode(): void {
     const urlParams = new URLSearchParams(window.location.search);
@@ -177,11 +204,11 @@ export class GamePage {
   //   `;
   // }
 
-  private renderLocalSettings(): string {
+   private renderLocalSettings(): string {
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
+    const defaultTheme = this.userPreferredTheme || 'classic'; // ✅ Utiliser le thème préféré
 
-    
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         <h3 class="text-xl mb-4">${i18n.t('game.customization.title')} - ${i18n.t('game.modes.local')}</h3>
@@ -221,24 +248,36 @@ export class GamePage {
           </div>
           <div>
             <label class="block mb-2">${i18n.t('game.customization.theme')}:</label>
-            <select id="game-theme" class="bg-gray-700 rounded px-3 py-2 w-full">
-              <option value="classic" selected>${i18n.t('game.themes.classic')}</option>
-              <option value="neon">${i18n.t('game.themes.neon')}</option>
-              <option value="retro">${i18n.t('game.themes.retro')}</option>
-              <option value="cyberpunk">Cyberpunk</option>
-              <option value="space">Space</option>
-              <option value="italian">${i18n.t('game.themes.italian')}</option>
-              <option value="matrix">${i18n.t('game.themes.matrix')}</option>
-              <option value="lava">${i18n.t('game.themes.lava')}</option>
+            <select id="game-theme" class="bg-gray-700 rounded px-3 py-2 w-full" ${isAuthenticated && this.userPreferredTheme ? 'disabled' : ''}>
+              <option value="classic" ${defaultTheme === 'classic' ? 'selected' : ''}>${i18n.t('game.themes.classic')}</option>
+              <option value="neon" ${defaultTheme === 'neon' ? 'selected' : ''}>${i18n.t('game.themes.neon')}</option>
+              <option value="retro" ${defaultTheme === 'retro' ? 'selected' : ''}>${i18n.t('game.themes.retro')}</option>
+              <option value="cyberpunk" ${defaultTheme === 'cyberpunk' ? 'selected' : ''}>Cyberpunk</option>
+              <option value="space" ${defaultTheme === 'space' ? 'selected' : ''}>Space</option>
+              <option value="italian" ${defaultTheme === 'italian' ? 'selected' : ''}>${i18n.t('game.themes.italian')}</option>
+              <option value="matrix" ${defaultTheme === 'matrix' ? 'selected' : ''}>${i18n.t('game.themes.matrix')}</option>
+              <option value="lava" ${defaultTheme === 'lava' ? 'selected' : ''}>${i18n.t('game.themes.lava')}</option>
             </select>
+            ${isAuthenticated && this.userPreferredTheme ? `
+              <div class="text-xs text-blue-400 mt-1 flex items-center justify-between">
+                <span>🎨 ${i18n.t('game.customization.userTheme')}: ${this.getThemeName(this.userPreferredTheme)}</span>
+                <button id="change-theme-profile" class="text-xs bg-purple-600 hover:bg-purple-700 px-2 py-1 rounded">
+                  ${i18n.t('game.customization.changeInProfile')}
+                </button>
+              </div>
+            ` : `
+              <div class="text-xs text-gray-400 mt-1">
+                ${i18n.t('game.customization.guestTheme')}
+              </div>
+            `}
           </div>
           <div>
-          <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
-          <div class="flex items-center">
-            <input type="checkbox" id="enable-powerups" class="mr-2" ${this.settings?.powerUps ? 'checked' : ''}>
-            <label for="enable-powerups" class="text-sm">${i18n.t('game.customization.powerUps')}</label>
+            <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
+            <div class="flex items-center">
+              <input type="checkbox" id="enable-powerups" class="mr-2" ${this.settings?.powerUps ? 'checked' : ''}>
+              <label for="enable-powerups" class="text-sm">${i18n.t('game.customization.powerUps')}</label>
+            </div>
           </div>
-        </div>
         </div>
         
         <div class="flex flex-col sm:flex-row gap-3">
@@ -280,6 +319,17 @@ export class GamePage {
     return `
       <div class="bg-gray-800 rounded-lg p-6 text-center">
         <h3 class="text-xl mb-4">${i18n.t('game.modes.remote')}</h3>
+        
+        <!-- ✅ Afficher le thème qui sera utilisé -->
+        ${this.userPreferredTheme ? `
+          <div class="mb-4 p-3 bg-gray-700/50 rounded-lg border border-purple-500/30">
+            <div class="flex items-center justify-center text-purple-300 text-sm">
+              <span class="mr-2">🎨</span>
+              <span>${i18n.t('game.customization.willUseTheme')}: <strong>${this.getThemeName(this.userPreferredTheme)}</strong></span>
+            </div>
+          </div>
+        ` : ''}
+        
         <div id="matchmaking-status">
           <div class="mb-4">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
@@ -488,6 +538,11 @@ export class GamePage {
     // Start local game
     document.getElementById('start-local-game')?.addEventListener('click', () => this.startLocalGame());
 
+    // ✅ Redirection vers le profil pour changer le thème
+    document.getElementById('change-theme-profile')?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
+    });
+
     // power ups
     document.getElementById('enable-powerups')?.addEventListener('change', (e) => {
       const checkbox = e.target as HTMLInputElement;
@@ -499,8 +554,6 @@ export class GamePage {
       }
     });
 
-    
-    
     // Game interface controls
     this.bindGameInterfaceEvents();
 
@@ -516,6 +569,7 @@ export class GamePage {
     }, { once: true });
   }
 
+  
   private bindGameInterfaceEvents(): void {
     const pauseBtn = document.getElementById('pause-game');
     const quitBtn = document.getElementById('quit-game');
@@ -719,15 +773,19 @@ export class GamePage {
       ? currentUser.username 
       : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 1';
     
+    // ✅ Utiliser le thème préféré de l'utilisateur ou la sélection manuelle
+    const selectedTheme = isAuthenticated && this.userPreferredTheme 
+      ? this.userPreferredTheme 
+      : (document.getElementById('game-theme') as HTMLSelectElement)?.value || 'classic';
+    
     return {
       player1Name,
       player2Name: (document.getElementById('player2-name-input') as HTMLInputElement)?.value || i18n.t('game.score.you') + ' 2',
       ballSpeed: (document.getElementById('ball-speed') as HTMLSelectElement)?.value as 'slow' | 'medium' | 'fast' || 'medium',
       winScore: parseInt((document.getElementById('win-score') as HTMLSelectElement)?.value || '5'),
-      theme: (document.getElementById('game-theme') as HTMLSelectElement)?.value || 'classic',
+      theme: selectedTheme, // ✅ Thème automatique ou manuel
       enableEffects: (document.getElementById('enable-effects') as HTMLInputElement)?.checked || false,
       powerUps: (document.getElementById('enable-powerups') as HTMLInputElement)?.checked || false
-
     };
   }
 
@@ -829,6 +887,24 @@ export class GamePage {
       case 'tournament': return i18n.t('home.gameModes.tournament.description');
       default: return i18n.t('common.chooseModeDescription');
     }
+  }
+
+  /**
+   * ✅ Obtenir le nom d'affichage d'un thème
+   */
+  private getThemeName(themeId: string): string {
+    const nameMap: Record<string, string> = {
+      classic: i18n.t('game.themes.classic'),
+      neon: i18n.t('game.themes.neon'),
+      retro: i18n.t('game.themes.retro'),
+      cyberpunk: 'Cyberpunk',
+      space: 'Space',
+      italian: i18n.t('game.themes.italian'),
+      matrix: i18n.t('game.themes.matrix'),
+      lava: i18n.t('game.themes.lava')
+    };
+    
+    return nameMap[themeId] || nameMap.classic;
   }
 
   destroy(): void {
