@@ -6,18 +6,40 @@ export class TournamentService
     /**
      * service qui creer un tournoi pour 8 participant
      */
-    static async createTournament(participants: string[], userId?: number): Promise<TournamentResponse> 
+    static async createTournament(
+        participants: string[], 
+        userId?: number,
+        gameSettings?: {
+            ballSpeed: string;
+            winScore: number;
+            theme: string;
+            powerUps: boolean;
+        }
+    ): Promise<TournamentResponse>
     {
         try {
             let finalParticipants = [...participants];
             const shuffledParticipants = this.shuffleArray(finalParticipants);
 
-            const stmt = db.prepare (`
-                INSERT INTO tournaments (status, participants, created_at)
-                VALUES ('waiting', ?, datetime('now'))
+            // ✅ Paramètres par défaut si non fournis
+            const defaultSettings = {
+                ballSpeed: 'medium',
+                winScore: 5,
+                theme: 'classic',
+                powerUps: false
+            };
+
+            const tournamentSettings = gameSettings || defaultSettings;
+
+            const stmt = db.prepare(`
+                INSERT INTO tournaments (status, participants, game_settings, created_at)
+                VALUES ('waiting', ?, ?, datetime('now'))
             `);
     
-            const result = stmt.run(JSON.stringify(shuffledParticipants));
+            const result = stmt.run(
+                JSON.stringify(shuffledParticipants),
+                JSON.stringify(tournamentSettings) // ✅ Stocker les paramètres
+            );
             const tournamentId = result.lastInsertRowid as number;
             
             
@@ -47,7 +69,6 @@ export class TournamentService
             // Mettre à jour le statut du tournoi à 'in_progress'
             const updateStmt = db.prepare('UPDATE tournaments SET status = ? WHERE id = ?');
             updateStmt.run('in_progress', tournamentId);
-
             return ({
                 success: true,
                 message: 'Tournament created successfully',
@@ -56,6 +77,7 @@ export class TournamentService
                     status: 'in_progress',
                     participants: tournamentParticipants,
                     bracket,
+                    gameSettings: tournamentSettings, // ✅ Inclure dans la réponse
                     nextMatch: {
                         id: 1,
                         matchNumber: 1,
@@ -141,6 +163,11 @@ static async finishTournamentMatch(tournamentId: number, matchNumber: number, pl
             throw new Error('Tournament not found');
         }
 
+        const gameSettingsStmt = db.prepare('SELECT game_settings FROM tournaments WHERE id = ?');
+        const gameSettingsRow = gameSettingsStmt.get(tournamentId) as any;
+        const gameSettings = gameSettingsRow ? JSON.parse(gameSettingsRow.game_settings) : null;
+
+
         const participants = JSON.parse(tournament.participants) as string[];
         const tournamentParticipants: TournamentParticipant[] = participants.map(name => ({
             name,
@@ -165,6 +192,7 @@ static async finishTournamentMatch(tournamentId: number, matchNumber: number, pl
                     status: 'completed',
                     participants: tournamentParticipants,
                     bracket,
+                    gameSettings: gameSettings,
                     nextMatch: null,
                     winner: winner
                 }
@@ -182,6 +210,7 @@ static async finishTournamentMatch(tournamentId: number, matchNumber: number, pl
                 status: 'in_progress',
                 participants: tournamentParticipants,
                 bracket,
+                gameSettings: gameSettings,
                 nextMatch
             }
         };

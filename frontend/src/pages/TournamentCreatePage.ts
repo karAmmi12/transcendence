@@ -8,6 +8,13 @@ export class TournamentCreatePage {
   private isAuthenticated: boolean = false;
   private participants: string[] = [];
 
+  private gameSettings: {
+    ballSpeed: string;
+    winScore: number;
+    theme: string;
+    powerUps: boolean;
+  } | null = null;
+
   async mount(selector: string): Promise<void> 
   {
     const element = document.querySelector(selector);
@@ -17,6 +24,14 @@ export class TournamentCreatePage {
     const urlParams = new URLSearchParams(window.location.search);
     const mode = urlParams.get('mode');
     this.participantCount = parseInt(urlParams.get('participants') || '8');
+
+     // ✅ Récupérer les paramètres de jeu depuis l'URL
+    this.gameSettings = {
+      ballSpeed: urlParams.get('ballSpeed') || 'medium',
+      winScore: parseInt(urlParams.get('winScore') || '5'),
+      theme: urlParams.get('theme') || 'classic',
+      powerUps: urlParams.get('powerUps') === 'true'
+    };
     
     // ✅ Vérification sécurisée de l'authentification
     this.isAuthenticated = mode === 'authenticated' && authService.isAuthenticated();
@@ -158,11 +173,9 @@ export class TournamentCreatePage {
       const inputs = document.querySelectorAll('input[id^="participant-"]') as NodeListOf<HTMLInputElement>;
       const enteredParticipants = Array.from(inputs).map(input => input.value.trim());
       
-      // ✅ Construire la liste finale des participants de manière sécurisée
       const finalParticipants: string[] = [];
       
       if (this.isAuthenticated) {
-        // ✅ Double vérification côté client avant envoi
         if (!authService.isAuthenticated()) {
           throw new Error('Session expirée. Veuillez vous reconnecter.');
         }
@@ -172,33 +185,35 @@ export class TournamentCreatePage {
           throw new Error('Impossible de récupérer les informations utilisateur.');
         }
         
-        // ✅ L'utilisateur connecté est automatiquement le premier
         finalParticipants.push(currentUser.username);
         finalParticipants.push(...enteredParticipants);
       } else {
         finalParticipants.push(...enteredParticipants);
       }
 
-      // ✅ Validation côté client
-     
+      // Validation côté client
       if (finalParticipants.length !== 8) {
         throw new Error('Le tournoi doit avoir exactement 8 participants.');
       }
 
-      // ✅ Vérifier les doublons
       const uniqueParticipants = new Set(finalParticipants.map(p => p.toLowerCase()));
       if (uniqueParticipants.size !== finalParticipants.length) {
         throw new Error('Tous les participants doivent avoir des noms uniques.');
       }
-
-      // Créer le tournoi via le service (le backend fera ses propres vérifications)
-      const tournamentResponse = await tournamentService.createTournament(finalParticipants);
       
-      /// ✅ Passer directement les données du tournoi à la page
+      // ✅ Créer le tournoi avec les paramètres de jeu
+      const tournamentResponse = await tournamentService.createTournament(
+        finalParticipants, 
+        this.gameSettings // ✅ Passer les paramètres
+      );
+      console.log('Tournament created:', tournamentResponse);
+      
+      
+      // Passer directement les données du tournoi à la page
       const tournamentPage = new TournamentPage();
       await tournamentPage.mount('#page-content', tournamentResponse.tournament);
+   
       
-      // ✅ Optionnel : mettre à jour l'URL sans rechargement
       window.history.pushState(
         { tournamentId: tournamentResponse.tournament.id }, 
         '', 
@@ -208,29 +223,29 @@ export class TournamentCreatePage {
     } catch (error) {
       console.error('Failed to create tournament:', error);
       
-      // ✅ Afficher l'erreur à l'utilisateur
       const errorMessage = (error as Error).message || 'Une erreur est survenue lors de la création du tournoi.';
       this.showError(errorMessage);
     }
   }
 
-private showError(message: string): void {
-  // Créer ou mettre à jour un élément d'erreur
-  let errorElement = document.getElementById('tournament-error');
-  if (!errorElement) {
-    errorElement = document.createElement('div');
-    errorElement.id = 'tournament-error';
-    errorElement.className = 'mt-4 p-3 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm';
+  private showError(message: string): void 
+  {
+    // Créer ou mettre à jour un élément d'erreur
+    let errorElement = document.getElementById('tournament-error');
+    if (!errorElement) {
+      errorElement = document.createElement('div');
+      errorElement.id = 'tournament-error';
+      errorElement.className = 'mt-4 p-3 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm';
+      
+      const form = document.getElementById('tournament-form');
+      form?.insertBefore(errorElement, form.firstChild);
+    }
     
-    const form = document.getElementById('tournament-form');
-    form?.insertBefore(errorElement, form.firstChild);
+    errorElement.textContent = message;
+    
+    // Masquer l'erreur après 5 secondes
+    setTimeout(() => {
+      errorElement?.remove();
+    }, 5000);
   }
-  
-  errorElement.textContent = message;
-  
-  // Masquer l'erreur après 5 secondes
-  setTimeout(() => {
-    errorElement?.remove();
-  }, 5000);
-}
 }

@@ -63,6 +63,7 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         status TEXT CHECK(status IN ('waiting', 'in_progress', 'completed')) DEFAULT 'waiting',
         participants TEXT NOT NULL, -- JSON des 8 participants shufflés dans l'ordre
+        game_settings TEXT, -- JSON des parametre de jeu
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         completed_at DATETIME,
         match_played INTEGER DEFAULT 0
