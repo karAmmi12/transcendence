@@ -34,6 +34,7 @@ export interface TournamentResponse {
         status: 'waiting' | 'in_progress' | 'completed';
         participants: TournamentParticipant[];
         bracket: TournamentBracket;
+        gameSettings: GameSettings;
         nextMatch?: {
             id: number;
             matchNumber: number; // ✅ Ajout du tournament_match_number
@@ -53,6 +54,13 @@ export interface FinishMatchBody {
         player1: number;
         player2: number;
     };
+}
+
+export interface GameSettings {
+    ballSpeed: string;
+    winScore: number;
+    theme: string;
+    powerUps: boolean;
 }
 
 // ⚠️ Supprimer MatchResult car remplacé par TournamentResponse unifié

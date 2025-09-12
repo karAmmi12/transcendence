@@ -7,6 +7,7 @@ export interface User {
   twoFactorEnabled?: boolean;
   createdAt?: string;
   lastLogin?: string;
+  theme?: string;
   googleId?: string; 
   stats?: UserStats;
 }
@@ -92,6 +93,13 @@ export interface GlobalStats {
   totalPlayers: number;
   totalGames: number;
   onlinePlayers: number;
+}
+
+export interface GameSettings {
+  ballSpeed: 'slow' | 'medium' | 'fast';
+  winScore: number;
+  theme: string;
+  powerUps: boolean;
 }
 
 // Ajouter le type Language manquant :

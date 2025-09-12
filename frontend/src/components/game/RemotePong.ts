@@ -339,20 +339,8 @@ export class RemotePong extends Pong3D {
         // ✅ Sauvegarder l'état avant de partir
         this.saveGameStateToSession();
         
-        // ✅ Détecter si c'est un rafraîchissement ou une vraie fermeture
-        // Les rafraîchissements gardent généralement la même origine
-        const isPageRefresh = performance.navigation?.type === 1 || 
-                             document.referrer === window.location.href ||
-                             event.returnValue !== undefined;
-        
-        if (isPageRefresh) {
-          console.log('� Page refresh detected - preserving sessionStorage, NOT notifying disconnection');
-          // Ne pas notifier la déconnexion pour un rafraîchissement
-        } else {
-          console.log('🚪 Real page close detected - notifying disconnection');
-          // Notifier la déconnexion pour une vraie fermeture
-          this.notifyVoluntaryDisconnection('page_close');
-        }
+        // Notifier immédiatement la déconnexion volontaire
+        this.notifyVoluntaryDisconnection('page_refresh');
         
         // Demander confirmation
         event.preventDefault();
@@ -361,33 +349,33 @@ export class RemotePong extends Pong3D {
       }
     };
 
-    // 2. Détecter navigation via le router SPA
+    // 2. Détecter navigation vers d'autres pages
     this.navigationHandler = (event: CustomEvent) => {
-      console.log('🧭 Navigation detected via router');
-      
-      if (this.gameState.status === 'playing') {
-        // Sauvegarder avant de naviguer
+      const targetRoute = event.detail;
+      if (targetRoute !== '/game' && this.gameState.status === 'playing') {
+        console.log('🚶 User navigating away from game:', targetRoute);
+        
+        // ✅ Sauvegarder l'état avant de partir
         this.saveGameStateToSession();
         
-        // Notifier la déconnexion volontaire
-        this.notifyVoluntaryDisconnection('navigation');
-        
-        // Nettoyage rapide
-        this.quickCleanup();
+        this.notifyVoluntaryDisconnection('page_navigation');
       }
     };
 
-    // 3. Détecter changement de visibilité (onglet fermé, changé, etc.)
+    // 3. Détecter inactivité prolongée (onglet en arrière-plan)
     this.visibilityChangeHandler = () => {
       if (document.hidden && this.gameState.status === 'playing') {
-        console.log('👁️ Page hidden - saving game state');
+        console.log('👁️ Page became hidden during game');
+        
+        // ✅ Sauvegarder l'état périodiquement
         this.saveGameStateToSession();
         
-        // Démarrer un timer de déconnexion si la page reste cachée
+        // Timer d'inactivité : 60 secondes
         setTimeout(() => {
           if (document.hidden && this.gameState.status === 'playing') {
-            console.log('⏰ Page hidden for too long - notifying disconnection');
-            this.notifyVoluntaryDisconnection('tab_hidden');
+            console.log('⏰ User inactive too long, disconnecting');
+            this.saveGameStateToSession();
+            this.notifyVoluntaryDisconnection('inactivity');
           }
         }, 60000); // 60 secondes
       }
