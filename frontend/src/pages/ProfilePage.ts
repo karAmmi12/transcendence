@@ -9,8 +9,10 @@ import { FriendsSection } from '@components/profile/FriendsSection';
 import { MatchHistoryCard } from '@components/profile/MatchHistoryCard';
 import { EditProfileModal } from '@components/profile/EditProfileModal';
 import { ChangePasswordModal } from '@components/profile/ChangePasswordModal';
+import { ThemeSelectionModal } from '@components/profile/ThemeSelectionModal';
 import { TwoFactorModal } from '@components/auth/TwoFactorModal';
 import { QuickActionsCard, type ActionCallbacks } from '@components/profile/QuickActionsCard';
+
 import { ProfileLayout, type ProfileComponents } from '@components/profile/ProfileLayout';
 import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/index.js';
 
@@ -145,6 +147,42 @@ export class ProfilePage {
     changePasswordModal.show();
   }
 
+  private openThemeModal(): void {
+    if (!this.user) return;
+
+    const themeModal = new ThemeSelectionModal(this.user, (newTheme: string) => {
+      // Callback après changement de thème
+      if (this.user) {
+        this.user.theme = newTheme;
+      }
+      
+      const element = document.querySelector('#page-content');
+      if (element) {
+        this.render(element);
+      }
+      
+      // Notification de succès
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 z-50 px-4 py-2 rounded-lg text-white font-medium bg-green-600 transform translate-x-full transition-transform duration-300';
+      notification.textContent = i18n.t('profile.themes.messages.saved');
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+      }, 10);
+      
+      setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 3000);
+    });
+
+    themeModal.show();
+  }
+
   private async handleToggle2FA(enabled: boolean): Promise<void> {
     try {
       if (enabled) {
@@ -250,6 +288,7 @@ export class ProfilePage {
       components.header.bindEvents({
         onEditProfile: () => this.openEditModal(),
         onChangePassword: () => this.openChangePasswordModal(),
+        onManageThemes: () => this.openThemeModal(), 
         onToggle2FA: (enabled: boolean) => this.handleToggle2FA(enabled)
       });
 

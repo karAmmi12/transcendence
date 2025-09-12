@@ -7,6 +7,7 @@ import { GameEndModal, GameEndStats, GameEndCallbacks } from '@/components/game/
 import { GameThemes } from '../themes/GameThemes.js';
 import { PowerUpManager } from '../powerups/PowerUpManager.js';
 import { PowerUpType } from '../../../types/powerups.js';
+import { i18n } from '@/services/i18nService.js';
 
 export interface GameSettings {
   player1Name: string;
@@ -142,7 +143,6 @@ export class Pong3D {
       if (this.gameState.status === 'playing') {
         this.updateGame();
       }
-      console.log('SIUUUUUUUUUUUUUUUUUUUU');
       this.scene.render();
     });
   }
@@ -202,14 +202,6 @@ export class Pong3D {
       console.log(`🔥 Applying effect: ${effect.type} for ${effect.targetPlayer}`);
       
       switch (effect.type) {
-        case PowerUpType.BALL_SLOW:
-          this.physics.applySpeedModifier(0.6);
-          break;
-          
-        case PowerUpType.SPEED_BOOST:
-          this.physics.applyPaddleSpeedModifier(effect.targetPlayer, 1.5);
-          break;
-          
         case PowerUpType.PADDLE_SIZE:
           sizeMultipliers[effect.targetPlayer] = 1.4;
           this.renderer.applyPaddleSizeModifier(effect.targetPlayer, 1.4);
@@ -252,15 +244,6 @@ export class Pong3D {
           modifiedInputs[oppositePlayer].down = false;
           break;
           
-        case PowerUpType.SPEED_BOOST:
-          // Augmenter la vitesse de réaction (simulé par des inputs plus sensibles)
-          if (modifiedInputs[targetPlayer].up) {
-            modifiedInputs[targetPlayer].up = true; // Plus réactif
-          }
-          if (modifiedInputs[targetPlayer].down) {
-            modifiedInputs[targetPlayer].down = true;
-          }
-          break;
       }
     }
     
@@ -275,8 +258,19 @@ export class Pong3D {
     if (collidedPowerUp) {
       console.log(`🎯 Power-up collision detected: ${collidedPowerUp.type} at`, ballPosition);
       
-      // Déterminer quel joueur récupère le power-up (celui le plus proche)
-      const targetPlayer = ballPosition.x < 0 ? 'player1' : 'player2';
+      // ✅ Déterminer le joueur en fonction de la direction de la balle
+      const ballVelocity = this.physics.getBallVelocity();
+      let targetPlayer: 'player1' | 'player2';
+      
+      if (ballVelocity.x > 0) {
+        // La balle va vers la droite → poussée par player1 (paddle gauche)
+        targetPlayer = 'player1';
+      } else {
+        // La balle va vers la gauche → poussée par player2 (paddle droite)  
+        targetPlayer = 'player2';
+      }
+      
+      console.log(`🎯 Ball velocity: ${ballVelocity.x}, assigning power-up to: ${targetPlayer}`);
       
       // Activer le power-up
       this.powerUpManager.activatePowerUp(collidedPowerUp.id, targetPlayer);
@@ -289,13 +283,9 @@ export class Pong3D {
   private showPowerUpNotification(type: PowerUpType, player: 'player1' | 'player2'): void {
     // Obtenir le nom lisible du power-up
     const powerUpNames = {
-      [PowerUpType.SPEED_BOOST]: 'Vitesse +',
-      [PowerUpType.PADDLE_SIZE]: 'Grande Palette',
-      [PowerUpType.BALL_SLOW]: 'Balle Lente',
-      [PowerUpType.REVERSE_CONTROLS]: 'Contrôles Inversés',
-      [PowerUpType.FREEZE_OPPONENT]: 'Gel Adversaire',
-      [PowerUpType.INVISIBLE_BALL]: 'Balle Invisible',
-      [PowerUpType.MULTI_BALL]: 'Multi-Balles'
+      [PowerUpType.PADDLE_SIZE]: i18n.t('powerups.paddle_size'),
+      [PowerUpType.REVERSE_CONTROLS]: i18n.t('powerups.reverse_controls'),
+      [PowerUpType.FREEZE_OPPONENT]: i18n.t('powerups.freeze_opponent')
     };
 
     const playerName = player === 'player1' ? this.settings.player1Name : this.settings.player2Name;
@@ -315,9 +305,7 @@ export class Pong3D {
     notification.innerHTML = `
       <div class="flex items-center space-x-2">
         <span class="text-xl">⚡</span>
-        <span class="font-bold">${playerName}</span>
-        <span>a récupéré</span>
-        <span class="font-bold text-yellow-300">${powerUpName}</span>
+        <span class="font-semibold">${i18n.t('game.powerupActivated', { player: playerName, powerUp: powerUpName })}</span>
       </div>
     `;
     
@@ -536,6 +524,13 @@ export class Pong3D {
     if (p1Name) p1Name.textContent = this.settings.player1Name;
     if (p2Name) p2Name.textContent = this.settings.player2Name;
 
+    //mettre a jour les scores desktop
+    const scoresDesktop = document.getElementById('game-scores');
+    if (scoresDesktop)
+    {
+      scoresDesktop.textContent = `${this.gameState.scores.player1} - ${this.gameState.scores.player2}`;
+    }
+
     // Mettre à jour les scores mobiles avec noms
     const scoresMobile = document.getElementById('game-scores-mobile');
     if (scoresMobile) {
@@ -586,13 +581,9 @@ export class Pong3D {
 
   private getEffectName(type: PowerUpType): string {
     const names = {
-      [PowerUpType.SPEED_BOOST]: 'Vitesse+',
       [PowerUpType.PADDLE_SIZE]: 'Grande Palette',
-      [PowerUpType.BALL_SLOW]: 'Balle Lente',
       [PowerUpType.REVERSE_CONTROLS]: 'Contrôles Inversés',
-      [PowerUpType.FREEZE_OPPONENT]: 'Gelé',
-      [PowerUpType.INVISIBLE_BALL]: 'Balle Invisible',
-      [PowerUpType.MULTI_BALL]: 'Multi-Balles'
+      [PowerUpType.FREEZE_OPPONENT]: 'Gelé'
     };
     return names[type] || type;
   }
