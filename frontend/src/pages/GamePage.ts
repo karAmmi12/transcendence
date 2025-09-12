@@ -10,6 +10,7 @@ export class GamePage {
   private gameManager: GameManager | null = null;
   private remotePong: RemotePong | null = null;
   private settings: GameSettings | null = null;
+  private beforeNavigateHandler: ((event: CustomEvent) => void) | null = null;
 
   constructor() {
     this.parseGameMode();
@@ -21,6 +22,27 @@ export class GamePage {
 
     this.render(element);
     this.bindEvents();
+    this.setupNavigationHandler();
+  }
+
+  private setupNavigationHandler(): void {
+    this.beforeNavigateHandler = (event: CustomEvent) => {
+      const targetRoute = event.detail;
+      
+      // Si on quitte la page de jeu et qu'une partie remote est en cours
+      if (targetRoute !== '/game' && this.remotePong && 
+          this.isRemoteGameInProgress()) {
+        console.log('🚶 Leaving game page during remote match, cleaning up...');
+        this.destroy();
+      }
+    };
+    
+    window.addEventListener('beforeNavigate', this.beforeNavigateHandler as EventListener);
+  }
+
+  private isRemoteGameInProgress(): boolean {
+    // Vérifier si on a une instance RemotePong active
+    return this.remotePong !== null;
   }
 
   private parseGameMode(): void {
@@ -487,6 +509,11 @@ export class GamePage {
 
     // Responsive resize
     window.addEventListener('resize', () => this.handleResize());
+    
+    // Écouter l'événement de redémarrage remote
+    window.addEventListener('startRemoteGame', () => {
+      this.startRemoteGame();
+    }, { once: true });
   }
 
   private bindGameInterfaceEvents(): void {
@@ -604,6 +631,11 @@ export class GamePage {
       
       // Créer le jeu remote
       this.remotePong = new RemotePong('game-canvas', gameSettings);
+      
+      // Écouter l'événement de redémarrage pour la prochaine fois
+      window.addEventListener('startRemoteGame', () => {
+        this.startRemoteGame();
+      }, { once: true });
       
       // Démarrer la partie remote
       await this.remotePong.startRemoteGame();
@@ -800,6 +832,8 @@ export class GamePage {
   }
 
   destroy(): void {
+    console.log('🧹 Destroying GamePage and cleaning up active games');
+    
     window.removeEventListener('resize', () => this.handleResize());
     
     if (this.gameManager) {
@@ -810,6 +844,12 @@ export class GamePage {
     if (this.remotePong) {
       this.remotePong.destroy();
       this.remotePong = null;
+    }
+
+    // Retirer les handlers de navigation
+    if (this.beforeNavigateHandler) {
+      window.removeEventListener('beforeNavigate', this.beforeNavigateHandler as EventListener);
+      this.beforeNavigateHandler = null;
     }
   }
 }
