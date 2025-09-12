@@ -11,7 +11,7 @@ export interface GameModeCallbacks {
   onLocalGame: () => void;
   onRemoteGame: () => void;
   onTournament: () => void;
-  onLogin: () => void;
+  onLogin?: () => void;
 }
 
 export class HomePage {
@@ -101,7 +101,6 @@ export class HomePage {
         if (isAuthenticated) {
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=remote' }));
         } else {
-          // Rediriger vers login avec intention de retour
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/login?redirect=/game?mode=remote' }));
         }
       },
@@ -114,7 +113,7 @@ export class HomePage {
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create?participants=8&mode=guest' }));
         }
       },
-      onLogin: () => window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }))
+      onLogin: () => window.dispatchEvent(new CustomEvent('navigate', {  detail: '/login?redirect=/game?mode=remote'  }))
     };
 
     const gameModeButtons = new GameModeButtons(isAuthenticated, gameModeCallbacks);

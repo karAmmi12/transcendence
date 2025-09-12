@@ -65,9 +65,11 @@ export class AuthController
             // 🍪 Définir les cookies d'authentification
             CookieService.replyAuthTokenCookie(reply, result.accessToken!, result.refreshToken!);
 
+            const fullUserData = await UserServices.getUserDataFromDb(result.user!.id);
+
             reply.send({
                 message: "✅ Login successful",
-                user: result.user,
+                user: fullUserData,
             })
             
         } catch (error) {

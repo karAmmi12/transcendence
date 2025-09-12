@@ -82,6 +82,10 @@ export class GamePhysics {
     };
   }
 
+  public getBallVelocity(): { x: number; z: number } {
+    return { ...this.ballVelocity };
+  }
+
 
   public applyPaddleSpeedModifier(player: 'player1' | 'player2', multiplier: number): void {
     this.paddleSpeedMultipliers[player] = multiplier;

@@ -78,6 +78,10 @@ export class AuthService {
       throw new Error(data.error || 'Login failed');
     }
 
+    if (data.user && data.user.avatarUrl) {
+        data.user.avatarUrl = userService.getAvatarUrl(data.user.avatarUrl);
+    }
+
     this.currentUser = data.user;
     window.dispatchEvent(new CustomEvent('authStateChanged'));
     
@@ -101,6 +105,12 @@ export class AuthService {
     }
 
     const data = await response.json();
+
+       // ✅ Traiter l'avatar URL
+    if (data.user && data.user.avatarUrl) {
+        data.user.avatarUrl = userService.getAvatarUrl(data.user.avatarUrl);
+    }
+    
     this.currentUser = data.user;
     window.dispatchEvent(new CustomEvent('authStateChanged'));
     
