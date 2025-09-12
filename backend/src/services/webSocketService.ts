@@ -62,6 +62,37 @@ export class WebSocketService {
       case 'leave_matchmaking':
         this.handleLeaveMatchmaking(ws);
         break;
+        
+      case 'voluntary_disconnect':
+        this.handleVoluntaryDisconnect(ws, message);
+        break;
+    }
+  }
+
+  private handleVoluntaryDisconnect(ws: WebSocket, message: any): void {
+    const { playerId, matchId, reason } = message;
+    console.log(`🚪 Player ${playerId} voluntarily disconnecting from match ${matchId}: ${reason}`);
+    
+    // Traiter comme une déconnexion normale mais avec plus d'informations
+    this.notifyOpponentDisconnection(playerId);
+    
+    // Nettoyer immédiatement
+    this.cleanupPlayer(playerId);
+  }
+
+  private cleanupPlayer(playerId: string): void {
+    // Retirer de la file d'attente
+    this.waitingQueue = this.waitingQueue.filter(p => p.id !== playerId);
+    
+    // Retirer de la liste des joueurs
+    this.players.delete(playerId);
+    
+    // Nettoyer les matches
+    for (const [matchId, match] of this.matches.entries()) {
+      if (match.host.id === playerId || match.guest.id === playerId) {
+        this.matches.delete(matchId);
+        break;
+      }
     }
   }
 
@@ -165,8 +196,8 @@ export class WebSocketService {
     // Notifier l'adversaire
     this.notifyOpponentDisconnection(playerId);
     
-    // Nettoyer
-    this.players.delete(playerId);
+    // Nettoyer le joueur
+    this.cleanupPlayer(playerId);
   }
 
   private getPlayerIdFromWS(ws: WebSocket): string | null {
@@ -179,11 +210,21 @@ export class WebSocketService {
   private notifyOpponentDisconnection(playerId: string): void {
     for (const match of this.matches.values()) {
       if (match.host.id === playerId && match.guest.ws.readyState === WebSocket.OPEN) {
-        match.guest.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
+        console.log(`📢 Notifying guest that host ${playerId} disconnected`);
+        match.guest.ws.send(JSON.stringify({ 
+          type: 'opponent_disconnected',
+          reason: 'host_left',
+          disconnectedPlayer: match.host.username
+        }));
         this.matches.delete(match.id);
         break;
       } else if (match.guest.id === playerId && match.host.ws.readyState === WebSocket.OPEN) {
-        match.host.ws.send(JSON.stringify({ type: 'opponent_disconnected' }));
+        console.log(`📢 Notifying host that guest ${playerId} disconnected`);
+        match.host.ws.send(JSON.stringify({ 
+          type: 'opponent_disconnected',
+          reason: 'guest_left',
+          disconnectedPlayer: match.guest.username
+        }));
         this.matches.delete(match.id);
         break;
       }
