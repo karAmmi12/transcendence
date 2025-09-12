@@ -3,6 +3,7 @@ import { GameSettings } from './Pong3D/Pong3D.js';
 import { authService } from '../../services/authService.js';
 import { matchService } from '../../services/matchService.js';
 import { ApiConfig } from '../../config/api.js';
+import { GameEndModal, GameEndStats, GameEndCallbacks } from '../game/GameEndModal.js';
 
 export class RemotePong extends Pong3D {
   private signalingWS: WebSocket | null = null;
@@ -22,6 +23,9 @@ export class RemotePong extends Pong3D {
   // Flag pour éviter les doubles traitements de déconnexion
   private gameEndedByDisconnection = false;
   
+  // ✅ Flag pour empêcher le matchmaking après une interruption
+  private gameWasInterrupted = false;
+  
   // Handler pour la détection de fermeture de page
   private beforeUnloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
   private visibilityChangeHandler: (() => void) | null = null;
@@ -29,13 +33,219 @@ export class RemotePong extends Pong3D {
 
   constructor(canvasId: string, settings: GameSettings) {
     super(canvasId, settings, true, 'remote'); // isRemote = true, mode = 'remote'
+    
     this.playerId = `player_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // ✅ Vérifier si on revient d'une actualisation pendant une partie
+    this.checkForGameInterruption();
+    
+    // ✅ Si le jeu a été interrompu, ne pas initialiser le matchmaking
+    if (this.gameWasInterrupted) {
+      console.log('🚫 Game was interrupted, skipping normal initialization');
+      return; // Arrêter l'initialisation ici
+    }
     
     // Détecter la fermeture/actualisation de la page
     this.setupPageLeaveDetection();
+    
+    // ✅ Log du statut d'interruption pour debug
+    console.log('🎮 RemotePong created, gameWasInterrupted:', this.gameWasInterrupted);
+  }
+
+  // ✅ Nouvelle méthode pour détecter une interruption de jeu
+  private checkForGameInterruption(): void {
+    // Vérifier si on était en partie avant l'actualisation
+    const wasInGame = sessionStorage.getItem('remote_game_active');
+    const gameData = sessionStorage.getItem('remote_game_data');
+    
+    if (wasInGame === 'true' && gameData) {
+      console.log('🔄 Detected page refresh during remote game');
+      
+      // ✅ Marquer que le jeu a été interrompu pour empêcher le matchmaking
+      this.gameWasInterrupted = true;
+      
+      // ✅ Masquer immédiatement l'interface de jeu
+      setTimeout(() => this.hideGameInterface(), 0);
+      
+      try {
+        const data = JSON.parse(gameData);
+        console.log('📊 Previous game data:', data);
+        
+        // ✅ NE PAS nettoyer le sessionStorage ici - laisser GamePage.ts le gérer
+        // sessionStorage.removeItem('remote_game_active');
+        // sessionStorage.removeItem('remote_game_data');
+        
+        // ✅ Masquer à nouveau après un court délai pour être sûr
+        setTimeout(() => this.hideGameInterface(), 50);
+        setTimeout(() => this.hideGameInterface(), 200);
+        
+        // ✅ Vérifier si on est sur la page /game (GamePage.ts gère déjà le modal)
+        const currentPath = window.location.pathname;
+        if (currentPath === '/game') {
+          console.log('🏠 On game page - GamePage.ts will handle the forfeit modal and cleanup');
+          return; // GamePage.ts affichera le modal de défaite et nettoiera
+        }
+        
+        // Afficher le modal de défaite par forfait plus rapidement
+        setTimeout(() => {
+          this.showGameInterruptionModal(data.opponentUsername || 'Adversaire');
+        }, 100); // Réduire le délai à 100ms
+        
+      } catch (error) {
+        console.error('❌ Failed to parse game data:', error);
+        // ✅ Masquer à nouveau après un court délai pour être sûr
+        setTimeout(() => this.hideGameInterface(), 50);
+        setTimeout(() => this.hideGameInterface(), 200);
+        
+        // ✅ Vérifier si on est sur la page /game (GamePage.ts gère déjà le modal)
+        const currentPath = window.location.pathname;
+        if (currentPath === '/game') {
+          console.log('🏠 On game page - GamePage.ts will handle the forfeit modal');
+          return; // GamePage.ts affichera le modal de défaite
+        }
+        
+        // Fallback : afficher un modal générique
+        setTimeout(() => {
+          this.showGameInterruptionModal('Adversaire');
+        }, 100); // Réduire le délai à 100ms
+      }
+    }
+  }
+
+  // ✅ Masquer l'interface de jeu pour éviter les états confus
+  private hideGameInterface(): void {
+    console.log('🙈 Hiding game interface due to interruption');
+    
+    // Masquer le statut de connexion/recherche
+    const statusElements = [
+      document.getElementById('game-status'),
+      document.getElementById('connection-status'),
+      document.querySelector('.game-status'),
+      document.querySelector('.connection-status'),
+      document.querySelector('[data-remote-status]'),
+      document.querySelector('.remote-status'),
+      // Rechercher aussi par texte
+      ...Array.from(document.querySelectorAll('*')).filter(el => 
+        el.textContent?.includes('Recherche') || 
+        el.textContent?.includes('Connexion') ||
+        el.textContent?.includes('adversaire')
+      )
+    ];
+    
+    statusElements.forEach(el => {
+      if (el && el instanceof HTMLElement) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+      }
+    });
+
+    // Masquer les boutons d'action du jeu
+    const actionElements = [
+      document.getElementById('cancel-matchmaking'),
+      document.getElementById('leave-game'),
+      document.querySelector('.cancel-button'),
+      document.querySelector('.leave-button'),
+      document.querySelector('[data-cancel]'),
+      document.querySelector('button[class*="cancel"]'),
+      // Rechercher les boutons avec du texte spécifique
+      ...Array.from(document.querySelectorAll('button')).filter(btn => 
+        btn.textContent?.includes('Annuler') || 
+        btn.textContent?.includes('Cancel') ||
+        btn.textContent?.includes('Quitter')
+      )
+    ];
+    
+    actionElements.forEach(el => {
+      if (el && el instanceof HTMLElement) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+      }
+    });
+
+    // Masquer le canvas de jeu s'il est visible
+    const canvases = document.querySelectorAll('canvas');
+    canvases.forEach(canvas => {
+      if (canvas instanceof HTMLCanvasElement) {
+        canvas.style.display = 'none';
+        canvas.style.visibility = 'hidden';
+      }
+    });
+
+    // Masquer tout le contenu de la page de jeu
+    const gameContainers = [
+      document.getElementById('game-container'),
+      document.getElementById('remote-game'),
+      document.querySelector('.game-container'),
+      document.querySelector('.remote-game'),
+      document.querySelector('[data-game-container]')
+    ];
+
+    gameContainers.forEach(container => {
+      if (container && container instanceof HTMLElement) {
+        container.style.display = 'none';
+        container.style.visibility = 'hidden';
+      }
+    });
+  }
+
+  // ✅ Nouvelle méthode pour corriger l'interface après interruption
+  private checkAndFixInterfaceAfterInterruption(): void {
+    console.log('🔍 Checking and fixing interface after game interruption');
+    
+    // Vérifier si des éléments de matchmaking sont visibles
+    const problematicElements = [
+      document.getElementById('matchmaking-status'),
+      document.getElementById('cancel-matchmaking'),
+      document.querySelector('.animate-spin'), // Spinner de recherche
+      ...Array.from(document.querySelectorAll('*')).filter(el => 
+        el.textContent?.includes('Recherche d\'un adversaire') ||
+        el.textContent?.includes('En attente') ||
+        el.textContent?.includes('Connexion')
+      )
+    ];
+
+    let hasProblematicInterface = false;
+    problematicElements.forEach(el => {
+      if (el && el instanceof HTMLElement && 
+          el.style.display !== 'none' && 
+          el.style.visibility !== 'hidden' &&
+          !el.classList.contains('hidden')) {
+        hasProblematicInterface = true;
+        console.log('🚨 Found problematic interface element:', el);
+      }
+    });
+
+    if (hasProblematicInterface) {
+      console.log('🔧 Fixing interface - showing forfeit modal instead of matchmaking');
+      
+      // Masquer l'interface problématique
+      this.hideGameInterface();
+      
+      // Afficher le modal de forfait
+      const gameData = sessionStorage.getItem('remote_game_data');
+      let opponentName = 'Adversaire';
+      
+      if (gameData) {
+        try {
+          const data = JSON.parse(gameData);
+          opponentName = data.opponentUsername || 'Adversaire';
+        } catch (e) {
+          console.warn('Failed to parse game data:', e);
+        }
+      }
+      
+      this.showGameInterruptionModal(opponentName);
+    }
   }
 
   public async startRemoteGame(): Promise<void> {
+    // ✅ Empêcher le matchmaking si le jeu a été interrompu
+    if (this.gameWasInterrupted) {
+      console.log('🚫 Preventing matchmaking due to game interruption');
+      this.hideGameInterface(); // Masquer à nouveau au cas où
+      return;
+    }
+    
     console.log('🌐 Starting remote game...');
     this.updateGameStatus('Connexion au serveur...');
     
@@ -46,6 +256,17 @@ export class RemotePong extends Pong3D {
       console.error('❌ Failed to start remote game:', error);
       this.updateGameStatus('Erreur de connexion');
     }
+  }
+
+  // ✅ Override updateGameStatus pour empêcher l'affichage si interrompu
+  protected updateGameStatus(status: string): void {
+    if (this.gameWasInterrupted) {
+      console.log('🚫 Blocking status update due to interruption:', status);
+      return; // Ne pas afficher de statut si le jeu a été interrompu
+    }
+    
+    // Appeler la méthode parent normalement
+    super.updateGameStatus(status);
   }
 
   private async connectToSignalingServer(): Promise<void> {
@@ -87,6 +308,13 @@ export class RemotePong extends Pong3D {
 
   private joinMatchmaking(): void {
     if (!this.signalingWS) return;
+    
+    // ✅ Empêcher le matchmaking si le jeu a été interrompu
+    if (this.gameWasInterrupted) {
+      console.log('🚫 Preventing joinMatchmaking due to game interruption');
+      this.hideGameInterface(); // Masquer à nouveau au cas où
+      return;
+    }
 
     const currentUser = authService.getCurrentUser();
     const username = currentUser?.username || 'Guest';
@@ -103,80 +331,107 @@ export class RemotePong extends Pong3D {
   }
 
   private setupPageLeaveDetection(): void {
-    // Détecter la fermeture/actualisation de la page
+    // 1. Détecter fermeture/rafraîchissement de la page
     this.beforeUnloadHandler = (event: BeforeUnloadEvent) => {
       console.log('🚪 Page is being closed/refreshed');
-      this.notifyDisconnection();
       
-      // Optionnel : demander confirmation si une partie est en cours
       if (this.gameState.status === 'playing') {
+        // ✅ Sauvegarder l'état avant de partir
+        this.saveGameStateToSession();
+        
+        // ✅ Détecter si c'est un rafraîchissement ou une vraie fermeture
+        // Les rafraîchissements gardent généralement la même origine
+        const isPageRefresh = performance.navigation?.type === 1 || 
+                             document.referrer === window.location.href ||
+                             event.returnValue !== undefined;
+        
+        if (isPageRefresh) {
+          console.log('� Page refresh detected - preserving sessionStorage, NOT notifying disconnection');
+          // Ne pas notifier la déconnexion pour un rafraîchissement
+        } else {
+          console.log('🚪 Real page close detected - notifying disconnection');
+          // Notifier la déconnexion pour une vraie fermeture
+          this.notifyVoluntaryDisconnection('page_close');
+        }
+        
+        // Demander confirmation
         event.preventDefault();
         event.returnValue = 'Une partie est en cours. Êtes-vous sûr de vouloir quitter ?';
         return event.returnValue;
       }
     };
 
-    // Détecter quand l'onglet devient invisible (changement d'onglet, minimisation, etc.)
+    // 2. Détecter navigation via le router SPA
+    this.navigationHandler = (event: CustomEvent) => {
+      console.log('🧭 Navigation detected via router');
+      
+      if (this.gameState.status === 'playing') {
+        // Sauvegarder avant de naviguer
+        this.saveGameStateToSession();
+        
+        // Notifier la déconnexion volontaire
+        this.notifyVoluntaryDisconnection('navigation');
+        
+        // Nettoyage rapide
+        this.quickCleanup();
+      }
+    };
+
+    // 3. Détecter changement de visibilité (onglet fermé, changé, etc.)
     this.visibilityChangeHandler = () => {
       if (document.hidden && this.gameState.status === 'playing') {
-        console.log('👁️ Page became hidden during game');
-        // Optionnel : pause automatique ou notification
+        console.log('👁️ Page hidden - saving game state');
+        this.saveGameStateToSession();
+        
+        // Démarrer un timer de déconnexion si la page reste cachée
         setTimeout(() => {
           if (document.hidden && this.gameState.status === 'playing') {
-            console.log('🔔 User has been away too long, notifying disconnection');
-            this.notifyDisconnection();
+            console.log('⏰ Page hidden for too long - notifying disconnection');
+            this.notifyVoluntaryDisconnection('tab_hidden');
           }
-        }, 30000); // 30 secondes d'absence = déconnexion
+        }, 60000); // 60 secondes
       }
     };
 
+    // Attacher les événements
     window.addEventListener('beforeunload', this.beforeUnloadHandler);
-    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
-    
-    // Détecter la navigation vers d'autres pages
-    this.navigationHandler = (event: CustomEvent) => {
-      const targetRoute = event.detail;
-      if (targetRoute !== '/game' && this.gameState.status === 'playing') {
-        console.log('🚶 User navigating away from game during match:', targetRoute);
-        this.notifyDisconnection();
-      }
-    };
-    
     window.addEventListener('beforeNavigate', this.navigationHandler as EventListener);
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
   }
 
-  private notifyDisconnection(): void {
-    console.log('📡 Notifying opponent of disconnection');
+  private notifyVoluntaryDisconnection(reason: string): void {
+    console.log(`📡 Notifying voluntary disconnection: ${reason}`);
     
-    // Envoyer immédiatement un signal de déconnexion via le canal de données P2P
+    // 1. Envoyer via P2P en priorité (plus rapide)
     if (this.dataChannel?.readyState === 'open') {
       try {
         this.dataChannel.send(JSON.stringify({
-          type: 'player_disconnect',
+          type: 'voluntary_disconnect',
           playerId: this.playerId,
-          reason: 'page_leave'
+          reason: reason,
+          timestamp: Date.now()
         }));
+        console.log('✅ Disconnect notification sent via P2P');
       } catch (error) {
-        console.error('❌ Failed to send disconnect via P2P:', error);
+        console.error('❌ Failed to send P2P disconnect:', error);
       }
     }
 
-    // Envoyer aussi via le serveur de signaling
+    // 2. Envoyer via signaling comme backup
     if (this.signalingWS?.readyState === WebSocket.OPEN) {
       try {
         this.signalingWS.send(JSON.stringify({
-          type: 'voluntary_disconnect',
+          type: 'player_quit',
           playerId: this.playerId,
           matchId: this.matchId,
-          reason: 'page_leave'
+          reason: reason,
+          timestamp: Date.now()
         }));
+        console.log('✅ Disconnect notification sent via signaling');
       } catch (error) {
-        console.error('❌ Failed to send disconnect via signaling:', error);
+        console.error('❌ Failed to send signaling disconnect:', error);
       }
     }
-
-    // Fermer les connexions immédiatement
-    this.quickCleanup();
   }
 
   private quickCleanup(): void {
@@ -218,6 +473,13 @@ export class RemotePong extends Pong3D {
           opponentUserId: this.opponentUserId
         });
         
+        // ✅ CRITIQUE: Sauvegarder immédiatement pour le guest après match_found
+        if (!this.isHost) {
+          console.log('👥 Guest received match_found - saving game state immediately');
+          this.gameState.status = 'playing'; // Forcer le statut pour permettre la sauvegarde
+          this.saveGameStateToSession();
+        }
+        
         this.updateGameStatus(`Adversaire trouvé: ${message.opponent.username}`);
         await this.setupWebRTCConnection();
         break;
@@ -237,7 +499,7 @@ export class RemotePong extends Pong3D {
       case 'opponent_disconnected':
         console.log(`❌ Opponent disconnected: ${message.disconnectedPlayer} (${message.reason})`);
         this.updateGameStatus(`${message.disconnectedPlayer} s'est déconnecté`);
-        this.handleOpponentDisconnect();
+        this.handleOpponentDisconnection(message.reason || 'unknown');
         break;
     }
   }
@@ -308,10 +570,21 @@ export class RemotePong extends Pong3D {
       this.handleP2PMessage(data);
     };
 
+    // 4. Détecter fermeture inattendue du canal P2P
     this.dataChannel.onclose = () => {
-      console.log('❌ P2P connection closed');
-      if (!this.gameEndedByDisconnection) {
-        this.handleOpponentDisconnect();
+      console.log('❌ P2P connection closed unexpectedly');
+      
+      if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
+        // L'autre joueur a perdu la connexion involontairement
+        this.handleOpponentDisconnection('connection_lost');
+      }
+    };
+
+    this.dataChannel.onerror = (error) => {
+      console.error('❌ P2P connection error:', error);
+      
+      if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
+        this.handleOpponentDisconnection('connection_error');
       }
     };
   }
@@ -435,9 +708,38 @@ export class RemotePong extends Pong3D {
       case 'player_disconnect':
         console.log('🚪 Opponent disconnected voluntarily:', data.reason);
         if (!this.gameEndedByDisconnection) {
-          this.handleOpponentDisconnect();
+          this.handleOpponentQuit(data.reason);
         }
         break;
+
+      // 5. Gérer les déconnexions volontaires
+      case 'voluntary_disconnect':
+        console.log(`🚪 Opponent quit voluntarily: ${data.reason}`);
+        this.handleOpponentQuit(data.reason);
+        break;
+
+      // 6. Gérer la notification de sauvegarde
+      case 'match_saved':
+        console.log('💾 Opponent saved the match data');
+        this.isMatchDataSent = true;
+        break;
+    }
+  }
+
+  private notifyMatchSaved(): void {
+    console.log('📡 Notifying opponent that match data was saved');
+    
+    if (this.dataChannel?.readyState === 'open') {
+      try {
+        this.dataChannel.send(JSON.stringify({
+          type: 'match_saved',
+          playerId: this.playerId,
+          timestamp: Date.now()
+        }));
+        console.log('✅ Match saved notification sent');
+      } catch (error) {
+        console.error('❌ Failed to send match saved notification:', error);
+      }
     }
   }
 
@@ -454,6 +756,9 @@ export class RemotePong extends Pong3D {
     this.gameState.status = state.status;
     this.gameState.winner = state.winner;
     
+    // ✅ Sauvegarder l'état mis à jour
+    this.saveGameStateToSession();
+    
     // Mettre à jour l'affichage des scores et du timer pour le guest
     this.updateUI();
     this.updateTimerDisplay(); // nouvelle methode pour forcer la maj
@@ -461,6 +766,9 @@ export class RemotePong extends Pong3D {
     // Vérifier la fin de partie
     if (state.status === 'finished') {
       console.log('🏁 Remote game ended for guest');
+      // ✅ Nettoyer le sessionStorage à la fin
+      sessionStorage.removeItem('remote_game_active');
+      sessionStorage.removeItem('remote_game_data');
       this.handleRemoteGameEnd();
     }
   }
@@ -549,28 +857,43 @@ export class RemotePong extends Pong3D {
     return;
   }
 
-  private handleOpponentDisconnect(): void {
+  private handleOpponentQuit(reason: string): void {
     if (this.gameState.status === 'finished' || this.gameEndedByDisconnection) {
       return; // Éviter les doubles traitements
     }
 
-    console.log('❌ Opponent disconnected - awarding victory');
+    console.log(`❌ Opponent quit the game (${reason}) - awarding victory`);
     this.gameEndedByDisconnection = true;
     
-    // Déterminer qui gagne automatiquement
+    // Déterminer le gagnant (celui qui reste)
+    this.awardVictoryByForfeit('opponent_quit', reason);
+  }
+
+  private handleOpponentDisconnection(reason: string): void {
+    if (this.gameState.status === 'finished' || this.gameEndedByDisconnection) {
+      return;
+    }
+
+    console.log(`❌ Opponent disconnected (${reason}) - awarding victory`);
+    this.gameEndedByDisconnection = true;
+    
+    // Déterminer le gagnant (celui qui reste)
+    this.awardVictoryByForfeit('opponent_disconnected', reason);
+  }
+
+  private awardVictoryByForfeit(type: 'opponent_quit' | 'opponent_disconnected', reason: string): void {
     const currentUser = authService.getCurrentUser();
     let winner: 'player1' | 'player2';
     let winnerName: string;
     let loserName: string;
 
+    // Le joueur qui reste gagne toujours
     if (this.isHost) {
-      // L'hôte gagne car le guest s'est déconnecté
       winner = 'player1'; // Host = player1
       winnerName = currentUser?.username || 'Host';
       loserName = this.opponentUsername;
     } else {
-      // Le guest gagne car l'host s'est déconnecté
-      winner = 'player2'; // Guest = player2
+      winner = 'player2'; // Guest = player2  
       winnerName = currentUser?.username || 'Guest';
       loserName = this.opponentUsername;
     }
@@ -579,7 +902,7 @@ export class RemotePong extends Pong3D {
     this.gameState.status = 'finished';
     this.gameState.winner = winner;
     
-    // Donner un score automatique (5-0 par forfait)
+    // Score automatique 5-0 par forfait
     if (winner === 'player1') {
       this.gameState.scores.player1 = 5;
       this.gameState.scores.player2 = 0;
@@ -588,29 +911,35 @@ export class RemotePong extends Pong3D {
       this.gameState.scores.player2 = 5;
     }
 
-    this.updateGameStatus(`Victoire par forfait !`);
+    const statusMessage = type === 'opponent_quit' 
+      ? `${loserName} a quitté la partie`
+      : `${loserName} s'est déconnecté`;
+      
+    this.updateGameStatus(`Victoire par forfait ! ${statusMessage}`);
     
-    // Sauvegarder le match avec victoire par forfait
-    this.handleDisconnectionVictory(winner, winnerName, loserName);
+    // Sauvegarder et afficher le résultat
+    this.processForfeitVictory(winner, winnerName, loserName, reason);
   }
 
-  private async handleDisconnectionVictory(winner: 'player1' | 'player2', winnerName: string, loserName: string): Promise<void> {
-    console.log(`🏆 Victory by forfeit: ${winnerName} wins`);
+  private async processForfeitVictory(winner: 'player1' | 'player2', winnerName: string, loserName: string, reason: string): Promise<void> {
+    console.log(`🏆 Processing forfeit victory: ${winnerName} wins (${reason})`);
     
-    // Sauvegarder les données de match si on est l'hôte et qu'on a l'ID de l'adversaire
-    if (this.isHost && this.opponentUserId && !this.isMatchDataSent) {
+    // Pour les forfaits, le gagnant (celui qui reste) sauvegarde toujours
+    if (this.opponentUserId && !this.isMatchDataSent) {
       try {
-        const duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
-        await this.saveRemoteMatchData();
-        console.log('✅ Forfeit match data saved');
+        await this.saveRemoteMatchDataByWinner(winner);
+        console.log('✅ Forfeit match data saved by winner');
+        
+        // Notifier l'autre joueur (si encore connecté) que la sauvegarde est faite
+        this.notifyMatchSaved();
       } catch (error) {
         console.error('❌ Failed to save forfeit match data:', error);
       }
     }
 
-    // Afficher le modal de victoire après un court délai
+    // Afficher le modal de victoire
     setTimeout(() => {
-      this.showDisconnectionVictoryModal(winnerName, loserName);
+      this.showForfeitVictoryModal(winnerName, loserName, reason);
     }, 1000);
 
     // Nettoyer les connexions
@@ -620,135 +949,170 @@ export class RemotePong extends Pong3D {
   }
 
   private showDisconnectionVictoryModal(winnerName: string, loserName: string): void {
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50';
-    modal.innerHTML = `
-      <div class="bg-gray-800 rounded-lg p-8 text-center border border-gray-700 max-w-md">
-        <div class="mb-4">
-          <div class="text-6xl mb-4">🏆</div>
-          <h3 class="text-2xl font-bold mb-2 text-yellow-400">Victoire !</h3>
-          <p class="text-lg mb-4 text-white">${winnerName} remporte la partie</p>
-        </div>
-        
-        <div class="bg-gray-700 rounded-lg p-4 mb-6">
-          <p class="text-gray-300 mb-2">Victoire par forfait</p>
-          <p class="text-sm text-gray-400">${loserName} s'est déconnecté</p>
-          <div class="text-xl font-bold mt-2 text-green-400">
-            Score final: 5 - 0
-          </div>
-        </div>
+    // Masquer le timer et autres éléments de jeu
+    const gameOverlay = document.getElementById('game-overlay');
+    if (gameOverlay) {
+      gameOverlay.style.display = 'none';
+    }
 
-        <div class="flex gap-3 justify-center">
-          <button id="play-again-btn" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded text-white transition-colors">
-            Nouvelle partie
-          </button>
-          <button id="return-menu-btn" class="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded text-white transition-colors">
-            Retour au menu
-          </button>
-        </div>
-      </div>
-    `;
+    // Créer les statistiques pour le modal de forfait
+    const stats: GameEndStats = {
+      winnerName,
+      loserName,
+      winnerScore: 5,
+      loserScore: 0,
+      matchDuration: Math.floor(this.gameState.timer),
+      totalScore: 5,
+      gameMode: 'remote',
+      winScore: this.settings.winScore
+    };
 
-    document.body.appendChild(modal);
-
-    // Gérer les boutons
-    document.getElementById('play-again-btn')?.addEventListener('click', () => {
-      modal.remove();
-      this.restartRemoteGame();
-    });
-
-    document.getElementById('return-menu-btn')?.addEventListener('click', () => {
-      modal.remove();
-      this.destroy();
-      window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
-    });
-  }
-
-  private restartRemoteGame(): void {
-    console.log('🔄 Restarting remote game...');
-    this.destroy();
-    
-    // Redémarrer une nouvelle partie remote
-    setTimeout(() => {
-      window.dispatchEvent(new CustomEvent('startRemoteGame'));
-    }, 500);
-  }
-
-  private handleSignalingDisconnect(): void {
-    console.log('📡 Signaling server disconnected');
-    
-    if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
-      // Si on est en pleine partie et que le signaling se déconnecte,
-      // essayer de continuer avec la connexion P2P existante
-      this.updateGameStatus('Connexion serveur perdue - partie en cours...');
-      
-      // Si la connexion P2P est aussi fermée, traiter comme une déconnexion
-      if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
-        setTimeout(() => {
-          if (!this.gameEndedByDisconnection) {
-            this.handleOpponentDisconnect();
-          }
-        }, 5000); // Délai de grâce de 5 secondes
+    // Callbacks pour remote : seulement "Retour au menu"
+    const callbacks: GameEndCallbacks = {
+      onPlayAgain: undefined, // Pas de "Nouvelle partie" en remote
+      onBackToMenu: () => {
+        console.log('🏠 Going back to menu from forfeit...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+      },
+      onViewStats: () => {
+        console.log('📊 Showing forfeit statistics...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
       }
-    }
+    };
+
+    // Créer et afficher le modal
+    const gameEndModal = new GameEndModal(stats, callbacks);
+    gameEndModal.show();
   }
 
-  private showDisconnectionModal(): void {
-    // Remplacer l'ancien modal simple par le nouveau système
-    if (!this.gameEndedByDisconnection) {
-      this.handleOpponentDisconnect();
-    }
-  }
+  // ✅ Modal spécifique pour les interruptions de jeu
+  private showGameInterruptionModal(opponentName: string): void {
+    // ✅ Effacer le statut de recherche
+    this.updateGameStatus('');
+    
+    const currentUser = authService.getCurrentUser();
+    const playerName = currentUser?.username || 'Joueur';
+    
+    const stats: GameEndStats = {
+      winnerName: opponentName,
+      loserName: playerName,
+      winnerScore: 5,
+      loserScore: 0,
+      matchDuration: 0, // Pas de durée connue
+      totalScore: 5,
+      gameMode: 'remote',
+      winScore: this.settings.winScore
+    };
 
-  // Override endGame pour les jeux remote
-  protected endGame(winner: 'player1' | 'player2'): void {
-    console.log('🏁 Remote game ending via endGame override');
-    
-    // Appeler la logique du parent pour les stats etc. mais sans le modal/sauvegarde
-    const duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
-    
-    // Mettre à jour le statut
-    this.gameState.status = 'finished';
-    this.gameState.winner = winner;
-    
-    const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
-    
-    // Appeler onGameEnd si défini (pour les callbacks)
-    if (this.onGameEnd) {
-      this.onGameEnd(winnerName, this.gameState.scores, duration);
-    }
-    
-    // Pour les jeux remote, on gère la fin avec notre méthode custom
-    this.handleRemoteGameEnd();
-  }
-
-  private async handleRemoteGameEnd(): Promise<void> {
-    console.log('🏁 Remote game ended');
-    
-    // Sauvegarder les données de match remote (seulement une fois par l'host)
-    if (this.isHost && this.opponentUserId && !this.isMatchDataSent) {
-      try {
-        await this.saveRemoteMatchData();
-      } catch (error) {
-        console.error('❌ Failed to save remote match data:', error);
+    const callbacks: GameEndCallbacks = {
+      onPlayAgain: undefined, // Pas de nouvelle partie
+      onBackToMenu: () => {
+        console.log('🏠 Going back to menu after game interruption...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+      },
+      onViewStats: () => {
+        console.log('📊 Showing stats after game interruption...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
       }
-    }
+    };
+
+    // Personnaliser le titre et le message
+    const gameEndModal = new GameEndModal(stats, callbacks);
     
-    // Déclencher le modal de fin pour les deux joueurs
-    if (this.gameState.winner) {
-      const winner = this.gameState.winner;
-      const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
-      const loserName = winner === 'player1' ? this.settings.player2Name : this.settings.player1Name;
+    // ✅ Modifier le contenu pour indiquer une défaite par forfait
+    const originalShow = gameEndModal.show.bind(gameEndModal);
+    gameEndModal.show = () => {
+      originalShow();
       
-      // Déclencher le modal de fin comme dans le parent
+      // Modifier le titre après affichage
       setTimeout(() => {
-        this.showGameEndModal(winner, winnerName, loserName);
-      }, 500); // Petit délai pour laisser l'UI se mettre à jour
-    }
+        const titleElement = document.querySelector('.game-end-modal h2');
+        if (titleElement) {
+          titleElement.textContent = 'Défaite par forfait';
+          titleElement.className = 'text-2xl font-bold text-red-400 mb-4';
+        }
+        
+        const messageElement = document.querySelector('.game-end-modal .result-message');
+        if (messageElement) {
+          messageElement.innerHTML = `
+            <div class="text-center mb-4">
+              <div class="text-6xl mb-4">😔</div>
+              <p class="text-lg text-gray-300">Vous avez quitté la partie</p>
+              <p class="text-sm text-gray-400 mt-2">${opponentName} remporte la victoire par forfait</p>
+            </div>
+          `;
+        }
+      }, 50);
+    };
     
-    setTimeout(() => {
-      this.cleanupConnections();
-    }, 3000);
+    gameEndModal.show();
+  }
+
+  private showForfeitVictoryModal(winnerName: string, loserName: string, reason: string): void {
+    // Masquer le timer et autres éléments de jeu
+    const gameOverlay = document.getElementById('game-overlay');
+    if (gameOverlay) {
+      gameOverlay.style.display = 'none';
+    }
+
+    // Créer les statistiques pour le modal de forfait
+    const stats: GameEndStats = {
+      winnerName,
+      loserName,
+      winnerScore: 5,
+      loserScore: 0,
+      matchDuration: Math.floor(this.gameState.timer),
+      totalScore: 5,
+      gameMode: 'remote',
+      winScore: this.settings.winScore
+    };
+
+    // Callbacks pour remote : seulement "Retour au menu"
+    const callbacks: GameEndCallbacks = {
+      onPlayAgain: undefined, // Pas de "Nouvelle partie" en remote
+      onBackToMenu: () => {
+        console.log('🏠 Going back to menu from forfeit...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+      },
+      onViewStats: () => {
+        console.log('📊 Showing forfeit statistics...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
+      }
+    };
+
+    // Créer et afficher le modal
+    const gameEndModal = new GameEndModal(stats, callbacks);
+    gameEndModal.show();
+  }
+
+  // ✅ Sauvegarder l'état du jeu dans sessionStorage
+  private saveGameStateToSession(): void {
+    console.log('💾 saveGameStateToSession called with status:', this.gameState.status, 'isHost:', this.isHost);
+    
+    if (this.gameState.status === 'playing') {
+      sessionStorage.setItem('remote_game_active', 'true');
+      sessionStorage.setItem('remote_game_data', JSON.stringify({
+        opponentUsername: this.opponentUsername,
+        opponentUserId: this.opponentUserId,
+        isHost: this.isHost,
+        matchId: this.matchId,
+        scores: this.gameState.scores,
+        timer: this.gameState.timer
+      }));
+      console.log('✅ SessionStorage saved successfully for', this.isHost ? 'host' : 'guest');
+      
+      // ✅ VERIFICATION IMMEDIE - test si ça persiste
+      const verification = sessionStorage.getItem('remote_game_active');
+      console.log('🔍 IMMEDIATE VERIFICATION - remote_game_active after save:', verification);
+    } else {
+      console.log('❌ NOT saving to sessionStorage - game status is:', this.gameState.status);
+    }
   }
 
   private async saveRemoteMatchData(): Promise<void> {
@@ -757,12 +1121,22 @@ export class RemotePong extends Pong3D {
       return;
     }
 
-    const duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
+    // Utiliser le timer du jeu si disponible, sinon calculer la différence
+    let duration: number;
+    if (this.gameState.timer > 0) {
+      // Le timer du jeu contient le temps écoulé en secondes
+      duration = Math.floor(this.gameState.timer);
+    } else {
+      // Fallback sur le calcul de timestamps
+      duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
+    }
     
     console.log('💾 Attempting to save remote match data:', {
       opponentUserId: this.opponentUserId,
       scores: this.gameState.scores,
-      duration: duration
+      duration: duration,
+      gameTimer: this.gameState.timer,
+      calculatedFromTime: duration === Math.floor(this.gameState.timer)
     });
     
     try {
@@ -777,6 +1151,64 @@ export class RemotePong extends Pong3D {
       console.log('✅ Remote match data saved successfully');
     } catch (error) {
       console.error('❌ Failed to save remote match data:', error);
+      throw error;
+    }
+  }
+
+  private async saveRemoteMatchDataByWinner(winner: 'player1' | 'player2'): Promise<void> {
+    if (!this.opponentUserId) {
+      console.error('❌ Cannot save remote match: opponent user ID missing');
+      return;
+    }
+
+    // Utiliser le timer du jeu si disponible, sinon calculer la différence
+    let duration: number;
+    if (this.gameState.timer > 0) {
+      // Le timer du jeu contient le temps écoulé en secondes
+      duration = Math.floor(this.gameState.timer);
+    } else {
+      // Fallback sur le calcul de timestamps
+      duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
+    }
+
+    let myScore: number;
+    let opponentScore: number;
+
+    // Déterminer les scores selon qui je suis et qui a gagné
+    if (this.isHost) {
+      // Je suis l'hôte (player1)
+      myScore = this.gameState.scores.player1;
+      opponentScore = this.gameState.scores.player2;
+    } else {
+      // Je suis le guest (player2) - inverser les scores pour l'API
+      // L'API attend toujours les scores du point de vue de l'utilisateur actuel
+      myScore = this.gameState.scores.player2;
+      opponentScore = this.gameState.scores.player1;
+    }
+    
+    console.log('💾 Attempting to save forfeit match data:', {
+      opponentUserId: this.opponentUserId,
+      myScore: myScore,
+      opponentScore: opponentScore,
+      duration: duration,
+      isHost: this.isHost,
+      winner: winner,
+      gameTimer: this.gameState.timer,
+      calculatedFromTime: duration === Math.floor(this.gameState.timer)
+    });
+    
+    try {
+      await matchService.sendRemoteMatchData(
+        this.opponentUserId,
+        myScore,
+        opponentScore,
+        duration
+      );
+      
+      this.isMatchDataSent = true;
+      console.log('✅ Forfeit match data saved successfully');
+    } catch (error) {
+      console.error('❌ Failed to save forfeit match data:', error);
       throw error;
     }
   }
@@ -806,6 +1238,10 @@ export class RemotePong extends Pong3D {
 
   public destroy(): void {
     console.log('🧹 Destroying RemotePong instance');
+    
+    // ✅ Nettoyer le sessionStorage
+    sessionStorage.removeItem('remote_game_active');
+    sessionStorage.removeItem('remote_game_data');
     
     // Marquer comme détruit pour éviter les traitements en double
     this.gameEndedByDisconnection = true;
@@ -842,6 +1278,10 @@ export class RemotePong extends Pong3D {
     this.settings.player1Name = this.opponentUsername; // Host
     this.settings.player2Name = authService.getCurrentUser()?.username || 'Guest'; // Guest
     
+    // ✅ IMPORTANT: Initialiser matchStartTime pour le guest aussi
+    this.matchStartTime = Date.now();
+    this.isMatchDataSent = false;
+    
     // Pour l'invité : seulement initialiser les contrôles et attendre
     // Ne pas appeler startLocalGame() qui lancerait la physique
     this.updateGameStatus('En attente du host...');
@@ -851,5 +1291,139 @@ export class RemotePong extends Pong3D {
     if (!this.controls) {
       console.warn('⚠️ Controls not initialized for guest');
     }
+  }
+
+  private handleSignalingDisconnect(): void {
+    console.log('📡 Signaling server disconnected');
+    
+    if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
+      // Si on est en pleine partie et que le signaling se déconnecte,
+      // essayer de continuer avec la connexion P2P existante
+      this.updateGameStatus('Connexion serveur perdue - partie en cours...');
+      
+      // Si la connexion P2P est aussi fermée, traiter comme une déconnexion
+      if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
+        setTimeout(() => {
+          if (!this.gameEndedByDisconnection) {
+            this.handleOpponentDisconnection('signaling_disconnect');
+          }
+        }, 5000); // Délai de grâce de 5 secondes
+      }
+    }
+  }
+
+  // Override endGame pour les jeux remote
+  protected endGame(winner: 'player1' | 'player2'): void {
+    console.log('🏁 Remote game ending via endGame override');
+    
+    // ✅ Nettoyer le sessionStorage
+    sessionStorage.removeItem('remote_game_active');
+    sessionStorage.removeItem('remote_game_data');
+    
+    // Mettre à jour le statut
+    this.gameState.status = 'finished';
+    this.gameState.winner = winner;
+    
+    const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
+    
+    // Appeler onGameEnd si défini (pour les callbacks)
+    if (this.onGameEnd) {
+      const duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
+      this.onGameEnd(winnerName, this.gameState.scores, duration);
+    }
+    
+    // Pour les jeux remote, gérer la fin avec notre méthode custom
+    this.handleRemoteGameEnd();
+  }
+
+  private async handleRemoteGameEnd(): Promise<void> {
+    console.log('🏁 Remote game ended');
+    
+    // Pour les fins de jeu normales, c'est l'hôte qui sauvegarde en priorité
+    if (this.opponentUserId && !this.isMatchDataSent) {
+      try {
+        if (this.isHost) {
+          // L'hôte utilise la méthode standard et notifie ensuite
+          await this.saveRemoteMatchData();
+          this.notifyMatchSaved();
+        } else {
+          // Le guest attend un peu pour voir si l'hôte sauvegarde
+          setTimeout(async () => {
+            if (!this.isMatchDataSent && this.opponentUserId) {
+              console.log('🔄 Host did not save, guest taking over...');
+              await this.saveRemoteMatchDataByWinner(this.gameState.winner!);
+            }
+          }, 2000); // Attendre 2 secondes
+        }
+      } catch (error) {
+        console.error('❌ Failed to save remote match data:', error);
+      }
+    }
+    
+    // Déclencher le modal de fin pour les deux joueurs
+    if (this.gameState.winner) {
+      const winner = this.gameState.winner;
+      const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
+      const loserName = winner === 'player1' ? this.settings.player2Name : this.settings.player1Name;
+      
+      console.log(`🎭 Showing game end modal for ${this.isHost ? 'HOST' : 'GUEST'}: ${winnerName} wins`);
+      
+      // Déclencher le modal de fin comme dans le parent
+      setTimeout(() => {
+        this.showGameEndModal(winner, winnerName, loserName);
+      }, 500); // Petit délai pour laisser l'UI se mettre à jour
+    } else {
+      console.warn('⚠️ No winner defined for game end modal');
+    }
+    
+    setTimeout(() => {
+      this.cleanupConnections();
+    }, 3000);
+  }
+
+  // Override showGameEndModal pour personnaliser les boutons en mode remote
+  protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
+    // Masquer le timer et autres éléments de jeu
+    const gameOverlay = document.getElementById('game-overlay');
+    if (gameOverlay) {
+      gameOverlay.style.display = 'none';
+    }
+
+    // Calculer les statistiques du match
+    const matchDuration = Math.floor(this.gameState.timer);
+    const totalScore = this.gameState.scores.player1 + this.gameState.scores.player2;
+    const winnerScore = this.gameState.scores[winner];
+    const loserScore = winner === 'player1' ? this.gameState.scores.player2 : this.gameState.scores.player1;
+
+    // Créer les statistiques pour le modal
+    const stats: GameEndStats = {
+      winnerName,
+      loserName,
+      winnerScore,
+      loserScore,
+      matchDuration,
+      totalScore,
+      gameMode: 'remote',
+      winScore: this.settings.winScore
+    };
+
+    // ✅ Callbacks personnalisés pour remote : seulement "Retour au menu"
+    const callbacks: GameEndCallbacks = {
+      onPlayAgain: undefined, // Pas de "Nouvelle partie" en remote
+      onBackToMenu: () => {
+        console.log('🏠 Going back to menu from remote game...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+      },
+      onViewStats: () => {
+        console.log('📊 Showing match statistics from remote game...');
+        this.destroy();
+        window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
+      }
+    };
+
+    // Créer et afficher le modal
+    const gameEndModal = new GameEndModal(stats, callbacks);
+    gameEndModal.show();
   }
 }
