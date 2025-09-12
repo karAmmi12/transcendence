@@ -316,6 +316,34 @@ export class GamePage {
       `;
     }
 
+    // ✅ Vérifier s'il y a une interruption de jeu en cours
+    const wasInGame = sessionStorage.getItem('remote_game_active');
+    console.log('🔍 renderRemoteSettings - Checking sessionStorage:', { 
+      wasInGame, 
+      sessionItems: {
+        remote_game_active: sessionStorage.getItem('remote_game_active'),
+        remote_game_data: sessionStorage.getItem('remote_game_data')
+      }
+    });
+    
+    if (wasInGame === 'true') {
+      console.log('🚫 GamePage detected game interruption - showing forfeit modal instead of matchmaking interface');
+      return `
+        <div class="bg-gray-800 rounded-lg p-6 text-center">
+          <h3 class="text-xl mb-4 text-red-400">Défaite par déconnexion</h3>
+          <div class="mb-6">
+            <div class="text-6xl mb-4">😔</div>
+            <p class="text-lg text-gray-300 mb-2">Vous avez quitté la partie</p>
+            <p class="text-sm text-gray-400">Votre adversaire remporte la victoire par forfait</p>
+          </div>
+          <button id="back-to-menu-from-forfeit"
+                  class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
+            ${i18n.t('common.backToMenu')}
+          </button>
+        </div>
+      `;
+    }
+
     return `
       <div class="bg-gray-800 rounded-lg p-6 text-center">
         <h3 class="text-xl mb-4">${i18n.t('game.modes.remote')}</h3>
@@ -538,6 +566,17 @@ export class GamePage {
     // Start local game
     document.getElementById('start-local-game')?.addEventListener('click', () => this.startLocalGame());
 
+    // ✅ Bouton cancel pour annuler le matchmaking
+    document.getElementById('cancel-matchmaking')?.addEventListener('click', () => this.cancelMatchmaking());
+
+    // ✅ Bouton retour au menu depuis forfait - nettoyer sessionStorage
+    document.getElementById('back-to-menu-from-forfeit')?.addEventListener('click', () => {
+      console.log('🧹 Cleaning up session storage before returning to menu');
+      sessionStorage.removeItem('remote_game_active');
+      sessionStorage.removeItem('remote_game_data');
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+    });
+
     // ✅ Redirection vers le profil pour changer le thème
     document.getElementById('change-theme-profile')?.addEventListener('click', () => {
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
@@ -603,7 +642,7 @@ export class GamePage {
     }
   }
 
-  private selectMode(mode: 'local' | 'remote' | 'tournament'): void {
+  private async selectMode(mode: 'local' | 'remote' | 'tournament'): Promise<void> {
     this.gameMode = mode;
     
     // Update URL
@@ -611,14 +650,21 @@ export class GamePage {
     url.searchParams.set('mode', mode);
     window.history.replaceState({}, '', url.toString());
     
-    // Re-render
+    // Re-render pour afficher l'interface du mode sélectionné
     const element = document.querySelector('#page-content');
     if (element) this.render(element);
     this.bindEvents();
 
-    // Auto-start remote matchmaking if authenticated
+    // Auto-start remote matchmaking if authenticated and not interrupted
     if (mode === 'remote' && authService.isAuthenticated()) {
-      setTimeout(() => this.startRemoteGame(), 100);
+      // ✅ Vérifier s'il y a une interruption avant de lancer le matchmaking
+      const wasInGame = sessionStorage.getItem('remote_game_active');
+      if (wasInGame !== 'true') {
+        console.log('🎮 Auto-starting remote matchmaking');
+        setTimeout(() => this.startRemoteGame(), 100);
+      } else {
+        console.log('🚫 Not auto-starting due to game interruption - showing forfeit modal');
+      }
     }
   }
 
@@ -677,13 +723,14 @@ export class GamePage {
     try {
       console.log('🌐 Starting remote game...');
       
-      // Afficher l'interface de jeu
-      this.showGameInterface();
-      
       // Récupérer les paramètres de jeu
       const gameSettings = this.getGameSettings();
       
-      // Créer le jeu remote
+      // Afficher l'interface de jeu
+      this.showGameInterface();
+      
+      // Créer une nouvelle instance RemotePong
+      console.log('🆕 Creating new RemotePong instance');
       this.remotePong = new RemotePong('game-canvas', gameSettings);
       
       // Écouter l'événement de redémarrage pour la prochaine fois
