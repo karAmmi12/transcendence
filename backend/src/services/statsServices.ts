@@ -110,7 +110,7 @@ export class StatsService
                     },
                     date: match.endedAt,     
                     duration,
-                    gameMode: match.gameMode 
+                    gameMode: match.mode 
                 };
             });
 
