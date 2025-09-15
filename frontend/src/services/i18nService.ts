@@ -38,6 +38,7 @@ export class I18nService {
       const languages: Language[] = ['en', 'fr', 'it', 'es', 'kab', 'kab-tfng', 'ar', 'sg'];
       for (const lang of languages) {
         const response = await fetch(`/src/locales/${lang}.json`);
+        console.log(`✅ Successfully loaded ${lang} translations`);
         if (response.ok) {
           this.translations[lang] = await response.json();
         }

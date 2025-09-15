@@ -9,6 +9,7 @@
     "profile": "الملف الشخصي",
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
+    "register": "إنشاء حساب",
     "selectLanguage": "اختر اللغة"
   },
   "home": {
@@ -34,6 +35,7 @@
       }
     },
     "features": {
+      "title": "المميزات",
       "multiplayer": {
         "title": "لعب جماعي في الوقت الفعلي",
         "description": "العب ضد أصدقائك في الوقت الفعلي من أي مكان في العالم."
@@ -41,10 +43,6 @@
       "tournaments": {
         "title": "البطولات",
         "description": "شارك في البطولات وتسلق لوحة الصدارة لتصبح البطل."
-      },
-      "chat": {
-        "title": "دردشة مباشرة",
-        "description": "تحدث مع لاعبين آخرين وكوّن صداقات جديدة في مجتمع الألعاب."
       },
       "singleplayer": {
         "title": "وضع اللاعب الواحد",
@@ -159,11 +157,28 @@
     "modes": {
       "local": "محلي",
       "remote": "عن بُعد",
-      "tournament": "بطولة",
+      "tournament": "بطولة"
+    },
+    "speeds": {
+      "slow": "بطيء",
+      "medium": "متوسط",
+      "fast": "سريع"
+    },
+    "themes": {
       "classic": "كلاسيكي",
-      "turbo": "تيربو",
-      "powerup": "قوة إضافية",
-      "elimination": "إقصاء"
+      "neon": "نيون",
+      "retro": "رترو",
+      "cyberpunk": "سايبربانك",
+      "space": "فضائي",
+      "italian": "إيطالي",
+      "matrix": "ماتريكس",
+      "lava": "حمم"
+    },
+    "remote": {
+      "yourProfile": "ملفك الشخصي",
+      "speedNote": "ملاحظة: قد تتأثر سرعة الكرة بزمن استجابة الشبكة.",
+      "powerUpsNote": "يجب على كلا اللاعبين الاتفاق على إعدادات القوى الإضافية",
+      "findOpponent": "العثور على خصم"
     },
     "customization": {
       "title": "إعدادات اللعبة",
@@ -174,17 +189,13 @@
       "theme": "المظهر",
       "difficulty": "الصعوبة",
       "resetToDefault": "إعادة تعيين افتراضي",
-      "applySettings": "تطبيق الإعدادات"
-    },
-    "speeds": {
-      "slow": "بطيء",
-      "medium": "متوسط",
-      "fast": "سريع"
-    },
-    "themes": {
-      "classic": "كلاسيكي",
-      "neon": "نيون",
-      "retro": "رترو"
+      "applySettings": "تطبيق الإعدادات",
+      "userTheme": "مظهر المستخدم",
+      "guestTheme": "كضيف، يمكنك اختيار مظهر لهذه الجلسة",
+      "changeInProfile": "تغيير المظهر في ملفك الشخصي",
+      "willUseTheme": "سيستخدم هذا المظهر",
+      "tournamentTheme": "مظهر البطولة",
+      "enablePowerUps": "تفعيل القوى الإضافية"
     }
   },
   "tournament": {
@@ -202,7 +213,19 @@
     "waiting": "في انتظار اللاعبين",
     "inProgress": "البطولة قيد التقدم",
     "finished": "انتهت البطولة",
-    "bracket": "جدول البطولة",
+    "bracket": {
+      "title": "جدول البطولة"
+    },
+    "legend": {
+      "pending": "معلق",
+      "inProgress": "قيد التقدم",
+      "completed": "مكتمل"
+    },
+    "rounds": {
+      "quarterFinals": "ربع النهائي",
+      "semiFinals": "نصف النهائي",
+      "final": "النهائي"
+    },
     "currentMatch": "المباراة الحالية",
     "nextMatch": "المباراة التالية",
     "winner": "بطل البطولة",
@@ -213,13 +236,26 @@
     "finals": "النهائي",
     "semifinals": "نصف النهائي",
     "quarterfinals": "ربع النهائي",
-    "status": "حالة البطولة",
     "players": "اللاعبون",
+    "participants": "المشاركون",
+    "participantsCount": "مشاركون",
+    "participantsNote": "عدد اللاعبين في البطولة",
     "matchNumber": "المباراة {number}",
     "vs": "ضد",
     "waitingForMatch": "في انتظار بدء المباراة",
     "matchInProgress": "المباراة قيد التقدم",
     "matchCompleted": "انتهت المباراة",
+    "yourParticipation": "مشاركتك",
+    "authenticatedPlayer": "لاعب مسجل",
+    "guestMode": "وضع الضيف",
+    "guestModeDescription": "أنت تنشئ بطولة كضيف. ستُحفظ البطولات مؤقتاً فقط.",
+    "winScoreNote": "النقاط المطلوبة للفوز في كل مباراة",
+    "powerUpsNote": "تفعيل القوى الإضافية لجميع مباريات البطولة",
+    "howItWorks": "كيف يعمل",
+    "step1": "إنشاء بطولة بالإعدادات المرغوبة",
+    "step2": "سيتم إنتاج جدول البطولة تلقائياً",
+    "step3": "العب المباريات جولة بجولة حتى النهائي",
+    "step4": "سيتم تتويج الفائز بطلاً!",
     "status": {
       "waiting": "في انتظار اللاعبين",
       "inProgress": "قيد التقدم",
@@ -260,7 +296,7 @@
       "title": "تاريخ المباريات",
       "noGames": "لم يتم لعب أي مباريات بعد",
       "noGamesDesc": "ابدأ اللعب لرؤية تاريخك هنا",
-      "playFirstGame": "العب مباريتي الأولى",
+      "playFirstGame": "العب مباريتك الأولى",
       "viewAll": "عرض كامل التاريخ",
       "viewDetails": "عرض التفاصيل",
       "noMatchesFilter": "لم يتم العثور على مباريات لهذا المرشح",
@@ -306,6 +342,7 @@
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
       "avatar": "الصورة الرمزية",
       "selectImage": "اختيار صورة",
+      "changeAvatarHint": "انقر لتغيير صورتك الرمزية",
       "save": "حفظ التغييرات",
       "cancel": "إلغاء",
       "uploading": "جاري الرفع...",
@@ -314,7 +351,10 @@
         "invalidImage": "صيغة صورة غير صالحة",
         "invalidImageType": "صيغة صورة غير صالحة",
         "imageTooLarge": "الصورة كبيرة جداً",
-        "avatarTooLarge": "الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)"
+        "avatarTooLarge": "الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)",
+        "usernameTooShort": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+        "usernameTooLong": "يجب أن يكون اسم المستخدم أقل من 20 حرفاً",
+        "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح"
       }
     },
     "changePassword": {
@@ -339,6 +379,7 @@
     },
     "twoFactor": {
       "title": "المصادقة الثنائية",
+      "description": "أمّن حسابك بالمصادقة الثنائية",
       "enable": "تفعيل 2FA",
       "disable": "إيقاف 2FA",
       "enterCode": "أدخل رمز التحقق",
@@ -362,11 +403,29 @@
         "error": "فشلت عملية 2FA"
       }
     },
+    "themes": {
+      "title": "مظهر اللعبة",
+      "description": "اختر مظهر اللعبة المفضل لديك",
+      "select": "اختر مظهر اللعبة المفضل لديك",
+      "manageThemes": "إدارة المظاهر",
+      "currentTheme": "المظهر الحالي:",
+      "current": "حالي",
+      "saveTheme": "حفظ المظهر",
+      "messages": {
+        "saved": "تم حفظ المظهر بنجاح!"
+      },
+      "errors": {
+        "saveFailed": "فشل في حفظ المظهر"
+      }
+    },
+    "lastLogin": "آخر تسجيل دخول",
+    "googleAccount": "حساب Google",
     "errors": {
       "userNotFound": "المستخدم غير موجود",
       "loadFailed": "فشل في تحميل الملف الشخصي",
       "unauthorized": "ليس لديك إذن لعرض هذا الملف الشخصي",
-      "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى."
+      "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى.",
+      "changePasswordFailed": "فشل في تغيير كلمة المرور"
     },
     "settings": {
       "title": "الإعدادات",
@@ -411,10 +470,12 @@
       "requestAccepted": "تم قبول طلب الصداقة!",
       "requestDeclined": "تم رفض طلب الصداقة",
       "friendRemoved": "تم إزالة الصديق",
+      "friendAdded": "تمت إضافة الصديق بنجاح!",
       "actionFailed": "فشلت العملية. يرجى المحاولة مرة أخرى.",
       "userNotFound": "المستخدم غير موجود",
       "alreadyFriends": "أنت صديق بالفعل لهذا المستخدم",
-      "cannotAddSelf": "لا يمكنك إضافة نفسك كصديق"
+      "cannotAddSelf": "لا يمكنك إضافة نفسك كصديق",
+      "searchFailed": "فشل البحث. يرجى المحاولة مرة أخرى."
     },
     "confirmations": {
       "removeFriend": "هل أنت متأكد من أنك تريد إزالة هذا الصديق؟",
@@ -570,7 +631,8 @@
     "chooseModeDescription": "اختر كيف تريد أن تلعب",
     "changeMode": "تغيير الوضع",
     "confirmQuitGame": "هل أنت متأكد من أنك تريد الخروج من اللعبة؟",
-    "canvasNotSupported": "متصفحك لا يدعم عنصر HTML5 Canvas."
+    "canvasNotSupported": "متصفحك لا يدعم عنصر HTML5 Canvas.",
+    "saving": "جاري الحفظ..."
   },
   "languages": {
     "en": "English",
