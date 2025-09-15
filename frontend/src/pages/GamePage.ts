@@ -17,6 +17,8 @@ export class GamePage {
 
   constructor() {
     this.parseGameMode();
+
+    window.addEventListener('themeChanged', this.handleThemeChanged.bind(this));
   }
 
   async mount(selector: string): Promise<void> {
@@ -70,6 +72,29 @@ export class GamePage {
       this.userPreferredTheme = null;
     }
   }
+
+  private handleThemeChanged = async (event: CustomEvent) => {
+    const newTheme = event.detail.theme;
+    console.log('🎨 Theme changed event received:', newTheme);
+
+    // ✅ IMPORTANT: Mettre à jour l'utilisateur dans authService d'abord
+    const currentUser = authService.getCurrentUser();
+    if (currentUser) {
+      currentUser.theme = newTheme;
+      // Forcer la mise à jour dans authService si nécessaire
+      authService.updateCurrentUser(currentUser);
+    }
+    
+    // Recharger le thème
+    await this.loadUserPreferredTheme();
+    
+    // Re-render la page
+    const element = document.querySelector('#page-content');
+    if (element) {
+      this.render(element);
+      this.bindEvents();
+    }
+  };
 
 
   private parseGameMode(): void {
@@ -146,63 +171,6 @@ export class GamePage {
         return '';
     }
   }
-
-  // private renderLocalSettings(): string {
-  //   const isAuthenticated = authService.isAuthenticated();
-  //   const currentUser = authService.getCurrentUser();
-    
-  //   return `
-  //     <div class="bg-gray-800 rounded-lg p-6">
-  //       <h3 class="text-xl mb-4">${i18n.t('game.customization.title')} - ${i18n.t('game.modes.local')}</h3>
-  //       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-  //         <div>
-  //           <label class="block mb-2">${i18n.t('forms.placeholders.username')} 1:</label>
-  //           ${isAuthenticated && currentUser ? `
-  //             <input type="text" id="player1-name-input" value="${currentUser.username}" 
-  //                   readonly
-  //                   class="bg-gray-600 rounded px-3 py-2 w-full cursor-not-allowed opacity-75 border border-blue-500/50">
-  //             <div class="text-xs text-blue-400 mt-1">✓ ${i18n.t('auth.login.username')}</div>
-  //           ` : `
-  //             <input type="text" id="player1-name-input" value="${i18n.t('game.placeholder.player')} 1" 
-  //                   class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
-  //           `}
-  //         </div>
-  //         <div>
-  //           <label class="block mb-2">${i18n.t('forms.placeholders.username')} 2:</label>
-  //           <input type="text" id="player2-name-input" value="${i18n.t('game.placeholder.player')} 2" 
-  //                 class="bg-gray-700 rounded px-3 py-2 w-full focus:ring-2 focus:ring-blue-500">
-  //         </div>
-  //         <div>
-  //           <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
-  //           <select id="ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
-  //             <option value="slow">${i18n.t('common.slow')}</option>
-  //             <option value="medium" selected>${i18n.t('common.medium')}</option>
-  //             <option value="fast">${i18n.t('common.fast')}</option>
-  //           </select>
-  //         </div>
-  //         <div>
-  //           <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
-  //           <select id="win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
-  //             <option value="3">3 ${i18n.t('common.points')}</option>
-  //             <option value="5" selected>5 ${i18n.t('common.points')}</option>
-  //             <option value="10">10 ${i18n.t('common.points')}</option>
-  //           </select>
-  //         </div>
-  //       </div>
-        
-  //       <div class="flex flex-col sm:flex-row gap-3">
-  //         <button id="start-local-game" 
-  //                 class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors flex-1">
-  //           ${i18n.t('game.lobby.startGame')}
-  //         </button>
-  //         <button id="back-to-modes" 
-  //                 class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-medium transition-colors">
-  //           ${i18n.t('common.changeMode')}
-  //         </button>
-  //       </div>
-  //     </div>
-  //   `;
-  // }
 
    private renderLocalSettings(): string {
     const isAuthenticated = authService.isAuthenticated();
@@ -1037,7 +1005,9 @@ export class GamePage {
     if (isAuthenticated && this.userPreferredTheme) {
       selectedTheme = this.userPreferredTheme;
     } else {
-      selectedTheme = themeEl?.value || 'classic';
+      const themeSelector = document.getElementById(this.gameMode === 'local' ? 'game-theme' : `${prefix}theme`) as HTMLSelectElement;
+      selectedTheme = themeSelector?.value || 'classic';
+      console.log('🎨 Using selected theme from UI:', selectedTheme, 'from selector:', themeSelector?.id);
     }
     
     return {
@@ -1173,6 +1143,7 @@ export class GamePage {
     console.log('🧹 Destroying GamePage and cleaning up active games');
     
     window.removeEventListener('resize', () => this.handleResize());
+    window.removeEventListener('themeChanged', this.handleThemeChanged);
     
     if (this.gameManager) {
       this.gameManager.destroy();

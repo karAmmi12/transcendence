@@ -268,6 +268,10 @@ export class ThemeSelectionModal {
       // Succès - mettre à jour l'utilisateur local
       this.user.theme = themeId;
       this.onSuccess(themeId);
+
+      window.dispatchEvent(new CustomEvent('themeChanged', { 
+        detail: { theme: themeId } 
+      }));
       this.close();
       
     } catch (error) {

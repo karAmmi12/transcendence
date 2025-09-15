@@ -10,9 +10,15 @@ export class MatchHistoryCard {
   constructor(private matchHistory: MatchHistory[], private isOwnProfile: boolean) {
     this.filteredMatches = [...this.matchHistory];
     
-    // Debug pour voir les données disponibles
+     // ✅ Debug plus détaillé pour voir la structure exacte
     console.log('MatchHistoryCard - Match history data:', this.matchHistory);
-    console.log('MatchHistoryCard - Game modes found:', [...new Set(this.matchHistory.map(m => m.gameMode).filter(Boolean))]);
+    console.log('MatchHistoryCard - First match structure:', this.matchHistory[0]);
+    console.log('MatchHistoryCard - Game modes found:', this.matchHistory.map(m => ({
+      id: m.id,
+      gameMode: m.gameMode,
+      typeof: typeof m.gameMode,
+      keys: Object.keys(m)
+    })));
   }
   
   render(): string {
@@ -49,7 +55,7 @@ export class MatchHistoryCard {
         <select id="mode-filter" class="bg-gray-700 text-white text-sm rounded px-3 py-1 border border-gray-600 focus:border-primary-500 focus:outline-none">
           <option value="all" ${this.currentModeFilter === 'all' ? 'selected' : ''}>${i18n.t('profile.history.filters.all')} (Modes)</option>
           ${gameModes.length > 0 ? gameModes.map(mode => `
-            <option value="${mode}" ${this.currentModeFilter === mode ? 'selected' : ''}>${this.getModeDisplayName(mode)}</option>
+            <option value="${mode.toLowerCase()}" ${this.currentModeFilter === mode.toLowerCase() ? 'selected' : ''}>${this.getModeDisplayName(mode)}</option>
           `).join('') : `
             <option value="local" ${this.currentModeFilter === 'local' ? 'selected' : ''}>Local</option>
             <option value="remote" ${this.currentModeFilter === 'remote' ? 'selected' : ''}>Remote</option>
@@ -391,11 +397,31 @@ export class MatchHistoryCard {
       // Filtre par mode
       let matchesMode = true;
       if (modeFilter !== 'all') {
-        matchesMode = match.gameMode === modeFilter;
+        // Normaliser les valeurs pour comparaison (en minuscules et sans espaces)
+        const normalizedMatchMode = (match.gameMode || '').toLowerCase().trim();
+        const normalizedFilterMode = modeFilter.toLowerCase().trim();
+        
+        console.log('Comparing modes:', { 
+          matchMode: normalizedMatchMode, 
+          filterMode: normalizedFilterMode,
+          originalMatch: match.gameMode 
+        });
+        
+        matchesMode = normalizedMatchMode === normalizedFilterMode;
+        
       }
       
-      return matchesResult && matchesMode;
-    });
+      const result = matchesResult && matchesMode;
+      console.log('Match filter result:', { 
+        matchId: match.id, 
+        result, 
+        matchesResult, 
+        matchesMode, 
+        gameMode: match.gameMode 
+      });
+      
+      return result;
+      });
     
     console.log('Filtered matches:', this.filteredMatches.length, 'out of', this.matchHistory.length);
   }

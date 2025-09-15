@@ -271,6 +271,14 @@ export class AuthService {
     }
   }
 
+  /**
+   * ✅ Mettre à jour l'utilisateur actuel en mémoire
+   */
+  updateCurrentUser(user: User): void {
+    this.currentUser = user;
+    console.log('🔄 Current user updated in authService:', user);
+  }
+
 
 
 }
