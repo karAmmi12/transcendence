@@ -10,9 +10,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "strict": false, //siuu modif
-    "noUnusedLocals": false, //siuu modif
-    "noUnusedParameters": false, //siuu modif
+    "strict": false, // modif
+    "noUnusedLocals": false, // modif
+    "noUnusedParameters": false, // modif
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {

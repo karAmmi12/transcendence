@@ -13,7 +13,7 @@ export class FriendService {
     return FriendService.instance;
   }
 
-  /**
+/**
  * Rechercher des utilisateurs par nom
  */
 public async searchUsers(query: string): Promise<User[]> {
