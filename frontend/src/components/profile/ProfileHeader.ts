@@ -113,6 +113,7 @@ export class ProfileHeader {
   }
 
   private renderOtherProfileActions(): string {
+    const { isFriend } = this.friendshipStatus;
     // ✅ Gestion simplifiée si pas de friendshipStatus
     if (!this.friendshipStatus) {
       return `
@@ -129,7 +130,6 @@ export class ProfileHeader {
       `;
     }
 
-    const { isFriend } = this.friendshipStatus;
 
     let friendButton = '';
     
@@ -150,100 +150,12 @@ export class ProfileHeader {
     }
 
     return `
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto lg:mx-0">
+      <div class="grid grid-cols-1 sm:grid-cols-1 gap-3 max-w-md mx-auto lg:mx-0">
         ${friendButton}
-        <button id="header-challenge-user" class="btn-secondary w-full py-3 px-4 text-sm font-medium flex items-center justify-center">
-          <i class="fas fa-gamepad mr-2"></i>
-          ${i18n.t('profile.actions.challenge')}
-        </button>
       </div>
     `;
   }
 
-
-  // private renderOwnProfileActions(): string { 
-  //   return `
-  //     <div class="flex flex-col gap-4">
-  //       <!-- Toggle 2FA -->
-  //       ${!this.user.googleId ? `
-  //         <div class="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
-  //           <div class="flex flex-col">
-  //             <span class="text-white font-medium">${i18n.t('profile.twoFactor.title')}</span>
-  //           </div>
-  //           <label class="relative inline-flex items-center cursor-pointer">
-  //             <input 
-  //               type="checkbox" 
-  //               id="toggle-2fa" 
-  //               class="sr-only peer" 
-  //               ${this.user.twoFactorEnabled ? 'checked' : ''}
-  //             >
-  //             <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-  //           </label>
-  //         </div>
-  //       ` : ''}
-        
-  //       <!-- Boutons existants -->
-  //       <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-  //         <button id="edit-profile" class="btn-primary">
-  //           ${i18n.t('profile.actions.editProfile')}
-  //         </button>
-  //         <!-- ✅ Nouveau bouton pour gérer les thèmes -->
-  //         <button id="manage-themes" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-  //           <i class="fas fa-palette mr-2"></i>
-  //           ${i18n.t('profile.themes.manageThemes')}
-  //         </button>
-  //         ${!this.user.googleId ? `
-  //         <button id="change-password" class="btn-secondary">
-  //           ${i18n.t('profile.actions.changePassword')}
-  //         </button> ` : ''}
-  //       </div>
-  //     </div>
-  //   `;
-  // }
-
-
-  // private renderOtherProfileActions(): string {
-  //   // ✅ Gestion simplifiée si pas de friendshipStatus
-  //   if (!this.friendshipStatus) {
-  //     return `
-  //       <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-  //         <button id="header-add-friend" class="btn-primary">
-  //           ${i18n.t('profile.actions.addFriend')}
-  //         </button>
-  //         <button id="header-challenge-user" class="btn-secondary">
-  //           ${i18n.t('profile.actions.challenge')}
-  //         </button>
-  //       </div>
-  //     `;
-  //   }
-
-  //   const { isFriend } = this.friendshipStatus;
-
-  //   let friendButton = '';
-    
-  //   if (isFriend) {
-  //     friendButton = `
-  //       <button id="header-remove-friend" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-  //         ${i18n.t('friends.actions.removeFriend')}
-  //       </button>
-  //     `;
-  //   } else {
-  //     friendButton = `
-  //       <button id="header-add-friend" class="btn-primary">
-  //         ${i18n.t('profile.actions.addFriend')}
-  //       </button>
-  //     `;
-  //   }
-
-  //   return `
-  //     <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-  //       ${friendButton}
-  //       <button id="header-challenge-user" class="btn-secondary">
-  //         ${i18n.t('profile.actions.challenge')}
-  //       </button>
-  //     </div>
-  //   `;
-  // }
 
   // ✅ Méthode principale pour attacher tous les événements du header
   public bindEvents(callbacks?: {
@@ -290,14 +202,6 @@ export class ProfileHeader {
 
         document.getElementById('header-remove-friend')?.addEventListener('click', () => {
           callbacks.onFriendAction!('remove-friend');
-        });
-
-        document.getElementById('header-accept-friend-request')?.addEventListener('click', () => {
-          callbacks.onFriendAction!('accept-friend-request');
-        });
-
-        document.getElementById('header-decline-friend-request')?.addEventListener('click', () => {
-          callbacks.onFriendAction!('decline-friend-request');
         });
       }
 

@@ -30,8 +30,8 @@
       },
       "tournament": {
         "title": "Tournoi",
-        "description": "Participez à des tournois locaux et grimpez dans le classement.",
-        "button": "Rejoindre un Tournoi"
+        "description": "Créez un Tournoi à 8 joueurs et voyez qui est le meilleur !",
+        "button": "Créer un Tournoi"
       }
     },
     "features": {
