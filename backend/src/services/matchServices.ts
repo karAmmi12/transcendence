@@ -6,7 +6,6 @@ export class MatchService
 {
     static async createLocalMatch(player1: string, player2: string, score1: number, score2: number, duration: number, userId?: number): Promise<MatchResponse>
     {
-        // SIUUUUUUUUUU TEST
         const winner = score1 > score2 ? player1 : player2;
         const userWinner = userId && winner === player1 ? userId : null
 
@@ -69,9 +68,5 @@ export class MatchService
             success: true,
             message: "Remote match register success"
         });
-    }
-
-    static async getMatch(matchId: number) 
-    {
     }
 }

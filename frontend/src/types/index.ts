@@ -2,7 +2,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  avatarUrl?: string | null; //siuuu remettre par defaut
+  avatarUrl?: string | null;
   isOnline?: boolean;
   twoFactorEnabled?: boolean;
   createdAt?: string;
