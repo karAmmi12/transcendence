@@ -30,8 +30,8 @@
       },
       "tournament": {
         "title": "Tournoi",
-        "description": "Participez à des tournois locaux et grimpez dans le classement.",
-        "button": "Rejoindre un Tournoi"
+        "description": "Créez un Tournoi à 8 joueurs et voyez qui est le meilleur !",
+        "button": "Créer un Tournoi"
       }
     },
     "features": {
@@ -178,7 +178,31 @@
       "yourProfile": "Votre Profil",
       "speedNote": "Note: La vitesse de la balle peut être affectée par la latence réseau.",
       "powerUpsNote": "Les deux joueurs doivent être d'accord sur les paramètres des power-ups",
-      "findOpponent": "Trouver un Adversaire"
+      "findOpponent": "Trouver un Adversaire",
+      "hostSettings": {
+        "title": "Paramètres de l'Hôte",
+        "description": "En tant qu'hôte, vous définissez les paramètres de la partie"
+      },
+      "forfeit": {
+        "title": "Défaite par déconnexion",
+        "message": "Vous avez quitté la partie",
+        "opponentWins": "Votre adversaire remporte la victoire par forfait"
+      },
+      "howItWorks": {
+        "title": "Comment ça fonctionne ?",
+        "host": {
+          "title": "En tant qu'Hôte",
+          "description": "Vos paramètres de jeu seront appliqués pour la partie"
+        },
+        "guest": {
+          "title": "En tant qu'Invité",
+          "description": "Vous recevrez automatiquement les paramètres de l'hôte"
+        },
+        "theme": {
+          "title": "Thème personnel",
+          "description": "Votre thème visuel reste le vôtre dans tous les cas"
+        }
+      }
     },
     "customization": {
       "title": "Paramètres du Jeu",
