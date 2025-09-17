@@ -26,7 +26,6 @@ export class JWTService
         return (jwt.sign(payload, REFRESH_TOKEN_SECRET, {expiresIn: '30d'}));
     }
 
-
     /**
      * Verifie le access token 
      */
@@ -102,7 +101,8 @@ export class JWTService
     /**
      * Supprime une session
      */
-    static deleteSession(refreshToken: string): void {
+    static deleteSession(refreshToken: string): void 
+    {
         const stmt = db.prepare('DELETE FROM sessions WHERE refresh_token = ?');
         stmt.run(refreshToken);
     }
@@ -110,15 +110,17 @@ export class JWTService
     /**
      * Supprime toutes les sessions d'un utilisateur
      */
-    static deleteAllUserSessions(userId: number): void {
+    static deleteAllUserSessions(userId: number): void 
+    {
         const stmt = db.prepare('DELETE FROM sessions WHERE user_id = ?');
         stmt.run(userId);
     }
 
     /**
-     * Nettoie les sessions expirées //siuu a voir si necessaire a utiliser
+     * Nettoie les sessions expirées
      */
-    static cleanExpiredSessions(): void {
+    static cleanExpiredSessions(): void 
+    {
         const stmt = db.prepare('DELETE FROM sessions WHERE expires_at <= CURRENT_TIMESTAMP');
         const result = stmt.run();
         console.log(`Cleaned ${result.changes} expired sessions`);

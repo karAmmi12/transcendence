@@ -69,7 +69,6 @@ export class FriendsService
 
             const friendsRaw = stmt.all(userId) as any[];
             
-            // GRRRRRRRRRR
             const friends: FriendProfile[] = friendsRaw.map(friendRaw => {
                 const friend = serialize(friendRaw);
                 
@@ -92,7 +91,7 @@ export class FriendsService
     }
 
     /**
-     * supprimer un ami SIUUUUU revoir larequete db
+     * supprimer un ami
      */
     static async removeFriend(userId: number, friendId: number): Promise<FriendsResult>
     {
