@@ -88,17 +88,18 @@ export class ProfilePage {
         return;
       }
 
-      // Si c'est le profil d'un autre utilisateur, charger le statut d'amitié
+      // ✅ Charger TOUJOURS la liste d'amis pour vérifier le statut d'amitié
+      this.friends = await friendService.getFriends();
+
+      // Si c'est le profil d'un autre utilisateur, calculer le statut d'amitié
       if (this.userId) {
         this.friendshipStatus = this.calculateFriendshipStatus(parseInt(this.userId));
       }
 
-      // ✅ Charger l'historique des matchs et les amis seulement pour son propre profil
+      // ✅ Charger l'historique des matchs seulement pour son propre profil
       if (!this.userId) {
         this.matchHistory = await userService.getMatchHistory(this.userId);
-        this.friends = await friendService.getFriends();
       }
-      
 
       this.render(element);
       
@@ -111,6 +112,14 @@ export class ProfilePage {
   private calculateFriendshipStatus(userId: number): FriendshipStatus {
     // Vérifier si l'utilisateur est dans la liste d'amis
     const isFriend = this.friends.some(friend => friend.id === userId);
+    
+    console.log('🔍 Checking friendship status:', {
+      userId,
+      friendsCount: this.friends.length,
+      friendsIds: this.friends.map(f => f.id),
+      isFriend
+    });
+    
     return { isFriend };
   }
 
@@ -325,14 +334,7 @@ export class ProfilePage {
             success = await friendService.removeFriend(parseInt(this.userId));
           }
           break;
-        case 'accept-friend-request':
-          // TODO: Implémenter quand le système de demandes sera ajouté
-          console.log('Accept friend request - TODO');
-          break;
-        case 'decline-friend-request':
-          // TODO: Implémenter quand le système de demandes sera ajouté
-          console.log('Decline friend request - TODO');
-          break;
+    
       }
 
       if (success) {
