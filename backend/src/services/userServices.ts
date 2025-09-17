@@ -1,6 +1,5 @@
 import db from '../db/index.js'
-import {UserData, AuthenticatedUser, UpdateProfileData, UpdateResult} from "../types/auth.js"
-import {checkUsernameExists, checkEmailExists} from "./authServices.js"
+import {UserData, UpdateProfileData, UpdateResult} from "../types/auth.js"
 import { StatsService } from './statsServices.js';
 import { serialize } from '../utils/serialize.js';
 
@@ -131,7 +130,7 @@ export class UserServices
                 };
             } catch (error) {
                 console.error("Transaction error:", error);
-                throw error; //siuu Propager l'erreur pour rollback
+                throw error; 
             };
         });
         try {
@@ -160,7 +159,7 @@ export class UserServices
             
             const usersRaw = stmt.all(userId) as any[];
             
-            //siuuu pour attacher els stats temporaire a tous les users
+            // pour attacher les stats temporaire a tous les users
             const users: UserData[] = usersRaw.map(userRaw => {
                 const userData = serialize(userRaw);
                 const stats = StatsService.getUserStats(userData.id);

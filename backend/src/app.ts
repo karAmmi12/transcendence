@@ -14,7 +14,6 @@ import path from "path";
 import { authMiddleware } from "./middleware/middleware.js";
 import { startTokenCleanup } from "./utils/cleanupTokens.js";
 import { WebSocketService } from "./services/webSocketService.js";
-// ...existing code...
 
 const app = Fastify({ logger: true });
 
@@ -33,9 +32,9 @@ const start = async () => {
       ? ['https://localhost:8443', 'https://localhost', 'http://localhost:8080']
       : [
           'http://localhost:5173',  // Vite dev
-         'http://localhost:3000',  // Autres frontends
+          'http://localhost:3000',  // Autres frontends
           'http://localhost:8080',  // Nginx frontend
-          'http://localhost:8000',   // Backend direct
+          'http://localhost:8000',  // Backend direct
           // ✅ Accepter toutes les IPs du réseau local
           /^http:\/\/10\.16\.\d+\.\d+:8080$/,
           /^http:\/\/192\.168\.\d+\.\d+:8080$/,
@@ -52,14 +51,14 @@ const start = async () => {
       secret: process.env.COOKIE_SECRET || "fallback-cookie-secret"
     });
 
-    //siuu Enregistrer le plugin multipart pour gérer les uploads
+    // Enregistrer le plugin multipart pour gérer les uploads
     await app.register(multipart, {
       limits: {
         fileSize: 5 * 1024 * 1024 // 5MB max
       }
     });
 
-     //siuu Servir les fichiers statiques (avatars)
+    // Servir les fichiers statiques (avatars)
     await app.register(fastifyStatic, {
       root: path.join(process.cwd(), 'uploads'),
       prefix: '/uploads/'
@@ -76,7 +75,6 @@ const start = async () => {
     await app.register(homeRoutes, {prefix: '/api/home'});
     await app.register(tournamentRoutes, {prefix: '/api/tournament'});
     await app.register(matchRoutes, {prefix: '/api/match'});
-
 
     // Démarrer le serveur 
     await app.listen({ port: 8000, host: "0.0.0.0" });

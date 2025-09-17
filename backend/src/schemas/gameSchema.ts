@@ -10,7 +10,7 @@ export const createTournamentSchema = {
                 minItems: 8,
                 maxItems: 8
             },
-            userId: {type: 'number'}, //siuuu peut etre deja recup par middleware
+            userId: {type: 'number'},
             gameSettings: {
                 type: 'object',
                 properties: {

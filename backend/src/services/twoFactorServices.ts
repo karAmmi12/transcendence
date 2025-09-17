@@ -6,11 +6,8 @@ import crypto from "crypto";
 import bcrypt from 'bcrypt'; 
 import 'dotenv/config';
 
-
-// export function toSQLiteDateString(date: Date): string {
-//     return date.toISOString().replace('T', ' ').substring(0, 19);
-// }
-export class TwoFactorServices {
+export class TwoFactorServices 
+{
     static async getUserById(userId: number): Promise<UserTwoFactor>
     {
         const stmt = db.prepare("SELECT id, email, two_factor_enabled, google_id FROM users where id = ?");
@@ -25,7 +22,8 @@ export class TwoFactorServices {
         };
     }
 
-    static generateCode(): string {
+    static generateCode(): string 
+    {
         const randomBytes = crypto.randomBytes(3);
         const randomNumber = randomBytes.readUIntBE(0, 3);
         return (100000 + (randomNumber % 900000)).toString();

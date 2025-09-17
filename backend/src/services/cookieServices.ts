@@ -35,6 +35,4 @@ export class CookieService
         reply.clearCookie('accessToken', {path: '/'});
         reply.clearCookie('refreshToken', {path: '/'});
     }
-
-    // siuuu ajouter fonction maj de l'access token
 }

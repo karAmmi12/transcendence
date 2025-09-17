@@ -5,14 +5,8 @@ export interface RegisterData {
 }
 
 export interface LoginData {
-  username: string; //siuu email ou username pour l'instant(identifier)
+  username: string;
   password: string;
-}
-
-// Type pour req.user défini par le middleware
-export interface AuthenticatedUser {
-    userId: number;
-    username: string;
 }
 
 export interface AuthResult {
@@ -27,7 +21,7 @@ export interface UserData {
   id: number;
   username: string;
   email: string;
-  avatarUrl?: string | null; //siuuu remettre par defaut
+  avatarUrl?: string | null;
   theme?: string;
   isOnline?: boolean;
   twoFactorEnabled?: boolean;
@@ -72,18 +66,6 @@ export interface UpdateProfileData {
   theme?: string;
 }
 
-export interface GoogleUserData {
-    email: string;
-    name: string;
-    picture?: string;
-    sub: string;
-}
-
-// export interface UpdateProfileData {
-//   username?: string;
-//   email?: string;
-// }
-
 export interface UpdateResult {
   success: boolean;
   user?: UserData;
@@ -99,5 +81,4 @@ export interface TwoFactorToken {
     id: number;
     token: string;
     expiresAt: Date;
-
 }

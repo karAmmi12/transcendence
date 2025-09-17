@@ -7,14 +7,6 @@ import {UserServices} from "../services/userServices.js"
 export class AuthController
 {
     /**
-     * Route test
-     */
-    static async test(req: FastifyRequest, reply: FastifyReply)
-    {
-        return ({message: 'Auth route works!'});
-    }
-
-    /**
      * Route register d'un nouveau user
      */
     static async register(req: FastifyRequest, reply: FastifyReply)
@@ -76,8 +68,11 @@ export class AuthController
                 console.error("Login controller error:", error);
                 reply.status(500).send({ error: "Login failed" });
         }
-    };
+    }
 
+    /**
+     * Route login avec 2FA
+     */
     static async loginWith2FA(req: FastifyRequest, reply: FastifyReply)
     {
         try {
