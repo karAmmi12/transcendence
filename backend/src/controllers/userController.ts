@@ -72,7 +72,6 @@ export class UserController
         }
     }
 
-
     /**
      * Routes updateProfile qui peux recevoir des files
      */
