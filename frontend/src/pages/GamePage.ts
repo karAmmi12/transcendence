@@ -299,11 +299,11 @@ export class GamePage {
       console.log('🚫 GamePage detected game interruption - showing forfeit modal instead of matchmaking interface');
       return `
         <div class="bg-gray-800 rounded-lg p-6 text-center">
-          <h3 class="text-xl mb-4 text-red-400">Défaite par déconnexion</h3>
+          <h3 class="text-xl mb-4 text-red-400">${i18n.t('game.remote.forfeit.title')}</h3>
           <div class="mb-6">
             <div class="text-6xl mb-4">😔</div>
-            <p class="text-lg text-gray-300 mb-2">Vous avez quitté la partie</p>
-            <p class="text-sm text-gray-400">Votre adversaire remporte la victoire par forfait</p>
+            <p class="text-lg text-gray-300 mb-2">${i18n.t('game.remote.forfeit.message')}</p>
+            <p class="text-sm text-gray-400">${i18n.t('game.remote.forfeit.opponentWins')}</p>
           </div>
           <button id="back-to-menu-from-forfeit"
                   class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-colors">
@@ -339,11 +339,11 @@ export class GamePage {
           <div class="flex items-start gap-3">
             <div class="text-amber-400 text-xl">👑</div>
             <div>
-              <h4 class="text-amber-200 font-medium mb-2">Comment ça fonctionne ?</h4>
+              <h4 class="text-amber-200 font-medium mb-2">${i18n.t('game.remote.howItWorks.title')}</h4>
               <div class="text-amber-100 text-sm space-y-1">
-                <p><strong>🎮 En tant qu'Hôte :</strong> Vos paramètres de jeu seront appliqués pour la partie</p>
-                <p><strong>👥 En tant qu'Invité :</strong> Vous recevrez automatiquement les paramètres de l'hôte</p>
-                <p><strong>🎨 Thème personnel :</strong> Votre thème visuel reste le vôtre dans tous les cas</p>
+                <p><strong>🎮 ${i18n.t('game.remote.howItWorks.host.title')} :</strong> ${i18n.t('game.remote.howItWorks.host.description')}</p>
+                <p><strong>👥 ${i18n.t('game.remote.howItWorks.guest.title')} :</strong> ${i18n.t('game.remote.howItWorks.guest.description')}</p>
+                <p><strong>🎨 ${i18n.t('game.remote.howItWorks.theme.title')} :</strong> ${i18n.t('game.remote.howItWorks.theme.description')}</p>
               </div>
             </div>
           </div>
@@ -352,8 +352,8 @@ export class GamePage {
         <!-- ✅ Paramètres configurables UNIQUEMENT si vous êtes susceptible d'être host -->
         <div id="host-settings" class="mb-6">
           <div class="flex items-center justify-between mb-4">
-            <h4 class="text-lg text-white">Paramètres de partie</h4>
-            <span class="text-xs bg-blue-600 px-2 py-1 rounded">Appliqués si vous êtes l'hôte</span>
+            <h4 class="text-lg text-white">${i18n.t('game.remote.hostSettings.title')}</h4>
+            <span class="text-xs bg-blue-600 px-2 py-1 rounded">${i18n.t('game.remote.hostSettings.note')}</span>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -381,7 +381,7 @@ export class GamePage {
                 <input type="checkbox" id="remote-enable-powerups" class="mr-2">
                 <label for="remote-enable-powerups" class="text-sm">${i18n.t('game.customization.enablePowerUps')}</label>
               </div>
-              <p class="text-xs text-gray-400 mt-1">Les power-ups seront synchronisés pour tous les joueurs</p>
+              <p class="text-xs text-gray-400 mt-1">${i18n.t('game.remote.powerUpsNote')}</p>
             </div>
           </div>
         </div>
@@ -401,7 +401,6 @@ export class GamePage {
       </div>
     `;
   }
-
   private renderTournamentSettings(): string 
   {
     const isAuthenticated = authService.isAuthenticated();
