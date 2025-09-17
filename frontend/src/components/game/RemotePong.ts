@@ -26,6 +26,9 @@ export class RemotePong extends Pong3D {
   // ✅ Flag pour empêcher le matchmaking après une interruption
   private gameWasInterrupted = false;
   
+  // ✅ Flag pour savoir si le guest a reçu les paramètres de l'hôte
+  private hasReceivedHostSettings = false;
+  
   // Handler pour la détection de fermeture de page
   private beforeUnloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
   private visibilityChangeHandler: (() => void) | null = null;
@@ -320,11 +323,22 @@ export class RemotePong extends Pong3D {
     const username = currentUser?.username || 'Guest';
     const userId = currentUser?.id;
 
+    // ✅ Afficher les paramètres pendant la recherche
+    this.showCurrentGameSettings();
+
     this.signalingWS.send(JSON.stringify({
       type: 'join_matchmaking',
       playerId: this.playerId,
       username: username,
-      userId: userId
+      userId: userId,
+      // ✅ Envoyer les paramètres pour le matchmaking (sans le thème)
+      gameSettings: {
+        ballSpeed: this.settings.ballSpeed,
+        winScore: this.settings.winScore,
+        powerUps: this.settings.powerUps,
+        enableEffects: this.settings.enableEffects
+        // Le thème reste personnel à chaque joueur
+      }
     }));
 
     this.updateGameStatus('Recherche d\'un adversaire...');
@@ -542,14 +556,14 @@ export class RemotePong extends Pong3D {
       console.log('🔗 WebRTC P2P connection established');
       
       if (this.isHost) {
-        this.updateGameStatus('Démarrage du jeu...');
+        // ✅ L'hôte envoie ses paramètres au guest (sauf le thème)
+        this.sendGameSettingsToGuest();
+        
+        this.updateGameStatus('🎮 Démarrage du jeu en tant qu\'hôte...');
         this.startGameAsHost();
       } else {
-        console.log('👥 Guest connected - starting as guest');
-        this.updateGameStatus('Prêt à jouer !');
-        
-        // L'invité doit aussi démarrer son jeu local pour avoir les contrôles
-        this.startLocalGameAsGuest();
+        // ✅ Message simple et traduit pour le guest
+        this.updateGameStatus('👥 Connecté en tant qu\'invité - Réception des paramètres...');
       }
     };
 
@@ -633,7 +647,10 @@ export class RemotePong extends Pong3D {
             scores: this.gameState.scores,
             timer: this.gameState.timer,
             status: this.gameState.status,
-            winner: this.gameState.winner
+            winner: this.gameState.winner,
+            // ✅ Ajouter les power-ups pour le guest
+            powerUps: this.powerUpManager ? this.powerUpManager.getActivePowerUps() : [],
+            paddleEffects: this.powerUpManager ? this.powerUpManager.getPaddleEffects() : {}
           }
         };
 
@@ -681,6 +698,12 @@ export class RemotePong extends Pong3D {
 
   private handleP2PMessage(data: any): void {
     switch (data.type) {
+      // ✅ Nouveau cas : réception des paramètres du host
+      case 'game_settings':
+        console.log('📥 Guest received game settings from host:', data.settings);
+        this.applyHostGameSettings(data.settings);
+        break;
+
       case 'game_update':
         if (!this.isHost) {
           this.applyRemoteGameState(data.state);
@@ -743,6 +766,24 @@ export class RemotePong extends Pong3D {
     this.gameState.timer = state.timer;
     this.gameState.status = state.status;
     this.gameState.winner = state.winner;
+    
+    // ✅ Synchroniser les power-ups pour le guest
+    if (this.powerUpManager && state.powerUps) {
+      // Mettre à jour les power-ups actifs sur la carte
+      this.powerUpManager.syncActivePowerUps(state.powerUps);
+      
+      // Appliquer les effets des paddles (comme l'agrandissement)
+      if (state.paddleEffects) {
+        this.powerUpManager.syncPaddleEffects(state.paddleEffects);
+        
+        // ✅ IMPORTANT: Appliquer immédiatement les effets visuels
+        this.applyPhysicsEffects();
+        
+        console.log('🔋 Guest synced paddle effects:', state.paddleEffects);
+      }
+      
+      console.log('🔋 Guest synced power-ups:', state.powerUps);
+    }
     
     // ✅ Sauvegarder l'état mis à jour
     this.saveGameStateToSession();
@@ -864,6 +905,9 @@ export class RemotePong extends Pong3D {
 
     console.log(`❌ Opponent disconnected (${reason}) - awarding victory`);
     this.gameEndedByDisconnection = true;
+    
+    // ✅ Réinitialiser les paramètres partagés pour éviter la persistance
+    this.hasReceivedHostSettings = false;
     
     // Déterminer le gagnant (celui qui reste)
     this.awardVictoryByForfeit('opponent_disconnected', reason);
@@ -988,10 +1032,7 @@ export class RemotePong extends Pong3D {
       loserName: playerName,
       winnerScore: 5,
       loserScore: 0,
-      matchDuration: 0, // Pas de durée connue
-      totalScore: 5,
-      gameMode: 'remote',
-      winScore: this.settings.winScore
+      matchDuration: 0 // Pas de durée connue
     };
 
     const callbacks: GameEndCallbacks = {
@@ -1231,6 +1272,9 @@ export class RemotePong extends Pong3D {
     sessionStorage.removeItem('remote_game_active');
     sessionStorage.removeItem('remote_game_data');
     
+    // ✅ Réinitialiser les flags de paramètres partagés
+    this.hasReceivedHostSettings = false;
+    
     // Marquer comme détruit pour éviter les traitements en double
     this.gameEndedByDisconnection = true;
     
@@ -1413,5 +1457,282 @@ export class RemotePong extends Pong3D {
     // Créer et afficher le modal
     const gameEndModal = new GameEndModal(stats, callbacks);
     gameEndModal.show();
+  }
+
+  // ✅ Nouvelle méthode pour envoyer les paramètres (sans le thème)
+  private sendGameSettingsToGuest(): void {
+    if (!this.dataChannel || this.dataChannel.readyState !== 'open') return;
+    
+    const gameSettings = {
+      type: 'game_settings',
+      settings: {
+        ballSpeed: this.settings.ballSpeed,
+        winScore: this.settings.winScore,
+        powerUps: this.settings.powerUps,
+        enableEffects: this.settings.enableEffects
+        // ✅ Pas de thème - chaque joueur garde le sien
+      }
+    };
+    
+    console.log('📤 Host sending game settings to guest:', gameSettings.settings);
+    this.dataChannel.send(JSON.stringify(gameSettings));
+  }
+
+  // ✅ Nouvelle méthode pour appliquer les paramètres de l'hôte (sauf thème)
+  private applyHostGameSettings(hostSettings: any): void {
+  console.log('🔧 Applying host settings:', hostSettings);
+  
+  const preservedTheme = this.settings.theme;
+  
+  // Mettre à jour les paramètres
+  this.settings.ballSpeed = hostSettings.ballSpeed;
+  this.settings.winScore = hostSettings.winScore;
+  this.settings.powerUps = hostSettings.powerUps;
+  this.settings.enableEffects = hostSettings.enableEffects;
+  this.settings.theme = preservedTheme;
+  
+  this.reinitializeWithNewSettings();
+  
+  // ✅ Mettre à jour le message principal sans écraser
+  this.updateConnectionStatus('👥 Connecté en tant qu\'invité - Paramètres reçus !');
+  
+  // ✅ Ajouter les paramètres en dessous
+  setTimeout(() => {
+    this.addSettingsToStatus(hostSettings, preservedTheme);
+  }, 500);
+  
+  // Le guest peut maintenant démarrer
+  setTimeout(() => {
+    this.startLocalGameAsGuest();
+  }, 3000);
+}
+
+  // ✅ Nouvelle méthode pour afficher dans le status
+private showSettingsInStatus(hostSettings: any, preservedTheme: string): void {
+  const statusEl = document.getElementById('game-status');
+  if (statusEl) {
+    // ✅ AJOUTER les paramètres au lieu de remplacer complètement
+    statusEl.innerHTML = `
+      <div class="text-center space-y-4">
+        <!-- ✅ Garder le message de connexion en haut -->
+        <div class="text-lg text-blue-400">
+          👥 Connecté en tant qu'invité - Paramètres reçus !
+        </div>
+        
+        <!-- ✅ Afficher les paramètres en dessous -->
+        <div class="p-3 bg-gray-800/60 rounded-lg border border-green-500/20">
+          <div class="text-sm text-green-400 font-medium mb-2">
+            ✅ Paramètres synchronisés avec l'hôte :
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="bg-gray-700/40 p-2 rounded">
+              <span class="text-gray-300">⚡ Vitesse :</span>
+              <span class="text-white font-bold ml-1">${this.getSpeedDisplayName(hostSettings.ballSpeed)}</span>
+            </div>
+            
+            <div class="bg-gray-700/40 p-2 rounded">
+              <span class="text-gray-300">🏆 Score :</span>
+              <span class="text-white font-bold ml-1">${hostSettings.winScore}</span>
+            </div>
+            
+            <div class="bg-gray-700/40 p-2 rounded">
+              <span class="text-gray-300">🔋 Power-ups :</span>
+              <span class="text-white font-bold ml-1">${hostSettings.powerUps ? '✅' : '❌'}</span>
+            </div>
+            
+            <div class="bg-purple-700/40 p-2 rounded border border-purple-500/20">
+              <span class="text-purple-300">🎨 Votre thème :</span>
+              <span class="text-purple-200 font-bold text-xs ml-1">${this.getThemeDisplayName(preservedTheme)}</span>
+            </div>
+          </div>
+          
+          <div class="text-green-300 text-sm font-medium mt-3">
+            🎮 Démarrage dans 3 secondes...
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// ✅ Méthode pour ajouter les paramètres sans écraser le message principal
+private addSettingsToStatus(hostSettings: any, preservedTheme: string): void {
+  const statusEl = document.getElementById('game-status');
+  const settingsContainer = statusEl?.querySelector('.settings-info');
+  
+  if (settingsContainer) {
+    settingsContainer.innerHTML = `
+      <div class="p-3 bg-gray-800/60 rounded-lg border border-green-500/20 mt-3">
+        <div class="text-sm text-green-400 font-medium mb-2">
+          ✅ Paramètres reçus de l'hôte :
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-gray-700/40 p-2 rounded">
+            <span class="text-gray-300">⚡</span>
+            <span class="text-white font-bold ml-1">${this.getSpeedDisplayName(hostSettings.ballSpeed)}</span>
+          </div>
+          
+          <div class="bg-gray-700/40 p-2 rounded">
+            <span class="text-gray-300">🏆</span>
+            <span class="text-white font-bold ml-1">${hostSettings.winScore}</span>
+          </div>
+          
+          <div class="bg-gray-700/40 p-2 rounded">
+            <span class="text-gray-300">🔋</span>
+            <span class="text-white font-bold ml-1">${hostSettings.powerUps ? '✅' : '❌'}</span>
+          </div>
+          
+          <div class="bg-purple-700/40 p-2 rounded">
+            <span class="text-purple-300">🎨</span>
+            <span class="text-purple-200 font-bold text-xs ml-1">${this.getThemeDisplayName(preservedTheme)}</span>
+          </div>
+        </div>
+        
+        <div class="text-green-300 text-sm font-medium mt-2">
+          🎮 Démarrage dans 3s...
+        </div>
+      </div>
+    `;
+    
+    // Afficher le conteneur des paramètres
+    (settingsContainer as HTMLElement).style.display = 'block';
+  }
+}
+
+// ✅ Alternative : Méthode pour mettre à jour SEULEMENT le message principal
+private updateConnectionStatus(message: string): void {
+  const statusEl = document.getElementById('game-status');
+  if (statusEl) {
+    // Chercher le message principal et le mettre à jour seulement
+    const mainMessage = statusEl.querySelector('.main-status-message');
+    if (mainMessage) {
+      mainMessage.textContent = message;
+    } else {
+      // Si pas de structure existante, créer une structure claire
+      statusEl.innerHTML = `
+        <div class="text-center space-y-3">
+          <div class="main-status-message text-lg text-blue-400">${message}</div>
+          <div class="settings-info" style="display: none;"></div>
+        </div>
+      `;
+    }
+  }
+}
+
+// ✅ Méthodes pour les noms d'affichage traduits
+private getSpeedDisplayName(speed: string): string {
+  const speedMap: Record<string, string> = {
+    slow: 'Lent',
+    medium: 'Moyen', 
+    fast: 'Rapide'
+  };
+  return speedMap[speed] || speed;
+}
+
+private getThemeDisplayName(theme: string): string {
+  const themeMap: Record<string, string> = {
+    classic: 'Classique',
+    neon: 'Néon',
+    retro: 'Rétro',
+    cyberpunk: 'Cyberpunk',
+    space: 'Espace',
+    italian: 'Italien',
+    matrix: 'Matrix',
+    lava: 'Lave'
+  };
+  return themeMap[theme] || theme;
+}
+
+  // ✅ Réinitialiser les composants critiques avec les nouveaux paramètres
+  private reinitializeWithNewSettings(): void {
+    console.log('🔄 Reinitializing game components with host settings (keeping theme)');
+    
+    // 1. Le thème reste inchangé (thème personnel du guest)
+    console.log('🎨 Theme unchanged:', this.settings.theme);
+    
+    // 2. Réinitialiser la physique avec la nouvelle vitesse de balle
+    if (this.physics) {
+      this.physics.updateSettings(this.settings);
+      console.log('⚡ Physics updated with new ball speed:', this.settings.ballSpeed);
+    }
+    
+    // 3. Réinitialiser les power-ups
+    if (this.powerUpManager) {
+      this.powerUpManager.setEnabled(this.settings.powerUps);
+      if (this.settings.powerUps) {
+        console.log('🔋 Power-ups enabled for guest');
+      } else {
+        console.log('❌ Power-ups disabled for guest');
+        this.powerUpManager.clearAll();
+      }
+    }
+    
+    // 4. Mettre à jour l'interface avec le score gagnant
+    this.updateWinScoreDisplay();
+    
+    console.log('✅ Game components reinitialized successfully');
+  }
+
+  // ✅ Mettre à jour l'affichage du score gagnant
+  private updateWinScoreDisplay(): void {
+    // Mettre à jour dans l'interface si les éléments existent
+    const winScoreElements = document.querySelectorAll('[data-win-score]');
+    winScoreElements.forEach(el => {
+      el.textContent = `${this.settings.winScore} points`;
+    });
+    
+    console.log('🏆 Win score display updated to:', this.settings.winScore);
+  }
+
+  // ✅ Améliorer showCurrentGameSettings aussi
+private showCurrentGameSettings(): void {
+  const statusEl = document.getElementById('game-status');
+  if (statusEl) {
+    // Simple message texte, pas de HTML complexe
+    statusEl.innerHTML = `
+      <div class="text-center space-y-3">
+        <div class="text-lg text-blue-400">🔍 Recherche d'un adversaire...</div>
+        
+        <div class="text-sm text-gray-300">
+          <div class="font-medium text-blue-200 mb-2">Vos paramètres (en tant qu'hôte) :</div>
+          <div>⚡ ${this.getSpeedDisplayName(this.settings.ballSpeed)}</div>
+          <div>🏆 ${this.settings.winScore} points</div>
+          <div>🔋 ${this.settings.powerUps ? 'Power-ups activés' : 'Power-ups désactivés'}</div>
+          <div>🎨 ${this.getThemeDisplayName(this.settings.theme)}</div>
+        </div>
+        
+        <div class="text-xs text-gray-400 italic">
+          L'adversaire recevra ces paramètres automatiquement
+        </div>
+      </div>
+    `;
+  }
+}
+
+  // ✅ Obtenir le nom convivial de la vitesse
+  private getSpeedName(speed: string): string {
+    const speeds: Record<string, string> = { 
+      slow: 'Lent', 
+      medium: 'Moyen', 
+      fast: 'Rapide' 
+    };
+    return speeds[speed] || speed;
+  }
+
+  // ✅ Obtenir le nom convivial du thème
+  private getThemeName(theme: string): string {
+    const themes: Record<string, string> = {
+      classic: 'Classique',
+      neon: 'Néon',
+      retro: 'Rétro',
+      cyberpunk: 'Cyberpunk',
+      space: 'Espace',
+      italian: 'Italien',
+      matrix: 'Matrix',
+      lava: 'Lave'
+    };
+    return themes[theme] || theme;
   }
 }
