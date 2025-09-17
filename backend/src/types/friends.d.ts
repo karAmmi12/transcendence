@@ -11,12 +11,3 @@ export interface FriendProfile {
   isOnline: boolean;
   lastLogin?: string;
 }
-
-
-export interface FriendSearchResult {
-  id: number;
-  username: string;
-  avatarUrl: string | null;
-  isOnline: boolean;
-  isFriend?: boolean;
-}

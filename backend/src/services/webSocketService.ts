@@ -15,13 +15,15 @@ interface Match {
   status: 'connecting' | 'active';
 }
 
-export class WebSocketService {
+export class WebSocketService 
+{
   private wss: WebSocketServer;
   private players: Map<string, Player> = new Map();
   private waitingQueue: Player[] = [];
   private matches: Map<string, Match> = new Map();
 
-  constructor(port: number = 8001, host: string = '0.0.0.0') {
+  constructor(port: number = 8001, host: string = '0.0.0.0') 
+  {
     this.wss = new WebSocketServer({ port, host });
     console.log(`🎮 WebSocket Signaling Server running on ${host}:${port}`);
     
@@ -30,7 +32,8 @@ export class WebSocketService {
     });
   }
 
-  private handleConnection(ws: WebSocket): void {
+  private handleConnection(ws: WebSocket): void 
+  {
     console.log('🔗 New signaling connection');
 
     ws.on('message', (data: Buffer) => {
@@ -47,7 +50,8 @@ export class WebSocketService {
     });
   }
 
-  private handleMessage(ws: WebSocket, message: any): void {
+  private handleMessage(ws: WebSocket, message: any): void 
+  {
     switch (message.type) {
       case 'join_matchmaking':
         this.handleJoinMatchmaking(ws, message);
@@ -69,7 +73,8 @@ export class WebSocketService {
     }
   }
 
-  private handleVoluntaryDisconnect(ws: WebSocket, message: any): void {
+  private handleVoluntaryDisconnect(ws: WebSocket, message: any): void 
+  {
     const { playerId, matchId, reason } = message;
     console.log(`🚪 Player ${playerId} voluntarily disconnecting from match ${matchId}: ${reason}`);
     
@@ -80,7 +85,8 @@ export class WebSocketService {
     this.cleanupPlayer(playerId);
   }
 
-  private cleanupPlayer(playerId: string): void {
+  private cleanupPlayer(playerId: string): void 
+  {
     // Retirer de la file d'attente
     this.waitingQueue = this.waitingQueue.filter(p => p.id !== playerId);
     
@@ -96,7 +102,8 @@ export class WebSocketService {
     }
   }
 
-  private handleJoinMatchmaking(ws: WebSocket, message: any): void {
+  private handleJoinMatchmaking(ws: WebSocket, message: any): void 
+  {
     const { playerId, username, userId } = message;
     
     const player: Player = {
@@ -125,7 +132,8 @@ export class WebSocketService {
     }
   }
 
-  private createMatch(host: Player, guest: Player): void {
+  private createMatch(host: Player, guest: Player): void 
+  {
     const matchId = `match_${Date.now()}`;
     
     const match: Match = {
@@ -162,7 +170,8 @@ export class WebSocketService {
     }));
   }
 
-  private relayWebRTCSignal(ws: WebSocket, message: any): void {
+  private relayWebRTCSignal(ws: WebSocket, message: any): void 
+  {
     const senderId = this.getPlayerIdFromWS(ws);
     if (!senderId) return;
 
@@ -184,7 +193,8 @@ export class WebSocketService {
     }
   }
 
-  private handleDisconnection(ws: WebSocket): void {
+  private handleDisconnection(ws: WebSocket): void 
+  {
     const playerId = this.getPlayerIdFromWS(ws);
     if (!playerId) return;
 
@@ -200,14 +210,16 @@ export class WebSocketService {
     this.cleanupPlayer(playerId);
   }
 
-  private getPlayerIdFromWS(ws: WebSocket): string | null {
+  private getPlayerIdFromWS(ws: WebSocket): string | null 
+  {
     for (const [id, player] of this.players) {
       if (player.ws === ws) return id;
     }
     return null;
   }
 
-  private notifyOpponentDisconnection(playerId: string): void {
+  private notifyOpponentDisconnection(playerId: string): void 
+  {
     for (const match of this.matches.values()) {
       if (match.host.id === playerId && match.guest.ws.readyState === WebSocket.OPEN) {
         console.log(`📢 Notifying guest that host ${playerId} disconnected`);
@@ -231,7 +243,8 @@ export class WebSocketService {
     }
   }
 
-  private handleLeaveMatchmaking(ws: WebSocket): void {
+  private handleLeaveMatchmaking(ws: WebSocket): void 
+  {
     const playerId = this.getPlayerIdFromWS(ws);
     if (playerId) {
       this.waitingQueue = this.waitingQueue.filter(p => p.id !== playerId);

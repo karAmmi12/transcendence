@@ -16,6 +16,5 @@ export class HomeController
             console.error("Get general stats error:", error);
             reply.status(500).send({ error: "Failed to get general stats" });
         }
-
     }
 }

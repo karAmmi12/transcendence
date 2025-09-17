@@ -147,7 +147,7 @@ export class AuthService {
   public initiateGoogleLogin(): void 
   {
     // Rediriger vers l'endpoint OAuth Google du backend
-    console.log('Initiating Google OAuth... SIUUUUUUU');
+    console.log('Initiating Google OAuth...');
     window.location.href = `${this.baseURL}/auth/oauth/google`;
   }
 

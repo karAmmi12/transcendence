@@ -1,5 +1,6 @@
 import cron from 'node-cron';
 import db from '../db/index.js';
+import { JWTService } from '../services/jwtServices.js'
 
 interface TokenRow {
   user_id: number;
@@ -22,6 +23,7 @@ function cleanupExpiredTokens(): void {
 export function startTokenCleanup(): void {
   // Toutes les 24 heures (1440 minutes)
   cron.schedule('0 0 * * *', cleanupExpiredTokens);
+  cron.schedule('0 0 * * *', JWTService.cleanExpiredSessions);
   console.log('✅ Token cleanup cron job started');
 }
 

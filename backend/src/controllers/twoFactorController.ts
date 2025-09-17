@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { TwoFactorServices } from "../services/twoFactorServices.js";
 
-export class TwoFactorController {
+export class TwoFactorController 
+{
     static async sendTwoFactor(req: FastifyRequest, reply: FastifyReply) 
     {
-        
         try {
             const { userId } = req.user as { userId: number};
 
@@ -19,7 +19,6 @@ export class TwoFactorController {
 
     static async validateTwoFactor(req: FastifyRequest, reply: FastifyReply) 
     {
-
         try {
             const { userId } = req.user as {userId: number};
             const { code, disabled }  = req.body as { code: string, disabled: boolean };

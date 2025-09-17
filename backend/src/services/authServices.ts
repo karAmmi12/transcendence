@@ -2,7 +2,6 @@ import bcrypt from "bcrypt"
 import db from "../db/index.js"
 import {RegisterData, AuthResult, LoginData, UserFromDB} from "../types/auth.js"
 import {JWTService} from "./jwtServices.js";
-import { OAuthController } from "../controllers/oauthController.js";
 import 'dotenv/config'
 import { TwoFactorServices } from "./twoFactorServices.js";
 import { serialize } from '../utils/serialize.js';
@@ -34,7 +33,7 @@ function findUserByEmail(email: string): UserFromDB | null
 {
     const stmt = db.prepare("SELECT * FROM users WHERE email = ?");
     const userRaw = stmt.get(email) as any | undefined;
-    return userRaw ? serialize<UserFromDB>(userRaw) : null;//GRRRRRR
+    return userRaw ? serialize<UserFromDB>(userRaw) : null;
 }
 
 /**
@@ -44,11 +43,14 @@ function findUserByUsername(username: string): UserFromDB | null
 {
     const stmt = db.prepare("SELECT * FROM users WHERE username = ?");
     const userRaw = stmt.get(username) as any | undefined;
-    return userRaw ? serialize<UserFromDB>(userRaw) : null;//GRRRRR
+    return userRaw ? serialize<UserFromDB>(userRaw) : null;
 }
 
 export class AuthService 
 {
+    /**
+     * Service pour gerer la connexion via 2FA
+     */
     static async loginWith2FA(userId: number, code: string): Promise<AuthResult>
     {
         try {
@@ -111,13 +113,13 @@ export class AuthService
         if (checkEmailExists(userData.email))
             return {
                 success: false,
-                error: "Email already use" //siuu a changer pour la secu le msg
+                error: "Email already use"
             };
 
         if (checkUsernameExists(userData.username))
             return {
                 success: false,
-                error: "Username already use" //siuu a changer pour la secu le msg
+                error: "Username already use"
             }
 
         // Hasher le mdp
@@ -139,7 +141,7 @@ export class AuthService
             id: userId,
             username: userData.username,
             email: userData.email,
-            avatar_url: null, //siuu mettre un avatar par default
+            avatar_url: null,
             isOnline: true,
             twoFactorEnabled: false,
             createdAt: new Date().toISOString(),
@@ -179,10 +181,9 @@ export class AuthService
             if (!userRaw)
                 return {
                     success: false,
-                    error: "Invalid identifier" //siuu surment changer les msg pour la secu
+                    error: "Invalid identifier"
                 };
 
-            // GRRRRRRRR 
             const user = serialize<UserFromDB>(userRaw);
             
             // Verif mdp
@@ -191,7 +192,7 @@ export class AuthService
             if (!validPassword)
                 return {
                     success: false,
-                    error: "Invalid password" //siuu surment changer les msg pour la secu
+                    error: "Invalid password"
                 }
 
             if (user.twoFactorEnabled)
@@ -230,7 +231,6 @@ export class AuthService
                 lastLogin: new Date().toISOString()
             };
 
-            // Return
             return {
                 success: true,
                 user: userReturn,
@@ -253,7 +253,7 @@ export class AuthService
     static async logout(refreshToken: string): Promise<void> 
     {
         try {
-            // changer isOnline sur false //siuuuu pe etre gerer si user ferme google
+            // changer isOnline sur false 
             // Récupérer l'ID utilisateur depuis le refresh token
             const sessionCheck = JWTService.isValidSession(refreshToken);
             
@@ -274,21 +274,20 @@ export class AuthService
         }
     }
 
+    /**
+     * google authentification 
+     */
     static async handleOAuthUser(userData: UserFromDB): Promise<AuthResult>
     {
         try {
             const userExist = findUserByEmail(userData.email); 
             
             if (userExist && !userExist.googleId) {
-                //GRRRRRRRRR
+
                 const serializedUser = serialize(userExist);
 
                 const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP, is_online = 1 WHERE id = ?");
                 updateStmt.run(userExist.id);
-
-                
-                // const updateGoogleIdStmt = db.prepare("UPDATE users SET google_id = ? WHERE id = ?");
-                // updateGoogleIdStmt.run(userData.googleId, userExist.id);
 
                 const PairToken = JWTService.generateTokenPair(userExist.id, userExist.username)
                 JWTService.createSession(userExist.id, PairToken.refreshToken);
