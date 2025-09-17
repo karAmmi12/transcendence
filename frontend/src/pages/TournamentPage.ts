@@ -45,47 +45,6 @@ export class TournamentPage {
     }
   }
 
-  // private render(element: Element): void {
-  //   if (!this.tournament) {
-  //     this.renderError(element, 'Failed to load tournament data');
-  //     return;
-  //   }
-
-  //   const bracket = new TournamentBracket(this.tournament.bracket);
-   
-
-  //   element.innerHTML = `
-  //     <div class="max-w-7xl mx-auto px-4">
-  //       <div class="mb-8">
-  //         <h1 class="text-3xl font-bold mb-4">${i18n.t('tournament.title')}</h1>
-  //         <div class="bg-gray-800 rounded-lg p-6 mb-6">
-  //           ${this.renderTournamentHeader()}
-  //         </div>
-  //       </div>
-
-  //       ${this.currentMatch ? `
-  //         <div class="mb-8">
-  //           <div id="current-match-section">
-  //             ${this.renderCurrentMatch()}
-  //           </div>
-  //         </div>
-  //       ` : ''}
-
-  //       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-  //         <div class="lg:col-span-2">
-  //           <div id="tournament-bracket">
-  //             ${bracket.render()}
-  //           </div>
-  //         </div>
-       
-  //     </div>
-  //   `;
-
-  //   // Attacher les événements des composants
-  //   bracket.bindEvents();
-  //   // stats.bindEvents();
-  // }
-
   private render(element: Element): void {
     if (!this.tournament) {
       this.renderError(element, 'Failed to load tournament data');
@@ -229,23 +188,6 @@ export class TournamentPage {
       default: return 'bg-gray-600 text-gray-300';
     }
   }
-
-  // private renderTournamentHeader(): string {
-  //   return `
-  //     <div class="flex justify-between items-center">
-  //       <div>
-  //         <h2 class="text-xl font-semibold mb-2">${i18n.t('tournament.status.title')}</h2>
-  //         <span class="px-3 py-1 rounded-full text-sm font-medium ${this.getStatusClasses()}">
-  //           ${i18n.t(`tournament.status.${this.tournament.status}`)}
-  //         </span>
-  //       </div>
-  //       <div class="text-right">
-  //         <p class="text-gray-400 text-sm">${i18n.t('tournament.participants')}</p>
-  //         <p class="text-2xl font-bold">${this.tournament.participants.length}/8</p>
-  //       </div>
-  //     </div>
-  //   `;
-  // }
 
   private renderCurrentMatch(): string {
     if (!this.currentMatch) return '';
