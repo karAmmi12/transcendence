@@ -183,7 +183,7 @@ export class Pong3D {
     this.updateUI();
   }
 
-  private applyPhysicsEffects(): void {
+  protected applyPhysicsEffects(): void {
     if (!this.powerUpManager) return;
     
     const activeEffects = this.powerUpManager.getActiveEffects();

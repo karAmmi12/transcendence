@@ -334,56 +334,63 @@ export class GamePage {
           </div>
         </div>
 
-        <!-- Paramètres de matchmaking -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div>
-            <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
-            <select id="remote-ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
-              <option value="slow">${i18n.t('common.slow')}</option>
-              <option value="medium" selected>${i18n.t('common.medium')}</option>
-              <option value="fast">${i18n.t('common.fast')}</option>
-            </select>
-            <p class="text-xs text-gray-400 mt-1">${i18n.t('game.remote.speedNote')}</p>
-          </div>
-
-          <div>
-            <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
-            <select id="remote-win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
-              <option value="3">3 ${i18n.t('common.points')}</option>
-              <option value="5" selected>5 ${i18n.t('common.points')}</option>
-              <option value="10">10 ${i18n.t('common.points')}</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
-            <div class="flex items-center">
-              <input type="checkbox" id="remote-enable-powerups" class="mr-2">
-              <label for="remote-enable-powerups" class="text-sm">${i18n.t('game.customization.enablePowerUps')}</label>
+        <!-- ✅ Message informatif sur les rôles -->
+        <div class="mb-6 p-4 bg-amber-900/20 rounded-lg border border-amber-500/30">
+          <div class="flex items-start gap-3">
+            <div class="text-amber-400 text-xl">👑</div>
+            <div>
+              <h4 class="text-amber-200 font-medium mb-2">Comment ça fonctionne ?</h4>
+              <div class="text-amber-100 text-sm space-y-1">
+                <p><strong>🎮 En tant qu'Hôte :</strong> Vos paramètres de jeu seront appliqués pour la partie</p>
+                <p><strong>👥 En tant qu'Invité :</strong> Vous recevrez automatiquement les paramètres de l'hôte</p>
+                <p><strong>🎨 Thème personnel :</strong> Votre thème visuel reste le vôtre dans tous les cas</p>
+              </div>
             </div>
-            <p class="text-xs text-gray-400 mt-1">${i18n.t('game.remote.powerUpsNote')}</p>
           </div>
-
-          
         </div>
 
-        <!-- Informations de thème (lecture seule) -->
-        <div class="mb-6 p-3 bg-gray-700/50 rounded-lg border border-purple-500/30">
-          <div class="flex items-center justify-between">
+        <!-- ✅ Paramètres configurables UNIQUEMENT si vous êtes susceptible d'être host -->
+        <div id="host-settings" class="mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-lg text-white">Paramètres de partie</h4>
+            <span class="text-xs bg-blue-600 px-2 py-1 rounded">Appliqués si vous êtes l'hôte</span>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <span class="text-sm text-gray-300">${i18n.t('game.customization.willUseTheme')}:</span>
-              <span class="text-purple-300 font-medium ml-2">${this.getThemeName(defaultTheme)}</span>
+              <label class="block mb-2">${i18n.t('game.customization.ballSpeed')}:</label>
+              <select id="remote-ball-speed" class="bg-gray-700 rounded px-3 py-2 w-full">
+                <option value="slow">${i18n.t('common.slow')}</option>
+                <option value="medium" selected>${i18n.t('common.medium')}</option>
+                <option value="fast">${i18n.t('common.fast')}</option>
+              </select>
             </div>
-            <button id="change-theme-profile-remote" class="text-xs bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded">
-              ${i18n.t('game.customization.changeInProfile')}
-            </button>
+
+            <div>
+              <label class="block mb-2">${i18n.t('common.score')} ${i18n.t('common.toWin')}:</label>
+              <select id="remote-win-score" class="bg-gray-700 rounded px-3 py-2 w-full">
+                <option value="3">3 ${i18n.t('common.points')}</option>
+                <option value="5" selected>5 ${i18n.t('common.points')}</option>
+                <option value="10">10 ${i18n.t('common.points')}</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block mb-2">${i18n.t('game.customization.powerUps')}:</label>
+              <div class="flex items-center">
+                <input type="checkbox" id="remote-enable-powerups" class="mr-2">
+                <label for="remote-enable-powerups" class="text-sm">${i18n.t('game.customization.enablePowerUps')}</label>
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Les power-ups seront synchronisés pour tous les joueurs</p>
+            </div>
           </div>
         </div>
 
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-3">
           <button id="start-remote-game" 
-                  class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium transition-colors flex-1">
+                  class="flex-1 bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+            <span>🌐</span>
             ${i18n.t('game.remote.findOpponent')}
           </button>
           <button id="back-to-modes" 
