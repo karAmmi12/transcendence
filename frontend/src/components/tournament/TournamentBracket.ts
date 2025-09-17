@@ -142,7 +142,7 @@ export class TournamentBracket {
     return `
       <path d="M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}" 
             stroke="#4B5563" 
-            stroke-width="2" 
+            stroke-width="4" 
             fill="none" 
             stroke-dasharray="5,5"
             opacity="0.6"/>
