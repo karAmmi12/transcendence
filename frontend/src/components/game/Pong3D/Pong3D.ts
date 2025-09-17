@@ -556,34 +556,89 @@ export class Pong3D {
     }
   }
 
-  private createEffectIndicator(effect: any): void {
-    const indicator = document.createElement('div');
-    indicator.className = `
-      active-effect-indicator fixed top-32 z-40
-      bg-black/70 text-white px-3 py-1 rounded-lg text-sm
-      transition-all duration-300
-    `;
+private createEffectIndicator(effect: any): void {
+  const indicator = document.createElement('div');
+  indicator.className = `
+    active-effect-indicator fixed z-40
+    bg-black/70 text-white px-3 py-1 rounded-lg text-sm
+    transition-all duration-300
+  `;
+  
+  const timeLeft = Math.ceil((effect.startTime + effect.duration - Date.now()) / 1000);
+  
+  indicator.innerHTML = `
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+      <span>${this.getEffectName(effect.type)}</span>
+      <span class="text-xs text-gray-300">${timeLeft}s</span>
+    </div>
+  `;
+  
+  // Positionner l'indicateur à côté du joueur concerné
+  const playerInfo = document.getElementById(`${effect.targetPlayer}-info`);
+  const canvas = document.getElementById('game-canvas');
+  
+  if (playerInfo && canvas) {
+    const playerRect = playerInfo.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+    const indicatorWidth = 150; // Largeur approximative de l'indicateur
+    const indicatorHeight = 30; // Hauteur approximative de l'indicateur
     
-    const timeLeft = Math.ceil((effect.startTime + effect.duration - Date.now()) / 1000);
+    let left: number;
+    let top: number;
+    
+    // Déterminer le joueur qui subit réellement l'effet visible
+    let affectedPlayer = effect.targetPlayer;
+    
+    // Pour les effets qui affectent l'adversaire, afficher de son côté
+    if (effect.type === PowerUpType.REVERSE_CONTROLS || effect.type === PowerUpType.FREEZE_OPPONENT) {
+      affectedPlayer = effect.targetPlayer === 'player1' ? 'player2' : 'player1';
+    }
+    
+    // Obtenir la position du joueur affecté
+    const affectedPlayerInfo = document.getElementById(`${affectedPlayer}-info`);
+    if (affectedPlayerInfo) {
+      const affectedRect = affectedPlayerInfo.getBoundingClientRect();
+      
+      if (affectedPlayer === 'player1') {
+        // Positionner à droite du joueur 1 (affecté)
+        left = affectedRect.right + 10;
+        top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
+      } else {
+        // Positionner à gauche du joueur 2 (affecté)
+        left = affectedRect.left - indicatorWidth - 10;
+        top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
+      }
+    } else {
+      // Fallback vers la logique originale
+      if (effect.targetPlayer === 'player1') {
+        left = playerRect.right + 10;
+        top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
+      } else {
+        left = playerRect.left - indicatorWidth - 10;
+        top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
+      }
+    }
+    
+    // S'assurer que l'indicateur reste dans les limites du canvas
+    left = Math.max(canvasRect.left, Math.min(left, canvasRect.right - indicatorWidth));
+    top = Math.max(canvasRect.top, Math.min(top, canvasRect.bottom - indicatorHeight));
+    
+    indicator.style.left = `${left}px`;
+    indicator.style.top = `${top}px`;
+  } else {
+    // Fallback si les éléments ne sont pas trouvés
     const side = effect.targetPlayer === 'player1' ? 'left-4' : 'right-4';
-    
-    indicator.className += ` ${side}`;
-    indicator.innerHTML = `
-      <div class="flex items-center space-x-2">
-        <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
-        <span>${this.getEffectName(effect.type)}</span>
-        <span class="text-xs text-gray-300">${timeLeft}s</span>
-      </div>
-    `;
-    
-    document.body.appendChild(indicator);
+    indicator.className += ` ${side} top-32`;
   }
-
+  
+  document.body.appendChild(indicator);
+}
   private getEffectName(type: PowerUpType): string {
     const names = {
-      [PowerUpType.PADDLE_SIZE]: 'Grande Palette',
-      [PowerUpType.REVERSE_CONTROLS]: 'Contrôles Inversés',
-      [PowerUpType.FREEZE_OPPONENT]: 'Gelé'
+      [PowerUpType.PADDLE_SIZE]: '📏',
+      [PowerUpType.REVERSE_CONTROLS]: '🔄',
+      [PowerUpType.FREEZE_OPPONENT]: '❄️'
     };
     return names[type] || type;
   }

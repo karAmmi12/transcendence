@@ -586,7 +586,7 @@ export class PowerUpManager {
           this.activeEffects.set(effect.id, {
             id: effect.id,
             type: effect.type,
-            targetPlayer: targetPlayer,
+            targetPlayer: targetPlayer as 'player1' | 'player2',
             effects: effect.effects,
             startTime: effect.startTime,
             duration: effect.duration
