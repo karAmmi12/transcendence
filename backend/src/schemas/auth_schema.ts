@@ -60,7 +60,7 @@ export const loginSchema = {
             username: {
                 type: 'string',
                 minLength: 1
-            }, // siuu pour le moment mail et username possible
+            },
             password: {
                 type: 'string',
                 minLength: 1
