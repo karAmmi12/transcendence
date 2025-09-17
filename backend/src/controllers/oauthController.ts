@@ -1,17 +1,16 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js"; 
-import {  GoogleUserData, UserFromDB } from "../types/auth.js";
+import { UserFromDB } from "../types/auth.js";
 import 'dotenv/config'
 
 export class OAuthController 
 {
-
     private static exchangeCodeToken = "https://oauth2.googleapis.com/token";
     private static authEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
     private static getUserGoogle = "https://www.googleapis.com/oauth2/v3/userinfo";
     
-        // Validation au chargement de la classe
+    // Validation au chargement de la classe
     static {
         if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || 
             !process.env.GOOGLE_REDIRECT_URI || !process.env.API_URL_FRONT) {

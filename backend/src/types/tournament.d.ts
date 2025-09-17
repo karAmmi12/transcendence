@@ -1,7 +1,3 @@
-export interface CreateTournamentBody {
-    participants: string[]; // Array de 8 noms/alias
-}
-
 export interface TournamentParticipant {
     name: string;
     isUser: boolean;
@@ -46,21 +42,9 @@ export interface TournamentResponse {
     };
 }
 
-export interface FinishMatchBody {
-    tournamentId: number;
-    matchNumber: number; // ✅ tournament_match_number
-    winner: string; // Nom du gagnant (alias ou username)
-    scores: {
-        player1: number;
-        player2: number;
-    };
-}
-
 export interface GameSettings {
     ballSpeed: string;
     winScore: number;
     theme: string;
     powerUps: boolean;
 }
-
-// ⚠️ Supprimer MatchResult car remplacé par TournamentResponse unifié

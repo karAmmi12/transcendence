@@ -54,7 +54,6 @@ export class StatsService
                 winRate: 0
             });
         }
-
     }
 
     /**
@@ -91,7 +90,6 @@ export class StatsService
             `);
           const matchesRaw = stmt.all(userId, limit) as any[];
           // Transformer les données brutes en format MatchHistory
-          // GRRRRRRRRR
             const matches: MatchHistory[] = matchesRaw.map(matchRaw => {
                 const match = serialize(matchRaw);
                 
