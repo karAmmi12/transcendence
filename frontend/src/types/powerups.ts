@@ -9,6 +9,8 @@ export interface PowerUp {
   isActive: boolean;
   createdAt: number;
   expiresAt: number; // quand le power-up disparaît du terrain
+  spawned?: number; // temps de spawn (pour synchronisation)
+  lifespan?: number; // durée de vie sur le terrain (pour synchronisation)
 }
 
 export enum PowerUpType {
@@ -24,6 +26,7 @@ export interface ActiveEffect {
   startTime: number;
   duration: number;
   originalValue?: any; // pour restaurer l'état original
+  effects?: PowerUpEffects; // effets appliqués (pour synchronisation)
 }
 
 export interface PowerUpConfig {
