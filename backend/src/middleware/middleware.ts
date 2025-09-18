@@ -2,6 +2,7 @@ import {FastifyRequest, FastifyReply} from 'fastify'
 import {JWTService} from "../services/jwtServices.js";
 import db from '../db/index.js'
 import {serialize} from '../utils/serialize.js';
+import { Logger } from '../utils/logger.js';
 
 // augmentation du detail car pas de user dans FastifyRequest de base 
 declare module 'fastify' 
@@ -35,7 +36,7 @@ const PUBLIC_ROUTES = [
 export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
 {
     const routePath = req.url.split('?')[0];
-    console.log('Checking route:', routePath); // Debug
+    Logger.log('Checking route:', routePath); // Debug
     try{
         if (PUBLIC_ROUTES.includes(req.url) || PUBLIC_ROUTES.includes(routePath))
             return; //on ignore certaine route voir liste au dessus
@@ -100,7 +101,7 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
                         }
                     }
                 } catch (error) {
-                    console.log('Optional auth failed for tournament route, continuing without user...');
+                    Logger.log('Optional auth failed for tournament route, continuing without user...');
                 }
             }
             // Continuer dans tous les cas (avec ou sans req.user)
@@ -132,7 +133,7 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
         // si pas de refreshToken trouver demander au user de ce reconnecter
         if (!refreshToken)
         {
-            console.log('No refresh token found, user needs to login again');
+            Logger.log('No refresh token found, user needs to login again');
             return (reply.status(401).send({error: 'Authentification required'}));
         }
         
@@ -183,7 +184,7 @@ export async function authMiddleware(req: FastifyRequest, reply:FastifyReply)
         }
 
     } catch (error) {
-        console.error('Middleware error:', error);
+        Logger.error('Middleware error:', error);
         return (reply.status(500).send({error: 'Authentification error'}));
     }
 }
