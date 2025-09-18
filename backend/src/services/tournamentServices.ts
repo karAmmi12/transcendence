@@ -1,5 +1,6 @@
 import db from '../db/index.js';
 import {TournamentMatch, TournamentResponse, TournamentParticipant, TournamentBracket} from "../types/tournament.js"
+import { Logger } from '../utils/logger.js';
 
 export class TournamentService 
 {
@@ -89,7 +90,7 @@ export class TournamentService
             });
 
         } catch (error) {
-            console.error('Error creating tournament:', error);
+            Logger.error('Error creating tournament:', error);
             throw error;
         }
         
@@ -215,7 +216,7 @@ export class TournamentService
             };
 
         } catch (error) {
-            console.error('Error finishing tournament match:', error);
+            Logger.error('Error finishing tournament match:', error);
             throw error;
         }
     }
@@ -403,7 +404,7 @@ export class TournamentService
         const completedMatches = completedMatchesStmt.all(tournamentId) as any[];
         const completedNumbers = completedMatches.map(m => m.tournament_match_number);
         
-        console.log('✅ Completed matches:', completedNumbers);
+        Logger.log('✅ Completed matches:', completedNumbers);
 
         // Vérifier les matchs dans l'ordre de priorité
         for (let matchNumber = 1; matchNumber <= 7; matchNumber++) {

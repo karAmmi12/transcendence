@@ -1,4 +1,5 @@
 import { WebSocket, WebSocketServer } from 'ws';
+import { Logger } from '../utils/logger.js';
 
 interface Player {
   id: string;
@@ -25,7 +26,7 @@ export class WebSocketService
   constructor(port: number = 8001, host: string = '0.0.0.0') 
   {
     this.wss = new WebSocketServer({ port, host });
-    console.log(`🎮 WebSocket Signaling Server running on ${host}:${port}`);
+    Logger.log(`🎮 WebSocket Signaling Server running on ${host}:${port}`);
     
     this.wss.on('connection', (ws: WebSocket) => {
       this.handleConnection(ws);
@@ -34,14 +35,14 @@ export class WebSocketService
 
   private handleConnection(ws: WebSocket): void 
   {
-    console.log('🔗 New signaling connection');
+    Logger.log('🔗 New signaling connection');
 
     ws.on('message', (data: Buffer) => {
       try {
         const message = JSON.parse(data.toString());
         this.handleMessage(ws, message);
       } catch (error) {
-        console.error('❌ Invalid message format:', error);
+        Logger.error('❌ Invalid message format:', error);
       }
     });
 
@@ -76,7 +77,7 @@ export class WebSocketService
   private handleVoluntaryDisconnect(ws: WebSocket, message: any): void 
   {
     const { playerId, matchId, reason } = message;
-    console.log(`🚪 Player ${playerId} voluntarily disconnecting from match ${matchId}: ${reason}`);
+    Logger.log(`🚪 Player ${playerId} voluntarily disconnecting from match ${matchId}: ${reason}`);
     
     // Traiter comme une déconnexion normale mais avec plus d'informations
     this.notifyOpponentDisconnection(playerId);
@@ -198,7 +199,7 @@ export class WebSocketService
     const playerId = this.getPlayerIdFromWS(ws);
     if (!playerId) return;
 
-    console.log(`👋 Player ${playerId} disconnected`);
+    Logger.log(`👋 Player ${playerId} disconnected`);
 
     // Retirer de la file d'attente
     this.waitingQueue = this.waitingQueue.filter(p => p.id !== playerId);
@@ -222,7 +223,7 @@ export class WebSocketService
   {
     for (const match of this.matches.values()) {
       if (match.host.id === playerId && match.guest.ws.readyState === WebSocket.OPEN) {
-        console.log(`📢 Notifying guest that host ${playerId} disconnected`);
+        Logger.log(`📢 Notifying guest that host ${playerId} disconnected`);
         match.guest.ws.send(JSON.stringify({ 
           type: 'opponent_disconnected',
           reason: 'host_left',
@@ -231,7 +232,7 @@ export class WebSocketService
         this.matches.delete(match.id);
         break;
       } else if (match.guest.id === playerId && match.host.ws.readyState === WebSocket.OPEN) {
-        console.log(`📢 Notifying host that guest ${playerId} disconnected`);
+        Logger.log(`📢 Notifying host that guest ${playerId} disconnected`);
         match.host.ws.send(JSON.stringify({ 
           type: 'opponent_disconnected',
           reason: 'guest_left',
