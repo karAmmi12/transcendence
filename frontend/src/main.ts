@@ -4,6 +4,8 @@ import { Router } from './router'
 import { i18n } from '@/services/i18nService'
 // import { MobileTestUtils } from './utils/MobileTestUtils'
 // import { ResponsiveTest } from './utils/ResponsiveTest'
+// import { BrowserTestUtils } from './utils/BrowserTestUtils';
+// import { CrashTestUI } from './utils/CrashTestUI';
 import { authService } from './services/authService'
 import { ApiConfig } from './config/api.js';
 
@@ -11,23 +13,39 @@ import { ApiConfig } from './config/api.js';
 console.log('🚀 Application starting...');
 ApiConfig.logUrls();
 
-class Main {
+class Main 
+{
   private app: App
   private router: Router
 
-  constructor() {
+  constructor() 
+  {
     this.router = new Router()
     this.app = new App(this.router)
     this.init()
   }
 
-  private async init(): Promise<void> {
-
+  private async init(): Promise<void> 
+  {
+    // Vérification de l'état d'authentification au démarrage
     await authService.checkAuthStatus();
+
+    // Vérification de la compatibilité du navigateur
+    // const isCompatible = BrowserTestUtils.checkCriticalFeatures();
+    // if (!isCompatible) {
+    //   console.warn('⚠️ Browser compatibility issues detected. Some features may not work properly.');
+    // }
 
     // Initialisation de l'application
     this.app.mount('#app');
     this.router.init();
+
+        // ✅ Ajouter les outils de développement en mode dev
+    // if (import.meta.env.DEV) {
+    //   this.initDevelopmentTools();
+    // }
+
+    
 
     // Gestion de la navigation dans le navigateur
     // window.addEventListener('popstate', () => {
@@ -53,6 +71,22 @@ class Main {
     console.log('🚀 ft_transcendence frontend started!')
   }
 
+  // private async initDevelopmentTools(): Promise<void> {
+  //   try {
+  //     // Ajouter le testeur de compatibilité navigateur
+  //     BrowserTestUtils.addCompatibilityTestButton();
+      
+  //     // Ajouter le testeur de crash
+  //     CrashTestUI.addCrashTestButton();
+      
+  //     // Vous pouvez aussi ajouter les autres outils de test
+  //     // const { MobileTestUtils } = await import('./utils/MobileTestUtils');
+  //     // MobileTestUtils.addResponsiveTestButton();
+      
+  //   } catch (error) {
+  //     console.warn('Development tools failed to load:', error);
+  //   }
+  // }
 //   private async initDevelopmentTools(): Promise<void> {
 //     try {
 //       const { MobileTestUtils } = await import('./utils/MobileTestUtils');
