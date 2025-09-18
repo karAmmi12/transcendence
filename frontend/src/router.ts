@@ -1,3 +1,4 @@
+// Import des dépendances nécessaires pour le routage
 import { ROUTES } from './utils/constants';
 import { authService } from '@services/authService';
 import { HomePage } from '@pages/HomePage';
@@ -8,21 +9,28 @@ import { ProfilePage } from '@pages/ProfilePage';
 import { TournamentCreatePage } from '@pages/TournamentCreatePage';
 import { TournamentPage } from '@pages/TournamentPage';
 
-interface Route {
-  path: string;
-  component: () => any; // Changé en fonction qui retourne une instance
-  title: string;
-  requiresAuth: boolean;
+// Interface définissant la structure d'une route
+interface Route 
+{
+  path: string; // Chemin de la route
+  component: () => any; // Fonction retournant une instance du composant
+  title: string; // Titre de la page pour le document
+  requiresAuth: boolean; // Indique si l'authentification est requise
 }
 
-export class Router {
+// Classe principale gérant le routage de l'application
+export class Router 
+{
+  // Propriété stockant la page actuelle pour la nettoyer lors d'un changement
   private currentPage: any = null;
+
+  // Tableau des routes définies dans l'application
   private routes: Route[] = [
     {
       path: ROUTES.HOME,
-      component: () => new HomePage(), // Instanciation avec new
+      component: () => new HomePage(), // Instanciation de la page d'accueil
       title: 'Home - ft_transcendence',
-      requiresAuth: false
+      requiresAuth: false // Accessible sans authentification
     },
     {
       path: ROUTES.LOGIN,
@@ -46,10 +54,10 @@ export class Router {
       path: ROUTES.PROFILE,
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
-      requiresAuth: true
+      requiresAuth: true // Nécessite une authentification
     },
     {
-      path: '/profile/:id',
+      path: '/profile/:id', // Route avec paramètre dynamique pour l'ID utilisateur
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
       requiresAuth: true
@@ -61,41 +69,47 @@ export class Router {
       requiresAuth: false // Accessible aux invités aussi
     },
     {
-      path: '/tournament/:id',
+      path: '/tournament/:id', // Route avec paramètre pour l'ID du tournoi
       component: () => new TournamentPage(),
       title: 'Tournament - ft_transcendence',
       requiresAuth: false
     }
-    // ,
-    // {
-    //   path: ROUTES.TOURNAMENT,
-    //   component: () => new TournamentPage(),
-    //   title: 'Tournament - ft_transcendence',
-    //   requiresAuth: true
-    // }
   ];
 
-  async navigate(path: string): Promise<void> {
-    // Émettre l'événement de navigation avant de changer de route
+  // Méthode pour naviguer vers une nouvelle route
+  async navigate(path: string): Promise<void> 
+  {
+    // Émettre un événement avant la navigation pour permettre des actions préparatoires
     window.dispatchEvent(new CustomEvent('beforeNavigate', { detail: path }));
     
+    // Mettre à jour l'historique du navigateur
     history.pushState({}, '', path);
+    
+    // Traiter la nouvelle route
     await this.handleRoute();
   }
 
-  async handleRoute(): Promise<void> {
+  // Méthode principale pour gérer le chargement et l'affichage d'une route
+  async handleRoute(): Promise<void> 
+  {
+    // Récupérer le chemin actuel depuis l'URL
     const path = window.location.pathname;
     
-    // Gestion des routes avec paramètres
+    // Recherche d'une route exacte correspondant au chemin
     let matchedRoute = this.routes.find(r => r.path === path);
     
-    if (!matchedRoute) {
-      // Essayer de matcher des routes avec paramètres
-      for (const route of this.routes) {
-        if (route.path.includes(':')) {
+    // Si aucune route exacte trouvée, essayer de matcher avec des paramètres dynamiques
+    if (!matchedRoute) 
+    {
+      for (const route of this.routes) 
+      {
+        if (route.path.includes(':')) 
+        {
+          // Convertir le pattern de route en expression régulière
           const pathPattern = route.path.replace(/:[^/]+/g, '([^/]+)'); 
           const regex = new RegExp(`^${pathPattern}$`);
-          if (regex.test(path)) {
+          if (regex.test(path))
+          {
             matchedRoute = route;
             break;
           }
@@ -103,52 +117,62 @@ export class Router {
       }
     }
     
+    
+    // Utiliser la route trouvée ou la route par défaut (home)
     const route = matchedRoute || this.routes[0];
     
-    // Vérification de l'authentification
-    if (route.requiresAuth) {
+    // Vérifier l'authentification si nécessaire
+    if (route.requiresAuth) 
+    {
       const isAuthenticated = await authService.checkAuthStatus();
-      if (!isAuthenticated) {
+      if (!isAuthenticated) 
+      {
+        // Rediriger vers la page de connexion
         this.navigate('/login');
         return;
       }
     }
     
-    // Rediriger vers home si utilisateur connecté essaie d'accéder à login/register
-    if ((path === '/login' || path === '/register')) {
+    // Rediriger vers l'accueil si un utilisateur connecté accède à login/register
+    if ((path === '/login' || path === '/register')) 
+    {
       const isAuthenticated = await authService.checkAuthStatus();
-      if (isAuthenticated) {
+      if (isAuthenticated) 
+      {
         this.navigate('/');
         return;
       }
     }
     
-    // Mise à jour du titre de la page
+    // Mettre à jour le titre de la page
     document.title = route.title;
     
-    // Charger et monter la page
     // Nettoyer la page précédente si elle existe
-    if (this.currentPage && typeof this.currentPage.destroy === 'function') {
+    if (this.currentPage && typeof this.currentPage.destroy === 'function')
+    {
       this.currentPage.destroy();
     }
     
-    const component = route.component(); // Maintenant ça retourne une instance
+    // Instancier et monter le nouveau composant
+    const component = route.component();
     this.currentPage = component;
     component.mount('#page-content');
   }
 
-  init(): void {
-    // Gérer les changements d'URL
+  // Méthode d'initialisation du routeur
+  init(): void 
+{
+    // Écouter les changements d'historique (boutons précédent/suivant du navigateur)
     window.addEventListener('popstate', () => {
       this.handleRoute();
     });
 
-    // Gérer la navigation par événement custom
+    // Écouter les événements de navigation personnalisés
     window.addEventListener('navigate', (event: CustomEvent) => {
       this.navigate(event.detail);
     });
 
-    // Charger la route initiale
+    // Charger la route initiale au démarrage
     this.handleRoute();
   }
 }
