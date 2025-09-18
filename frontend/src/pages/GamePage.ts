@@ -8,7 +8,7 @@ import { RemotePong } from '@/components/game/RemotePong.js';
 
 // Nouveaux imports des composants
 import { GameModeSelector } from '@/components/game/GameModeSelector.js';
-import { GameSettings as GameSettingsComponent } from '@/components/game/GameSettings.js';
+import { GameSettingsUI as GameSettingsComponent } from '@/components/game/GameSettings.js';
 import { GameInterface } from '@/components/game/GameInterface.js';
 import { MobileControls } from '@/components/game/MobileControls.js';
 

@@ -177,6 +177,7 @@ export class AuthService {
       return this.currentUser !== null;
     }
 
+
     try {
       const response = await fetch(`${this.baseURL}/user/me`, {
         method: 'GET',
@@ -195,13 +196,27 @@ export class AuthService {
         this.authChecked = true;
         window.dispatchEvent(new CustomEvent('authStateChanged'));
         return true;
+      } else if (response.status === 401) {
+        // ✅ Utilisateur non authentifié - c'est NORMAL, pas une erreur
+        console.log('🔐 User not authenticated');
+        this.currentUser = null;
+        this.authChecked = true;
+        return false;
       } else {
+        // Autres erreurs (500, réseau, etc.) - celles-ci sont des vraies erreurs
+        console.warn('⚠️ Auth check failed with status:', response.status);
         this.currentUser = null;
         this.authChecked = true;
         return false;
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      // Erreurs réseau ou autres - différencier du cas "non authentifié"
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.warn('🌐 Network error during auth check (server might be down)');
+      } else {
+        console.warn('⚠️ Auth check error:', error);
+      }
+      
       this.currentUser = null;
       this.authChecked = true;
       return false;
