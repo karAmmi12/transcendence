@@ -1,5 +1,6 @@
 import {FastifyRequest, FastifyReply} from "fastify";
 import { FriendsService } from "../services/friendsServices.js";
+import { Logger } from '../utils/logger.js';
 
 export class FriendsController
 {
@@ -29,7 +30,7 @@ export class FriendsController
             });
 
         } catch (error) {
-            console.error("Add friend error:", error);
+            Logger.error("Add friend error:", error);
             reply.status(500).send({ error: "Failed to add friend" });
         }
     }
@@ -46,7 +47,7 @@ export class FriendsController
             reply.send(friends);
 
         } catch (error) {
-            console.error("Get friends list error:", error);
+            Logger.error("Get friends list error:", error);
             reply.status(500).send({ error: "Failed to get friends list" });
         }
         
@@ -71,7 +72,7 @@ export class FriendsController
             reply.send({ message: "Friend removed successfully" });
 
         } catch (error) {
-            console.error("Remove friend error:", error);
+            Logger.error("Remove friend error:", error);
             reply.status(500).send({ error: "Failed to remove friend" });
         }
     }

@@ -1,5 +1,6 @@
 import {FastifyRequest, FastifyReply} from "fastify";
 import { HomeService } from "../services/homeServices.js";
+import { Logger } from '../utils/logger.js';
 
 export class HomeController
 {
@@ -13,7 +14,7 @@ export class HomeController
                         
             reply.send(stats);
         } catch (error) {
-            console.error("Get general stats error:", error);
+            Logger.error("Get general stats error:", error);
             reply.status(500).send({ error: "Failed to get general stats" });
         }
     }

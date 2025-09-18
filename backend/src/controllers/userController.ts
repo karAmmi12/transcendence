@@ -4,6 +4,7 @@ import { UpdateProfileData, ChangePassword} from "../types/auth.js";
 import db from "../db/index.js"
 import bcrypt from "bcrypt"
 import { StatsService } from "../services/statsServices.js";
+import { Logger } from '../utils/logger.js';
 
 export class UserController
 {
@@ -19,11 +20,11 @@ export class UserController
             if (!profile)
                 return (reply.status(404).send({ error: 'User not found' }));
 
-            console.log("Profile data:", profile);
+            Logger.log("Profile data:", profile);
             reply.send(profile);
 
         } catch (error) {
-            console.error("Get profile error:", error);
+            Logger.error("Get profile error:", error);
             reply.status(500).send({ error: "Failed to get profile" });
         }
     }
@@ -37,7 +38,7 @@ export class UserController
             const user = req.user!; // grace au middleware
             const changePassword = req.body as ChangePassword;
 
-            console.log("Change password request:", changePassword);
+            Logger.log("Change password request:", changePassword);
 
             if (changePassword.currentPassword === changePassword.newPassword)
                 return (reply.status(400).send({error: "New password need to be different from old password"}));
@@ -67,7 +68,7 @@ export class UserController
 
             reply.send({message: "Password upadte success"});
         } catch (error) {
-            console.error("Change password error:", error);
+            Logger.error("Change password error:", error);
             reply.status(500).send({ error: "Failed to change password" });
         }
     }
@@ -143,7 +144,7 @@ export class UserController
             });
 
         } catch (error) {
-            console.error("Update profile controller error:", error);
+            Logger.error("Update profile controller error:", error);
             reply.status(500).send({ error: "Failed to update profile" });
         }
     }
@@ -177,13 +178,13 @@ export class UserController
                 try {
                     await fs.access(oldAvatarPath);
                     await fs.unlink(oldAvatarPath);
-                    console.log(`Ancien avatar supprimé: ${oldAvatarPath}`);
+                    Logger.log(`Ancien avatar supprimé: ${oldAvatarPath}`);
                 } catch (error) {
-                    console.log(`Ancien avatar non trouvé ou déjà supprimé: ${oldAvatarPath}`);
+                    Logger.log(`Ancien avatar non trouvé ou déjà supprimé: ${oldAvatarPath}`);
                 }
             }
         } catch (error) {
-            console.error('Erreur lors de la suppression de l\'ancien avatar:', error);
+            Logger.error('Erreur lors de la suppression de l\'ancien avatar:', error);
             // Continue même si la suppression échoue
         }
 
@@ -227,7 +228,7 @@ export class UserController
             const users = await UserServices.getAllUsernames(user.userId);
             reply.send(users);
         } catch (error) {
-            console.error("Get all users controller error:", error);
+            Logger.error("Get all users controller error:", error);
             reply.status(500).send({ error: "Failed to get users" });
         }
     }
@@ -247,7 +248,7 @@ export class UserController
             const users = await UserServices.searchUsers(query);
             reply.send(users);
         } catch (error) {
-            console.error("Search users controller error:", error);
+            Logger.error("Search users controller error:", error);
             reply.status(500).send({ error: "Failed to search users" });
         }
     }
@@ -270,7 +271,7 @@ export class UserController
 
             reply.send(user);
         } catch (error) {
-            console.error("Get user by ID error:", error);
+            Logger.error("Get user by ID error:", error);
             reply.status(500).send({ error: "Failed to get user" });
         }
     }
@@ -289,7 +290,7 @@ export class UserController
             reply.send(history);
 
         } catch (error) {
-            console.error("Get match history error:", error);
+            Logger.error("Get match history error:", error);
             reply.status(500).send({error: "Failed to get match history"});
         }
     }
@@ -338,7 +339,7 @@ export class UserController
             });
 
         } catch (error) {
-            console.error("Update theme error:", error);
+            Logger.error("Update theme error:", error);
             reply.status(500).send({ error: "Failed to update theme" });
         }
     }

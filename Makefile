@@ -35,7 +35,15 @@ install:
 	@cd ./frontend && npm install
 	@echo "$(GREEN)Dependencies installed!$(END)"
 
-dev:
+set-dev-env:
+	@echo "$(YELLOW)Setting NODE_ENV=development...$(END)"
+	@sed -i 's/NODE_ENV=.*/NODE_ENV=development/' backend/.env
+
+set-prod-env:
+	@echo "$(YELLOW)Setting NODE_ENV=production...$(END)"
+	@sed -i 's/NODE_ENV=.*/NODE_ENV=production/' backend/.env
+
+dev: set-dev-env
 	@echo "$(BLUE)Lauching in dev mode...$(END)"
 	@echo "$(YELLOW)Starting backend and frontend in development mode...$(END)"
 	@cd ./backend && npm run dev & \
@@ -43,7 +51,7 @@ dev:
 	wait
 	@echo "$(GREEN)Development servers started!$(END)"
 
-prod:
+prod: set-prod-env
 	@echo "$(BLUE)Launching in prod mode...$(END)"
 	@$(DC) up --build
 	@echo "$(GREEN)Containers have started in production mode!$(END)"

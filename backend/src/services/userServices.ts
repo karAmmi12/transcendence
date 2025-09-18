@@ -2,6 +2,7 @@ import db from '../db/index.js'
 import {UserData, UpdateProfileData, UpdateResult} from "../types/auth.js"
 import { StatsService } from './statsServices.js';
 import { serialize } from '../utils/serialize.js';
+import { Logger } from '../utils/logger.js';
 
 export class UserServices
 {
@@ -34,7 +35,7 @@ export class UserServices
             googleId: userData.googleId,
             stats: stats
         }
-        console.log("User profile retrieved:", userProfile);
+        Logger.log("User profile retrieved:", userProfile);
         return (userProfile);
     }
 
@@ -129,14 +130,14 @@ export class UserServices
                     user: formattedUser
                 };
             } catch (error) {
-                console.error("Transaction error:", error);
+                Logger.error("Transaction error:", error);
                 throw error; 
             };
         });
         try {
             return (transaction() as UpdateResult);
         } catch (error) {
-            console.error("Update profile error:", error);
+            Logger.error("Update profile error:", error);
             return {
                 success: false,
                 error: (error as Error).message
@@ -181,7 +182,7 @@ export class UserServices
             return users;
             
         } catch (error) {
-            console.error("Get all users error:", error);
+            Logger.error("Get all users error:", error);
             return [];
         }
     }
@@ -223,7 +224,7 @@ export class UserServices
             return users;
             
         } catch (error) {
-            console.error("Search users error:", error);
+            Logger.error("Search users error:", error);
             return [];
         }
     }

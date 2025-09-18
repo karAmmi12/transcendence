@@ -1,5 +1,6 @@
 import {FastifyRequest, FastifyReply} from "fastify";
 import { TournamentService } from "../services/tournamentServices.js";
+import { Logger } from '../utils/logger.js';
 
 export class TournamentController
 {
@@ -29,7 +30,7 @@ export class TournamentController
             }));
 
         } catch (error) {
-            console.error("Create tournament error:", error);
+            Logger.error("Create tournament error:", error);
             return reply.status(500).send({ 
                 success: false,
                 error: "Failed to create tournament" 
@@ -42,7 +43,7 @@ export class TournamentController
      */
     static async finishTournamentMatch(req: FastifyRequest, reply: FastifyReply)
     {
-        console.log("🏆 Processing tournament match finish...");
+        Logger.log("🏆 Processing tournament match finish...");
         try {  
             const user = req.user;
             const { tournamentId, matchNumber, player1, player2, score1, score2, duration } = req.body as {
@@ -74,13 +75,13 @@ export class TournamentController
                 user?.userId
             );
 
-            console.log('✅ Tournament service result:', JSON.stringify(result, null, 2));
+            Logger.log('✅ Tournament service result:', JSON.stringify(result, null, 2));
 
             // ✅ Retourner la structure complète du tournoi
             return reply.status(200).send(result);
 
         } catch (error) {
-            console.error("Finish tournament match error:", error);
+            Logger.error("Finish tournament match error:", error);
             return reply.status(500).send({
                 success: false,
                 error: "Failed to finish tournament match"

@@ -1,6 +1,7 @@
 import db from "../db/index.js"
 import {FriendsResult, FriendProfile} from "../types/friends.js";
 import { serialize } from "../utils/serialize.js";
+import { Logger } from '../utils/logger.js';
 
 export class FriendsService
 {
@@ -45,7 +46,7 @@ export class FriendsService
         try {
             return (transaction());
         } catch (error) {
-            console.error('Friend add:', error);
+            Logger.error('Friend add:', error);
             return ({
                 success: false,
                 error: "Fail add friend"
@@ -85,7 +86,7 @@ export class FriendsService
             return friends;
 
         } catch (error) {
-            console.error('Error getting friends:', error);
+            Logger.error('Error getting friends:', error);
             return [];
         }
     }
@@ -116,7 +117,7 @@ export class FriendsService
         try {
             return (transaction());
         } catch (error) {
-            console.error('Friend remove:', error);
+            Logger.error('Friend remove:', error);
             return ({
                 success: false,
                 error: "Fail remove friend"
