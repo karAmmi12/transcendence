@@ -2,6 +2,7 @@ import db from '../db/index.js'
 import { UserStats } from '../types/auth';
 import { MatchHistory } from '../types/stats.js';
 import { serialize } from '../utils/serialize.js';
+import { Logger } from '../utils/logger.js';
 
 export class StatsService
 {
@@ -46,7 +47,7 @@ export class StatsService
             });
 
         } catch (error) {
-            console.error('Error calculating stats:', error);
+            Logger.error('Error calculating stats:', error);
             return ({
                 wins: 0,
                 losses: 0,
@@ -115,7 +116,7 @@ export class StatsService
         return (matches);
 
       } catch (error) {
-        console.error('Error getting match history for user', userId, ':', error);
+        Logger.error('Error getting match history for user', userId, ':', error);
         return [];
       }
     }
