@@ -6,10 +6,12 @@ export interface SubmitButtonConfig {
   loadingTextKey: string;
 }
 
-export class AuthSubmitButton {
+export class AuthSubmitButton 
+{
   constructor(private config: SubmitButtonConfig) {}
 
-  render(): string {
+  render(): string 
+  {
     return `
       <div>
         <button 
