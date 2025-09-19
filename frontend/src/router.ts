@@ -8,6 +8,7 @@ import { GamePage } from '@pages/GamePage';
 import { ProfilePage } from '@pages/ProfilePage';
 import { TournamentCreatePage } from '@pages/TournamentCreatePage';
 import { TournamentPage } from '@pages/TournamentPage';
+import { NotFoundPage } from '@pages/NotFoundPage'; // ✅ Nouvel import
 
 // Interface définissant la structure d'une route
 interface Route 
@@ -28,9 +29,9 @@ export class Router
   private routes: Route[] = [
     {
       path: ROUTES.HOME,
-      component: () => new HomePage(), // Instanciation de la page d'accueil
+      component: () => new HomePage(),
       title: 'Home - ft_transcendence',
-      requiresAuth: false // Accessible sans authentification
+      requiresAuth: false
     },
     {
       path: ROUTES.LOGIN,
@@ -54,10 +55,10 @@ export class Router
       path: ROUTES.PROFILE,
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
-      requiresAuth: true // Nécessite une authentification
+      requiresAuth: true
     },
     {
-      path: '/profile/:id', // Route avec paramètre dynamique pour l'ID utilisateur
+      path: '/profile/:id',
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
       requiresAuth: true
@@ -66,15 +67,25 @@ export class Router
       path: '/tournament/create',
       component: () => new TournamentCreatePage(),
       title: 'Create Tournament - ft_transcendence',
-      requiresAuth: false // Accessible aux invités aussi
+      requiresAuth: false
     },
     {
-      path: '/tournament/:id', // Route avec paramètre pour l'ID du tournoi
+      path: '/tournament/:id',
       component: () => new TournamentPage(),
       title: 'Tournament - ft_transcendence',
       requiresAuth: false
     }
   ];
+
+  // ✅ Route 404 par défaut
+  private get notFoundRoute(): Route {
+    return {
+      path: '*',
+      component: () => new NotFoundPage(),
+      title: '404 - Page Not Found - ft_transcendence',
+      requiresAuth: false
+    };
+  }
 
   // Méthode pour naviguer vers une nouvelle route
   async navigate(path: string): Promise<void> 
@@ -117,9 +128,8 @@ export class Router
       }
     }
     
-    
-    // Utiliser la route trouvée ou la route par défaut (home)
-    const route = matchedRoute || this.routes[0];
+    // ✅ Si aucune route trouvée, utiliser la page 404
+    const route = matchedRoute || this.notFoundRoute;
     
     // Vérifier l'authentification si nécessaire
     if (route.requiresAuth) 

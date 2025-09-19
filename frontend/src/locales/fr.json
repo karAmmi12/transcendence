@@ -686,5 +686,15 @@
     "social": {
       "title": "Social"
     }
+  },
+  "error": {
+    "404": {
+      "title": "Page Introuvable",
+      "message": "Oups ! La page que vous cherchez semble avoir disparu dans l'espace.",
+      "suggestions": {
+        "title": "Où aimeriez-vous aller ?"
+      },
+      "help": "Si vous pensez qu'il s'agit d'une erreur, veuillez vérifier l'URL ou retourner à l'accueil."
+    }
   }
 }
