@@ -1,6 +1,10 @@
 import Database from "better-sqlite3";
+import { Logger } from '../utils/logger.js';
 
-const db = new Database("database.db", {verbose: console.log});
+// ✅ Correction : utiliser undefined au lieu de false
+const db = new Database("database.db", { 
+  verbose: process.env.NODE_ENV !== 'production' ? (message: any) => Logger.log(message) : () => {}
+});
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -83,7 +87,7 @@ function insertTestDataIfNotExists() {
     const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get() as { count: number };
     
     if (userCount.count === 0) {
-        console.log("🔧 Inserting test data...");
+        Logger.log("🔧 Inserting test data...");
         
         db.exec(`
             -- ============================================
@@ -147,9 +151,9 @@ function insertTestDataIfNotExists() {
             (8, 5, NULL, 1, 0); -- Score temporaire
         `);
         
-        console.log("✅ Test data inserted successfully!");
+        Logger.log("✅ Test data inserted successfully!");
     } else {
-        console.log("ℹ️  Test data already exists, skipping insertion.");
+        Logger.log("ℹ️  Test data already exists, skipping insertion.");
     }
 }
 

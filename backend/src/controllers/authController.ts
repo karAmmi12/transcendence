@@ -3,6 +3,7 @@ import {RegisterData, LoginData} from "../types/auth.js";
 import {AuthService} from "../services/authServices.js";
 import {CookieService} from "../services/cookieServices.js";
 import {UserServices} from "../services/userServices.js"
+import { Logger } from '../utils/logger.js';
 
 export class AuthController
 {
@@ -12,7 +13,7 @@ export class AuthController
     static async register(req: FastifyRequest, reply: FastifyReply)
     {
         try {
-            console.log("Register controller called");
+            Logger.log("Register controller called");
             const userData = req.body as RegisterData;
             
             const result = await AuthService.registerUser(userData);
@@ -29,7 +30,7 @@ export class AuthController
             });
 
         } catch (error) {
-            console.error("Register controller error:", error);
+            Logger.error("Register controller error:", error);
             reply.status(500).send({ error: "Registration failed" });
         }
     }
@@ -65,7 +66,7 @@ export class AuthController
             })
             
         } catch (error) {
-                console.error("Login controller error:", error);
+                Logger.error("Login controller error:", error);
                 reply.status(500).send({ error: "Login failed" });
         }
     }
@@ -96,7 +97,7 @@ export class AuthController
             });
 
         } catch (error) {
-            console.error("2FA Login controller error:", error);
+            Logger.error("2FA Login controller error:", error);
             reply.status(500).send({ error: "2FA login failed" });
         }
     }
@@ -115,7 +116,7 @@ export class AuthController
             reply.send({message: "✅ Logout successful"});
 
         } catch (error) {
-            console.error("Logout controller error:", error);
+            Logger.error("Logout controller error:", error);
             reply.status(500).send({ error: "Logout failed" });
         }
     }
