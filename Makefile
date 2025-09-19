@@ -38,12 +38,16 @@ install:
 set-dev-env:
 	@echo "$(YELLOW)Setting NODE_ENV=development...$(END)"
 	@sed -i 's/NODE_ENV=.*/NODE_ENV=development/' backend/.env
+	@sed -i 's/NODE_ENV=.*/NODE_ENV=development/' frontend/.env
+	@sed -i 's|API_URL_FRONT=.*|API_URL_FRONT="http://localhost:5173/"|' backend/.env
 
 set-prod-env:
 	@echo "$(YELLOW)Setting NODE_ENV=production...$(END)"
 	@sed -i 's/NODE_ENV=.*/NODE_ENV=production/' backend/.env
+	@sed -i 's/NODE_ENV=.*/NODE_ENV=production/' frontend/.env
+	@sed -i 's|API_URL_FRONT=.*|API_URL_FRONT="https://localhost:8443/"|' backend/.env
 
-dev: set-dev-env
+dev: set-dev-env install
 	@echo "$(BLUE)Lauching in dev mode...$(END)"
 	@echo "$(YELLOW)Starting backend and frontend in development mode...$(END)"
 	@cd ./backend && npm run dev & \

@@ -2,15 +2,13 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js"; 
 import { UserFromDB } from "../types/auth.js";
-import 'dotenv/config'
-import { Logger } from '../utils/logger.js';
+import dotenv from 'dotenv';
 
 export class OAuthController 
 {
     private static exchangeCodeToken = "https://oauth2.googleapis.com/token";
     private static authEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
     private static getUserGoogle = "https://www.googleapis.com/oauth2/v3/userinfo";
-    
     // Validation au chargement de la classe
     static {
         if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET || 
@@ -51,7 +49,7 @@ export class OAuthController
         try {
             if(error) {
                 Logger.log('OAuth error received: ', error);
-                return (reply.redirect(`${process.env.API_URL_FRONT}/login?error=${error}`))
+                return (reply.redirect(`${process.env.API_URL_FRONT}login?error=oauth_failed`))
             }
 
             if (!code)
@@ -75,13 +73,13 @@ export class OAuthController
             const res = await AuthService.handleOAuthUser(oauth2Data);
 
             CookieService.replyAuthTokenCookie(reply, res.accessToken!, res.refreshToken!);
-            return reply.redirect(`${process.env.API_URL_FRONT}/home?login=success`);
+            return reply.redirect(`${process.env.API_URL_FRONT}`);
             
         }catch (error){
             if (error instanceof Error)
                 Logger.error(error.message);
             Logger.error("Google generate error:", error);
-            return (reply.status(500).send({error: "Google auth failed"}));
+            return (reply.redirect(`${process.env.API_URL_FRONT}login?error=oauth_failed`));
         }
     }
 
