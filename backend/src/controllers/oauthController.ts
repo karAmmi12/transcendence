@@ -3,6 +3,8 @@ import { AuthService } from "../services/authServices.js";
 import { CookieService } from "../services/cookieServices.js"; 
 import { UserFromDB } from "../types/auth.js";
 import dotenv from 'dotenv';
+import { Logger } from '../utils/logger.js';
+
 
 export class OAuthController 
 {

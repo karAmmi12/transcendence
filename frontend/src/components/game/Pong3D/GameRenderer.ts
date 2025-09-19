@@ -1,21 +1,8 @@
 import * as BABYLON from '@babylonjs/core';
-import type { GameSettings } from './Pong3D.js';
-
-import { GameThemes, ThemeConfig, MaterialConfig } from '../themes/GameThemes.js'; 
+import { GameThemes } from '../themes/GameThemes.js'; 
 import { EffectsManager } from './effects/EffectsManager.js'; 
+import type { ThemeConfig, MaterialConfig, GameObjects, ObjectPositions } from '@/types/index.js';
 
-export interface GameObjects {
-  field: BABYLON.Mesh; 
-  player1Paddle: BABYLON.Mesh; // La palette du joueur 1
-  player2Paddle: BABYLON.Mesh; // La palette du joueur 2
-  ball: BABYLON.Mesh; // La balle
-}
-
-export interface ObjectPositions {
-  player1Paddle: { x: number; z: number };
-  player2Paddle: { x: number; z: number };
-  ball: { x: number; y: number; z: number };
-}
 
 export class GameRenderer {
   private scene: BABYLON.Scene;
@@ -132,8 +119,12 @@ export class GameRenderer {
       field: this.createField(),
       player1Paddle: this.createPaddle('player1', -4.5),
       player2Paddle: this.createPaddle('player2', 4.5),
-      ball: this.createBall()
+      ball: this.createBall(),
+      borders: []
     };
+
+    // Créer les bordures
+    this.createFieldBorders();
 
     // Stocker aussi dans meshes pour compatibilité
     this.meshes.field = this.gameObjects.field;
@@ -370,6 +361,9 @@ export class GameRenderer {
     );
     bottomBorder.position = new BABYLON.Vector3(0, 0.1, -3);
     bottomBorder.material = borderMaterial.clone('bottomBorderMaterial');
+    
+    // Ajouter les bordures au gameObjects
+    this.gameObjects.borders = [topBorder, bottomBorder];
   }
   
   private createPaddle(player: 'player1' | 'player2', xPosition: number): BABYLON.Mesh {

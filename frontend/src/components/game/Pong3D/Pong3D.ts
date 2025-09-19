@@ -3,28 +3,12 @@ import { GameRenderer } from './GameRenderer.js';
 import { GamePhysics } from './GamePhysics.js';
 import { GameControls } from './GameControls.js';
 import { matchService } from '@services/matchService.js';
-import { GameEndModal, GameEndStats, GameEndCallbacks } from '@/components/game/GameEndModal.js';
+import { GameEndModal, convertToModalStats } from '@/components/game/GameEndModal.js';
 import { GameThemes } from '../themes/GameThemes.js';
 import { PowerUpManager } from '../powerups/PowerUpManager.js';
-import { PowerUpType } from '../../../types/powerups.js';
 import { i18n } from '@/services/i18nService.js';
-
-export interface GameSettings {
-  player1Name: string;
-  player2Name: string;
-  ballSpeed: 'slow' | 'medium' | 'fast';
-  winScore: number;
-  theme?: string;
-  enableEffects?: boolean;
-  powerUps?: boolean;
-}
-
-export interface GameState {
-  status: 'waiting' | 'countdown' | 'playing' | 'paused' | 'finished';
-  scores: { player1: number; player2: number };
-  timer: number;
-  winner?: 'player1' | 'player2';
-}
+import type { GameSettings, GameState, GameEndStats, GameEndCallbacks } from '@/types/index.js';
+import { PowerUpType } from '@/types/index.js';
 
 export class Pong3D {
   private canvas: HTMLCanvasElement;
@@ -395,13 +379,17 @@ export class Pong3D {
 
     // Créer les statistiques pour le modal
     const stats: GameEndStats = {
+      winner: winner,
+      loser: winner === 'player1' ? 'player2' : 'player1',
+      finalScore: { winner: winnerScore, loser: loserScore },
+      duration: matchDuration.toString(),
+      gameMode: this.isRemoteGame ? 'remote' : 'local',
       winnerName,
       loserName,
       winnerScore,
       loserScore,
       matchDuration,
       totalScore,
-      gameMode: this.isRemoteGame ? 'remote' : 'local',
       winScore: this.settings.winScore
     };
 
@@ -413,7 +401,7 @@ export class Pong3D {
     };
 
     // Créer et afficher le modal
-    this.gameEndModal = new GameEndModal(stats, callbacks);
+    this.gameEndModal = new GameEndModal(convertToModalStats(stats), callbacks);
     this.gameEndModal.show();
   }
 

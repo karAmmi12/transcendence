@@ -1,22 +1,22 @@
 import * as BABYLON from '@babylonjs/core';
 
+export enum PowerUpType {
+  PADDLE_SIZE = 'paddle_size',
+  REVERSE_CONTROLS = 'reverse_controls',
+  FREEZE_OPPONENT = 'freeze_opponent'
+}
+
 export interface PowerUp {
   id: string;
   type: PowerUpType;
   position: { x: number; y: number; z: number };
   mesh: BABYLON.Mesh;
-  duration: number; // durée d'effet en secondes
+  duration: number;
   isActive: boolean;
   createdAt: number;
-  expiresAt: number; // quand le power-up disparaît du terrain
-  spawned?: number; // temps de spawn (pour synchronisation)
-  lifespan?: number; // durée de vie sur le terrain (pour synchronisation)
-}
-
-export enum PowerUpType {
-  PADDLE_SIZE = 'paddle_size',
-  REVERSE_CONTROLS = 'reverse_controls',
-  FREEZE_OPPONENT = 'freeze_opponent'
+  expiresAt: number;
+  spawned?: number;
+  lifespan?: number;
 }
 
 export interface ActiveEffect {
@@ -25,8 +25,8 @@ export interface ActiveEffect {
   targetPlayer: 'player1' | 'player2';
   startTime: number;
   duration: number;
-  originalValue?: any; // pour restaurer l'état original
-  effects?: PowerUpEffects; // effets appliqués (pour synchronisation)
+  originalValue?: any;
+  effects?: PowerUpEffects;
 }
 
 export interface PowerUpConfig {
@@ -34,9 +34,9 @@ export interface PowerUpConfig {
   name: string;
   description: string;
   color: BABYLON.Color3;
-  spawnWeight: number; // probabilité d'apparition
-  duration: number; // durée d'effet
-  lifespan: number; // temps sur le terrain avant disparition
+  spawnWeight: number;
+  duration: number;
+  lifespan: number;
   effects: PowerUpEffects;
 }
 
@@ -47,5 +47,5 @@ export interface PowerUpEffects {
   reverseControls?: boolean;
   freezePlayer?: boolean;
   invisibleBall?: boolean;
-  multiBall?: number; // nombre de balles supplémentaires
+  multiBall?: number;
 }

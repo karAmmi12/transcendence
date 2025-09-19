@@ -34,8 +34,6 @@ export class App
         <footer id="footer"></footer>
       </div>
     `
-
-
     
     this.header.mount('#header')
     this.footer.mount('#footer')

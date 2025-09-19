@@ -1,4 +1,5 @@
-import { i18n, Language } from '@/services/i18nService';
+import { i18n } from '@/services/i18nService';
+import type { Language } from '@/types/index.js';
 
 export class LanguageSelector {
   private isOpen = false;

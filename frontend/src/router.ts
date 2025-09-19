@@ -9,15 +9,7 @@ import { ProfilePage } from '@pages/ProfilePage';
 import { TournamentCreatePage } from '@pages/TournamentCreatePage';
 import { TournamentPage } from '@pages/TournamentPage';
 import { NotFoundPage } from '@pages/NotFoundPage'; // ✅ Nouvel import
-
-// Interface définissant la structure d'une route
-interface Route 
-{
-  path: string; // Chemin de la route
-  component: () => any; // Fonction retournant une instance du composant
-  title: string; // Titre de la page pour le document
-  requiresAuth: boolean; // Indique si l'authentification est requise
-}
+import type { Route } from '@/types/index.js';
 
 // Classe principale gérant le routage de l'application
 export class Router 

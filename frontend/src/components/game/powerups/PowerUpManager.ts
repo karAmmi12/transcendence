@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { PowerUp, PowerUpType, PowerUpConfig, ActiveEffect, PowerUpEffects } from '../../../types/powerups.js';
+import { PowerUp, PowerUpType, PowerUpConfig, ActiveEffect } from '../../../types/powerups.js';
 import { i18n } from '@services/i18nService.js';
 
 export class PowerUpManager {

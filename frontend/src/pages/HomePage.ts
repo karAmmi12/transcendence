@@ -1,18 +1,10 @@
-import { i18n } from '@/services/i18nService.js';
 import { authService } from '@services/authService';
 import { globalStatsService } from '@services/globalStatsService';
 import { HeroSection } from '@components/home/HeroSection';
 import { GlobalStatsCard } from '@components/home/GlobalStatsCard';
 import { UserStatsCard } from '@components/home/UserStatsCard';
 import { GameModeButtons } from '@components/home/GameModeButtons';
-import type { User, GlobalStats } from '../types/index.js';
-
-export interface GameModeCallbacks {
-  onLocalGame: () => void;
-  onRemoteGame: () => void;
-  onTournament: () => void;
-  onLogin?: () => void;
-}
+import type { GlobalStats, GameModeCallbacks } from '@/types/index.js';
 
 export class HomePage {
   private languageListener: (() => void) | null = null;

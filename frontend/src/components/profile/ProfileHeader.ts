@@ -1,8 +1,6 @@
 import { User, FriendshipStatus } from '../../types/index.js';
 import { i18n } from '@/services/i18nService.js';
 import { userService } from '../../services/userService.js';
-import { ThemeSelectionModal } from './ThemeSelectionModal.js';
-
 
 export class ProfileHeader {
   constructor(

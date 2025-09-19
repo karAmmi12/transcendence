@@ -1,4 +1,3 @@
-
 export class LoadingSpinner {
   private spinnerElement: HTMLDivElement;
 

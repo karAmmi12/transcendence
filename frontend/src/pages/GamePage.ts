@@ -1,10 +1,8 @@
 import { authService } from '@/services/authService.js';
-import { userService } from '@/services/userService.js';
 import { i18n } from '@/services/i18nService.js';
-import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
-import { matchService } from '@/services/matchService';
-import type { GameSettings } from '@/components/game/Pong3D/Pong3D.js';
+import { GameManager } from '@/components/game/GameManager';
 import { RemotePong } from '@/components/game/RemotePong.js';
+import type { GameSettings, GameManagerConfig } from '@/types/index.js';
 
 // Nouveaux imports des composants
 import { GameModeSelector } from '@/components/game/GameModeSelector.js';

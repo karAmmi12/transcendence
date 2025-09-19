@@ -1,12 +1,5 @@
 import { i18n } from '@/services/i18nService';
-
-export interface ActionCallbacks {
-  onPlay?: () => void;
-  onProfile?: () => void;
-  onTournaments?: () => void;
-  onLogin?: () => void;
-  onRegister?: () => void;
-}
+import type { ActionCallbacks } from '@/types/index.js';
 
 export class ActionButtons {
   constructor(

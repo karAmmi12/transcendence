@@ -1,16 +1,6 @@
-import { User } from '../types/index.js';
+import type { User, MatchHistory } from '@/types/index.js';
+import { TwoFactorRequiredError } from '@/types/index.js';
 import { userService } from './userService.js';
-import { TwoFactorRequiredError } from '../types/errors.js';
-
-
-export interface MatchHistory {
-  id: string;
-  opponent: string;
-  score: { player: number; opponent: number };
-  result: 'win' | 'loss';
-  date: string;
-  duration: number;
-}
 
 export class AuthService {
   private static instance: AuthService;

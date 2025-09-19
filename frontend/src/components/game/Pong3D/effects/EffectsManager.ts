@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { ThemeConfig } from '../../themes/GameThemes.js';
+import type { ThemeConfig } from '@/types/index.js';
 
 export class EffectsManager {
   private scene: BABYLON.Scene;
