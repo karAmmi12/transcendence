@@ -566,84 +566,92 @@ export class Pong3D {
     }
   }
 
-private createEffectIndicator(effect: any): void {
-  const indicator = document.createElement('div');
-  indicator.className = `
-    active-effect-indicator fixed z-40
-    bg-black/70 text-white px-3 py-1 rounded-lg text-sm
-    transition-all duration-300
-  `;
-  
-  const timeLeft = Math.ceil((effect.startTime + effect.duration - Date.now()) / 1000);
-  
-  indicator.innerHTML = `
-    <div class="flex items-center space-x-2">
-      <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
-      <span>${this.getEffectName(effect.type)}</span>
-      <span class="text-xs text-gray-300">${timeLeft}s</span>
-    </div>
-  `;
-  
-  // Positionner l'indicateur à côté du joueur concerné
-  const playerInfo = document.getElementById(`${effect.targetPlayer}-info`);
-  const canvas = document.getElementById('game-canvas');
-  
-  if (playerInfo && canvas) {
-    const playerRect = playerInfo.getBoundingClientRect();
-    const canvasRect = canvas.getBoundingClientRect();
-    const indicatorWidth = 150; // Largeur approximative de l'indicateur
-    const indicatorHeight = 30; // Hauteur approximative de l'indicateur
+  private createEffectIndicator(effect: any): void {
+    const indicator = document.createElement('div');
+    indicator.className = `
+      active-effect-indicator fixed z-40
+      bg-black/70 text-white px-3 py-1 rounded-lg text-sm
+      transition-all duration-300
+    `;
     
-    let left: number;
-    let top: number;
+    const timeLeft = Math.ceil((effect.startTime + effect.duration - Date.now()) / 1000);
     
-    // Déterminer le joueur qui subit réellement l'effet visible
-    let affectedPlayer = effect.targetPlayer;
+    indicator.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
+        <span>${this.getEffectName(effect.type)}</span>
+        <span class="text-xs text-gray-300">${timeLeft}s</span>
+      </div>
+    `;
     
-    // Pour les effets qui affectent l'adversaire, afficher de son côté
-    if (effect.type === PowerUpType.REVERSE_CONTROLS || effect.type === PowerUpType.FREEZE_OPPONENT) {
-      affectedPlayer = effect.targetPlayer === 'player1' ? 'player2' : 'player1';
-    }
+    // Positionner l'indicateur à côté du joueur concerné
+    const playerInfo = document.getElementById(`${effect.targetPlayer}-info`) || 
+                      document.getElementById(`tournament-${effect.targetPlayer}-info`);
+    const canvas = document.getElementById('game-canvas') || 
+                  document.getElementById('tournament-game-canvas');
     
-    // Obtenir la position du joueur affecté
-    const affectedPlayerInfo = document.getElementById(`${affectedPlayer}-info`);
-    if (affectedPlayerInfo) {
-      const affectedRect = affectedPlayerInfo.getBoundingClientRect();
+    if (playerInfo && canvas) {
+      const playerRect = playerInfo.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      const indicatorWidth = 120; // ✅ Réduit pour mieux s'adapter
+      const indicatorHeight = 30;
       
-      if (affectedPlayer === 'player1') {
-        // Positionner à droite du joueur 1 (affecté)
-        left = affectedRect.right + 10;
-        top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
-      } else {
-        // Positionner à gauche du joueur 2 (affecté)
-        left = affectedRect.left - indicatorWidth - 10;
-        top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
+      let left: number;
+      let top: number;
+      
+      // Déterminer le joueur qui subit réellement l'effet visible
+      let affectedPlayer = effect.targetPlayer;
+      
+      // Pour les effets qui affectent l'adversaire, afficher de son côté
+      if (effect.type === PowerUpType.REVERSE_CONTROLS || effect.type === PowerUpType.FREEZE_OPPONENT) {
+        affectedPlayer = effect.targetPlayer === 'player1' ? 'player2' : 'player1';
       }
+      
+      // Obtenir la position du joueur affecté
+      const affectedPlayerInfo = document.getElementById(`${affectedPlayer}-info`) || 
+                                document.getElementById(`tournament-${affectedPlayer}-info`);
+      if (affectedPlayerInfo) {
+        const affectedRect = affectedPlayerInfo.getBoundingClientRect();
+        
+        // ✅ Ajuster les offsets selon le mode pour éviter les débordements
+        const isTournament = this.mode === 'tournament';
+        const offsetX = isTournament ? 5 : 10; // Offset réduit pour le mode tournoi
+        
+        if (affectedPlayer === 'player1') {
+          // Positionner à droite du joueur 1 (affecté)
+          left = affectedRect.right + offsetX;
+          top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
+        } else {
+          // Positionner à gauche du joueur 2 (affecté)
+          left = affectedRect.left - indicatorWidth - offsetX;
+          top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
+        }
+      } else {
+        // Fallback vers la logique originale
+        if (effect.targetPlayer === 'player1') {
+          left = playerRect.right + 10;
+          top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
+        } else {
+          left = playerRect.left - indicatorWidth - 10;
+          top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
+        }
+      }
+      
+      // ✅ Contraintes plus strictes avec marge pour éviter les débordements
+      const margin = 5;
+      left = Math.max(canvasRect.left + margin, Math.min(left, canvasRect.right - indicatorWidth - margin));
+      top = Math.max(canvasRect.top + margin, Math.min(top, canvasRect.bottom - indicatorHeight - margin));
+      
+      indicator.style.left = `${left}px`;
+      indicator.style.top = `${top}px`;
     } else {
-      // Fallback vers la logique originale
-      if (effect.targetPlayer === 'player1') {
-        left = playerRect.right + 10;
-        top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
-      } else {
-        left = playerRect.left - indicatorWidth - 10;
-        top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
-      }
+      // Fallback si les éléments ne sont pas trouvés
+      const side = effect.targetPlayer === 'player1' ? 'left-4' : 'right-4';
+      indicator.className += ` ${side} top-32`;
     }
     
-    // S'assurer que l'indicateur reste dans les limites du canvas
-    left = Math.max(canvasRect.left, Math.min(left, canvasRect.right - indicatorWidth));
-    top = Math.max(canvasRect.top, Math.min(top, canvasRect.bottom - indicatorHeight));
-    
-    indicator.style.left = `${left}px`;
-    indicator.style.top = `${top}px`;
-  } else {
-    // Fallback si les éléments ne sont pas trouvés
-    const side = effect.targetPlayer === 'player1' ? 'left-4' : 'right-4';
-    indicator.className += ` ${side} top-32`;
+    document.body.appendChild(indicator);
   }
-  
-  document.body.appendChild(indicator);
-}
   private getEffectName(type: PowerUpType): string {
     const names = {
       [PowerUpType.PADDLE_SIZE]: '📏',
