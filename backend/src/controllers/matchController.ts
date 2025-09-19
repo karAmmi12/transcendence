@@ -1,5 +1,6 @@
 import {FastifyRequest, FastifyReply} from "fastify";
 import { MatchService } from "../services/matchServices.js";
+import { Logger } from '../utils/logger.js';
 
 export class MatchController
 {
@@ -29,7 +30,7 @@ export class MatchController
             }));
 
         } catch (error) {
-            console.error("Register local match error:", error);
+            Logger.error("Register local match error:", error);
             return (reply.status(500).send({
                 success: false,
                 error: "Failed to register match"
@@ -69,7 +70,7 @@ export class MatchController
             }));
 
         } catch (error) {
-            console.error("Register remote match error:", error);
+            Logger.error("Register remote match error:", error);
             return (reply.status(500).send({
                 success: false,
                 error: "Failed to register remote match"

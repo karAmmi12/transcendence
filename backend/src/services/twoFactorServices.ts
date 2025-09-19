@@ -5,6 +5,7 @@ import db from "../db/index.js";
 import crypto from "crypto";
 import bcrypt from 'bcrypt'; 
 import 'dotenv/config';
+import { Logger } from '../utils/logger.js';
 
 export class TwoFactorServices 
 {
@@ -65,7 +66,7 @@ export class TwoFactorServices
         } as TwoFactorToken;
         if (!returnUser)
             throw new Error("Create Token failed storeTwoFactor");
-        console.log("GET userinfo Two Factor: ", returnUser);
+        Logger.log("GET userinfo Two Factor: ", returnUser);
         
         return (returnUser);
     }
@@ -124,7 +125,7 @@ export class TwoFactorServices
         const deleteStmt = db.prepare("DELETE FROM two_factor_tokens WHERE user_id = ?");
         deleteStmt.run(userId);
         
-        console.log(`2FA called for user: ${user.email}`);
+        Logger.log(`2FA called for user: ${user.email}`);
         return { success: true, message: disabled ? '2FA disabled successfully' : '2FA validate successfully' };
     }
 }

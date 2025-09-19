@@ -14,8 +14,9 @@ import path from "path";
 import { authMiddleware } from "./middleware/middleware.js";
 import { startTokenCleanup } from "./utils/cleanupTokens.js";
 import { WebSocketService } from "./services/webSocketService.js";
+import { Logger } from './utils/logger.js';
 
-const app = Fastify({ logger: true });
+const app = Fastify({ logger: process.env.NODE_ENV !== 'production' });
 
 const start = async () => {
   try {
@@ -78,11 +79,11 @@ const start = async () => {
 
     // Démarrer le serveur 
     await app.listen({ port: 8000, host: "0.0.0.0" });
-    console.log("✅ Backend running on http://localhost:8000");
-    console.log("✅ WebSocket signaling on ws://localhost:8001");
+    Logger.log("✅ Backend running on http://localhost:8000");
+    Logger.log("✅ WebSocket signaling on ws://localhost:8001");
     
   } catch (err) {
-    console.error("💥 Failed to start server:", err);
+    Logger.error("💥 Failed to start server:", err);
     app.log.error(err);
     process.exit(1);
   }

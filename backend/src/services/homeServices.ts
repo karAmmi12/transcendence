@@ -1,5 +1,6 @@
 import db from '../db/index.js';
 import { HomeStats } from '../types/stats.js';
+import { Logger } from '../utils/logger.js';
 
 export class HomeService 
 {
@@ -29,7 +30,7 @@ export class HomeService
             };
 
         } catch (error) {
-            console.error('Error getting home stats:', error);
+            Logger.error('Error getting home stats:', error);
             return {
                 totalPlayers: 0,
                 totalGames: 0,
