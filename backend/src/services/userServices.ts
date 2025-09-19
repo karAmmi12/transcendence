@@ -1,7 +1,9 @@
 import db from '../db/index.js'
+import bcrypt from "bcrypt";
 import {UserData, UpdateProfileData, UpdateResult} from "../types/auth.js"
 import { StatsService } from './statsServices.js';
 import { serialize } from '../utils/serialize.js';
+import { ChangePassword } from "../types/auth.js";
 import { Logger } from '../utils/logger.js';
 
 export class UserServices
@@ -226,6 +228,155 @@ export class UserServices
         } catch (error) {
             Logger.error("Search users error:", error);
             return [];
+        }
+    }
+
+    /**
+     * Change user password with validation
+     */
+    static async changePassword(userId: number, changePassword: ChangePassword): Promise<{ success: boolean; message?: string; error?: string }> {
+        try {
+            if (changePassword.currentPassword === changePassword.newPassword) {
+                return { success: false, error: "New password need to be different from old password" };
+            }
+
+            if (changePassword.newPassword.length < 8) {
+                return { success: false, error: "Password must be 8 character long" };
+            }
+
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(changePassword.newPassword)) {
+                return { success: false, error: "Password must contain 1 lower case, 1 upper case, 1 number, 1 symbole" };
+            }
+
+            const stmt = db.prepare("SELECT password FROM users WHERE id = ?");
+            const dbPassword = stmt.get(userId) as { password: string } | undefined;
+            if (!dbPassword) {
+                return { success: false, error: "User not found" };
+            }
+
+            const isCurrentPasswordValid = await bcrypt.compare(changePassword.currentPassword, dbPassword.password);
+            if (!isCurrentPasswordValid) {
+                return { success: false, error: "Current password incorrect" };
+            }
+
+            const hashedNewPassword = await bcrypt.hash(changePassword.newPassword, 10);
+            const updateStmt = db.prepare("UPDATE users SET password = ?, last_login = CURRENT_TIMESTAMP WHERE id = ?");
+            const result = updateStmt.run(hashedNewPassword, userId);
+            if (result.changes === 0) {
+                return { success: false, error: "Failed update password" };
+            }
+
+            return { success: true, message: "Password update success" };
+        } catch (error) {
+            Logger.error("Change password service error:", error);
+            return { success: false, error: "Internal error" };
+        }
+    }
+
+    /**
+     * Save avatar file and handle old file cleanup
+     */
+    static async saveAvatarFile(part: any, userId: number): Promise<string> {
+        const fs = await import('fs/promises');
+        const path = await import('path');
+
+        // Validation du fichier
+        if (!part.mimetype?.startsWith('image/')) {
+            throw new Error('Invalid file type. Only images are allowed.');
+        }
+
+        // Taille max 5MB
+        const maxSize = 5 * 1024 * 1024;
+        let fileSize = 0;
+
+        // Récupérer et supprimer l'ancien avatar
+        try {
+            const stmt = db.prepare("SELECT avatar_url FROM users WHERE id = ?");
+            const currentUser = stmt.get(userId) as any;
+
+            if (currentUser?.avatar_url) {
+                const oldAvatarPath = path.join(process.cwd(), currentUser.avatar_url.replace(/^\//, ''));
+
+                try {
+                    await fs.access(oldAvatarPath);
+                    await fs.unlink(oldAvatarPath);
+                    Logger.log(`Ancien avatar supprimé: ${oldAvatarPath}`);
+                } catch (error) {
+                    Logger.log(`Ancien avatar non trouvé ou déjà supprimé: ${oldAvatarPath}`);
+                }
+            }
+        } catch (error) {
+            Logger.error('Erreur lors de la suppression de l\'ancien avatar:', error);
+        }
+
+        // Créer le dossier uploads s'il n'existe pas
+        const uploadsDir = path.join(process.cwd(), 'uploads', 'avatars');
+        await fs.mkdir(uploadsDir, { recursive: true });
+
+        // Générer un nom de fichier unique
+        const fileExtension = part.mimetype.split('/')[1];
+        const fileName = `avatar_${userId}_${Date.now()}.${fileExtension}`;
+        const filePath = path.join(uploadsDir, fileName);
+
+        // Sauvegarder le fichier
+        const writeStream = await fs.open(filePath, 'w');
+
+        try {
+            for await (const chunk of part.file) {
+                fileSize += chunk.length;
+                if (fileSize > maxSize) {
+                    await writeStream.close();
+                    await fs.unlink(filePath);
+                    throw new Error('File too large. Maximum size is 5MB.');
+                }
+                await writeStream.write(chunk);
+            }
+        } finally {
+            await writeStream.close();
+        }
+
+        // Retourner le chemin relatif pour la DB
+        return `/uploads/avatars/${fileName}`;
+    }
+
+    /**
+     * Update user theme with validation
+     */
+    static async updateTheme(userId: number, theme: string): Promise<{ success: boolean; message?: string; error?: string; user?: any }> {
+        try {
+            const validThemes = ['classic', 'neon', 'retro', 'cyberpunk', 'space', 'italian', 'matrix', 'lava'];
+            if (!theme || !validThemes.includes(theme)) {
+                return { success: false, error: "Invalid theme. Valid themes are: " + validThemes.join(', ') };
+            }
+
+            const stmt = db.prepare("UPDATE users SET theme = ? WHERE id = ?");
+            const result = stmt.run(theme, userId);
+
+            if (result.changes === 0) {
+                return { success: false, error: "User not found" };
+            }
+
+            const userStmt = db.prepare("SELECT id, username, email, avatar_url, theme, is_online, two_factor_enabled, created_at FROM users WHERE id = ?");
+            const updatedUser = userStmt.get(userId) as any;
+
+            return {
+                success: true,
+                message: "Theme updated successfully",
+                user: {
+                    id: updatedUser.id,
+                    username: updatedUser.username,
+                    email: updatedUser.email,
+                    avatarUrl: updatedUser.avatar_url,
+                    theme: updatedUser.theme,
+                    isOnline: Boolean(updatedUser.is_online),
+                    twoFactorEnabled: Boolean(updatedUser.two_factor_enabled),
+                    createdAt: updatedUser.created_at
+                }
+            };
+        } catch (error) {
+            Logger.error("Update theme service error:", error);
+            return { success: false, error: "Internal error" };
         }
     }
 }
