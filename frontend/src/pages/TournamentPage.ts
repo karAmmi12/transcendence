@@ -1,8 +1,7 @@
 import { i18n } from '@/services/i18nService';
 import { tournamentService } from '@/services/tournamentService';
 import { TournamentBracket } from '@/components/tournament/TournamentBracket';
-import { TournamentMatch } from '@/components/tournament/TournamentMatch';
-// import { TournamentStats } from '@/components/tournament/TournamentStats';
+import { TournamentMatch as TournamentMatchComponent } from '@components/tournament/TournamentMatch';
 
 export class TournamentPage {
   private tournament: any = null;
@@ -193,7 +192,7 @@ export class TournamentPage {
     if (!this.currentMatch) return '';
    
 
-    const match = new TournamentMatch(this.currentMatch, this.tournament.id, this.tournament.gameSettings);
+    const match = new TournamentMatchComponent(this.currentMatch, this.tournament.id, this.tournament.gameSettings);
     const html = match.render();
 
     setTimeout(() => {
