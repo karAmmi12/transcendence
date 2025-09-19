@@ -3,9 +3,8 @@ import { authService } from '@services/authService';
 import { AuthPageBase } from '@components/auth/AuthPageBase';
 import { AuthFormInput } from '@components/auth/AuthFormInput';
 import { AuthSubmitButton } from '@components/auth/AuthSubmitButton';
-
 import { TwoFactorModal } from '../components/auth/TwoFactorModal.js';
-import { TwoFactorRequiredError } from '../types/errors.js';
+import { TwoFactorRequiredError } from '@/types/index.js';
 
 export class LoginPage extends AuthPageBase {
   private submitButton: AuthSubmitButton;
