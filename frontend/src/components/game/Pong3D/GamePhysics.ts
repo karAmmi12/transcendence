@@ -14,7 +14,8 @@ export interface PhysicsUpdate {
   };
 }
 
-export class GamePhysics {
+export class GamePhysics 
+{
   private settings: GameSettings;
   
   // Positions des objets
@@ -42,21 +43,25 @@ export class GamePhysics {
 
 
 
-  constructor(settings: GameSettings) {
+  constructor(settings: GameSettings) 
+  {
     this.settings = settings;
     this.setBallSpeed(settings.ballSpeed);
     this.basePaddleSpeed = this.paddleSpeed;
   }
 
-  private setBallSpeed(speed: 'slow' | 'medium' | 'fast'): void {
-    switch (speed) {
+  private setBallSpeed(speed: 'slow' | 'medium' | 'fast'): void 
+  {
+    switch (speed) 
+    {
       case 'slow': this.ballSpeed = 0.03; break;
       case 'medium': this.ballSpeed = 0.05; break;
       case 'fast': this.ballSpeed = 0.08; break;
     }
   }
 
-  public update(inputs: PaddleInputs): PhysicsUpdate {
+  public update(inputs: PaddleInputs): PhysicsUpdate 
+  {
     const events: PhysicsUpdate['events'] = {};
     
     // Mettre à jour les paddles avec les modificateurs actifs
@@ -66,13 +71,15 @@ export class GamePhysics {
     this.updateBall();
     
     // Vérifier les collisions
-    if (this.checkCollisions()) {
+    if (this.checkCollisions()) 
+    {
       events.collision = true;
     }
     
     // Vérifier les buts
     const goalScorer = this.checkGoals();
-    if (goalScorer) {
+    if (goalScorer) 
+    {
       events.goal = { scorer: goalScorer };
     }
     
@@ -82,34 +89,41 @@ export class GamePhysics {
     };
   }
 
-  public getBallVelocity(): { x: number; z: number } {
+  public getBallVelocity(): { x: number; z: number } 
+  {
     return { ...this.ballVelocity };
   }
 
 
-  public applyPaddleSpeedModifier(player: 'player1' | 'player2', multiplier: number): void {
+  public applyPaddleSpeedModifier(player: 'player1' | 'player2', multiplier: number): void 
+  {
     this.paddleSpeedMultipliers[player] = multiplier;
     console.log(`🏓 ${player} paddle speed multiplier: ${multiplier}`);
   }
 
-  public resetSpeed(): void {
+  public resetSpeed(): void 
+  {
     this.setBallSpeed(this.settings.ballSpeed);
   }
 
-  public getPaddleSpeed(): number {
+  public getPaddleSpeed(): number 
+  {
     return this.paddleSpeed;
   }
 
-  public setPaddleSpeed(speed: number): void {
+  public setPaddleSpeed(speed: number): void 
+  {
     this.paddleSpeed = speed;
   }
 
   // ✅ Nouvelles méthodes pour appliquer les modificateurs
-  public applySpeedModifier(multiplier: number): void {
+  public applySpeedModifier(multiplier: number): void 
+  {
     this.ballSpeed *= multiplier;
   }
 
-  private updatePaddles(inputs: PaddleInputs): void {
+  private updatePaddles(inputs: PaddleInputs): void 
+  {
     const maxZ = 2.2;
     const minZ = -2.2;
     
@@ -118,24 +132,30 @@ export class GamePhysics {
     const player2Speed = this.basePaddleSpeed * this.paddleSpeedMultipliers.player2;
     
     // Paddle joueur 1
-    if (inputs.player1.up && this.positions.player1Paddle.z < maxZ) {
+    if (inputs.player1.up && this.positions.player1Paddle.z < maxZ) 
+    {
       this.positions.player1Paddle.z += player1Speed;
     }
-    if (inputs.player1.down && this.positions.player1Paddle.z > minZ) {
+    if (inputs.player1.down && this.positions.player1Paddle.z > minZ) 
+    {
       this.positions.player1Paddle.z -= player1Speed;
     }
     
     // Paddle joueur 2
-    if (inputs.player2.up && this.positions.player2Paddle.z < maxZ) {
+    if (inputs.player2.up && this.positions.player2Paddle.z < maxZ) 
+    {
       this.positions.player2Paddle.z += player2Speed;
     }
-    if (inputs.player2.down && this.positions.player2Paddle.z > minZ) {
+    if (inputs.player2.down && this.positions.player2Paddle.z > minZ) 
+    {
       this.positions.player2Paddle.z -= player2Speed;
     }
   }
 
-  public resetPaddleSpeed(player?: 'player1' | 'player2'): void {
-    if (player) {
+  public resetPaddleSpeed(player?: 'player1' | 'player2'): void 
+  {
+    if (player) 
+    {
       this.paddleSpeedMultipliers[player] = 1.0;
     } else {
       this.paddleSpeedMultipliers.player1 = 1.0;
@@ -143,18 +163,21 @@ export class GamePhysics {
     }
   }
 
-  private updateBall(): void {
+  private updateBall(): void 
+  {
     // Déplacer la balle
     this.positions.ball.x += this.ballVelocity.x;
     this.positions.ball.z += this.ballVelocity.z;
     
     // Rebond sur les murs haut/bas
-    if (this.positions.ball.z > 2.8 || this.positions.ball.z < -2.8) {
+    if (this.positions.ball.z > 2.8 || this.positions.ball.z < -2.8) 
+    {
       this.ballVelocity.z *= -1;
     }
   }
 
-  private checkCollisions(): boolean {
+  private checkCollisions(): boolean 
+  {
     const ball = this.positions.ball;
     const p1 = this.positions.player1Paddle;
     const p2 = this.positions.player2Paddle;
@@ -166,7 +189,8 @@ export class GamePhysics {
     
     // Collision avec paddle joueur 1
     if (ball.x <= -4.2 && ball.x >= -4.8 &&
-        Math.abs(ball.z - p1.z) < player1Height) {
+        Math.abs(ball.z - p1.z) < player1Height) 
+    {
       this.ballVelocity.x *= -1.1;
       this.ballVelocity.z += (ball.z - p1.z) * 0.1;
       return true;
@@ -174,7 +198,8 @@ export class GamePhysics {
     
     // Collision avec paddle joueur 2
     if (ball.x >= 4.2 && ball.x <= 4.8 &&
-        Math.abs(ball.z - p2.z) < player2Height) {
+        Math.abs(ball.z - p2.z) < player2Height) 
+    {
       this.ballVelocity.x *= -1.1;
       this.ballVelocity.z += (ball.z - p2.z) * 0.1;
       return true;
@@ -184,11 +209,13 @@ export class GamePhysics {
   }
 
   // ✅ Méthode pour synchroniser les multiplicateurs avec le renderer
-  public setPaddleSizeMultipliers(multipliers: { player1: number; player2: number }): void {
+  public setPaddleSizeMultipliers(multipliers: { player1: number; player2: number }): void 
+  {
     this.paddleSizeMultipliers = { ...multipliers };
   }
 
-  private checkGoals(): 'player1' | 'player2' | null {
+  private checkGoals(): 'player1' | 'player2' | null 
+  {
     if (this.positions.ball.x > 5) {
       return 'player1'; // Joueur 1 marque
     } else if (this.positions.ball.x < -5) {
@@ -197,7 +224,8 @@ export class GamePhysics {
     return null;
   }
 
-  public reset(): void {
+  public reset(): void 
+  {
     this.positions = {
       player1Paddle: { x: -4.5, z: 0 },
       player2Paddle: { x: 4.5, z: 0 },
@@ -206,7 +234,8 @@ export class GamePhysics {
     this.ballVelocity = { x: 0, z: 0 };
   }
 
-  public launchBall(): void {
+  public launchBall(): void 
+  {
     const direction = Math.random() > 0.5 ? 1 : -1; 
     const angle = (Math.random() - 0.5) * 0.5; 
     
@@ -214,7 +243,8 @@ export class GamePhysics {
     this.ballVelocity.z = angle * this.ballSpeed;
   }
 
-  public getPositions(): ObjectPositions {
+  public getPositions(): ObjectPositions 
+  {
     return { ...this.positions };
   }
 }

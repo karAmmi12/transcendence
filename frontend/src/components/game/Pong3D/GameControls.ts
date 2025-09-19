@@ -1,6 +1,7 @@
 import type { PaddleInputs } from './GamePhysics.js';
 
-export class GameControls {
+export class GameControls 
+{
   private keys: { [key: string]: boolean } = {};
   private mobileInputs: { [key: string]: boolean } = {};
   
@@ -17,7 +18,8 @@ export class GameControls {
     document.addEventListener('keyup', this.keyupHandler);
   }
 
-  public getInputs(): PaddleInputs {
+  public getInputs(): PaddleInputs 
+  {
     return {
       player1: {
         up: this.keys['keyw'] || this.keys['arrowup'] || this.mobileInputs['player1_up'] || false,
@@ -30,12 +32,14 @@ export class GameControls {
     };
   }
 
-  public handleMobileInput(player: string, direction: string, pressed: boolean): void {
+  public handleMobileInput(player: string, direction: string, pressed: boolean): void 
+  {
     const key = `${player}_${direction}`;
     this.mobileInputs[key] = pressed;
   }
 
-  public destroy(): void {
+  public destroy(): void 
+  {
     document.removeEventListener('keydown', this.keydownHandler);
     document.removeEventListener('keyup', this.keyupHandler);
   }
