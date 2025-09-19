@@ -1,5 +1,3 @@
-# transcendence
-
 ✅ Objectif confirmé : 125% = 19 points
 Modules choisis :
 Domaine	        Module	    Type	                Points
@@ -18,3 +16,29 @@ Accessibility	Support tous appareils (responsive)	MIN	1 ✅
 Graphics        Use advanced 3D techniques          MAJ 2 ✅
 
 Total = 19 points ✅
+
+Techno utilise:
+- Tailwind CSS
+- Fastify avec Node.js
+- SQLite
+- OAuth 2.0
+- Babyln.js
+
+Tools utilise:
+
+back:
+- bcrypt
+- better-sqlite3
+- dotenv
+- jsonwebtoken
+- nodemailer
+- node-cron
+- ws
+- tsx
+
+front:
+- socket.io-client
+- eslint
+- tailwindcss
+- typescript
+- vite
