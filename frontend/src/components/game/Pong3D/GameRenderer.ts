@@ -17,7 +17,8 @@ export interface ObjectPositions {
   ball: { x: number; y: number; z: number };
 }
 
-export class GameRenderer {
+export class GameRenderer 
+{
   private scene: BABYLON.Scene;
   private camera: BABYLON.ArcRotateCamera;
   private gameObjects: GameObjects;
@@ -52,7 +53,8 @@ export class GameRenderer {
     this.adjustCameraForScreen();
   }
 
-  private setupCamera(): void {
+  private setupCamera(): void 
+  {
     this.camera = new BABYLON.ArcRotateCamera(
       'camera',
       -Math.PI / 2,
@@ -65,7 +67,8 @@ export class GameRenderer {
     this.adjustCameraForScreen();
   }
 
-  private setupLighting(): void {
+  private setupLighting(): void 
+  {
     // Nettoyer les lumières existantes
     this.scene.lights.forEach(light => light.dispose());
     
@@ -89,7 +92,8 @@ export class GameRenderer {
     dirLight.position = new BABYLON.Vector3(5, 10, 5);
     
     // ✅ Éclairage spécial pour le thème italien
-    if (theme.id === 'italian') {
+    if (theme.id === 'italian') 
+    {
       // Lumière douce focalisée sur la pizza
       const pizzaSpotLight = new BABYLON.SpotLight(
         'pizzaSpotLight',
@@ -103,8 +107,9 @@ export class GameRenderer {
       pizzaSpotLight.diffuse = new BABYLON.Color3(1, 0.9, 0.7); // Lumière chaude
     }
     
-    // ✅ CORRECTION: Vérifier que gameObjects existe avant d'ajouter les ombres
-    if (theme.lighting.shadowsEnabled && this.gameObjects) {
+    // Vérifier que gameObjects existe avant d'ajouter les ombres
+    if (theme.lighting.shadowsEnabled && this.gameObjects) 
+    {
       const shadowGenerator = new BABYLON.ShadowGenerator(1024, dirLight);
       shadowGenerator.addShadowCaster(this.gameObjects.ball);
       shadowGenerator.addShadowCaster(this.gameObjects.player1Paddle);
@@ -117,7 +122,8 @@ export class GameRenderer {
     this.scene.clearColor = theme.colors.background;
   }
 
-  public isInitialized(): boolean {
+  public isInitialized(): boolean 
+  {
     return this.gameObjects !== undefined && 
           this.gameObjects.player1Paddle !== undefined &&
           this.gameObjects.player2Paddle !== undefined &&
@@ -126,8 +132,9 @@ export class GameRenderer {
   }
 
 
-  private createGameObjects(): void {
-    // ✅ CORRECTION: Initialiser gameObjects avant de créer les objets
+  private createGameObjects(): void 
+  {
+    //Initialiser gameObjects avant de créer les objets
     this.gameObjects = {
       field: this.createField(),
       player1Paddle: this.createPaddle('player1', -4.5),
@@ -141,7 +148,7 @@ export class GameRenderer {
     this.meshes.player2Paddle = this.gameObjects.player2Paddle;
     this.meshes.ball = this.gameObjects.ball;
 
-    // ✅ Sauvegarder les tailles de base des paddles
+    // Sauvegarder les tailles de base des paddles
     this.basePaddleScales.player1 = {
       x: this.gameObjects.player1Paddle.scaling.x,
       y: this.gameObjects.player1Paddle.scaling.y,
@@ -154,7 +161,8 @@ export class GameRenderer {
     };
   }
 
-  private createField(): BABYLON.Mesh {
+  private createField(): BABYLON.Mesh 
+  {
     const field = BABYLON.MeshBuilder.CreateGround(
       'field',
       { width: 10, height: 6 },
@@ -165,7 +173,8 @@ export class GameRenderer {
     field.material = fieldMaterial;
     
     // Créer les éléments spécifiques selon le thème
-    if (this.currentTheme.id === 'italian') {
+    if (this.currentTheme.id === 'italian') 
+    {
       this.createItalianFieldElements();
     } else {
       this.createStandardFieldElements();
@@ -175,7 +184,8 @@ export class GameRenderer {
     return field;
   }
 
-  private createStandardFieldElements(): void {
+  private createStandardFieldElements(): void 
+  {
     // Ligne centrale standard
     const centerLine = BABYLON.MeshBuilder.CreateBox(
       'centerLine',
@@ -189,7 +199,8 @@ export class GameRenderer {
     centerLine.material = centerLineMaterial;
   }
 
-  private createItalianFieldElements(): void {
+  private createItalianFieldElements(): void 
+  {
     // Pizza au centre du terrain
     this.createPizza();
     
@@ -207,7 +218,8 @@ export class GameRenderer {
     flourLine.material = flourMaterial;
   }
 
-  private createPizza(): void {
+  private createPizza(): void 
+  {
     // Base de la pizza (pâte)
     const pizzaBase = BABYLON.MeshBuilder.CreateCylinder(
       'pizzaBase',
@@ -252,7 +264,8 @@ export class GameRenderer {
     console.log('🍕 Pizza created at center field for Italian theme');
   }
 
-  private createCheesePatches(): void {
+  private createCheesePatches(): void 
+  {
     // Créer plusieurs petites "plaques" de fromage pour un effet réaliste
     const cheesePositions = [
       { x: 0.2, z: 0.15 },
@@ -283,7 +296,8 @@ export class GameRenderer {
     });
   }
 
-  private createPizzaToppings(): void {
+  private createPizzaToppings(): void 
+  {
     // Quelques olives noires
     const olivePositions = [
       { x: 0.15, z: 0.25 },
@@ -372,10 +386,12 @@ export class GameRenderer {
     bottomBorder.material = borderMaterial.clone('bottomBorderMaterial');
   }
   
-  private createPaddle(player: 'player1' | 'player2', xPosition: number): BABYLON.Mesh {
+  private createPaddle(player: 'player1' | 'player2', xPosition: number): BABYLON.Mesh 
+  {
     let paddle: BABYLON.Mesh;
     
-    if (this.currentTheme.id === 'italian') {
+    if (this.currentTheme.id === 'italian') 
+    {
       // Créer un rouleau de pâtisserie cylindrique
       paddle = BABYLON.MeshBuilder.CreateCylinder(
         `${player}Paddle`,
@@ -390,13 +406,13 @@ export class GameRenderer {
       // Orientation horizontale pour ressembler à un vrai rouleau
       paddle.rotation.x = Math.PI / 2; // Rotation de 90° pour l'orienter horizontalement
       
-      // ✅ Poignées simples aux extrémités (plus petites et mieux positionnées)
+      // Poignées simples aux extrémités (plus petites et mieux positionnées)
       const handle1 = BABYLON.MeshBuilder.CreateSphere(
         `${player}Handle1`,
         { diameter: 0.08 }, // Poignée sphérique simple
         this.scene
       );
-      // ✅ Positionner aux vrais bouts du rouleau (axe Y car le cylindre est tourné)
+      // Positionner aux vrais bouts du rouleau (axe Y car le cylindre est tourné)
       handle1.position = new BABYLON.Vector3(0, 0.65, 0); // Un bout
       handle1.parent = paddle;
       
@@ -417,7 +433,8 @@ export class GameRenderer {
       handle1.material = handleMaterial;
       handle2.material = handleMaterial.clone(`${player}Handle2Material`);
       
-    } else if (this.currentTheme.id === 'lava') {
+    } else if (this.currentTheme.id === 'lava') 
+    {
       // ✅ Créer des paddles en forme de pierre volcanique avec lave
       paddle = BABYLON.MeshBuilder.CreateBox(
         `${player}Paddle`,
@@ -435,7 +452,8 @@ export class GameRenderer {
       // ✅ Animation de pulsation pour simuler la lave qui bout
       this.animateLavaPaddle(paddle);
       
-    } else {
+    } else 
+    {
       // Paddle standard pour les autres thèmes
       paddle = BABYLON.MeshBuilder.CreateBox(
         `${player}Paddle`,
@@ -449,18 +467,22 @@ export class GameRenderer {
     const paddleMaterial = this.createMaterialFromConfig(`${player}Paddle`, this.currentTheme.materials.paddles);
     
     // Appliquer la couleur spécifique au joueur selon le type de matériau
-    if (paddleMaterial instanceof BABYLON.StandardMaterial) {
+    if (paddleMaterial instanceof BABYLON.StandardMaterial) 
+    {
       paddleMaterial.diffuseColor = this.currentTheme.colors[`${player}Paddle`];
       
-      // ✅ Améliorer l'apparence selon le thème
-      if (this.currentTheme.id === 'italian') {
+ 
+      if (this.currentTheme.id === 'italian') 
+      {
         paddleMaterial.specularColor = new BABYLON.Color3(0.3, 0.2, 0.15);
-      } else if (this.currentTheme.id === 'lava') {
-        // ✅ Effet de lave brillante et chaude
+      } else if (this.currentTheme.id === 'lava') 
+      {
+        // Effet de lave brillante et chaude
         paddleMaterial.specularColor = new BABYLON.Color3(0.8, 0.3, 0.1); // Brillance orangée
         paddleMaterial.emissiveColor = new BABYLON.Color3(0.15, 0.03, 0.01); // Lueur interne
       }
-    } else if (paddleMaterial instanceof BABYLON.PBRMaterial) {
+    } else if (paddleMaterial instanceof BABYLON.PBRMaterial) 
+    {
       paddleMaterial.albedoColor = this.currentTheme.colors[`${player}Paddle`];
     }
     
@@ -472,9 +494,10 @@ export class GameRenderer {
   public applyPaddleSizeModifier(player: 'player1' | 'player2', multiplier: number): void {
     this.paddleSizeMultipliers[player] = multiplier;
     
-    // ✅ CORRECTION: Utiliser gameObjects au lieu de meshes
+    //  Utiliser gameObjects au lieu de meshes
     const paddle = this.gameObjects?.[`${player}Paddle`];
-    if (paddle) {
+    if (paddle) 
+    {
       const baseScale = this.basePaddleScales[player];
       paddle.scaling = new BABYLON.Vector3(
         baseScale.x,
@@ -482,29 +505,34 @@ export class GameRenderer {
         baseScale.z * multiplier  // Augmenter la profondeur du paddle
       );
       console.log(`📏 ${player} paddle size multiplier: ${multiplier}`);
-    } else {
+    } else 
+    {
       console.warn(`🚨 ${player}Paddle not found in gameObjects`);
     }
   }
 
 
   public resetPaddleSize(player?: 'player1' | 'player2'): void {
-    if (player) {
+    if (player) 
+    {
       this.paddleSizeMultipliers[player] = 1.0;
       // ✅ CORRECTION: Utiliser gameObjects au lieu de meshes
       const paddle = this.gameObjects?.[`${player}Paddle`];
-      if (paddle) {
+      if (paddle) 
+      {
         const baseScale = this.basePaddleScales[player];
         paddle.scaling = new BABYLON.Vector3(baseScale.x, baseScale.y, baseScale.z);
       }
-    } else {
+    } else 
+    {
       this.resetPaddleSize('player1');
       this.resetPaddleSize('player2');
     }
   }
 
-  // ✅ Nouvelle méthode pour créer des cristaux de lave
-  private createLavaCrystals(paddle: BABYLON.Mesh, player: string): void {
+  // Nouvelle méthode pour créer des cristaux de lave
+  private createLavaCrystals(paddle: BABYLON.Mesh, player: string): void 
+  {
     // Positions aléatoires pour les cristaux sur le paddle
     const crystalPositions = [
       { x: 0.08, y: 0.05, z: 0.3 },
@@ -541,8 +569,9 @@ export class GameRenderer {
     });
   }
 
-  // ✅ Animation de pulsation pour les paddles de lave
-  private animateLavaPaddle(paddle: BABYLON.Mesh): void {
+  // Animation de pulsation pour les paddles de lave
+  private animateLavaPaddle(paddle: BABYLON.Mesh): void 
+  {
     // Animation de pulsation pour simuler la lave qui bout
     const animationGroup = new BABYLON.AnimationGroup('lavaPaddleAnimation', this.scene);
     
@@ -590,22 +619,26 @@ export class GameRenderer {
     
     console.log(`🌋 Lava paddle animation created for ${paddle.name}`);
   }
-  private createBall(): BABYLON.Mesh {
+
+  private createBall(): BABYLON.Mesh 
+  {
     let ball: BABYLON.Mesh;
     
-    if (this.currentTheme.id === 'italian') {
+    if (this.currentTheme.id === 'italian') 
+    {
       // ✅ Créer une balle légèrement ovale pour l'effet mozzarella
       ball = BABYLON.MeshBuilder.CreateSphere(
         'ball',
         { 
           diameter: 0.3,
-          diameterX: 0.32, // ✅ Légèrement plus large en X
-          diameterY: 0.28, // ✅ Légèrement plus court en Y
-          diameterZ: 0.3   // ✅ Normal en Z
+          diameterX: 0.32, //  Légèrement plus large en X
+          diameterY: 0.28, // Légèrement plus court en Y
+          diameterZ: 0.3   // Normal en Z
         },
         this.scene
       );
-    } else {
+    } else 
+    {
       // Balle normale pour les autres thèmes
       ball = BABYLON.MeshBuilder.CreateSphere(
         'ball',
@@ -622,19 +655,24 @@ export class GameRenderer {
     return ball;
   }
 
-  private createMaterialFromConfig(name: string, config: MaterialConfig): BABYLON.Material {
+  private createMaterialFromConfig(name: string, config: MaterialConfig): BABYLON.Material 
+  {
     let material: BABYLON.Material;
     
-    switch (config.type) {
+    switch (config.type) 
+    {
       case 'pbr':
         const pbrMaterial = new BABYLON.PBRMaterial(`${name}PBRMaterial`, this.scene);
-        if (config.properties.diffuseColor) {
+        if (config.properties.diffuseColor) 
+        {
           pbrMaterial.albedoColor = config.properties.diffuseColor;
         }
-        if (config.properties.metallic !== undefined) {
+        if (config.properties.metallic !== undefined) 
+        {
           pbrMaterial.metallic = config.properties.metallic;
         }
-        if (config.properties.roughness !== undefined) {
+        if (config.properties.roughness !== undefined) 
+        {
           pbrMaterial.roughness = config.properties.roughness;
         }
         material = pbrMaterial;
@@ -642,10 +680,12 @@ export class GameRenderer {
         
       case 'emissive':
         const emissiveMaterial = new BABYLON.StandardMaterial(`${name}EmissiveMaterial`, this.scene);
-        if (config.properties.emissiveColor) {
+        if (config.properties.emissiveColor) 
+        {
           emissiveMaterial.emissiveColor = config.properties.emissiveColor;
         }
-        if (config.properties.diffuseColor) {
+        if (config.properties.diffuseColor) 
+        {
           emissiveMaterial.diffuseColor = config.properties.diffuseColor;
         }
         material = emissiveMaterial;
@@ -653,13 +693,16 @@ export class GameRenderer {
         
       default: // 'standard'
         const standardMaterial = new BABYLON.StandardMaterial(`${name}StandardMaterial`, this.scene);
-        if (config.properties.diffuseColor) {
+        if (config.properties.diffuseColor) 
+        {
           standardMaterial.diffuseColor = config.properties.diffuseColor;
         }
-        if (config.properties.specularColor) {
+        if (config.properties.specularColor) 
+        {
           standardMaterial.specularColor = config.properties.specularColor;
         }
-        if (config.properties.emissiveColor) {
+        if (config.properties.emissiveColor) 
+        {
           standardMaterial.emissiveColor = config.properties.emissiveColor;
         }
         material = standardMaterial;
@@ -667,26 +710,32 @@ export class GameRenderer {
     }
     
     // Appliquer la transparence si définie
-    if (config.properties.transparency !== undefined) {
+    if (config.properties.transparency !== undefined) 
+    {
       material.alpha = 1 - config.properties.transparency;
     }
     
     return material;
   }
 
-   private setupEffects(): void {
-    if (this.currentTheme.effects.ballTrail || this.currentTheme.effects.particles || this.currentTheme.effects.glow) {
+   private setupEffects(): void 
+   {
+    if (this.currentTheme.effects.ballTrail || this.currentTheme.effects.particles || this.currentTheme.effects.glow) 
+    {
       this.effectsManager = new EffectsManager(this.scene, this.currentTheme);
       
-      if (this.currentTheme.effects.ballTrail) {
+      if (this.currentTheme.effects.ballTrail) 
+      {
         this.effectsManager.enableBallTrail(this.gameObjects.ball);
       }
       
-      if (this.currentTheme.effects.particles) {
+      if (this.currentTheme.effects.particles) 
+      {
         this.effectsManager.enableParticles();
       }
       
-      if (this.currentTheme.effects.glow) {
+      if (this.currentTheme.effects.glow) 
+      {
         this.effectsManager.enableGlow([
           this.gameObjects.ball,
           this.gameObjects.player1Paddle,
@@ -696,9 +745,11 @@ export class GameRenderer {
     }
   }
 
-  public changeTheme(themeId: string): void {
+  public changeTheme(themeId: string): void 
+  {
     const newTheme = GameThemes.getTheme(themeId);
-    if (!newTheme) return;
+    if (!newTheme) 
+      return;
     
     this.currentTheme = newTheme;
     
@@ -709,8 +760,10 @@ export class GameRenderer {
     this.setupEffects();
   }
 
-  private disposeGameObjects(): void {
-    if (this.gameObjects) {
+  private disposeGameObjects(): void 
+  {
+    if (this.gameObjects) 
+    {
       Object.values(this.gameObjects).forEach(obj => {
         if (obj.material) obj.material.dispose();
         obj.dispose();
@@ -720,13 +773,15 @@ export class GameRenderer {
     // Nettoyer les éléments spécifiques aux thèmes
     this.disposeThemeSpecificElements();
     
-    if (this.effectsManager) {
+    if (this.effectsManager) 
+    {
       this.effectsManager.dispose();
       this.effectsManager = null;
     }
   }
 
-  private disposeThemeSpecificElements(): void {
+  private disposeThemeSpecificElements(): void 
+  {
     // Nettoyer la pizza et ses éléments
     const pizzaElements = [
       'pizzaBase', 'tomatoSauce', 'centerLine',
@@ -737,13 +792,13 @@ export class GameRenderer {
       'topBorder', 'bottomBorder'
     ];
     
-    // ✅ Poignées italiennes
+    //  Poignées italiennes
     const rollingPinElements = [
       'player1Handle1', 'player1Handle2',
       'player2Handle1', 'player2Handle2'
     ];
     
-    // ✅ Cristaux de lave
+    // Cristaux de lave
     const lavaElements = [
       'player1Crystal0', 'player1Crystal1', 'player1Crystal2', 'player1Crystal3',
       'player2Crystal0', 'player2Crystal1', 'player2Crystal2', 'player2Crystal3'
@@ -757,7 +812,7 @@ export class GameRenderer {
       }
     });
     
-    // ✅ Nettoyer les groupes d'animation
+    //  Nettoyer les groupes d'animation
     this.scene.animationGroups.forEach(group => {
       if (group.name === 'lavaPaddleAnimation') {
         group.dispose();
@@ -766,8 +821,9 @@ export class GameRenderer {
   }
 
 
-  public updatePositions(positions: ObjectPositions): void {
-    // ✅ CORRECTION: Vérifier que gameObjects existe avant de l'utiliser
+  public updatePositions(positions: ObjectPositions): void 
+  {
+    // CORRECTION: Vérifier que gameObjects existe avant de l'utiliser
     if (!this.gameObjects) {
       console.warn('🚨 GameObjects not initialized yet');
       return;
@@ -789,7 +845,8 @@ export class GameRenderer {
     }
   }
 
-  public adjustCameraForScreen(): void {
+  public adjustCameraForScreen(): void 
+  {
     const isMobile = window.innerWidth <= 768;
     const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
     
@@ -805,7 +862,8 @@ export class GameRenderer {
     }
   }
 
-  public getGameObjects(): GameObjects {
+  public getGameObjects(): GameObjects 
+  {
     return this.gameObjects;
   }
 

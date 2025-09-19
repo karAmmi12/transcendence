@@ -1,7 +1,9 @@
 import { i18n } from '@/services/i18nService';
 
-export class OAuthButtons {
-  render(): string {
+export class OAuthButtons 
+{
+  render(): string 
+  {
     return `
       <div class="mt-6">
         <div class="relative">
@@ -26,7 +28,8 @@ export class OAuthButtons {
     `;
   }
 
-  bindEvents(onOAuth: (provider: string) => void): void {
+  bindEvents(onOAuth: (provider: string) => void): void 
+  {
     document.getElementById('oauth-google')?.addEventListener('click', () => {
       onOAuth('google');
     });

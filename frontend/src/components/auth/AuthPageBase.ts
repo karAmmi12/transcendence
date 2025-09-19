@@ -3,19 +3,23 @@ import { ErrorMessage } from './ErrorMessage';
 import { OAuthButtons } from './OAuthButtons';
 import { authService } from '@services/authService';
 
-export abstract class AuthPageBase {
+export abstract class AuthPageBase 
+{
   protected languageListener: (() => void) | null = null;
   protected errorMessage: ErrorMessage;
   protected oauthButtons: OAuthButtons;
 
-  constructor() {
+  constructor() 
+  {
     this.errorMessage = new ErrorMessage();
     this.oauthButtons = new OAuthButtons();
   }
 
-  mount(selector: string): void {
+  mount(selector: string): void 
+  {
     const element = document.querySelector(selector);
-    if (!element) return;
+    if (!element) 
+      return;
 
     this.render(element);
     this.destroy();
@@ -34,7 +38,8 @@ export abstract class AuthPageBase {
   protected abstract handleFormSubmit(formData: FormData): Promise<void>;
   protected abstract renderFooterLinks(): string;
 
-  private render(element: Element): void {
+  private render(element: Element): void 
+  {
     element.innerHTML = `
       <div class="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
@@ -56,7 +61,8 @@ export abstract class AuthPageBase {
     `;
   }
 
-  protected bindEvents(): void {
+  protected bindEvents(): void 
+  {
     const form = document.getElementById('auth-form') as HTMLFormElement;
     
     form?.addEventListener('submit', async (e) => {
@@ -65,10 +71,12 @@ export abstract class AuthPageBase {
       const formData = new FormData(form);
       this.errorMessage.hide();
 
-      try {
+      try 
+      {
         await this.handleFormSubmit(formData);
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
-      } catch (error) {
+      } catch (error) 
+      {
         this.errorMessage.show((error as Error).message);
       }
     });
@@ -76,16 +84,21 @@ export abstract class AuthPageBase {
     this.oauthButtons.bindEvents(this.handleOAuth.bind(this));
   }
 
-  protected handleOAuth(provider: string): void {
-    if (provider === 'google') {
+  protected handleOAuth(provider: string): void 
+  {
+    if (provider === 'google') 
+    {
       authService.initiateGoogleLogin();
-    } else {
+    } else 
+    {
       console.log('OAuth provider not implemented:', provider);
     }
   }
 
-  destroy(): void {
-    if (this.languageListener) {
+  destroy(): void 
+  {
+    if (this.languageListener) 
+    {
       window.removeEventListener('languageChanged', this.languageListener);
       this.languageListener = null;
     }
