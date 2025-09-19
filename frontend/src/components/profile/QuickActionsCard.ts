@@ -1,10 +1,5 @@
 import { i18n } from '@/services/i18nService';
-
-export interface ActionCallbacks {
-  onEditProfile: () => void;
-  onChangePassword: () => void;
-  onLogout: () => void;
-}
+import type { ActionCallbacks } from '@/types/index.js';
 
 export class QuickActionsCard {
   constructor(private callbacks: ActionCallbacks) {}

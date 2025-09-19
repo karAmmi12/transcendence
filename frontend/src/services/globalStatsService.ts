@@ -1,5 +1,4 @@
-// import type { GlobalStats } from '@components/home/GlobalStatsCard';
-import { GlobalStats } from '@/types';
+import type { GlobalStats } from '@/types/index.js';
 
 class GlobalStatsService {
   // Utiliser la même logique d'URL que authService

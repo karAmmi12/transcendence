@@ -11,10 +11,9 @@ import { EditProfileModal } from '@components/profile/EditProfileModal';
 import { ChangePasswordModal } from '@components/profile/ChangePasswordModal';
 import { ThemeSelectionModal } from '@components/profile/ThemeSelectionModal';
 import { TwoFactorModal } from '@components/auth/TwoFactorModal';
-import { QuickActionsCard, type ActionCallbacks } from '@components/profile/QuickActionsCard';
 
-import { ProfileLayout, type ProfileComponents } from '@components/profile/ProfileLayout';
-import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/index.js';
+import { ProfileLayout } from '@components/profile/ProfileLayout';
+import type { User, MatchHistory, Friend, FriendshipStatus, ProfileComponents } from '@/types/index.js';
 
 export class ProfilePage {
   private languageListener: (() => void) | null = null;

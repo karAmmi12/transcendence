@@ -1,9 +1,4 @@
-export interface Translations {
-  [key: string]: string | Translations;
-}
-
-// Ajout du nouveau type de langue
-export type Language = 'en' | 'fr' | 'it' | 'es' | 'kab' | 'kab-tfng' | 'ar' | 'sg';
+import type { Translations, Language } from '@/types/index.js';
 
 export class I18nService {
   private static instance: I18nService;
