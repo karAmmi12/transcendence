@@ -1,13 +1,35 @@
+// ==========================================
+// PAGE D'INSCRIPTION - Gestion de l'inscription utilisateur
+// ==========================================
+// Permet aux utilisateurs de créer un nouveau compte avec validation côté client
+
+// ==========================================
+// IMPORTS
+// ==========================================
 import { i18n } from '@/services/i18nService';
 import { authService } from '@services/authService';
 import { AuthPageBase } from '@components/auth/AuthPageBase';
 import { AuthFormInput } from '@components/auth/AuthFormInput';
 import { AuthSubmitButton } from '@components/auth/AuthSubmitButton';
 
-export class RegisterPage extends AuthPageBase {
+// ==========================================
+// CLASSE PRINCIPALE
+// ==========================================
+export class RegisterPage extends AuthPageBase
+{
+  // ==========================================
+  //  PROPRIÉTÉS PRIVÉES
+  // ==========================================
+
+  // Composants d'interface
   private submitButton: AuthSubmitButton;
 
-  constructor() {
+  // ==========================================
+  //  CONSTRUCTEUR & INITIALISATION
+  // ==========================================
+
+  constructor()
+  {
     super();
     this.submitButton = new AuthSubmitButton({
       id: 'register-submit',
@@ -16,11 +38,21 @@ export class RegisterPage extends AuthPageBase {
     });
   }
 
-  protected getTitle(): string {
+  // ==========================================
+  //  MÉTHODES DE CONFIGURATION
+  // ==========================================
+
+  protected getTitle(): string
+  {
     return i18n.t('auth.register.title');
   }
 
-  protected renderForm(): string {
+  // ==========================================
+  //  MÉTHODES DE RENDU
+  // ==========================================
+
+  protected renderForm(): string
+  {
     const usernameInput = new AuthFormInput({
       id: 'username',
       name: 'username',
@@ -69,37 +101,8 @@ export class RegisterPage extends AuthPageBase {
     `;
   }
 
-  protected async handleFormSubmit(formData: FormData): Promise<void> {
-    const submitBtn = document.getElementById('register-submit') as HTMLButtonElement;
-    const registerText = document.getElementById('register-submit-text') as HTMLSpanElement;
-    const registerSpinner = document.getElementById('register-submit-spinner') as HTMLElement;
-
-    // Show loading state
-    submitBtn.disabled = true;
-    registerText.textContent = i18n.t('common.loading');
-    registerSpinner.classList.remove('hidden');
-
-    try {
-      const username = formData.get('username') as string;
-      const email = formData.get('email') as string;
-      const password = formData.get('password') as string;
-      const confirmPassword = formData.get('confirmPassword') as string;
-
-      // Validation côté client
-      if (password !== confirmPassword) {
-        throw new Error(i18n.t('auth.errors.passwordMismatch'));
-      }
-
-      await authService.register(username, email, password);
-    } finally {
-      // Reset loading state
-      submitBtn.disabled = false;
-      registerText.textContent = i18n.t('auth.register.registerButton');
-      registerSpinner.classList.add('hidden');
-    }
-  }
-
-  protected renderFooterLinks(): string {
+  protected renderFooterLinks(): string
+  {
     return `
       <div class="text-center">
         <span class="text-gray-400">${i18n.t('auth.register.haveAccount')}</span>
@@ -110,13 +113,68 @@ export class RegisterPage extends AuthPageBase {
     `;
   }
 
-  protected bindEvents(): void {
+  // ==========================================
+  //  GESTION DES ÉVÉNEMENTS
+  // ==========================================
+
+  protected bindEvents(): void
+  {
     super.bindEvents();
 
-    // Additional events specific to register
-    document.getElementById('login-link')?.addEventListener('click', (e) => {
+    // Événements supplémentaires spécifiques à l'inscription
+    document.getElementById('login-link')?.addEventListener('click', (e) =>
+    {
       e.preventDefault();
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
     });
+  }
+
+  // ==========================================
+  //  GESTION DE L'INSCRIPTION
+  // ==========================================
+
+  protected async handleFormSubmit(formData: FormData): Promise<void>
+  {
+    const submitBtn = document.getElementById('register-submit') as HTMLButtonElement;
+    const registerText = document.getElementById('register-submit-text') as HTMLSpanElement;
+    const registerSpinner = document.getElementById('register-submit-spinner') as HTMLElement;
+
+    // Afficher l'état de chargement
+    submitBtn.disabled = true;
+    registerText.textContent = i18n.t('common.loading');
+    registerSpinner.classList.remove('hidden');
+
+    try
+    {
+      const username = formData.get('username') as string;
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+      const confirmPassword = formData.get('confirmPassword') as string;
+
+      //  Validation côté client
+      if (password !== confirmPassword)
+      {
+        throw new Error(i18n.t('auth.errors.passwordMismatch'));
+      }
+
+      await authService.register(username, email, password);
+
+      //  Redirection vers l'accueil après inscription réussie
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
+
+    }
+    catch (error)
+    {
+      console.error('❌ Échec de l\'inscription :', error);
+      this.errorMessage.show((error as Error).message);
+      throw error;
+    }
+    finally
+    {
+      // Réinitialiser l'état de chargement
+      submitBtn.disabled = false;
+      registerText.textContent = i18n.t('auth.register.registerButton');
+      registerSpinner.classList.add('hidden');
+    }
   }
 }
