@@ -7,7 +7,7 @@ export class PowerUpManager {
   private powerUps: Map<string, PowerUp> = new Map();
   private activeEffects: Map<string, ActiveEffect> = new Map();
   private spawnTimer: number = 0;
-  private spawnInterval: number = 10; // secondes entre les spawns
+  private spawnInterval: number = 10;
   private maxPowerUps: number = 2;
   private enabled: boolean = false;
 

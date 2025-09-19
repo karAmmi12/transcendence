@@ -98,9 +98,14 @@ export class EditProfileModal {
                 type="email" 
                 id="edit-email" 
                 value="${this.user.email || ''}"
-                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                required
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${this.user.googleId ? 'cursor-not-allowed opacity-50' : ''}"
+                ${this.user.googleId ? 'readonly' : 'required'}
               />
+              ${this.user.googleId ? `
+                <p class="text-xs text-gray-400 mt-1">
+                  ${i18n.t('profile.edit.googleAccount')}
+                </p>
+              ` : ''}
             </div>
 
             <!-- Error Message -->

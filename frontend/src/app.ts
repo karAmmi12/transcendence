@@ -2,21 +2,25 @@ import { Router } from './router'
 import { Header } from '@components/layout/Header'
 import { Footer } from '@components/layout/Footer'
 
-export class App {
+export class App 
+{
   private router: Router //instanciation du routeur pour la navigation SPA
   private header: Header  //instanciation de l'en-tête
   private footer: Footer  //instanciation du pied de page
 
   
-  constructor(router: Router) { 
+  constructor(router: Router) 
+  { 
     this.router = router
     this.header = new Header()
     this.footer = new Footer()
   } 
 
-  mount(selector: string): void {
+  mount(selector: string): void 
+  {
     const appElement = document.querySelector(selector)
-    if (!appElement) {
+    if (!appElement) 
+    {
       throw new Error(`Element with selector ${selector} not found`)
     }
 
