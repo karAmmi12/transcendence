@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import db from "../db/index.js"
 import {SessionResult, TokenPayload} from "../types/jwt.js";
 import 'dotenv/config'
+import { Logger } from '../utils/logger.js';
 
 const ACCESS_TOKEN_SECRET =  process.env.ACCESS_TOKEN_SECRET || 'fallback-access-secret';
 const REFRESH_TOKEN_SECRET =  process.env.REFRESH_TOKEN_SECRET || 'fallback-refresh-secret';
@@ -34,7 +35,7 @@ export class JWTService
         try {
             return (jwt.verify(token, ACCESS_TOKEN_SECRET) as TokenPayload);
         } catch (error) {
-            console.error('Access token verif failed:', error);
+            Logger.error('Access token verif failed:', error);
             return (null);
         }
     }
@@ -47,7 +48,7 @@ export class JWTService
         try {
             return (jwt.verify(token, REFRESH_TOKEN_SECRET) as TokenPayload);
         } catch (error) {
-            console.error('Access token verif failed:', error);
+            Logger.error('Access token verif failed:', error);
             return (null);
         }
     }
@@ -123,6 +124,6 @@ export class JWTService
     {
         const stmt = db.prepare('DELETE FROM sessions WHERE expires_at <= CURRENT_TIMESTAMP');
         const result = stmt.run();
-        console.log(`Cleaned ${result.changes} expired sessions`);
+        Logger.log(`Cleaned ${result.changes} expired sessions`);
     }
 }
