@@ -349,6 +349,9 @@ export class Pong3D {
     
     console.log(`🏁 Game finished! Winner: ${winnerName}`);
 
+    //Nettoyer tous les indicateurs d'effets actifs
+    this.clearAllEffectIndicators();
+
     // ✅ Si c'est un tournoi (callback défini), ne pas afficher le modal
     if (this.onGameEnd) {
       const duration = (Date.now() - this.matchStartTime) / 1000;
@@ -368,6 +371,13 @@ export class Pong3D {
     if (this.mode === 'local' && !this.isMatchDataSent) {
       this.sendMatchDataToBackend();
     }
+  }
+
+  private clearAllEffectIndicators(): void {
+    const existingEffects = document.querySelectorAll('.active-effect-indicator');
+    existingEffects.forEach(el => {
+      el.remove();
+    });
   }
 
   protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
@@ -759,6 +769,8 @@ private createEffectIndicator(effect: any): void {
 
   public destroy(): void {
     console.log('🗑️ Destroying Pong3D...');
+
+    this.clearAllEffectIndicators();
 
     // ✅ Nettoyer le gestionnaire de power-ups
     if (this.powerUpManager) {
