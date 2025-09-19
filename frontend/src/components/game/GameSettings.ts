@@ -1,8 +1,8 @@
 import { i18n } from '@/services/i18nService.js';
 import { authService } from '@/services/authService.js';
-import type { GameSettings } from '@/components/game/Pong3D/Pong3D.js';
+import type { GameSettings as Pong3DGameSettings } from '@/components/game/Pong3D/Pong3D.js';
 
-export class GameSettings {
+export class GameSettingsUI {
   constructor(
     private mode: 'local' | 'remote' | 'tournament',
     private userPreferredTheme: string | null,
@@ -400,7 +400,7 @@ export class GameSettings {
     });
   }
 
-  getGameSettings(): GameSettings {
+  getGameSettings(): Pong3DGameSettings {
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
     
