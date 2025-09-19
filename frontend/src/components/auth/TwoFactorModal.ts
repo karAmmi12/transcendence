@@ -1,7 +1,8 @@
 import { i18n } from '@/services/i18nService.js';
 import { twoFactorService } from '../../services/twoFactorService.js';
 
-export class TwoFactorModal {
+export class TwoFactorModal 
+{
   private modal: HTMLElement | null = null;
 
   constructor(
@@ -10,7 +11,8 @@ export class TwoFactorModal {
     private onCancel?: () => void
   ) {}
 
-  show(): void {
+  show(): void 
+  {
     this.modal = this.createModal();
     document.body.appendChild(this.modal);
     
@@ -33,14 +35,16 @@ export class TwoFactorModal {
   }
 
   
-  private createModal(): HTMLElement {
+  private createModal(): HTMLElement 
+  {
     const modal = document.createElement('div');
     modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 transition-opacity duration-300';
     
     // ✅ Titres et descriptions selon le mode
     let title, description, buttonText;
     
-    switch (this.mode) {
+    switch (this.mode) 
+    {
       case 'enable':
         title = i18n.t('profile.twoFactor.modal.enableTitle');
         description = i18n.t('profile.twoFactor.modal.enableDescription');
@@ -125,7 +129,8 @@ export class TwoFactorModal {
     return modal;
   }
 
-  private async handleSubmit(e: Event): Promise<void> {
+  private async handleSubmit(e: Event): Promise<void> 
+  {
     e.preventDefault();
     
     const form = e.target as HTMLFormElement;
@@ -140,7 +145,8 @@ export class TwoFactorModal {
     verifySpinner.classList.remove('hidden');
     this.hideError();
 
-    try {
+    try 
+    {
       const code = codeInput.value;
 
       if (this.mode === 'login') {
@@ -164,9 +170,11 @@ export class TwoFactorModal {
         }
       }
       
-    } catch (error) {
+    } catch (error) 
+    {
       this.showError((error as Error).message);
-    } finally {
+    } finally 
+    {
       // Reset loading state
       if (this.modal)
       {
@@ -181,8 +189,10 @@ export class TwoFactorModal {
     }
   }
 
-  private bindEvents(): void {
-    if (!this.modal) return;
+  private bindEvents(): void 
+  {
+    if (!this.modal) 
+      return;
 
     // Fermer le modal
     const closeBtn = this.modal.querySelector('#close-modal');
@@ -197,7 +207,8 @@ export class TwoFactorModal {
 
     // Fermer en cliquant sur l'overlay
     this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
+      if (e.target === this.modal) 
+      {
         this.onCancel?.();
         this.close();
       }
@@ -212,8 +223,10 @@ export class TwoFactorModal {
     codeInput?.addEventListener('input', () => this.validateCode());
   }
 
-  private validateCode(): void {
-    if (!this.modal) return;
+  private validateCode(): void 
+  {
+    if (!this.modal) 
+      return;
 
     const codeInput = this.modal.querySelector('#verification-code') as HTMLInputElement;
     const verifyBtn = this.modal.querySelector('#verify-btn') as HTMLButtonElement;
@@ -226,27 +239,34 @@ export class TwoFactorModal {
 
 
 
-  private showError(message: string): void {
-    if (!this.modal) return;
+  private showError(message: string): void 
+  {
+    if (!this.modal) 
+      return;
     
     const errorMessage = this.modal.querySelector('#error-message');
     const errorDescription = this.modal.querySelector('#error-description');
     
-    if (errorMessage && errorDescription) {
+    if (errorMessage && errorDescription) 
+    {
       errorDescription.textContent = message;
       errorMessage.classList.remove('hidden');
     }
   }
 
-  private hideError(): void {
-    if (!this.modal) return;
+  private hideError(): void 
+  {
+    if (!this.modal) 
+      return;
     
     const errorMessage = this.modal.querySelector('#error-message');
     errorMessage?.classList.add('hidden');
   }
 
-  public close(): void {
-    if (!this.modal) return;
+  public close(): void 
+  {
+    if (!this.modal) 
+      return;
 
     // Animation de fermeture
     this.modal.classList.remove('opacity-100');

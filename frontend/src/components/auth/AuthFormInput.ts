@@ -7,10 +7,12 @@ export interface InputConfig {
   label?: string;
 }
 
-export class AuthFormInput {
+export class AuthFormInput 
+{
   constructor(private config: InputConfig) {}
 
-  render(): string {
+  render(): string 
+  {
     return `
       <div>
         <label for="${this.config.id}" class="block text-sm font-medium text-gray-300">

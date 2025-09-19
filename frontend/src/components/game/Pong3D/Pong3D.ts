@@ -26,7 +26,8 @@ export interface GameState {
   winner?: 'player1' | 'player2';
 }
 
-export class Pong3D {
+export class Pong3D 
+{
   private canvas: HTMLCanvasElement;
   private engine: BABYLON.Engine;
   private scene: BABYLON.Scene;
@@ -59,9 +60,11 @@ export class Pong3D {
 
   public onGameEnd?: (winner: string, scores: any, duration : number) => void;
 
-  constructor(canvasId: string, settings: GameSettings, isRemote = false, mode: 'local' | 'tournament' | 'remote' = 'local') {
+  constructor(canvasId: string, settings: GameSettings, isRemote = false, mode: 'local' | 'tournament' | 'remote' = 'local') 
+  {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-    if (!this.canvas) {
+    if (!this.canvas) 
+    {
       throw new Error(`Canvas with id "${canvasId}" not found`);
     }
     
@@ -80,7 +83,8 @@ export class Pong3D {
   }
 
 
-  private initEngine(): void {
+  private initEngine(): void 
+  {
     // Créer le moteur Babylon.js
     this.engine = new BABYLON.Engine(this.canvas, true, { 
       adaptToDeviceRatio: true,
@@ -107,7 +111,8 @@ export class Pong3D {
   //   this.startRenderLoop();
   // }
 
-  private initComponents(): void {
+  private initComponents(): void 
+  {
     console.log('🔧 Initializing game components...');
     
     // Initialiser les composants avec les bons paramètres
@@ -121,7 +126,8 @@ export class Pong3D {
     
 
     // Activer les power-ups si demandé dans les settings
-    if (this.settings.powerUps) {
+    if (this.settings.powerUps) 
+    {
       this.powerUpManager.enable();
       console.log('🔋 Power-ups activated!');
     }
@@ -131,25 +137,31 @@ export class Pong3D {
   }
 
   // Méthode pour changer de thème en cours de jeu
-  public changeTheme(themeId: string): void {
-    if (this.renderer) {
+  public changeTheme(themeId: string): void 
+  {
+    if (this.renderer) 
+    {
       this.renderer.changeTheme(themeId);
     }
   }
 
 
-  private startRenderLoop(): void {
+  private startRenderLoop(): void 
+  {
     this.engine.runRenderLoop(() => {
-      if (this.gameState.status === 'playing') {
+      if (this.gameState.status === 'playing') 
+      {
         this.updateGame();
       }
       this.scene.render();
     });
   }
 
-  protected updateGame(): void {
+  protected updateGame(): void 
+  {
     // ✅ CORRECTION: Vérifier que le renderer est initialisé
-    if (!this.renderer.isInitialized()) {
+    if (!this.renderer.isInitialized()) 
+    {
       console.warn('🚨 Renderer not fully initialized yet');
       return;
     }
@@ -172,7 +184,8 @@ export class Pong3D {
     this.renderer.updatePositions(physicsUpdate.positions);
     
     // Vérifier les événements de jeu
-    if (physicsUpdate.events.goal) {
+    if (physicsUpdate.events.goal) 
+    {
       this.handleGoal(physicsUpdate.events.goal.scorer);
     }
     
@@ -183,8 +196,10 @@ export class Pong3D {
     this.updateUI();
   }
 
-  protected applyPhysicsEffects(): void {
-    if (!this.powerUpManager) return;
+  protected applyPhysicsEffects(): void 
+  {
+    if (!this.powerUpManager) 
+      return;
     
     const activeEffects = this.powerUpManager.getActiveEffects();
     console.log(`🔮 Active effects count: ${activeEffects.size}`);
@@ -198,10 +213,12 @@ export class Pong3D {
     const sizeMultipliers = { player1: 1.0, player2: 1.0 };
     
     // Appliquer les effets de modification
-    for (const effect of activeEffects.values()) {
+    for (const effect of activeEffects.values()) 
+    {
       console.log(`🔥 Applying effect: ${effect.type} for ${effect.targetPlayer}`);
       
-      switch (effect.type) {
+      switch (effect.type) 
+      {
         case PowerUpType.PADDLE_SIZE:
           sizeMultipliers[effect.targetPlayer] = 1.4;
           this.renderer.applyPaddleSizeModifier(effect.targetPlayer, 1.4);
@@ -214,11 +231,12 @@ export class Pong3D {
       }
     }
     
-    // ✅ Synchroniser les multiplicateurs de taille avec la physique
+    // Synchroniser les multiplicateurs de taille avec la physique
     this.physics.setPaddleSizeMultipliers(sizeMultipliers);
   }
 
-  private getModifiedInputs(): any {
+  private getModifiedInputs(): any 
+  {
     const baseInputs = this.controls.getInputs();
     const activeEffects = this.powerUpManager.getActiveEffects();
     
@@ -226,7 +244,8 @@ export class Pong3D {
     const modifiedInputs = JSON.parse(JSON.stringify(baseInputs));
     
     // Appliquer les effets de modification des contrôles
-    for (const effect of activeEffects.values()) {
+    for (const effect of activeEffects.values()) 
+    {
       const targetPlayer = effect.targetPlayer;
       const oppositePlayer = targetPlayer === 'player1' ? 'player2' : 'player1';
       
@@ -250,22 +269,27 @@ export class Pong3D {
     return modifiedInputs;
   }
 
-  private checkPowerUpCollisions(ballPosition: { x: number; y: number; z: number }): void {
-    if (!this.powerUpManager) return;
+  private checkPowerUpCollisions(ballPosition: { x: number; y: number; z: number }): void 
+  {
+    if (!this.powerUpManager) 
+      return;
     
     const collidedPowerUp = this.powerUpManager.checkCollision(ballPosition);
     
-    if (collidedPowerUp) {
+    if (collidedPowerUp) 
+    {
       console.log(`🎯 Power-up collision detected: ${collidedPowerUp.type} at`, ballPosition);
       
       // ✅ Déterminer le joueur en fonction de la direction de la balle
       const ballVelocity = this.physics.getBallVelocity();
       let targetPlayer: 'player1' | 'player2';
       
-      if (ballVelocity.x > 0) {
+      if (ballVelocity.x > 0) 
+      {
         // La balle va vers la droite → poussée par player1 (paddle gauche)
         targetPlayer = 'player1';
-      } else {
+      } else 
+      {
         // La balle va vers la gauche → poussée par player2 (paddle droite)  
         targetPlayer = 'player2';
       }
@@ -280,7 +304,8 @@ export class Pong3D {
     }
   }
 
-  private showPowerUpNotification(type: PowerUpType, player: 'player1' | 'player2'): void {
+  private showPowerUpNotification(type: PowerUpType, player: 'player1' | 'player2'): void 
+  {
     // Obtenir le nom lisible du power-up
     const powerUpNames = {
       [PowerUpType.PADDLE_SIZE]: i18n.t('powerups.paddle_size'),
@@ -325,22 +350,26 @@ export class Pong3D {
   }
 
 
-  private handleGoal(scorer: 'player1' | 'player2'): void {
+  private handleGoal(scorer: 'player1' | 'player2'): void 
+  {
     this.gameState.scores[scorer]++;
     
     console.log(`🥅 Goal by ${scorer}! Score: ${this.gameState.scores.player1}-${this.gameState.scores.player2}`);
     
     // Vérifier la fin de partie
-    if (this.gameState.scores[scorer] >= this.settings.winScore) {
+    if (this.gameState.scores[scorer] >= this.settings.winScore) 
+    {
       this.endGame(scorer);
-    } else {
+    } else 
+    {
       // Réinitialiser pour le prochain round
       this.physics.reset();
       setTimeout(() => this.physics.launchBall(), 2000);
     }
   }
 
-  protected endGame(winner: 'player1' | 'player2'): void {
+  protected endGame(winner: 'player1' | 'player2'): void 
+  {
     this.gameState.status = 'finished';
     this.gameState.winner = winner;
     
@@ -352,38 +381,45 @@ export class Pong3D {
     //Nettoyer tous les indicateurs d'effets actifs
     this.clearAllEffectIndicators();
 
-    // ✅ Si c'est un tournoi (callback défini), ne pas afficher le modal
-    if (this.onGameEnd) {
+    // Si c'est un tournoi (callback défini), ne pas afficher le modal
+    if (this.onGameEnd) 
+    {
       const duration = (Date.now() - this.matchStartTime) / 1000;
       console.log('🏆 Tournament match ended, calling callback');
       this.onGameEnd(winnerName, this.gameState.scores, duration);
     }
 
-    // ✅ Afficher le modal seulement en mode local
-    if (this.mode === 'local') {
+    // Afficher le modal seulement en mode local
+    if (this.mode === 'local') 
+    {
       console.log('🎮 Local game - showing end modal');
       this.showGameEndModal(winner, winnerName, loserName);
-    } else {
+    } else 
+    {
       console.log(`🏆 ${this.mode} game - modal handled by parent component`);
     }
 
     // Envoyer les données du match si c'est une partie locale (pas un tournoi)
-    if (this.mode === 'local' && !this.isMatchDataSent) {
+    if (this.mode === 'local' && !this.isMatchDataSent) 
+    {
       this.sendMatchDataToBackend();
     }
   }
 
-  private clearAllEffectIndicators(): void {
+  private clearAllEffectIndicators(): void 
+  {
     const existingEffects = document.querySelectorAll('.active-effect-indicator');
     existingEffects.forEach(el => {
       el.remove();
     });
   }
 
-  protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
+  protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void 
+  {
     // Masquer le timer et autres éléments de jeu
     const gameOverlay = document.getElementById('game-overlay');
-    if (gameOverlay) {
+    if (gameOverlay) 
+    {
       gameOverlay.style.display = 'none';
     }
 
@@ -419,12 +455,14 @@ export class Pong3D {
 
 
 
-  private restartGame(): void {
+  private restartGame(): void 
+  {
     console.log('🔄 Restarting game...');
     
     // Réafficher l'overlay de jeu
     const gameOverlay = document.getElementById('game-overlay');
-    if (gameOverlay) {
+    if (gameOverlay) 
+    {
       gameOverlay.style.display = 'block';
     }
 
@@ -442,14 +480,16 @@ export class Pong3D {
     this.startGame();
   }
 
-  private backToMenu(): void {
+  private backToMenu(): void 
+  {
     console.log('🏠 Going back to menu...');
     
     // Naviguer vers la page de sélection de mode
     window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
   }
 
-  private showMatchStats(): void {
+  private showMatchStats(): void 
+  {
     console.log('📊 Showing match statistics...');
     
     // Naviguer vers la page de profil/statistiques
@@ -462,8 +502,10 @@ export class Pong3D {
   /**
    * Envoie les données du match terminé au backend
    */
-  private async sendMatchDataToBackend(): Promise<void> {
-    try {
+  private async sendMatchDataToBackend(): Promise<void> 
+  {
+    try 
+    {
       // Marquer comme envoyé pour éviter les doublons
       this.isMatchDataSent = true;
       
@@ -490,14 +532,16 @@ export class Pong3D {
       
       console.log('✅ Match data sent successfully');
       
-    } catch (error) {
+    } catch (error) 
+    {
       console.error('❌ Failed to send match data:', error);
       // Remettre le flag à false en cas d'erreur pour permettre une nouvelle tentative
       this.isMatchDataSent = false;
     }
   }
 
-  private updateTimer(): void {
+  private updateTimer(): void 
+  {
     this.gameState.timer += this.engine.getDeltaTime() / 1000;
     
     const minutes = Math.floor(this.gameState.timer / 60);
@@ -519,20 +563,25 @@ export class Pong3D {
   }
 
 
-  protected updateUI(): void {
+  protected updateUI(): void 
+  {
     // Mettre à jour les scores (compatible avec les deux modes)
     const p1Score = document.getElementById('player1-score') || document.getElementById('tournament-player1-score');
     const p2Score = document.getElementById('player2-score') || document.getElementById('tournament-player2-score');
     
-    if (p1Score) p1Score.textContent = this.gameState.scores.player1.toString();
-    if (p2Score) p2Score.textContent = this.gameState.scores.player2.toString();
+    if (p1Score) 
+      p1Score.textContent = this.gameState.scores.player1.toString();
+    if (p2Score) 
+      p2Score.textContent = this.gameState.scores.player2.toString();
 
-    // ✅ Mettre à jour les noms des joueurs
+    // Mettre à jour les noms des joueurs
     const p1Name = document.getElementById('player1-name') || document.getElementById('tournament-player1-name');
     const p2Name = document.getElementById('player2-name') || document.getElementById('tournament-player2-name');
     
-    if (p1Name) p1Name.textContent = this.settings.player1Name;
-    if (p2Name) p2Name.textContent = this.settings.player2Name;
+    if (p1Name)
+      p1Name.textContent = this.settings.player1Name;
+    if (p2Name)
+      p2Name.textContent = this.settings.player2Name;
 
     //mettre a jour les scores desktop
     const scoresDesktop = document.getElementById('game-scores');
@@ -543,16 +592,19 @@ export class Pong3D {
 
     // Mettre à jour les scores mobiles avec noms
     const scoresMobile = document.getElementById('game-scores-mobile');
-    if (scoresMobile) {
+    if (scoresMobile) 
+    {
       scoresMobile.textContent = `${this.settings.player1Name} ${this.gameState.scores.player1} - ${this.gameState.scores.player2} ${this.settings.player2Name}`;
     }
     
-    // ✅ Mettre à jour l'affichage des effets actifs
+    // Mettre à jour l'affichage des effets actifs
     this.updateActiveEffectsDisplay();
   }
 
-  private updateActiveEffectsDisplay(): void {
-    if (!this.powerUpManager) return;
+  private updateActiveEffectsDisplay(): void 
+  {
+    if (!this.powerUpManager) 
+      return;
     
     const activeEffects = this.powerUpManager.getActiveEffects();
     
@@ -561,12 +613,14 @@ export class Pong3D {
     existingEffects.forEach(el => el.remove());
     
     // Afficher les effets actifs
-    for (const effect of activeEffects.values()) {
+    for (const effect of activeEffects.values()) 
+    {
       this.createEffectIndicator(effect);
     }
   }
 
-  private createEffectIndicator(effect: any): void {
+  private createEffectIndicator(effect: any): void 
+  {
     const indicator = document.createElement('div');
     indicator.className = `
       active-effect-indicator fixed z-40
@@ -590,7 +644,8 @@ export class Pong3D {
     const canvas = document.getElementById('game-canvas') || 
                   document.getElementById('tournament-game-canvas');
     
-    if (playerInfo && canvas) {
+    if (playerInfo && canvas) 
+    {
       const playerRect = playerInfo.getBoundingClientRect();
       const canvasRect = canvas.getBoundingClientRect();
       const indicatorWidth = 120; // ✅ Réduit pour mieux s'adapter
@@ -603,48 +658,56 @@ export class Pong3D {
       let affectedPlayer = effect.targetPlayer;
       
       // Pour les effets qui affectent l'adversaire, afficher de son côté
-      if (effect.type === PowerUpType.REVERSE_CONTROLS || effect.type === PowerUpType.FREEZE_OPPONENT) {
+      if (effect.type === PowerUpType.REVERSE_CONTROLS || effect.type === PowerUpType.FREEZE_OPPONENT) 
+      {
         affectedPlayer = effect.targetPlayer === 'player1' ? 'player2' : 'player1';
       }
       
       // Obtenir la position du joueur affecté
       const affectedPlayerInfo = document.getElementById(`${affectedPlayer}-info`) || 
                                 document.getElementById(`tournament-${affectedPlayer}-info`);
-      if (affectedPlayerInfo) {
+      if (affectedPlayerInfo) 
+      {
         const affectedRect = affectedPlayerInfo.getBoundingClientRect();
         
         // ✅ Ajuster les offsets selon le mode pour éviter les débordements
         const isTournament = this.mode === 'tournament';
         const offsetX = isTournament ? 5 : 10; // Offset réduit pour le mode tournoi
         
-        if (affectedPlayer === 'player1') {
+        if (affectedPlayer === 'player1') 
+        {
           // Positionner à droite du joueur 1 (affecté)
           left = affectedRect.right + offsetX;
           top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
-        } else {
+        } else 
+        {
           // Positionner à gauche du joueur 2 (affecté)
           left = affectedRect.left - indicatorWidth - offsetX;
           top = affectedRect.top + (affectedRect.height / 2) - (indicatorHeight / 2);
         }
-      } else {
+      } else 
+      {
         // Fallback vers la logique originale
-        if (effect.targetPlayer === 'player1') {
+        if (effect.targetPlayer === 'player1') 
+        {
           left = playerRect.right + 10;
           top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
-        } else {
+        } else 
+        {
           left = playerRect.left - indicatorWidth - 10;
           top = playerRect.top + (playerRect.height / 2) - (indicatorHeight / 2);
         }
       }
       
-      // ✅ Contraintes plus strictes avec marge pour éviter les débordements
+      // Contraintes plus strictes avec marge pour éviter les débordements
       const margin = 5;
       left = Math.max(canvasRect.left + margin, Math.min(left, canvasRect.right - indicatorWidth - margin));
       top = Math.max(canvasRect.top + margin, Math.min(top, canvasRect.bottom - indicatorHeight - margin));
       
       indicator.style.left = `${left}px`;
       indicator.style.top = `${top}px`;
-    } else {
+    } else 
+    {
       // Fallback si les éléments ne sont pas trouvés
       const side = effect.targetPlayer === 'player1' ? 'left-4' : 'right-4';
       indicator.className += ` ${side} top-32`;
@@ -652,7 +715,8 @@ export class Pong3D {
     
     document.body.appendChild(indicator);
   }
-  private getEffectName(type: PowerUpType): string {
+  private getEffectName(type: PowerUpType): string 
+  {
     const names = {
       [PowerUpType.PADDLE_SIZE]: '📏',
       [PowerUpType.REVERSE_CONTROLS]: '🔄',
@@ -661,27 +725,32 @@ export class Pong3D {
     return names[type] || type;
   }
 
-  protected updateGameStatus(status: string): void {
+  protected updateGameStatus(status: string): void 
+  {
     // Chercher les éléments de statut dans les deux modes
     const statusEl = document.getElementById('game-status') || document.getElementById('tournament-game-status');
-    if (statusEl) {
+    if (statusEl) 
+    {
       statusEl.textContent = status;
     }
     
     // Mettre à jour le statut mobile
     const statusMobile = document.getElementById('game-status-mobile') || document.getElementById('tournament-game-status-mobile');
-    if (statusMobile) {
+    if (statusMobile) 
+    {
       statusMobile.textContent = status;
     }
   }
 
-  private bindEvents(): void {
+  private bindEvents(): void 
+  {
     // Déléguer la gestion des événements au composant Controls
     this.controls.bindKeyboardEvents();
     
     // Gérer la pause
     document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
+      if (e.code === 'Space') 
+      {
         e.preventDefault();
         this.togglePause();
       }
@@ -689,17 +758,21 @@ export class Pong3D {
   }
 
   // API publique
-  public startGame(): void {
+  public startGame(): void 
+  {
     console.log('🚀 Starting game...');
     
-    if (this.isRemoteGame) {
+    if (this.isRemoteGame) 
+    {
       this.connectToServer();
-    } else {
+    } else 
+    {
       this.startLocalGame();
     }
   }
 
-  protected startLocalGame(): void {
+  protected startLocalGame(): void 
+  {
     this.updateGameStatus('Démarrage du jeu...');
     this.physics.reset();
 
@@ -709,15 +782,18 @@ export class Pong3D {
     this.startCountdown();
   }
 
-  private startCountdown(): void {
+  private startCountdown(): void 
+  {
     let count = 3;
     this.updateGameStatus(`Démarrage dans ${count}...`);
     
     const countdownInterval = setInterval(() => {
       count--;
-      if (count > 0) {
+      if (count > 0) 
+      {
         this.updateGameStatus(`Démarrage dans ${count}...`);
-      } else {
+      } else 
+      {
         clearInterval(countdownInterval);
         this.gameState.status = 'playing';
         this.updateGameStatus('Jeu en cours');
@@ -726,11 +802,14 @@ export class Pong3D {
     }, 1000);
   }
 
-  public togglePause(): void {
-    if (this.gameState.status === 'playing') {
+  public togglePause(): void 
+  {
+    if (this.gameState.status === 'playing') 
+    {
       this.gameState.status = 'paused';
       this.updateGameStatus('Jeu en pause');
-    } else if (this.gameState.status === 'paused') {
+    } else if (this.gameState.status === 'paused') 
+    {
       this.gameState.status = 'playing';
       this.updateGameStatus('Jeu en cours');
     }
@@ -749,8 +828,8 @@ export class Pong3D {
     this.renderer.adjustCameraForScreen();
   }
 
-  private connectToServer(): void {
-    // TODO: Implémenter la connexion WebSocket
+  private connectToServer(): void 
+  {
     console.log('🌐 Connecting to server...');
     this.updateGameStatus('Connexion au serveur...');
   }
