@@ -8,9 +8,10 @@ import { i18n } from '@/services/i18nService'
 // import { CrashTestUI } from './utils/CrashTestUI';
 import { authService } from './services/authService'
 import { ApiConfig } from './config/api.js';
+import { Logger } from '@/utils/logger.js'; 
 
 // ✅ Debug de la configuration au démarrage
-console.log('🚀 Application starting...');
+Logger.log('🚀 Application starting...');
 ApiConfig.logUrls();
 
 class Main 
@@ -33,7 +34,7 @@ class Main
     // Vérification de la compatibilité du navigateur
     // const isCompatible = BrowserTestUtils.checkCriticalFeatures();
     // if (!isCompatible) {
-    //   console.warn('⚠️ Browser compatibility issues detected. Some features may not work properly.');
+    //   Logger.warn('⚠️ Browser compatibility issues detected. Some features may not work properly.');
     // }
 
     // Initialisation de l'application
@@ -68,7 +69,7 @@ class Main
     // Gestion de la route initiale
     // this.router.handleRoute()
 
-    console.log('🚀 ft_transcendence frontend started!')
+    Logger.log('🚀 ft_transcendence frontend started!')
   }
 
   // private async initDevelopmentTools(): Promise<void> {
@@ -84,7 +85,7 @@ class Main
   //     // MobileTestUtils.addResponsiveTestButton();
       
   //   } catch (error) {
-  //     console.warn('Development tools failed to load:', error);
+  //     Logger.warn('Development tools failed to load:', error);
   //   }
   // }
 //   private async initDevelopmentTools(): Promise<void> {
@@ -98,7 +99,7 @@ class Main
 
 //       // Test automatique après le chargement
 //       setTimeout(async () => {
-//         console.log('🧪 Running automatic responsive check...');
+//         Logger.log('🧪 Running automatic responsive check...');
 //         const { ResponsiveTest } = await import('./utils/ResponsiveTest');
 //         const tester = new ResponsiveTest();
         
@@ -111,12 +112,12 @@ class Main
 
 //         for (const test of quickTests) {
 //           // Tester seulement les aspects critiques
-//           console.log(`Quick test: ${test.name} (${test.width}x${test.height})`);
+//           Logger.log(`Quick test: ${test.name} (${test.width}x${test.height})`);
 //         }
 //       }, 2000);
       
 //     } catch (error) {
-//       console.warn('Development tools failed to load:', error);
+//       Logger.warn('Development tools failed to load:', error);
 //     }
   
 // }

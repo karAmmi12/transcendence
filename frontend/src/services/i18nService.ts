@@ -1,4 +1,5 @@
 import type { Translations, Language } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class I18nService {
   // ==========================================
@@ -53,13 +54,13 @@ export class I18nService {
       const languages: Language[] = ['en', 'fr', 'it', 'es', 'kab', 'kab-tfng', 'ar', 'sg'];
       for (const lang of languages) {
         const response = await fetch(`/src/locales/${lang}.json`);
-        console.log(`✅ Successfully loaded ${lang} translations`);
+        Logger.log(`✅ Successfully loaded ${lang} translations`);
         if (response.ok) {
           this.translations[lang] = await response.json();
         }
       }
     } catch (error) {
-      console.error('Failed to load translations:', error);
+      Logger.error('Failed to load translations:', error);
     }
   }
 
@@ -162,10 +163,10 @@ export class I18nService {
     
     // Replace parameters
     if (params) {
-      console.log('🔄 Replacing placeholders in:', value, 'with:', params);
+      Logger.log('🔄 Replacing placeholders in:', value, 'with:', params);
       return value.replace(/\{(\w+)\}/g, (match, param) => {
         const replacement = params[param] || match;
-        console.log(`  ${match} -> ${replacement}`);
+        Logger.log(`  ${match} -> ${replacement}`);
         return replacement;
       });
     }

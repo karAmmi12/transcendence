@@ -1,6 +1,7 @@
 import { i18n } from '@/services/i18nService';
 import { GameManager } from '@/components/game/GameManager';
 import type { GameSettings, GameManagerConfig } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class TournamentMatch
 {
@@ -91,7 +92,7 @@ export class TournamentMatch
       {
         startBtn.addEventListener('click', () =>
         {
-          console.log('🎮 Start tournament match clicked!');
+          Logger.log('🎮 Start tournament match clicked!');
           this.startMatch();
         });
       }
@@ -408,7 +409,7 @@ export class TournamentMatch
    */
   private startMatch(): void
   {
-    console.log('🚀 Starting tournament match...');
+    Logger.log('🚀 Starting tournament match...');
 
     // Masquer la vue setup et afficher l'interface de jeu
     const setupDiv = document.getElementById('tournament-match-setup');
@@ -435,12 +436,12 @@ export class TournamentMatch
       },
       onGameStart: () =>
       {
-        console.log('✅ Tournament game started');
+        Logger.log('✅ Tournament game started');
         this.updateTournamentGameInterface();
       },
       onGameEnd: (winner: string, scores: any, duration: number) =>
       {
-        console.log('🏁 Tournament match ended (callback):', { winner, scores, duration });
+        Logger.log('🏁 Tournament match ended (callback):', { winner, scores, duration });
         this.handleMatchEnd(winner, scores, duration);
       }
     };
@@ -453,15 +454,15 @@ export class TournamentMatch
       // Démarrer le jeu
       this.gameManager.startGame().then(() =>
       {
-        console.log('✅ Tournament game started successfully');
+        Logger.log('✅ Tournament game started successfully');
       }).catch(error =>
       {
-        console.error('❌ Failed to start tournament game:', error);
+        Logger.error('❌ Failed to start tournament game:', error);
       });
 
     } catch (error)
     {
-      console.error('❌ Failed to start tournament match:', error);
+      Logger.error('❌ Failed to start tournament match:', error);
     }
   }
 
@@ -512,7 +513,7 @@ export class TournamentMatch
    */
   private handleMatchEnd(winner: string, scores: any, duration: number): void
   {
-    console.log('🏆 Tournament match ended, processing results...');
+    Logger.log('🏆 Tournament match ended, processing results...');
 
     // Afficher une notification temporaire de fin de match
     this.showMatchEndNotification(winner, scores);

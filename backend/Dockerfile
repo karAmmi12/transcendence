@@ -20,5 +20,8 @@ RUN npm run build
 # Exposition du port
 EXPOSE 8000
 
+#pour differencier du mode dev
+ENV NODE_ENV=production
+
 # Démarrage de l'application
 CMD ["npm", "run", "start"]

@@ -1,5 +1,6 @@
 import { Pong3D } from './Pong3D/Pong3D';
 import type { GameManagerConfig } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class GameManager
 {
@@ -33,7 +34,7 @@ export class GameManager
    */
   public async startGame(): Promise<void>
   {
-    console.log(`🚀 Starting ${this.config.mode} game...`);
+    Logger.log(`🚀 Starting ${this.config.mode} game...`);
     
     try
     {
@@ -60,7 +61,7 @@ export class GameManager
 
     } catch (error)
     {
-      console.error(`❌ Failed to start ${this.config.mode} game:`, error);
+      Logger.error(`❌ Failed to start ${this.config.mode} game:`, error);
       throw error;
     }
   }
@@ -130,7 +131,7 @@ export class GameManager
     if (this.game)
     {
       this.game.togglePowerUps(enabled);
-      console.log(`🔋 Power-ups ${enabled ? 'enabled' : 'disabled'} via GameManager`);
+      Logger.log(`🔋 Power-ups ${enabled ? 'enabled' : 'disabled'} via GameManager`);
     }
   }
 
@@ -156,7 +157,7 @@ export class GameManager
     // Callback de fin de jeu unifié
     this.game.onGameEnd = (winner: string, scores: any, duration: number) =>
     {
-      console.log(`🏁 ${this.config.mode} game ended:`, { winner, scores, duration });
+      Logger.log(`🏁 ${this.config.mode} game ended:`, { winner, scores, duration });
       
       if (this.config.onGameEnd)
       {

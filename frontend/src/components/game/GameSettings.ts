@@ -1,6 +1,7 @@
 import { i18n } from '@/services/i18nService.js';
 import { authService } from '@/services/authService.js';
 import type { GameSettings as Pong3DGameSettings }  from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class GameSettingsUI
 {
@@ -74,7 +75,7 @@ export class GameSettingsUI
     // Back to menu from forfeit
     document.getElementById('back-to-menu-from-forfeit')?.addEventListener('click', () =>
     {
-      console.log('🧹 Cleaning up session storage before returning to menu');
+      Logger.log('🧹 Cleaning up session storage before returning to menu');
       sessionStorage.removeItem('remote_game_active');
       sessionStorage.removeItem('remote_game_data');
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
@@ -128,7 +129,7 @@ export class GameSettingsUI
     {
       const themeSelector = document.getElementById(this.mode === 'local' ? 'game-theme' : `${prefix}theme`) as HTMLSelectElement;
       selectedTheme = themeSelector?.value || 'classic';
-      console.log('🎨 Using selected theme from UI:', selectedTheme, 'from selector:', themeSelector?.id);
+      Logger.log('🎨 Using selected theme from UI:', selectedTheme, 'from selector:', themeSelector?.id);
     }
     
     return {
@@ -269,7 +270,7 @@ export class GameSettingsUI
 
     // ✅ Vérifier s'il y a une interruption de jeu en cours
     const wasInGame = sessionStorage.getItem('remote_game_active');
-    console.log('🔍 renderRemoteSettings - Checking sessionStorage:', { 
+    Logger.log('🔍 renderRemoteSettings - Checking sessionStorage:', { 
       wasInGame, 
       sessionItems: {
         remote_game_active: sessionStorage.getItem('remote_game_active'),
@@ -279,7 +280,7 @@ export class GameSettingsUI
     
     if (wasInGame === 'true')
     {
-      console.log('🚫 GamePage detected game interruption - showing forfeit modal instead of matchmaking interface');
+      Logger.log('🚫 GamePage detected game interruption - showing forfeit modal instead of matchmaking interface');
       return `
         <div class="bg-gray-800 rounded-lg p-6 text-center">
           <h3 class="text-xl mb-4 text-red-400">${i18n.t('game.remote.forfeit.title')}</h3>

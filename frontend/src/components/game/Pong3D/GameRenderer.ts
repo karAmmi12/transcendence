@@ -2,6 +2,7 @@ import * as BABYLON from '@babylonjs/core';
 import { GameThemes } from '../themes/GameThemes.js';
 import { EffectsManager } from './effects/EffectsManager.js';
 import type { ThemeConfig, MaterialConfig, GameObjects, ObjectPositions } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class GameRenderer
 {
@@ -107,10 +108,10 @@ export class GameRenderer
         baseScale.y * multiplier, // Augmenter la hauteur du paddle
         baseScale.z * multiplier  // Augmenter la profondeur du paddle
       );
-      console.log(`📏 ${player} paddle size multiplier: ${multiplier}`);
+      Logger.log(`📏 ${player} paddle size multiplier: ${multiplier}`);
     } else
     {
-      console.warn(`🚨 ${player}Paddle not found in gameObjects`);
+      Logger.warn(`🚨 ${player}Paddle not found in gameObjects`);
     }
   }
 
@@ -146,7 +147,7 @@ export class GameRenderer
     // CORRECTION: Vérifier que gameObjects existe avant de l'utiliser
     if (!this.gameObjects)
     {
-      console.warn('🚨 GameObjects not initialized yet');
+      Logger.warn('🚨 GameObjects not initialized yet');
       return;
     }
 
@@ -472,7 +473,7 @@ export class GameRenderer
     // Ingrédients décoratifs
     this.createPizzaToppings();
 
-    console.log('🍕 Pizza created at center field for Italian theme');
+    Logger.log('🍕 Pizza created at center field for Italian theme');
   }
 
   /**
@@ -813,7 +814,7 @@ export class GameRenderer
       animationGroup.play(true); // Loop
     }, randomDelay);
 
-    console.log(`🌋 Lava paddle animation created for ${paddle.name}`);
+    Logger.log(`🌋 Lava paddle animation created for ${paddle.name}`);
   }
 
   /**

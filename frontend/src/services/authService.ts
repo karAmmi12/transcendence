@@ -1,6 +1,7 @@
 import type { User, MatchHistory } from '@/types/index.js';
 import { TwoFactorRequiredError } from '@/types/index.js';
 import { userService } from './userService.js';
+import { Logger } from '@/utils/logger.js'; 
 
 /**
  * Service de gestion de l'authentification utilisateur
@@ -27,7 +28,7 @@ export class AuthService {
    * Constructeur privé pour le pattern Singleton
    */
   private constructor() {
-    console.log('AuthService baseURL:', this.baseURL);
+    Logger.log('AuthService baseURL:', this.baseURL);
   }
 
   /**
@@ -150,7 +151,7 @@ export class AuthService {
    * Initie la connexion via Google OAuth
    */
   public initiateGoogleLogin(): void {
-    console.log('Initiating Google OAuth...');
+    Logger.log('Initiating Google OAuth...');
     window.location.href = `${this.baseURL}/auth/oauth/google`;
   }
 
@@ -176,7 +177,7 @@ export class AuthService {
         credentials: 'include'
       });
     } catch (error) {
-      console.error('Logout API call failed:', error);
+      Logger.error('Logout API call failed:', error);
     }    
 
     this.currentUser = null;
@@ -213,21 +214,21 @@ export class AuthService {
         window.dispatchEvent(new CustomEvent('authStateChanged'));
         return true;
       } else if (response.status === 401) {
-        console.log('🔐 User not authenticated');
+        Logger.log('🔐 User not authenticated');
         this.currentUser = null;
         this.authChecked = true;
         return false;
       } else {
-        console.warn('⚠️ Auth check failed with status:', response.status);
+        Logger.warn('⚠️ Auth check failed with status:', response.status);
         this.currentUser = null;
         this.authChecked = true;
         return false;
       }
     } catch (error) {
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        console.warn('🌐 Network error during auth check (server might be down)');
+        Logger.warn('🌐 Network error during auth check (server might be down)');
       } else {
-        console.warn('⚠️ Auth check error:', error);
+        Logger.warn('⚠️ Auth check error:', error);
       }
       
       this.currentUser = null;
@@ -266,7 +267,7 @@ export class AuthService {
       }
       return null;
     } catch (error) {
-      console.error('Failed to fetch user profile:', error);
+      Logger.error('Failed to fetch user profile:', error);
       return null;
     }
   }
@@ -288,7 +289,7 @@ export class AuthService {
       }
       return [];
     } catch (error) {
-      console.error('Failed to fetch match history:', error);
+      Logger.error('Failed to fetch match history:', error);
       return [];
     }
   }
@@ -313,7 +314,7 @@ export class AuthService {
       
       return null;
     } catch (error) {
-      console.error('Failed to load current user:', error);
+      Logger.error('Failed to load current user:', error);
       return null;
     }
   }
@@ -324,7 +325,7 @@ export class AuthService {
    */
   public updateCurrentUser(user: User): void {
     this.currentUser = user;
-    console.log('🔄 Current user updated in authService:', user);
+    Logger.log('🔄 Current user updated in authService:', user);
   }
 }
 

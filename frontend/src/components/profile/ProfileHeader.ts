@@ -1,6 +1,7 @@
 import { User, FriendshipStatus } from '../../types/index.js';
 import { i18n } from '@/services/i18nService.js';
 import { userService } from '../../services/userService.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class ProfileHeader
 {
@@ -141,7 +142,7 @@ export class ProfileHeader
 
       document.getElementById('header-challenge-user')?.addEventListener('click', () =>
       {
-        console.log('Challenge user from header - TODO: Implement');
+        Logger.log('Challenge user from header - TODO: Implement');
       });
     }
   }

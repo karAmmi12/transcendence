@@ -1,4 +1,5 @@
 import type { GameSettings, ObjectPositions } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export interface PaddleInputs
 {
@@ -133,7 +134,7 @@ export class GamePhysics
   public applyPaddleSpeedModifier(player: 'player1' | 'player2', multiplier: number): void
   {
     this.paddleSpeedMultipliers[player] = multiplier;
-    console.log(`🏓 ${player} paddle speed multiplier: ${multiplier}`);
+    Logger.log(`🏓 ${player} paddle speed multiplier: ${multiplier}`);
   }
 
   /**

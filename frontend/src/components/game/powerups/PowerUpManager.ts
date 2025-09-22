@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import { PowerUp, PowerUpType, PowerUpConfig, ActiveEffect } from '../../../types/powerups.js';
 import { i18n } from '@services/i18nService.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class PowerUpManager
 {
@@ -78,7 +79,7 @@ export class PowerUpManager
   public enable(): void
   {
     this.enabled = true;
-    console.log('🔋 Power-ups enabled');
+    Logger.log('🔋 Power-ups enabled');
   }
 
   /**
@@ -89,7 +90,7 @@ export class PowerUpManager
     this.enabled = false;
     this.clearAllPowerUps();
     this.clearAllEffects();
-    console.log('🚫 Power-ups disabled');
+    Logger.log('🚫 Power-ups disabled');
   }
 
   /**
@@ -100,7 +101,7 @@ export class PowerUpManager
   {
     if (!this.enabled) return;
 
-    console.log('🔄 Updating PowerUpManager'); // ✅ Debug
+    Logger.log('🔄 Updating PowerUpManager'); // ✅ Debug
 
     this.spawnTimer += deltaTime;
 
@@ -142,7 +143,7 @@ export class PowerUpManager
       // ✅ Augmenter le rayon de collision pour faciliter la détection
       if (distance < 0.4)
       { // Était 0.25, maintenant 0.4
-        console.log(`🎯 Collision detected! Distance: ${distance.toFixed(3)}, PowerUp: ${powerUp.type}`);
+        Logger.log(`🎯 Collision detected! Distance: ${distance.toFixed(3)}, PowerUp: ${powerUp.type}`);
         return powerUp;
       }
     }
@@ -184,7 +185,7 @@ export class PowerUpManager
       this.removePowerUp(powerUpId);
     }, 1000);
 
-    console.log(`⚡ Activated power-up: ${config.name} for ${targetPlayer}`);
+    Logger.log(`⚡ Activated power-up: ${config.name} for ${targetPlayer}`);
   }
 
   /**
@@ -330,7 +331,7 @@ export class PowerUpManager
         localPowerUp.spawned = remotePowerUp.spawned;
         localPowerUp.lifespan = remotePowerUp.lifespan;
 
-        console.log(`🔋 Guest synced power-up ${remotePowerUp.id} at position Y: ${posY}`);
+        Logger.log(`🔋 Guest synced power-up ${remotePowerUp.id} at position Y: ${posY}`);
       }
     }
   }
@@ -440,7 +441,7 @@ export class PowerUpManager
     const config = this.configs.get(type)!;
     const id = `powerup_${Date.now()}_${Math.random()}`;
 
-    console.log(`🔧 Creating power-up of type: ${type}`); // ✅ Debug
+    Logger.log(`🔧 Creating power-up of type: ${type}`); // ✅ Debug
 
     // ✅ Créer un mesh spécifique selon le type de power-up
     let mesh: BABYLON.Mesh;
@@ -449,19 +450,19 @@ export class PowerUpManager
     {
       case PowerUpType.PADDLE_SIZE:
         mesh = this.createPaddleSizeMesh(id);
-        console.log('📏 Created paddle size mesh');
+        Logger.log('📏 Created paddle size mesh');
         break;
       case PowerUpType.REVERSE_CONTROLS:
         mesh = this.createReverseControlsMesh(id);
-        console.log('🔄 Created reverse controls mesh');
+        Logger.log('🔄 Created reverse controls mesh');
         break;
       case PowerUpType.FREEZE_OPPONENT:
         mesh = this.createFreezeMesh(id);
-        console.log('❄️ Created freeze mesh');
+        Logger.log('❄️ Created freeze mesh');
         break;
       default:
         mesh = this.createDefaultMesh(id, config.color);
-        console.log('⚪ Created default mesh for', type);
+        Logger.log('⚪ Created default mesh for', type);
     }
 
     mesh.position = new BABYLON.Vector3(position.x, position.y, position.z);
@@ -481,7 +482,7 @@ export class PowerUpManager
     };
 
     this.powerUps.set(id, powerUp);
-    console.log(`🔋 Spawned power-up: ${config.name} at`, position);
+    Logger.log(`🔋 Spawned power-up: ${config.name} at`, position);
   }
 
   // ==========================================
@@ -761,7 +762,7 @@ export class PowerUpManager
       const effect = this.activeEffects.get(id);
       if (effect)
       {
-        console.log(`⏰ Effect expired: ${effect.type} for ${effect.targetPlayer}`);
+        Logger.log(`⏰ Effect expired: ${effect.type} for ${effect.targetPlayer}`);
         this.activeEffects.delete(id);
       }
     });
@@ -817,7 +818,7 @@ export class PowerUpManager
    */
   private createPowerUpMesh(id: string, config: PowerUpConfig): PowerUp
   {
-    console.log(`🔧 Creating power-up mesh for sync: ${config.type}`);
+    Logger.log(`🔧 Creating power-up mesh for sync: ${config.type}`);
 
     let mesh: BABYLON.Mesh;
 
@@ -856,7 +857,7 @@ export class PowerUpManager
     };
 
     this.scene.addMesh(mesh);
-    console.log(`🎮 Created power-up mesh ${id} at Y: 0.3`);
+    Logger.log(`🎮 Created power-up mesh ${id} at Y: 0.3`);
 
     return powerUp;
   }

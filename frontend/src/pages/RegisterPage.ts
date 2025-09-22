@@ -11,6 +11,7 @@ import { authService } from '@services/authService';
 import { AuthPageBase } from '@components/auth/AuthPageBase';
 import { AuthFormInput } from '@components/auth/AuthFormInput';
 import { AuthSubmitButton } from '@components/auth/AuthSubmitButton';
+import { Logger } from '@/utils/logger.js';
 
 // ==========================================
 // CLASSE PRINCIPALE
@@ -165,7 +166,7 @@ export class RegisterPage extends AuthPageBase
     }
     catch (error)
     {
-      console.error('❌ Échec de l\'inscription :', error);
+      Logger.error('❌ Échec de l\'inscription :', error);
       this.errorMessage.show((error as Error).message);
       throw error;
     }
