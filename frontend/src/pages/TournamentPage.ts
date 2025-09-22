@@ -111,9 +111,6 @@ export class TournamentPage
               </div>
               <div class="text-right">
                 <div class="flex items-center gap-3">
-                  <span class="px-4 py-2 rounded-full text-sm font-medium ${this.getStatusClasses()}">
-                    ${i18n.t(`tournament.status.${this.tournament.status}`)}
-                  </span>
                   <div class="text-sm text-gray-400">
                     <div>${i18n.t('tournament.participants')}</div>
                     <div class="text-2xl font-bold text-white">${this.tournament.participants.length}/8</div>

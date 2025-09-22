@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "ft_transcendence",
-    "description": "تجربة بونغ النهائية"
+    "description": "تجربة البونغ النهائية"
   },
   "nav": {
     "home": "الرئيسية",
@@ -9,44 +9,44 @@
     "profile": "الملف الشخصي",
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
-    "register": "إنشاء حساب",
+    "register": "التسجيل",
     "selectLanguage": "اختر اللغة"
   },
   "home": {
-    "welcome": "مرحبًا بك في ft_transcendence",
-    "description": "اكتشف لعبة بونغ النهائية مع اللعب الجماعي المحلي والمسابقات عن بُعد والبطولات.",
+    "welcome": "مرحبا بك في ft_transcendence",
+    "description": "اكتشف لعبة البونغ النهائية مع اللعب المحلي متعدد اللاعبين، المنافسات عن بعد، والدورات.",
     "gameModes": {
-      "title": "اختر وضع اللعب",
+      "title": "اختر وضع اللعبة",
       "local": {
         "title": "لعبة محلية",
-        "description": "العب مع صديق على نفس الجهاز. مثالي للمباريات السريعة!",
-        "button": "العب محلياً"
+        "description": "العب مع صديق على نفس الحاسوب. مثالي للألعاب السريعة!",
+        "button": "العب محليا"
       },
       "remote": {
-        "title": "لعبة عن بُعد",
-        "description": "تحدى اللاعبين عبر الإنترنت من جميع أنحاء العالم.",
+        "title": "لعبة عبر الإنترنت",
+        "description": "تحدى اللاعبين من جميع أنحاء العالم.",
         "button": "العب عبر الإنترنت",
-        "loginRequired": "مطلوب تسجيل الدخول للعب عبر الإنترنت"
+        "loginRequired": "تسجيل الدخول مطلوب للعب عبر الإنترنت"
       },
       "tournament": {
-        "title": "بطولة",
-        "description": "شارك في البطولات المحلية وتسلق لوحة الصدارة.",
-        "button": "انضم إلى بطولة"
+        "title": "دورة",
+        "description": "أنشئ دورة لـ8 لاعبين وانظر من هو الأفضل!",
+        "button": "أنشئ دورة"
       }
     },
     "features": {
-      "title": "المميزات",
+      "title": "الميزات",
       "multiplayer": {
-        "title": "لعب جماعي في الوقت الفعلي",
+        "title": "لعب متعدد اللاعبين في الوقت الفعلي",
         "description": "العب ضد أصدقائك في الوقت الفعلي من أي مكان في العالم."
       },
       "tournaments": {
-        "title": "البطولات",
-        "description": "شارك في البطولات وتسلق لوحة الصدارة لتصبح البطل."
+        "title": "الدورات",
+        "description": "شارك في الدورات وارتقِ في التصنيف لتصبح بطلا."
       },
       "singleplayer": {
-        "title": "وضع اللاعب الواحد",
-        "description": "واجه خصوم الذكاء الاصطناعي وحسّن مهاراتك."
+        "title": "وضع فردي",
+        "description": "واجه خصوم الذكاء الاصطناعي وحسن مهاراتك."
       }
     },
     "globalStats": {
@@ -54,27 +54,27 @@
       "totalPlayers": "إجمالي اللاعبين",
       "totalGames": "الألعاب المُلعبة",
       "onlinePlayers": "متصل الآن",
-      "activeTournaments": "البطولات النشطة"
+      "activeTournaments": "الدورات النشطة"
     },
     "stats": {
       "title": "إحصائياتك",
       "wins": "الانتصارات",
       "losses": "الهزائم",
       "winRate": "معدل الفوز",
-      "rank": "الترتيب",
+      "rank": "الرتبة",
       "highestScore": "أعلى نتيجة",
       "currentStreak": "السلسلة الحالية",
       "longestStreak": "أطول سلسلة",
       "players": "اللاعبون",
       "games": "الألعاب",
-      "tournaments": "البطولات",
+      "tournaments": "الدورات",
       "online": "متصل"
     },
     "buttons": {
       "play": "ابدأ اللعب",
       "login": "تسجيل الدخول",
-      "register": "إنشاء حساب",
-      "tournaments": "البطولات"
+      "register": "التسجيل",
+      "tournaments": "الدورات"
     }
   },
   "auth": {
@@ -88,12 +88,12 @@
       "submit": "تسجيل الدخول",
       "loginButton": "تسجيل الدخول",
       "loading": "جاري تسجيل الدخول...",
-      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "forgotPassword": "نسيت كلمة المرور؟",
       "noAccount": "ليس لديك حساب؟",
-      "signUp": "إنشاء حساب",
+      "signUp": "التسجيل",
       "or": "أو",
-      "oauth42": "تسجيل الدخول بـ 42",
-      "google": "تسجيل الدخول بـ Google"
+      "oauth42": "تسجيل الدخول بـ42",
+      "google": "تسجيل الدخول بـGoogle"
     },
     "register": {
       "title": "إنشاء حساب",
@@ -104,48 +104,71 @@
       "password": "كلمة المرور",
       "passwordPlaceholder": "أنشئ كلمة مرور",
       "confirmPassword": "تأكيد كلمة المرور",
-      "confirmPasswordPlaceholder": "أعد كتابة كلمة المرور",
+      "confirmPasswordPlaceholder": "أعد كلمة مرورك",
       "registerButton": "إنشاء الحساب",
       "haveAccount": "لديك حساب بالفعل؟",
       "signIn": "تسجيل الدخول"
     },
     "twoFactor": {
       "title": "المصادقة الثنائية",
-      "description": "تم إرسال رمز التحقق إلى عنوان بريدك الإلكتروني. يرجى إدخاله أدناه.",
-      "verify": "التحقق",
-      "codeSent": "تم إرسال الرمز بالبريد الإلكتروني"
+      "description": "تم إرسال رمز تحقق إلى عنوان بريدك الإلكتروني. يرجى إدخاله أدناه.",
+      "verify": "تحقق",
+      "codeSent": "تم إرسال الرمز عبر البريد الإلكتروني"
     },
     "errors": {
       "loginFailed": "فشل تسجيل الدخول",
       "missingFields": "يرجى ملء جميع الحقول",
-      "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
-      "usernameTaken": "اسم المستخدم مُستخدم بالفعل",
-      "emailTaken": "البريد الإلكتروني مُسجل بالفعل",
+      "invalidCredentials": "اسم مستخدم أو كلمة مرور غير صحيحة",
+      "usernameTaken": "اسم المستخدم مأخوذ بالفعل",
+      "emailTaken": "البريد الإلكتروني مسجل بالفعل",
       "passwordMismatch": "كلمات المرور غير متطابقة",
       "requiredField": "هذا الحقل مطلوب",
-      "loginRequired": "يجب عليك تسجيل الدخول للوصول إلى هذه الميزة"
+      "loginRequired": "يجب أن تكون مسجلا للوصول إلى هذه الميزة"
     }
   },
   "game": {
-    "title": "ساحة بونغ",
+    "title": "ساحة البونغ",
     "lobby": {
       "title": "غرفة اللعبة",
-      "waitingForPlayer": "في انتظار الخصم...",
+      "waitingForPlayer": "في انتظار خصم...",
       "playerJoined": "انضم لاعب!",
       "startGame": "ابدأ اللعبة",
       "leaveGame": "غادر اللعبة"
     },
     "controls": {
-      "title": "تحكم اللعبة",
-      "instructions": "استخدم W/S أو مفاتيح الأسهم لتحريك مضربك",
-      "pause": "اضغط على مفتاح المسافة للإيقاف المؤقت",
-      "touch": "عناصر التحكم باللمس"
+      "title": "ضوابط اللعبة",
+      "instructions": "استخدم W/S أو الأسهم لتحريك المضرب",
+      "pause": "اضغط على SPACE للتوقف",
+      "touch": "ضوابط اللمس"
     },
     "status": {
-      "waiting": "في الانتظار",
-      "playing": "قيد اللعب",
-      "paused": "متوقف مؤقتاً",
-      "finished": "انتهت اللعبة"
+      "connecting_server": "جاري الاتصال بالخادم...",
+      "connected": "متصل بالخادم",
+      "connection_error": "خطأ في الاتصال",
+      "disconnected": "مفصول عن الخادم",
+      "searching_opponent": "البحث عن خصم...",
+      "opponent_found": "تم العثور على خصم!",
+      "waiting_opponent": "في انتظار الخصم...",
+      "starting_local": "بدء اللعبة المحلية...",
+      "opponent_disconnected": "الخصم مفصول",
+      "forfeit_victory": "انتصار بالانسحاب: {statusMessage}",
+      "paused": "اللعبة متوقفة",
+      "resumed": "اللعبة مُستأنفة",
+      "go": "ابدأ!",
+      "starting_in": "البدء خلال {count}...",
+      "starting_as_host": "البدء كمضيف",
+      "starting_as_guest": "البدء كضيف",
+      "connected_as_guest": "متصل كضيف - تم استلام الإعدادات!",
+      "connected_as_host": "متصل كمضيف - أنت تضبط الإعدادات!",
+      "waiting_for_host": "في انتظار إعدادات المضيف...",
+      "received_host_settings": "تم استلام إعدادات المضيف",
+      "applying_settings": "تطبيق الإعدادات...",
+      "settings_applied": "تم تطبيق الإعدادات",
+      "game_starting": "اللعبة تبدأ قريبا...",
+      "game_ended": "انتهت اللعبة",
+      "game_over": "انتهت اللعبة",
+      "signaling_connected": "الإشارة متصلة",
+      "signaling_disconnected": "الإشارة مفصولة"
     },
     "score": {
       "you": "أنت",
@@ -156,8 +179,8 @@
     },
     "modes": {
       "local": "محلي",
-      "remote": "عن بُعد",
-      "tournament": "بطولة"
+      "remote": "عبر الإنترنت",
+      "tournament": "دورة"
     },
     "speeds": {
       "slow": "بطيء",
@@ -167,58 +190,99 @@
     "themes": {
       "classic": "كلاسيكي",
       "neon": "نيون",
-      "retro": "رترو",
+      "retro": "ريترو",
       "cyberpunk": "سايبربانك",
-      "space": "فضائي",
+      "space": "فضاء",
       "italian": "إيطالي",
       "matrix": "ماتريكس",
-      "lava": "حمم"
+      "lava": "لافا"
     },
     "remote": {
       "yourProfile": "ملفك الشخصي",
-      "speedNote": "ملاحظة: قد تتأثر سرعة الكرة بزمن استجابة الشبكة.",
-      "powerUpsNote": "يجب على كلا اللاعبين الاتفاق على إعدادات القوى الإضافية",
-      "findOpponent": "العثور على خصم"
+      "speedNote": "ملاحظة: قد تتأثر سرعة الكرة بتأخير الشبكة.",
+      "powerUpsNote": "يجب أن يتفق كلا اللاعبين على إعدادات Power-ups",
+      "findOpponent": "ابحث عن خصم",
+      "hostSettings": {
+        "title": "إعدادات المضيف",
+        "description": "كمضيف، أنت تضبط معلمات اللعبة"
+      },
+      "forfeit": {
+        "title": "الهزيمة بالانفصال",
+        "message": "لقد غادرت اللعبة",
+        "opponentWins": "خصمك يفوز بالانسحاب"
+      },
+      "howItWorks": {
+        "title": "كيف يعمل؟",
+        "host": {
+          "title": "كمضيف",
+          "description": "سيتم تطبيق إعدادات لعبتك للمباراة"
+        },
+        "guest": {
+          "title": "كضيف",
+          "description": "ستتلقى إعدادات المضيف تلقائيا"
+        },
+        "theme": {
+          "title": "موضوع شخصي",
+          "description": "يبقى موضوعك البصري خاصا بك في جميع الحالات"
+        }
+      }
     },
     "customization": {
       "title": "إعدادات اللعبة",
       "ballSpeed": "سرعة الكرة",
       "paddleSpeed": "سرعة المضرب",
-      "powerUps": "القوى الإضافية",
+      "powerUps": "Power-ups",
       "gameMode": "وضع اللعبة",
-      "theme": "المظهر",
+      "theme": "الموضوع",
       "difficulty": "الصعوبة",
-      "resetToDefault": "إعادة تعيين افتراضي",
+      "resetToDefault": "إعادة التعيين إلى الافتراضي",
       "applySettings": "تطبيق الإعدادات",
-      "userTheme": "مظهر المستخدم",
-      "guestTheme": "كضيف، يمكنك اختيار مظهر لهذه الجلسة",
-      "changeInProfile": "تغيير المظهر في ملفك الشخصي",
-      "willUseTheme": "سيستخدم هذا المظهر",
-      "tournamentTheme": "مظهر البطولة",
-      "enablePowerUps": "تفعيل القوى الإضافية"
+      "userTheme": "موضوع المستخدم",
+      "guestTheme": "كضيف، يمكنك اختيار موضوع لهذه الجلسة",
+      "changeInProfile": "غير الموضوع في ملفك الشخصي",
+      "willUseTheme": "سيستخدم هذا الموضوع",
+      "tournamentTheme": "موضوع الدورة",
+      "enablePowerUps": "تفعيل Power-ups"
+    },
+    "endScreen": {
+      "title": "نهاية اللعبة",
+      "winnerText": " فاز باللعبة",
+      "finalScore": "النتيجة النهائية",
+      "stats": {
+        "duration": "مدة اللعبة",
+        "totalPoints": "إجمالي النقاط",
+        "winCondition": "شرط الفوز",
+        "mode": "وضع اللعبة"
+      },
+      "actions": {
+        "playAgain": "العب مرة أخرى",
+        "backToMenu": "العودة إلى القائمة",
+        "findNewOpponent": "ابحث عن خصم جديد",
+        "tournamentContinue": "استمر في الدورة",
+        "viewStats": "عرض الإحصائيات"
+      }
     }
   },
   "tournament": {
-    "title": "البطولة",
+    "title": "دورة",
     "create": {
-      "title": "إنشاء بطولة",
-      "youAreIncluded": "أنت مُدرج تلقائياً في البطولة!",
+      "title": "إنشاء دورة",
+      "youAreIncluded": "أنت مشمول تلقائيا في الدورة!",
       "enterOtherParticipants": "أدخل أسماء {count} المشاركين الآخرين:",
-      "enterAllParticipants": "أدخل أسماء جميع {count} المشاركين:",
       "participantPlaceholder": "اسم المشارك {number}",
       "confirmed": "مؤكد",
-      "createTournament": "إنشاء البطولة"
+      "createTournament": "إنشاء الدورة"
     },
-    "join": "انضم إلى البطولة",
+    "join": "انضم إلى الدورة",
     "waiting": "في انتظار اللاعبين",
-    "inProgress": "البطولة قيد التقدم",
-    "finished": "انتهت البطولة",
+    "inProgress": "الدورة جارية",
+    "finished": "انتهت الدورة",
     "bracket": {
-      "title": "جدول البطولة"
+      "title": "جدول الدورة"
     },
     "legend": {
       "pending": "معلق",
-      "inProgress": "قيد التقدم",
+      "inProgress": "جاري",
       "completed": "مكتمل"
     },
     "rounds": {
@@ -228,50 +292,43 @@
     },
     "currentMatch": "المباراة الحالية",
     "nextMatch": "المباراة التالية",
-    "winner": "بطل البطولة",
-    "player1": "اللاعب 1",
-    "player2": "اللاعب 2",
-    "startMatch": "ابدأ المباراة",
-    "round": "الجولة",
-    "finals": "النهائي",
-    "semifinals": "نصف النهائي",
-    "quarterfinals": "ربع النهائي",
-    "players": "اللاعبون",
+    "winner": "فائز الدورة",
     "participants": "المشاركون",
-    "participantsCount": "مشاركون",
-    "participantsNote": "عدد اللاعبين في البطولة",
+    "participantsCount": "مشاركين",
+    "participantsNote": "عدد اللاعبين في الدورة",
     "matchNumber": "المباراة {number}",
     "vs": "ضد",
     "waitingForMatch": "في انتظار بدء المباراة",
-    "matchInProgress": "المباراة قيد التقدم",
+    "matchInProgress": "المباراة جارية",
     "matchCompleted": "انتهت المباراة",
     "yourParticipation": "مشاركتك",
-    "authenticatedPlayer": "لاعب مسجل",
+    "authenticatedPlayer": "لاعب مصادق",
     "guestMode": "وضع الضيف",
-    "guestModeDescription": "أنت تنشئ بطولة كضيف. ستُحفظ البطولات مؤقتاً فقط.",
-    "winScoreNote": "النقاط المطلوبة للفوز في كل مباراة",
-    "powerUpsNote": "تفعيل القوى الإضافية لجميع مباريات البطولة",
+    "guestModeDescription": "أنت تنشئ دورة كضيف. ستُخزن الدورات مؤقتا.",
+    "winScore": "نتيجة الفوز",
+    "winScoreNote": "النقاط المطلوبة للفوز بكل مباراة",
+    "powerUpsNote": "تفعيل Power-ups لجميع مباريات الدورة",
     "howItWorks": "كيف يعمل",
-    "step1": "إنشاء بطولة بالإعدادات المرغوبة",
-    "step2": "سيتم إنتاج جدول البطولة تلقائياً",
-    "step3": "العب المباريات جولة بجولة حتى النهائي",
-    "step4": "سيتم تتويج الفائز بطلاً!",
+    "step1": "أنشئ دورة بالإعدادات المرغوبة",
+    "step2": "سيتم إنشاء جدول الدورة تلقائيا",
+    "step3": "العب المباريات جولة بعد جولة حتى النهائي",
+    "step4": "سيتم تتويج الفائز بطلا!",
     "status": {
       "waiting": "في انتظار اللاعبين",
-      "inProgress": "قيد التقدم",
-      "finished": "منتهية"
+      "inProgress": "جاري",
+      "finished": "انتهى"
     }
   },
   "profile": {
     "title": "الملف الشخصي",
     "actions": {
-      "title": "إجراءات سريعة",
+      "title": "الإجراءات السريعة",
       "editProfile": "تعديل الملف الشخصي",
       "changePassword": "تغيير كلمة المرور",
       "changeAvatar": "تغيير الصورة الرمزية",
       "logout": "تسجيل الخروج",
-      "toggle2FA": "تشغيل/إيقاف 2FA",
-      "addFriend": "إضافة كصديق",
+      "toggle2FA": "تبديل 2FA",
+      "addFriend": "إضافة صديق",
       "removeFriend": "إزالة الصديق",
       "challenge": "تحدي"
     },
@@ -281,25 +338,25 @@
       "losses": "الهزائم",
       "totalGames": "إجمالي الألعاب",
       "gamesPlayed": "الألعاب المُلعبة",
-      "gamesWon": "الألعاب المكسوبة",
+      "gamesWon": "الألعاب المفوزة",
       "winRate": "معدل الفوز",
-      "ranking": "الترتيب",
-      "rank": "الترتيب",
+      "ranking": "التصنيف",
+      "rank": "الرتبة",
       "highestScore": "أعلى نتيجة",
       "averageScore": "متوسط النتيجة",
       "currentStreak": "السلسلة الحالية",
       "longestStreak": "أطول سلسلة",
       "playtime": "إجمالي وقت اللعب",
-      "lastPlayed": "آخر لعبة"
+      "lastPlayed": "آخر لعب"
     },
     "history": {
       "title": "تاريخ المباريات",
-      "noGames": "لم يتم لعب أي مباريات بعد",
+      "noGames": "لم يتم لعب أي ألعاب بعد",
       "noGamesDesc": "ابدأ اللعب لرؤية تاريخك هنا",
-      "playFirstGame": "العب مباريتك الأولى",
-      "viewAll": "عرض كامل التاريخ",
+      "playFirstGame": "العب لعبتك الأولى",
+      "viewAll": "عرض الكل",
       "viewDetails": "عرض التفاصيل",
-      "noMatchesFilter": "لم يتم العثور على مباريات لهذا المرشح",
+      "noMatchesFilter": "لم يتم العثور على مباريات لهذا الفلتر",
       "result": {
         "win": "فوز",
         "loss": "هزيمة"
@@ -309,11 +366,11 @@
         "wins": "الانتصارات",
         "losses": "الهزائم",
         "local": "محلي",
-        "remote": "عن بُعد",
-        "tournament": "بطولة"
+        "remote": "عبر الإنترنت",
+        "tournament": "دورة"
       },
       "stats": {
-        "totalGames": "المجموع",
+        "totalGames": "الإجمالي",
         "winRate": "معدل الفوز",
         "recent": "حديث"
       }
@@ -321,12 +378,12 @@
     "friends": {
       "title": "الأصدقاء",
       "manage": "إدارة الأصدقاء",
-      "noFriends": "لا يوجد أصدقاء حتى الآن",
+      "noFriends": "لا أصدقاء بعد",
       "findFriends": "البحث عن أصدقاء",
       "viewAll": "عرض الكل",
       "online": "متصل",
       "offline": "غير متصل",
-      "justOffline": "انقطع للتو",
+      "justOffline": "انفصل للتو",
       "minsAgo": "منذ {mins} دقيقة",
       "hoursAgo": "منذ {hours} ساعة",
       "daysAgo": "منذ {days} يوم",
@@ -341,96 +398,96 @@
       "email": "البريد الإلكتروني",
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
       "avatar": "الصورة الرمزية",
-      "selectImage": "اختيار صورة",
+      "selectImage": "اختر صورة",
       "changeAvatarHint": "انقر لتغيير صورتك الرمزية",
       "save": "حفظ التغييرات",
       "cancel": "إلغاء",
-      "uploading": "جاري الرفع...",
+      "uploading": "جاري التحميل...",
       "errors": {
-        "updateFailed": "فشل في تحديث الملف الشخصي",
-        "invalidImage": "صيغة صورة غير صالحة",
-        "invalidImageType": "صيغة صورة غير صالحة",
-        "imageTooLarge": "الصورة كبيرة جداً",
-        "avatarTooLarge": "الصورة كبيرة جداً (الحد الأقصى 5 ميجابايت)",
-        "usernameTooShort": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
-        "usernameTooLong": "يجب أن يكون اسم المستخدم أقل من 20 حرفاً",
-        "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح"
+        "updateFailed": "فشل تحديث الملف الشخصي",
+        "invalidImage": "تنسيق صورة غير صحيح",
+        "invalidImageType": "تنسيق صورة غير صحيح",
+        "imageTooLarge": "الصورة كبيرة جدا",
+        "avatarTooLarge": "الصورة كبيرة جدا (الحد الأقصى 5 ميغابايت)",
+        "usernameTooShort": "يجب أن يحتوي اسم المستخدم على 3 أحرف على الأقل",
+        "usernameTooLong": "يجب أن يحتوي اسم المستخدم على أقل من 20 حرفا",
+        "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح"
       }
     },
     "changePassword": {
       "title": "تغيير كلمة المرور",
       "currentPassword": "كلمة المرور الحالية",
-      "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية",
+      "currentPasswordPlaceholder": "أدخل كلمة مرورك الحالية",
       "newPassword": "كلمة المرور الجديدة",
-      "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+      "newPasswordPlaceholder": "أدخل كلمة مرورك الجديدة",
       "confirmPassword": "تأكيد كلمة المرور الجديدة",
-      "confirmPasswordPlaceholder": "أكد كلمة المرور الجديدة",
+      "confirmPasswordPlaceholder": "أعد كلمة مرورك الجديدة",
       "save": "تغيير كلمة المرور",
       "cancel": "إلغاء",
       "saving": "جاري التغيير...",
       "success": "تم تغيير كلمة المرور بنجاح!",
-      "error": "فشل في تغيير كلمة المرور",
+      "error": "فشل تغيير كلمة المرور",
       "validation": {
         "required": "هذا الحقل مطلوب",
         "minLength": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
         "mismatch": "كلمات المرور غير متطابقة",
-        "weak": "كلمة المرور ضعيفة جداً"
+        "weak": "كلمة المرور ضعيفة جدا"
       }
     },
     "twoFactor": {
       "title": "المصادقة الثنائية",
-      "description": "أمّن حسابك بالمصادقة الثنائية",
+      "description": "أمن حسابك بالمصادقة الثنائية",
       "enable": "تفعيل 2FA",
-      "disable": "إيقاف 2FA",
+      "disable": "تعطيل 2FA",
       "enterCode": "أدخل رمز التحقق",
-      "codePlaceholder": "رمز مكون من 6 أرقام",
-      "verify": "التحقق",
+      "codePlaceholder": "رمز من 6 أرقام",
+      "verify": "تحقق",
       "cancel": "إلغاء",
       "modal": {
         "enableTitle": "تفعيل المصادقة الثنائية",
-        "enableDescription": "تم إرسال رمز التحقق إلى بريدك الإلكتروني. يرجى إدخاله أدناه لتفعيل 2FA.",
+        "enableDescription": "تم إرسال رمز تحقق إلى بريدك الإلكتروني. أدخله أدناه لتفعيل 2FA.",
         "enableButton": "تفعيل 2FA",
-        "disableTitle": "إيقاف المصادقة الثنائية",
-        "disableDescription": "يرجى إدخال رمز التحقق لإيقاف 2FA.",
-        "disableButton": "إيقاف 2FA",
+        "disableTitle": "تعطيل المصادقة الثنائية",
+        "disableDescription": "أدخل رمز التحقق لتعطيل 2FA.",
+        "disableButton": "تعطيل 2FA",
         "codeLabel": "رمز التحقق"
       },
       "messages": {
         "enabled": "تم تفعيل 2FA بنجاح!",
-        "disabled": "تم إيقاف 2FA بنجاح!",
+        "disabled": "تم تعطيل 2FA بنجاح!",
         "codeSent": "تم إرسال رمز التحقق إلى بريدك الإلكتروني",
-        "invalidCode": "رمز التحقق غير صالح",
+        "invalidCode": "رمز التحقق غير صحيح",
         "error": "فشلت عملية 2FA"
       }
     },
     "themes": {
-      "title": "مظهر اللعبة",
-      "description": "اختر مظهر اللعبة المفضل لديك",
-      "select": "اختر مظهر اللعبة المفضل لديك",
-      "manageThemes": "إدارة المظاهر",
-      "currentTheme": "المظهر الحالي:",
+      "title": "موضوع اللعبة",
+      "description": "اختر موضوع لعبتك المفضل",
+      "select": "اختر موضوع لعبتك المفضل",
+      "manageThemes": "إدارة المواضيع",
+      "currentTheme": "الموضوع الحالي:",
       "current": "حالي",
-      "saveTheme": "حفظ المظهر",
+      "saveTheme": "حفظ الموضوع",
       "messages": {
-        "saved": "تم حفظ المظهر بنجاح!"
+        "saved": "تم حفظ الموضوع بنجاح!"
       },
       "errors": {
-        "saveFailed": "فشل في حفظ المظهر"
+        "saveFailed": "فشل حفظ الموضوع"
       }
     },
     "lastLogin": "آخر تسجيل دخول",
     "googleAccount": "حساب Google",
     "errors": {
       "userNotFound": "المستخدم غير موجود",
-      "loadFailed": "فشل في تحميل الملف الشخصي",
-      "unauthorized": "ليس لديك إذن لعرض هذا الملف الشخصي",
-      "networkError": "خطأ في الشبكة. يرجى المحاولة مرة أخرى.",
-      "changePasswordFailed": "فشل في تغيير كلمة المرور"
+      "loadFailed": "فشل تحميل الملف الشخصي",
+      "unauthorized": "ليس لديك إذن لرؤية هذا الملف الشخصي",
+      "networkError": "خطأ في الشبكة. حاول مرة أخرى.",
+      "changePasswordFailed": "فشل تغيير كلمة المرور"
     },
     "settings": {
       "title": "الإعدادات",
       "language": "اللغة",
-      "theme": "المظهر",
+      "theme": "الموضوع",
       "notifications": "الإشعارات",
       "privacy": "الخصوصية",
       "security": "الأمان"
@@ -440,16 +497,16 @@
     "title": "إدارة الأصدقاء",
     "search": {
       "title": "البحث عن أصدقاء",
-      "placeholder": "البحث عن مستخدمين...",
+      "placeholder": "البحث عن المستخدمين...",
       "noResults": "لم يتم العثور على مستخدمين",
       "searchInstructions": "أدخل حرفين على الأقل للبحث"
     },
     "requests": {
       "title": "طلبات الصداقة",
-      "noPending": "لا توجد طلبات معلقة",
+      "noPending": "لا طلبات معلقة",
       "sentRequest": "أرسل لك طلب صداقة",
-      "received": "المستلمة",
-      "sent": "المُرسلة"
+      "received": "مستلمة",
+      "sent": "مرسلة"
     },
     "actions": {
       "addFriend": "إضافة كصديق",
@@ -470,16 +527,16 @@
       "requestAccepted": "تم قبول طلب الصداقة!",
       "requestDeclined": "تم رفض طلب الصداقة",
       "friendRemoved": "تم إزالة الصديق",
-      "friendAdded": "تمت إضافة الصديق بنجاح!",
-      "actionFailed": "فشلت العملية. يرجى المحاولة مرة أخرى.",
+      "friendAdded": "تم إضافة الصديق بنجاح!",
+      "actionFailed": "فشل الإجراء. حاول مرة أخرى.",
       "userNotFound": "المستخدم غير موجود",
-      "alreadyFriends": "أنت صديق بالفعل لهذا المستخدم",
-      "cannotAddSelf": "لا يمكنك إضافة نفسك كصديق",
-      "searchFailed": "فشل البحث. يرجى المحاولة مرة أخرى."
+      "alreadyFriends": "أنت صديق بالفعل مع هذا المستخدم",
+      "cannotAddSelf": "لا يمكنك إضافتك كصديق",
+      "searchFailed": "فشل البحث. حاول مرة أخرى."
     },
     "confirmations": {
-      "removeFriend": "هل أنت متأكد من أنك تريد إزالة هذا الصديق؟",
-      "declineRequest": "هل أنت متأكد من أنك تريد رفض طلب الصداقة هذا؟"
+      "removeFriend": "هل أنت متأكد من رغبتك في إزالة هذا الصديق؟",
+      "declineRequest": "هل أنت متأكد من رغبتك في رفض طلب الصداقة هذا؟"
     }
   },
   "settings": {
@@ -490,22 +547,25 @@
     "general": {
       "title": "الإعدادات العامة",
       "language": "اللغة",
-      "theme": "المظهر",
+      "theme": "الموضوع",
+      "notifications": "الإشعارات",
+      "privacy": "الخصوصية",
+      "security": "الأمان",
       "timezone": "المنطقة الزمنية"
     },
     "notifications": {
       "title": "الإشعارات",
       "email": "إشعارات البريد الإلكتروني",
-      "push": "الإشعارات الفورية",
-      "gameInvites": "دعوات اللعبة",
+      "push": "إشعارات الدفع",
+      "gameInvites": "دعوات اللعب",
       "friendRequests": "طلبات الصداقة",
       "messages": "الرسائل"
     },
     "privacy": {
       "title": "إعدادات الخصوصية",
       "profileVisibility": "رؤية الملف الشخصي",
-      "onlineStatus": "عرض الحالة عبر الإنترنت",
-      "gameHistory": "عرض تاريخ الألعاب"
+      "onlineStatus": "إظهار الحالة عبر الإنترنت",
+      "gameHistory": "إظهار تاريخ الألعاب"
     },
     "account": {
       "title": "الحساب",
@@ -517,13 +577,13 @@
   "modals": {
     "confirm": {
       "title": "تأكيد الإجراء",
-      "message": "هل أنت متأكد من أنك تريد المتابعة؟",
+      "message": "هل أنت متأكد من رغبتك في المتابعة؟",
       "confirm": "تأكيد",
       "cancel": "إلغاء"
     },
     "error": {
       "title": "خطأ",
-      "genericMessage": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "genericMessage": "حدث خطأ. حاول مرة أخرى.",
       "close": "إغلاق"
     },
     "success": {
@@ -531,27 +591,27 @@
       "close": "إغلاق"
     },
     "gameEnd": {
-      "title": "انتهاء اللعبة",
+      "title": "نهاية اللعبة",
       "winner": "الفائز",
       "finalScore": "النتيجة النهائية",
       "duration": "المدة",
       "playAgain": "العب مرة أخرى",
       "backToMenu": "العودة إلى القائمة",
-      "tournamentContinue": "متابعة البطولة"
+      "tournamentContinue": "استمر في الدورة"
     }
   },
   "forms": {
     "validation": {
       "required": "هذا الحقل مطلوب",
-      "email": "يرجى إدخال عنوان بريد إلكتروني صالح",
+      "email": "يرجى إدخال عنوان بريد إلكتروني صحيح",
       "minLength": "يجب أن يحتوي على {min} أحرف على الأقل",
-      "maxLength": "يجب ألا يزيد عن {max} أحرف",
+      "maxLength": "يجب ألا يتجاوز {max} حرفا",
       "password": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
       "confirmPassword": "يجب أن تتطابق كلمات المرور",
-      "username": "يجب أن يكون اسم المستخدم بين 3 و 20 حرفاً ويحتوي فقط على أحرف وأرقام وشرطات سفلية"
+      "username": "يجب أن يحتوي اسم المستخدم على 3 إلى 20 حرفا وأحرف وأرقام وشرطات سفلية فقط"
     },
     "placeholders": {
-      "search": "بحث...",
+      "search": "البحث...",
       "email": "أدخل بريدك الإلكتروني",
       "username": "أدخل اسم المستخدم",
       "password": "أدخل كلمة المرور",
@@ -561,17 +621,17 @@
   "time": {
     "now": "الآن",
     "justNow": "الآن",
-    "minuteAgo": "منذ دقيقة",
+    "minuteAgo": "منذ دقيقة واحدة",
     "minutesAgo": "منذ {minutes} دقيقة",
-    "hourAgo": "منذ ساعة",
+    "hourAgo": "منذ ساعة واحدة",
     "hoursAgo": "منذ {hours} ساعة",
-    "dayAgo": "منذ يوم",
+    "dayAgo": "منذ يوم واحد",
     "daysAgo": "منذ {days} يوم",
-    "weekAgo": "منذ أسبوع",
+    "weekAgo": "منذ أسبوع واحد",
     "weeksAgo": "منذ {weeks} أسبوع",
-    "monthAgo": "منذ شهر",
+    "monthAgo": "منذ شهر واحد",
     "monthsAgo": "منذ {months} شهر",
-    "yearAgo": "منذ سنة",
+    "yearAgo": "منذ سنة واحدة",
     "yearsAgo": "منذ {years} سنة"
   },
   "common": {
@@ -579,21 +639,21 @@
     "error": "خطأ",
     "success": "نجاح",
     "warning": "تحذير",
-    "info": "معلومة",
+    "info": "معلومات",
     "cancel": "إلغاء",
     "confirm": "تأكيد",
     "save": "حفظ",
     "delete": "حذف",
     "edit": "تعديل",
     "close": "إغلاق",
-    "back": "رجوع",
+    "backToMenu": "العودة إلى القائمة",
     "next": "التالي",
     "previous": "السابق",
     "submit": "إرسال",
     "reset": "إعادة تعيين",
     "clear": "مسح",
-    "search": "بحث",
-    "filter": "تصفية",
+    "search": "البحث",
+    "filter": "فلتر",
     "sort": "ترتيب",
     "refresh": "تحديث",
     "retry": "إعادة المحاولة",
@@ -602,20 +662,20 @@
     "ok": "موافق",
     "today": "اليوم",
     "yesterday": "أمس",
-    "tomorrow": "غداً",
-    "daysAgo": "منذ {days} أيام",
+    "tomorrow": "غدا",
+    "daysAgo": "منذ {days} يوم",
     "online": "متصل",
     "offline": "غير متصل",
     "connecting": "جاري الاتصال...",
     "connected": "متصل",
-    "disconnected": "غير متصل",
+    "disconnected": "مفصول",
     "tryAgain": "حاول مرة أخرى",
-    "goBack": "رجوع",
-    "seeMore": "عرض المزيد",
-    "showLess": "عرض أقل",
+    "goBack": "العودة",
+    "seeMore": "رؤية المزيد",
+    "showLess": "رؤية أقل",
     "expand": "توسيع",
     "collapse": "طي",
-    "pause": "إيقاف مؤقت",
+    "pause": "إيقاف",
     "resume": "استئناف",
     "time": "الوقت",
     "status": "الحالة",
@@ -628,9 +688,9 @@
     "slow": "بطيء",
     "fast": "سريع",
     "modeSelection": "اختيار الوضع",
-    "chooseModeDescription": "اختر كيف تريد أن تلعب",
+    "chooseModeDescription": "اختر كيف تريد اللعب",
     "changeMode": "تغيير الوضع",
-    "confirmQuitGame": "هل أنت متأكد من أنك تريد الخروج من اللعبة؟",
+    "confirmQuitGame": "هل أنت متأكد من رغبتك في مغادرة اللعبة؟",
     "canvasNotSupported": "متصفحك لا يدعم عنصر HTML5 Canvas.",
     "saving": "جاري الحفظ..."
   },
@@ -645,22 +705,32 @@
     "sg": "Sängö"
   },
   "footer": {
-    "description": "تجربة بونغ النهائية. العب، تنافس، وتواصل مع المجتمع.",
+    "description": "تجربة البونغ النهائية. العب، تنافس، وتواصل مع المجتمع.",
     "allRightsReserved": "جميع الحقوق محفوظة.",
     "navigation": {
       "title": "التنقل",
-      "tournaments": "البطولات",
+      "tournaments": "الدورات",
       "leaderboard": "لوحة الصدارة"
     },
     "support": {
       "title": "الدعم",
-      "help": "مساعدة",
+      "help": "المساعدة",
       "faq": "الأسئلة الشائعة",
-      "contact": "اتصل",
+      "contact": "الاتصال",
       "rules": "القواعد"
     },
     "social": {
-      "title": "الشبكات الاجتماعية"
+      "title": "اجتماعي"
+    }
+  },
+  "error": {
+    "404": {
+      "title": "الصفحة غير موجودة",
+      "message": "عذرا! يبدو أن الصفحة التي تبحث عنها قد اختفت في الفضاء.",
+      "suggestions": {
+        "title": "أين تريد الذهاب؟"
+      },
+      "help": "إذا كنت تعتقد أن هذا خطأ، يرجى التحقق من الرابط أو العودة إلى الصفحة الرئيسية."
     }
   }
 }
