@@ -1,10 +1,23 @@
 import * as BABYLON from '@babylonjs/core';
 import type { ThemeConfig } from '@/types/index.js';
 
-export class GameThemes {
+export class GameThemes
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES STATIQUES
+  // ==========================================
+
   private static themes: Map<string, ThemeConfig> = new Map();
 
-  static initialize(): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES STATIQUES
+  // ==========================================
+
+  /**
+   * Initialise tous les thèmes disponibles
+   */
+  static initialize(): void
+  {
     this.themes.set('classic', this.createClassicTheme());
     this.themes.set('neon', this.createNeonTheme());
     this.themes.set('retro', this.createRetroTheme());
@@ -15,15 +28,38 @@ export class GameThemes {
     this.themes.set('lava', this.createLavaTheme());
   }
 
-  static getTheme(id: string): ThemeConfig | null {
+  /**
+   * Récupère un thème par son identifiant
+   * @param id Identifiant du thème
+   * @returns Configuration du thème ou null si non trouvé
+   */
+  static getTheme(id: string): ThemeConfig | null
+  {
     return this.themes.get(id) || null;
   }
 
-  static getAllThemes(): ThemeConfig[] {
+  /**
+   * Récupère tous les thèmes disponibles
+   * @returns Liste de tous les thèmes
+   */
+  static getAllThemes(): ThemeConfig[]
+  {
     return Array.from(this.themes.values());
   }
 
-  private static createClassicTheme(): ThemeConfig {
+  // ==========================================
+  // MÉTHODES PRIVÉES DE CRÉATION DES THÈMES
+  // ==========================================
+
+  // ==========================================
+  // THÈMES CLASSIQUES ET SIMPLES
+  // ==========================================
+
+  /**
+   * Crée le thème classique Pong
+   */
+  private static createClassicTheme(): ThemeConfig
+  {
     return {
       id: 'classic',
       name: 'Classic',
@@ -78,7 +114,15 @@ export class GameThemes {
     };
   }
 
-  private static createNeonTheme(): ThemeConfig {
+  // ==========================================
+  // THÈMES FUTURISTES ET LUMINEUX
+  // ==========================================
+
+  /**
+   * Crée le thème néon futuriste
+   */
+  private static createNeonTheme(): ThemeConfig
+  {
     return {
       id: 'neon',
       name: 'Neon',
@@ -133,7 +177,11 @@ export class GameThemes {
     };
   }
 
-  private static createRetroTheme(): ThemeConfig {
+  /**
+   * Crée le thème rétro arcade
+   */
+  private static createRetroTheme(): ThemeConfig
+  {
     return {
       id: 'retro',
       name: 'Retro',
@@ -187,7 +235,15 @@ export class GameThemes {
     };
   }
 
-  private static createCyberpunkTheme(): ThemeConfig {
+  // ==========================================
+  // THÈMES TECHNIQUES ET SOMBRES
+  // ==========================================
+
+  /**
+   * Crée le thème cyberpunk technologique
+   */
+  private static createCyberpunkTheme(): ThemeConfig
+  {
     return {
       id: 'cyberpunk',
       name: 'Cyberpunk',
@@ -244,7 +300,79 @@ export class GameThemes {
     };
   }
 
-  private static createSpaceTheme(): ThemeConfig {
+  /**
+   * Crée le thème Matrix avec code vert
+   */
+  private static createMatrixTheme(): ThemeConfig
+  {
+    return {
+      id: 'matrix',
+      name: 'Matrix Code',
+      description: 'Monde digital avec code vert et effets de glitch',
+      colors: {
+        field: new BABYLON.Color3(0.02, 0.02, 0.02),
+        ball: new BABYLON.Color3(0, 1, 0.2),
+        player1Paddle: new BABYLON.Color3(0, 0.8, 0),
+        player2Paddle: new BABYLON.Color3(0, 0.8, 0),
+        borders: new BABYLON.Color3(0, 1, 0.3),
+        centerLine: new BABYLON.Color3(0, 0.6, 0),
+        background: new BABYLON.Color4(0.01, 0.01, 0.01, 1)
+      },
+      materials: {
+        field: {
+          type: 'standard',
+          properties: {
+            diffuseColor: new BABYLON.Color3(0.02, 0.02, 0.02),
+            emissiveColor: new BABYLON.Color3(0, 0.1, 0),
+            transparency: 0.7
+          }
+        },
+        ball: {
+          type: 'emissive',
+          properties: {
+            emissiveColor: new BABYLON.Color3(0, 1, 0.2),
+            diffuseColor: new BABYLON.Color3(0, 0.5, 0.1)
+          }
+        },
+        paddles: {
+          type: 'emissive',
+          properties: {
+            emissiveColor: new BABYLON.Color3(0, 0.8, 0),
+            diffuseColor: new BABYLON.Color3(0, 0.4, 0)
+          }
+        },
+        borders: {
+          type: 'emissive',
+          properties: {
+            emissiveColor: new BABYLON.Color3(0, 1, 0.3)
+          }
+        }
+      },
+      lighting: {
+        ambient: 0.2,
+        directional: 0.3,
+        shadowsEnabled: false
+      },
+      effects: {
+        ballTrail: true,
+        particles: false,
+        glow: true,
+        matrixRain: true,
+        glitch: true,
+        fieldAnimation: true
+      }
+    };
+  }
+
+  // ==========================================
+  // THÈMES SPÉCIALISÉS ET THÉMATIQUES
+  // ==========================================
+
+  /**
+   * Crée le thème spatial avec étoiles
+   */
+  private static createSpaceTheme(): ThemeConfig
+  {
     return {
       id: 'space',
       name: 'Space',
@@ -299,44 +427,48 @@ export class GameThemes {
     };
   }
 
-  private static createItalianTheme(): ThemeConfig {
+  /**
+   * Crée le thème italien avec cuisine
+   */
+  private static createItalianTheme(): ThemeConfig
+  {
     return {
       id: 'italian',
       name: 'Cuisine Italienne',
       description: 'Ambiance de restaurant italien avec table en bois et spatules',
       colors: {
-        field: new BABYLON.Color3(0.45, 0.3, 0.2), // Table en bois plus chaleureuse
-        ball: new BABYLON.Color3(0.98, 0.95, 0.88), // Mozzarella plus réaliste
-        player1Paddle: new BABYLON.Color3(0.8, 0.6, 0.4), // Spatule en bois clair
-        player2Paddle: new BABYLON.Color3(0.7, 0.5, 0.3), // Spatule en bois foncé
-        borders: new BABYLON.Color3(0.6, 0.4, 0.25), // Bordures en bois
-        centerLine: new BABYLON.Color3(0.95, 0.92, 0.85), // Farine saupoudrée
-        background: new BABYLON.Color4(0.25, 0.18, 0.12, 1) // Ambiance restaurant
+        field: new BABYLON.Color3(0.45, 0.3, 0.2),
+        ball: new BABYLON.Color3(0.98, 0.95, 0.88),
+        player1Paddle: new BABYLON.Color3(0.8, 0.6, 0.4),
+        player2Paddle: new BABYLON.Color3(0.7, 0.5, 0.3),
+        borders: new BABYLON.Color3(0.6, 0.4, 0.25),
+        centerLine: new BABYLON.Color3(0.95, 0.92, 0.85),
+        background: new BABYLON.Color4(0.25, 0.18, 0.12, 1)
       },
       materials: {
         field: {
           type: 'standard',
           properties: {
             diffuseColor: new BABYLON.Color3(0.45, 0.3, 0.2),
-            specularColor: new BABYLON.Color3(0.3, 0.2, 0.1), // Reflet du bois
-            emissiveColor: new BABYLON.Color3(0.05, 0.03, 0.02) // Chaleur subtile
+            specularColor: new BABYLON.Color3(0.3, 0.2, 0.1),
+            emissiveColor: new BABYLON.Color3(0.05, 0.03, 0.02)
           }
         },
         ball: {
           type: 'standard',
           properties: {
             diffuseColor: new BABYLON.Color3(0.98, 0.95, 0.88),
-            specularColor: new BABYLON.Color3(0.4, 0.4, 0.35), // Brillance de la mozzarella
-            emissiveColor: new BABYLON.Color3(0.02, 0.02, 0.01), // Lueur très douce
-            transparency: 0.08 // Légère transparence pour l'effet mozzarella
+            specularColor: new BABYLON.Color3(0.4, 0.4, 0.35),
+            emissiveColor: new BABYLON.Color3(0.02, 0.02, 0.01),
+            transparency: 0.08
           }
         },
         paddles: {
           type: 'standard',
           properties: {
             diffuseColor: new BABYLON.Color3(0.75, 0.55, 0.35),
-            specularColor: new BABYLON.Color3(0.25, 0.18, 0.12), // Bois poli
-            emissiveColor: new BABYLON.Color3(0.03, 0.02, 0.01) // Chaleur du bois
+            specularColor: new BABYLON.Color3(0.25, 0.18, 0.12),
+            emissiveColor: new BABYLON.Color3(0.03, 0.02, 0.01)
           }
         },
         borders: {
@@ -349,17 +481,17 @@ export class GameThemes {
         }
       },
       lighting: {
-        ambient: 0.8, // Éclairage chaud et accueillant
-        directional: 0.7, // Lumière douce
+        ambient: 0.8,
+        directional: 0.7,
         shadowsEnabled: false
       },
       effects: {
-        ballTrail: true, // Traînée de mozzarella qui s'étire
-        particles: true, // Particules de farine et d'ingrédients
+        ballTrail: true,
+        particles: true,
         glow: false,
-        ballStretch: true, // Effet d'étirement de la mozzarella
+        ballStretch: true,
         fieldAnimation: false,
-        steamEffect: true // Vapeur de cuisine
+        steamEffect: true
       },
       textures: {
         field: 'wood_table',
@@ -369,87 +501,30 @@ export class GameThemes {
     };
   }
 
-  private static createMatrixTheme(): ThemeConfig {
-    return {
-      id: 'matrix',
-      name: 'Matrix Code',
-      description: 'Monde digital avec code vert et effets de glitch',
-      colors: {
-        field: new BABYLON.Color3(0.02, 0.02, 0.02), // Noir profond
-        ball: new BABYLON.Color3(0, 1, 0.2), // Vert Matrix
-        player1Paddle: new BABYLON.Color3(0, 0.8, 0),
-        player2Paddle: new BABYLON.Color3(0, 0.8, 0),
-        borders: new BABYLON.Color3(0, 1, 0.3),
-        centerLine: new BABYLON.Color3(0, 0.6, 0),
-        background: new BABYLON.Color4(0.01, 0.01, 0.01, 1)
-      },
-      materials: {
-        field: {
-          type: 'standard',
-          properties: {
-            diffuseColor: new BABYLON.Color3(0.02, 0.02, 0.02),
-            emissiveColor: new BABYLON.Color3(0, 0.1, 0), // Légère lueur verte
-            transparency: 0.7 // Terrain semi-transparent
-          }
-        },
-        ball: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(0, 1, 0.2),
-            diffuseColor: new BABYLON.Color3(0, 0.5, 0.1)
-          }
-        },
-        paddles: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(0, 0.8, 0),
-            diffuseColor: new BABYLON.Color3(0, 0.4, 0)
-          }
-        },
-        borders: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(0, 1, 0.3)
-          }
-        }
-      },
-      lighting: {
-        ambient: 0.2, // Éclairage minimal
-        directional: 0.3,
-        shadowsEnabled: false
-      },
-      effects: {
-        ballTrail: true,
-        particles: false,
-        glow: true,
-        matrixRain: true, // Pluie de code
-        glitch: true, // Effets de glitch subtils
-        fieldAnimation: true // Wireframe animé
-      }
-    };
-  }
-
-
-   private static createLavaTheme(): ThemeConfig {
+  /**
+   * Crée le thème volcanique avec lave
+   */
+  private static createLavaTheme(): ThemeConfig
+  {
     return {
       id: 'lava',
       name: 'Temple de Lave',
       description: 'Temple volcanique avec lave bouillonnante et particules de feu',
       colors: {
-        field: new BABYLON.Color3(0.2, 0.05, 0.02), // Pierre volcanique sombre
-        ball: new BABYLON.Color3(1, 0.3, 0), // Boule de feu
-        player1Paddle: new BABYLON.Color3(0.3, 0.15, 0.1), // Pierre volcanique
+        field: new BABYLON.Color3(0.2, 0.05, 0.02),
+        ball: new BABYLON.Color3(1, 0.3, 0),
+        player1Paddle: new BABYLON.Color3(0.3, 0.15, 0.1),
         player2Paddle: new BABYLON.Color3(0.3, 0.15, 0.1),
-        borders: new BABYLON.Color3(0.6, 0.2, 0.1), // Bordures de lave
-        centerLine: new BABYLON.Color3(1, 0.4, 0.1), // Fissure de lave
+        borders: new BABYLON.Color3(0.6, 0.2, 0.1),
+        centerLine: new BABYLON.Color3(1, 0.4, 0.1),
         background: new BABYLON.Color4(0.15, 0.05, 0.02, 1)
       },
       materials: {
         field: {
-          type: 'standard', // ✅ Changé de PBR à standard
+          type: 'standard',
           properties: {
             diffuseColor: new BABYLON.Color3(0.2, 0.05, 0.02),
-            emissiveColor: new BABYLON.Color3(0.1, 0.02, 0), // Légère lueur interne
+            emissiveColor: new BABYLON.Color3(0.1, 0.02, 0),
             specularColor: new BABYLON.Color3(0.1, 0.05, 0.02)
           }
         },
@@ -461,10 +536,10 @@ export class GameThemes {
           }
         },
         paddles: {
-          type: 'standard', // ✅ Changé de PBR à standard
+          type: 'standard',
           properties: {
             diffuseColor: new BABYLON.Color3(0.3, 0.15, 0.1),
-            emissiveColor: new BABYLON.Color3(0.05, 0.01, 0), // Très légère lueur
+            emissiveColor: new BABYLON.Color3(0.05, 0.01, 0),
             specularColor: new BABYLON.Color3(0.1, 0.05, 0.02)
           }
         },
@@ -479,13 +554,13 @@ export class GameThemes {
       lighting: {
         ambient: 0.3,
         directional: 0.5,
-        shadowsEnabled: false // ✅ Désactivé pour éviter les problèmes
+        shadowsEnabled: false
       },
       effects: {
-        ballTrail: true, // Traînée de feu
-        particles: true, // Particules de cendres et étincelles
+        ballTrail: true,
+        particles: true,
         glow: true,
-        fieldAnimation: true // Lave qui bouillonne
+        fieldAnimation: true
       },
       textures: {
         field: 'volcanic',
