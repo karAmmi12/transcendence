@@ -1,4 +1,5 @@
 // import { i18n } from '@services/i18n';
+// import { Logger } from '@/utils/logger.js'; 
 
 // interface Breakpoint {
 //   name: string;
@@ -21,7 +22,7 @@
 //   private testResults: Map<string, any> = new Map();
 
 //   public async runAllTests(): Promise<void> {
-//     console.log('🧪 Starting responsive tests...');
+//     Logger.log('🧪 Starting responsive tests...');
     
 //     for (const breakpoint of this.breakpoints) {
 //       await this.testBreakpoint(breakpoint);
@@ -33,7 +34,7 @@
 //   }
 
 //   private async testBreakpoint(breakpoint: Breakpoint): Promise<void> {
-//     console.log(`📱 Testing: ${breakpoint.description} (${breakpoint.width}x${breakpoint.height})`);
+//     Logger.log(`📱 Testing: ${breakpoint.description} (${breakpoint.width}x${breakpoint.height})`);
     
 //     // Simuler le changement de viewport
 //     this.simulateViewport(breakpoint.width, breakpoint.height);
@@ -419,8 +420,8 @@
 //   }
 
 //   private generateReport(): void {
-//     console.log('\n📊 RESPONSIVE TEST REPORT');
-//     console.log('========================');
+//     Logger.log('\n📊 RESPONSIVE TEST REPORT');
+//     Logger.log('========================');
     
 //     let totalScore = 0;
 //     let testCount = 0;
@@ -428,13 +429,13 @@
 //     for (const [breakpointName, testData] of this.testResults) {
 //       const { breakpoint, results } = testData;
       
-//       console.log(`\n📱 ${breakpoint.description}`);
-//       console.log(`   Navigation: ${results.navigation.score}/100`);
-//       console.log(`   Game Canvas: ${results.gameCanvas.score}/100`);
-//       console.log(`   Forms: ${results.forms.score}/100`);
-//       console.log(`   Layout: ${results.layout.score}/100`);
-//       console.log(`   Typography: ${results.typography.score}/100`);
-//       console.log(`   Interactions: ${results.interactions.score}/100`);
+//       Logger.log(`\n📱 ${breakpoint.description}`);
+//       Logger.log(`   Navigation: ${results.navigation.score}/100`);
+//       Logger.log(`   Game Canvas: ${results.gameCanvas.score}/100`);
+//       Logger.log(`   Forms: ${results.forms.score}/100`);
+//       Logger.log(`   Layout: ${results.layout.score}/100`);
+//       Logger.log(`   Typography: ${results.typography.score}/100`);
+//       Logger.log(`   Interactions: ${results.interactions.score}/100`);
       
 //       const breakpointScore = (
 //         results.navigation.score +
@@ -445,23 +446,23 @@
 //         results.interactions.score
 //       ) / 6;
       
-//       console.log(`   📊 Overall: ${Math.round(breakpointScore)}/100`);
+//       Logger.log(`   📊 Overall: ${Math.round(breakpointScore)}/100`);
       
 //       totalScore += breakpointScore;
 //       testCount++;
 //     }
     
 //     const finalScore = Math.round(totalScore / testCount);
-//     console.log(`\n🎯 FINAL RESPONSIVE SCORE: ${finalScore}/100`);
+//     Logger.log(`\n🎯 FINAL RESPONSIVE SCORE: ${finalScore}/100`);
     
 //     if (finalScore >= 90) {
-//       console.log('✅ EXCELLENT responsive design!');
+//       Logger.log('✅ EXCELLENT responsive design!');
 //     } else if (finalScore >= 75) {
-//       console.log('✅ GOOD responsive design with minor issues');
+//       Logger.log('✅ GOOD responsive design with minor issues');
 //     } else if (finalScore >= 60) {
-//       console.log('⚠️  FAIR responsive design - needs improvements');
+//       Logger.log('⚠️  FAIR responsive design - needs improvements');
 //     } else {
-//       console.log('❌ POOR responsive design - major fixes needed');
+//       Logger.log('❌ POOR responsive design - major fixes needed');
 //     }
     
 //     // Nettoyer l'overlay

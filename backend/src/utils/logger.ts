@@ -7,7 +7,7 @@ export class Logger {
 
   static error(message: any, ...args: any[]): void {
     if (process.env.NODE_ENV !== 'production') {
-      console.error(message, ...args);
+      Logger.error(message, ...args);
     }
   }
 }

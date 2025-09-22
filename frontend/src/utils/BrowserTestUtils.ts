@@ -1,4 +1,5 @@
 // import { BrowserCompatibilityTest } from './BrowserCompatibilityTest';
+// import { Logger } from '@/utils/logger.js'; 
 
 // export class BrowserTestUtils {
 //   private static testButton: HTMLElement | null = null;
@@ -36,19 +37,19 @@
 //   }
 
 //   private static runFullCompatibilityTest(): void {
-//     console.log('🌐 Running full browser compatibility test...');
+//     Logger.log('🌐 Running full browser compatibility test...');
 //     const result = this.compatibilityTest.runCompatibilityTest();
     
 //     // Afficher le rapport dans la console
 //     const report = this.compatibilityTest.generateCompatibilityReport(result);
-//     console.log(report);
+//     Logger.log(report);
     
 //     // Afficher le modal
 //     this.compatibilityTest.showCompatibilityModal(result);
 //   }
 
 //   private static runQuickCompatibilityCheck(): void {
-//     console.log('⚡ Running quick compatibility check...');
+//     Logger.log('⚡ Running quick compatibility check...');
 //     const result = this.compatibilityTest.runCompatibilityTest();
     
 //     // Afficher une notification rapide
@@ -98,7 +99,7 @@
     
 //     // Vérifier s'il y a des erreurs critiques
 //     if (result.errors.length > 0) {
-//       console.warn('❌ Critical browser compatibility issues detected:', result.errors);
+//       Logger.warn('❌ Critical browser compatibility issues detected:', result.errors);
 //       return false;
 //     }
     

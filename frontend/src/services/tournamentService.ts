@@ -1,3 +1,5 @@
+import { Logger } from '@/utils/logger.js'; 
+
 class TournamentService {
   // ==========================================
   // PROPRIÉTÉS PRIVÉES
@@ -91,11 +93,11 @@ class TournamentService {
       }
 
       const result = await response.json();
-      console.log('✅ Tournament match finished:', result);
+      Logger.log('✅ Tournament match finished:', result);
       
       return result;
     } catch (error) {
-      console.error('❌ Failed to finish tournament match:', error);
+      Logger.error('❌ Failed to finish tournament match:', error);
       throw error;
     }
   }

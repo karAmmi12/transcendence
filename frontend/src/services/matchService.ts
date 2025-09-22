@@ -1,5 +1,6 @@
 import { authService } from "./authService";  
 import { ApiConfig } from "../config/api";
+import { Logger } from '@/utils/logger.js'; 
 
 export class MatchService {
   // ==========================================
@@ -43,7 +44,7 @@ export class MatchService {
 
       return await response.json();
     } catch (error) {
-      console.error('Failed to create local match:', error);
+      Logger.error('Failed to create local match:', error);
       throw error;
     }
   }
@@ -62,17 +63,17 @@ export class MatchService {
       // Vérifier si un utilisateur est connecté
       const isAuthenticated = authService.isAuthenticated();
       if (!isAuthenticated) {
-        console.log('🔒 User not authenticated, skipping match data send');
+        Logger.log('🔒 User not authenticated, skipping match data send');
         return;
       }
 
       // Créer et terminer le match en une seule opération
       await this.createAndFinishLocalMatch(player1, player2, score1, score2, duration);
       
-      console.log('✅ Local match data sent successfully');
+      Logger.log('✅ Local match data sent successfully');
       
     } catch (error) {
-      console.error('❌ Failed to send local match data:', error);
+      Logger.error('❌ Failed to send local match data:', error);
     }
   }
 
@@ -88,7 +89,7 @@ export class MatchService {
     try {
       const isAuthenticated = authService.isAuthenticated();
       if (!isAuthenticated) {
-        console.log('🔒 User not authenticated, cannot send remote match data');
+        Logger.log('🔒 User not authenticated, cannot send remote match data');
         return;
       }
 
@@ -110,10 +111,10 @@ export class MatchService {
         throw new Error('Failed to create remote match');
       }
 
-      console.log('✅ Remote match data sent successfully');
+      Logger.log('✅ Remote match data sent successfully');
       
     } catch (error) {
-      console.error('❌ Failed to send remote match data:', error);
+      Logger.error('❌ Failed to send remote match data:', error);
     }
   }
 }
