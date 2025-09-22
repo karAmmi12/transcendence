@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "ft_transcendence",
-    "description": "Tajruṛt n Pong tamezwarut"
+    "description": "Tajruṭ n Pong tamazwarut"
   },
   "nav": {
     "home": "Agejdan",
@@ -9,89 +9,87 @@
     "profile": "Amasnas",
     "login": "Kcem",
     "logout": "Ffeɣ",
+    "register": "Rnu amiḍan",
     "selectLanguage": "Fren tutlayt"
   },
   "home": {
     "welcome": "Ansuf ɣer ft_transcendence",
-    "description": "Snmer tajruṛt n Pong s umḍiq n urar, isefka n tɣerma, d tajruṛt n yidles.",
+    "description": "Snirem tajruṭ n Pong tamazwarut s umdiq n urar, isfka n tidels, d tajruṭ n yidels.",
     "gameModes": {
-      "title": "Fren anaw n urar",
+      "title": "Fren anaẓ n urar",
       "local": {
         "title": "Urar adigan",
-        "description": "Urar akked umdakkel deg yiwen uselkim. Aɣbalu i yigrawen uraren!",
+        "description": "Urar aked umdakkl dɣa yiwen uselkim. Aɣbalu i yigrawen uraren!",
         "button": "Urar adigan"
       },
       "remote": {
-        "title": "Urar seg uzetta",
-        "description": "Ceggaɛ imdanen seg meṛṛa idurar n umaḍal.",
-        "button": "Urar s yidles",
-        "loginRequired": "Ilaq ukcem i urar s yidles"
+        "title": "Urar s yidels",
+        "description": "Ceggaɛ imdanen seg idurar n umaḍal.",
+        "button": "Urar s yidels",
+        "loginRequired": "Akcem ilaq i urar s yidels"
       },
       "tournament": {
-        "title": "Asefku",
-        "description": "Semsay deg isefka idiganen, ssaɣed deg udrar n yidles.",
-        "button": "Ddu ɣer usefku"
+        "title": "Asfku",
+        "description": "Smsay dɣa isfka, ssaɣad dɣa udrar n yidels i tiliḍ d amɣnas.",
+        "button": "Rnu asfku"
       }
     },
     "features": {
+      "title": "Timahilin",
       "multiplayer": {
-        "title": "Urar s waṭas n imdanen deg wakud",
-        "description": "Urar mgal imdukkal-ik deg wakud seg yal amkan deg umaḍal."
+        "title": "Urar s waṭas n imdanen deg wakud amiran",
+        "description": "Urar aked imdakkl-ik dɣa yal amkan deg umaḍal."
       },
       "tournaments": {
-        "title": "Isefka",
-        "description": "Semsay deg isefka, ssaɣed deg udrar n yidles i tiliḍ d ameɣnas."
-      },
-      "chat": {
-        "title": "Ameslay n yidles",
-        "description": "Meslay akked imdanen-nniḍen, sdukel imdukkal imaynuten deg tdamsa."
+        "title": "Isfka",
+        "description": "Ttekki deg isfka, ali dɣa udrar i tuɣalin d amɣnas."
       },
       "singleplayer": {
-        "title": "Ameslay n yiwen",
-        "description": "Urar mgal imdanen n IA, snerni tiɣira-k."
+        "title": "Amslay n yiwen",
+        "description": "Mselay imnaḍen n IA, snirni tigira-ik."
       }
     },
     "globalStats": {
-      "title": "Tigiwin n tɣerma",
-      "totalPlayers": "Asemday n imdanen",
-      "totalGames": "Urar yettwarnan",
+      "title": "Tigiwiyin n tɣerma",
+      "totalPlayers": "Asmdad n imdanen",
+      "totalGames": "Urar yettwaren",
       "onlinePlayers": "Srid tura",
-      "activeTournaments": "Isefka urmiden"
+      "activeTournaments": "Isfka urmiden"
     },
     "stats": {
-      "title": "Tigiwin-inek",
-      "wins": "Tawaḍit",
+      "title": "Tigiwiyin-ik",
+      "wins": "Tawadiyin",
       "losses": "Tuffɣa",
-      "winRate": "Ameɣnas n tawaḍit",
-      "rank": "Aseggas",
+      "winRate": "Amɣnas n tawadiyin",
+      "rank": "Asggas",
       "highestScore": "Asin amasiḍ",
       "currentStreak": "Amasnas amiran",
       "longestStreak": "Amasnas ameqqran",
       "players": "Imdanen",
       "games": "Urar",
-      "tournaments": "Isefka",
+      "tournaments": "Isfka",
       "online": "Srid"
     },
     "buttons": {
       "play": "Bdu urar",
       "login": "Kcem",
-      "register": "Rnu amiḍan",
-      "tournaments": "Isefka"
+      "register": "Rnu",
+      "tournaments": "Isfka"
     }
   },
   "auth": {
     "login": {
-      "title": "Kcem",
+      "title": "Akcem",
       "username": "Isem n useqdac",
-      "usernamePlaceholder": "Sekcem isem-inek",
+      "usernamePlaceholder": "Sekcem isem-ik",
       "password": "Awal uffir",
-      "passwordPlaceholder": "Sekcem awal uffir-inek",
-      "rememberMe": "Cfu fell-i",
+      "passwordPlaceholder": "Sekcem awal-ik uffir",
+      "rememberMe": "Cfu ɣef yid",
       "submit": "Kcem",
       "loginButton": "Kcem",
-      "loading": "Asekcem...",
+      "loading": "Akcem iteddu...",
       "forgotPassword": "Tettu awal uffir?",
-      "noAccount": "Ulac amiḍan?",
+      "noAccount": "Ur tesɛiḍ ara amiḍan?",
       "signUp": "Rnu amiḍan",
       "or": "neɣ",
       "oauth42": "Kcem s 42",
@@ -102,198 +100,293 @@
       "username": "Isem n useqdac",
       "usernamePlaceholder": "Fren isem n useqdac",
       "email": "Imayl",
-      "emailPlaceholder": "Sekcem imayl-inek",
+      "emailPlaceholder": "Sekcem imayl-ik",
       "password": "Awal uffir",
       "passwordPlaceholder": "Rnu awal uffir",
-      "confirmPassword": "Senqed awal uffir",
-      "confirmPasswordPlaceholder": "Ales awal uffir",
+      "confirmPassword": "Sentem awal uffir",
+      "confirmPasswordPlaceholder": "Ales awal-ik uffir",
       "registerButton": "Rnu amiḍan",
-      "haveAccount": "Tesɛiḍ amiḍan?",
+      "haveAccount": "Tesɛiḍ amiḍan yakan?",
       "signIn": "Kcem"
     },
     "twoFactor": {
-      "title": "Asntam s sin iferdisen",
-      "description": "Tangalt n usentem tettwazn ɣer tansa-k n imayl. G fell-as ddaw-agi.",
+      "title": "Asentem s sin ifreden",
+      "description": "Tangalt n usentem tettwazen ɣer tansa-ik n imayl. Sekcem-itt da.",
       "verify": "Sentem",
-      "codeSent": "Tangalt tettwazn s imayl"
+      "codeSent": "Tangalt tettwazen s imayl"
     },
     "errors": {
-      "loginFailed": "Tuccfa deg ukcem",
-      "missingFields": "Ḥeṛṛ meṛṛa urti",
-      "invalidCredentials": "Isem neɣ awal uffir d arameɣtu",
+      "loginFailed": "Akcem ur yeddi ara",
+      "missingFields": "Cɣel aḍris akk urtan",
+      "invalidCredentials": "Isem n useqdac neɣ awal uffir d arameɣtu",
       "usernameTaken": "Isem n useqdac yella yakan",
       "emailTaken": "Imayl yella yakan",
-      "passwordMismatch": "Awalen uffir ur nelli ara akken iwata",
-      "requiredField": "Urti-agi ilaq",
-      "loginRequired": "Ilaq ad tkecmeḍ i usqdec n tmeẓlut-agi"
+      "passwordMismatch": "Awalen uffir ur mṣadan ara",
+      "requiredField": "Urt-agi ilaq",
+      "loginRequired": "Ilaq ad tkecmeḍ i wakcem ɣer timahilin-agi"
     }
   },
   "game": {
     "title": "Aren n Pong",
     "lobby": {
-      "title": "Agraw n urar",
-      "waitingForPlayer": "Aḥeddu ɣef imdanen...",
-      "playerJoined": "Imdanen idmen!",
+      "title": "Aɣrab n urar",
+      "waitingForPlayer": "Aṛaǧu n umnaḍ...",
+      "playerJoined": "Amnaḍ yerna!",
       "startGame": "Bdu urar",
-      "leaveGame": "Ffeɣ seg urar"
+      "leaveGame": "Eǧǧ urar"
     },
     "controls": {
-      "title": "Asenqed n urar",
-      "instructions": "Seqdec W/S neɣ tarrayt i usmutti n tazallit-ik",
-      "pause": "Wekki SPACE i usekles",
-      "touch": "Asenqed s umess"
+      "title": "Isenqaden n urar",
+      "instructions": "Seqdec W/S neɣ tiraṛacin i usmutti n tazaɣɣalt-ik",
+      "pause": "Sit SPACE i wakrif",
+      "touch": "Isenqaden n umess"
     },
     "status": {
-      "waiting": "Aḥeddu",
-      "playing": "Aḍar",
-      "paused": "Yettwaḥbes",
-      "finished": "Immed urar"
+      "connecting_server": "Tuqqna ɣer uqeddac...",
+      "connected": "Yeqqen ɣer uqeddac",
+      "connection_error": "Tuccḍa deg tuqqna",
+      "disconnected": "Yefsi ɣer uqeddac",
+      "searching_opponent": "Anadi n umnaḍ...",
+      "opponent_found": "Umnaḍ yufan!",
+      "waiting_opponent": "Aṛaǧu n umnaḍ...",
+      "starting_local": "Abdu n urar adigan...",
+      "opponent_disconnected": "Umnaḍ yefsi",
+      "forfeit_victory": "Tawadiyt s ufus: {statusMessage}",
+      "paused": "Urar yettwaḥbes",
+      "resumed": "Urar yettwakkes",
+      "go": "Bdu!",
+      "starting_in": "Abdu deg {count}...",
+      "starting_as_host": "Abdu d asenneftaɣ",
+      "starting_as_guest": "Abdu d aneflay",
+      "connected_as_guest": "Yeqqen d aneflay - iɣewwaren d-yettwaren!",
+      "connected_as_host": "Yeqqen d asenneftaɣ - d kečč i tesseɣḍaḍ iɣewwaren!",
+      "waiting_for_host": "Aṛaǧu n iɣewwaren n usenneftaɣ...",
+      "received_host_settings": "Iɣewwaren n usenneftaɣ d-yettwaren",
+      "applying_settings": "Asnes n iɣewwaren...",
+      "settings_applied": "Iɣewwaren ttwasnen",
+      "game_starting": "Urar ad yebdu ticki...",
+      "game_ended": "Urar yemmed",
+      "game_over": "Game over",
+      "signaling_connected": "Asigna yeqqen",
+      "signaling_disconnected": "Asigna yefsi"
     },
     "score": {
-      "you": "Kken",
-      "opponent": "Amnaḍ"
+      "you": "Kečč",
+      "opponent": "Umnaḍ"
     },
     "placeholder": {
-      "player": "Amdakkel"
+      "player": "Amnaḍ"
     },
     "modes": {
       "local": "Adigan",
-      "remote": "Seg uzetta",
-      "tournament": "Asefku",
-      "classic": "Aklasik",
-      "turbo": "Turbo",
-      "powerup": "Tzmert",
-      "elimination": "Asenker"
-    },
-    "customization": {
-      "title": "Iɣewwaṛen n urar",
-      "ballSpeed": "Arured n tɣawla",
-      "paddleSpeed": "Arured n tazallit",
-      "powerUps": "Tzmert",
-      "gameMode": "Anaw n urar",
-      "theme": "Asentel",
-      "difficulty": "Ugur",
-      "resetToDefault": "Uɣal ɣer wazal amezwaru",
-      "applySettings": "Sebded iɣewwaṛen"
+      "remote": "S yidels",
+      "tournament": "Asfku"
     },
     "speeds": {
-      "slow": "Yeẓẓel",
+      "slow": "Ẓeẓẓel",
       "medium": "Alemmas",
-      "fast": "Urured"
+      "fast": "Arured"
     },
     "themes": {
       "classic": "Aklasik",
-      "neon": "Neon",
-      "retro": "Retro"
+      "neon": "Niyon",
+      "retro": "Ritrɔ",
+      "cyberpunk": "Saybrpank",
+      "space": "Tallunt",
+      "italian": "Aṭalyan",
+      "matrix": "Matraks",
+      "lava": "Lava"
+    },
+    "remote": {
+      "yourProfile": "Amasnas-ik",
+      "speedNote": "Tamawt: arured n teqballit tezmer ad tbeddel s wakud n uẓeṭṭa.",
+      "powerUpsNote": "Sin imdanen ilaq ad mṣadan ɣef iɣewwaren n power-ups",
+      "findOpponent": "Af umnaḍ",
+      "hostSettings": {
+        "title": "Iɣewwaren n usenneftaɣ",
+        "description": "D asenneftaɣ, d kečč i tesseɣḍaḍ iɣewwaren n urar"
+      },
+      "forfeit": {
+        "title": "Tuffɣa s ufus",
+        "message": "Teǧǧiḍ urar",
+        "opponentWins": "Umnaḍ-ik irebba s ufus"
+      },
+      "howItWorks": {
+        "title": "Amek iteddu?",
+        "host": {
+          "title": "D asenneftaɣ",
+          "description": "Iɣewwaren n urar-ik ad ttwasnen i umnaḍ"
+        },
+        "guest": {
+          "title": "D aneflay",
+          "description": "Ad tremseḍ iɣewwaren n usenneftaɣ s wudem awurman"
+        },
+        "theme": {
+          "title": "Asentel udmawan",
+          "description": "Asentel-ik udmawan yeqqim d ayla deg yal tamnaḍt"
+        }
+      }
+    },
+    "customization": {
+      "title": "Iɣewwaren n urar",
+      "ballSpeed": "Arured n teqballit",
+      "paddleSpeed": "Arured n tazaɣɣalt",
+      "powerUps": "Power-ups",
+      "gameMode": "Anaẓ n urar",
+      "theme": "Asentel",
+      "difficulty": "Tawɣit",
+      "resetToDefault": "Uɣal ɣer umezwer",
+      "applySettings": "Snes iɣewwaren",
+      "userTheme": "Asentel n useqdac",
+      "guestTheme": "D aneflay, tzemreḍ ad tferneḍ asentel i tɣimit-agi",
+      "changeInProfile": "Beddel asentel deg umasnas-ik",
+      "willUseTheme": "ad iseqdec asentel-agi",
+      "tournamentTheme": "asentel n usfku",
+      "enablePowerUps": "Rmed power-ups"
+    },
+    "endScreen": {
+      "title": "Tagara n urar",
+      "winnerText": " irebba urar",
+      "finalScore": "Asin aneggaru",
+      "stats": {
+        "duration": "tanzagt n urar",
+        "totalPoints": "tinqiḍin timiḍanin",
+        "winCondition": "tawtili n trbeḥt",
+        "mode": "anaẓ n urar"
+      },
+      "actions": {
+        "playAgain": "Urar tikkelt-nniḍen",
+        "backToMenu": "Uɣal ɣer wumuɣ",
+        "findNewOpponent": "Af umnaḍ amaynut",
+        "tournamentContinue": "Kemmel asfku",
+        "viewStats": "Wali tigiwiyin"
+      }
     }
   },
   "tournament": {
-    "title": "Asefku",
+    "title": "Asfku",
     "create": {
-      "title": "Rnu asefku",
-      "youAreIncluded": "Tettwaḥsabeḍ s wudem awurman deg usefku!",
-      "enterOtherParticipants": "Sekcem ismawen n {count} imsemsayen-nniḍen:",
-      "enterAllParticipants": "Sekcem ismawen n meṛṛa {count} imsemsayen:",
-      "participantPlaceholder": "Isem n umsemsay {number}",
-      "confirmed": "Yettwasenten",
-      "createTournament": "Rnu asefku"
+      "title": "Rnu asfku",
+      "youAreIncluded": "Tettwaḥsabeḍ s wudem awurman deg usfku!",
+      "enterOtherParticipants": "Sekcem isemawen n {count} imttekkiyen-nniḍen:",
+      "participantPlaceholder": "Isem n umtteki {number}",
+      "confirmed": "Yettwasentem",
+      "createTournament": "Rnu asfku"
     },
-    "join": "Ddu ɣer usefku",
-    "waiting": "Aḥeddu ɣef imdanen",
-    "inProgress": "Asefku iteddu",
-    "finished": "Immed usefku",
-    "bracket": "Tafelwit n usefku",
+    "join": "Rnu deg usfku",
+    "waiting": "Aṛaǧu n imdanen",
+    "inProgress": "Asfku iteddu",
+    "finished": "Asfku yemmed",
+    "bracket": {
+      "title": "Tafelwit n usfku"
+    },
+    "legend": {
+      "pending": "Yettraǧu",
+      "inProgress": "Iteddu",
+      "completed": "Yemmed"
+    },
+    "rounds": {
+      "quarterFinals": "Akkuz n tagara",
+      "semiFinals": "Azgen n tagara",
+      "final": "Tagara"
+    },
     "currentMatch": "Amnaḍ amiran",
     "nextMatch": "Amnaḍ d-iteddun",
-    "winner": "Aneɣmas n usefku",
-    "player1": "Amdakkel 1",
-    "player2": "Amdakkel 2",
-    "startMatch": "Bdu amnaḍ",
-    "round": "Tawriqt",
-    "finals": "Tagara",
-    "semifinals": "Azgen n tagara",
-    "quarterfinals": "Kkuẓ n tagara",
-    "status": "Addad n usefku",
-    "players": "Imyuraren",
+    "winner": "Amɣnas n usfku",
+    "participants": "Imttekkiyen",
+    "participantsCount": "imttekkiyen",
+    "participantsNote": "Amḍan n imdanen deg usfku",
     "matchNumber": "Amnaḍ {number}",
     "vs": "mgal",
-    "waitingForMatch": "Aḥeddu ɣef ubdu n umnaḍ",
+    "waitingForMatch": "Aṛaǧu n ubdu n umnaḍ",
     "matchInProgress": "Amnaḍ iteddu",
-    "matchCompleted": "Immed umnaḍ",
+    "matchCompleted": "Amnaḍ yemmed",
+    "yourParticipation": "Tuttekki-ik",
+    "authenticatedPlayer": "Amnaḍ yettwasentmen",
+    "guestMode": "Anaẓ n aneflay",
+    "guestModeDescription": "Terniḍ asfku d aneflay. Isfka ad ttuskelsen s wudem askudan.",
+    "winScore": "Asin i trbeḥt",
+    "winScoreNote": "Tinqiḍin ilaqen i trbeḥt yal amnaḍ",
+    "powerUpsNote": "Rmed power-ups i yal imnaḍen n usfku",
+    "howItWorks": "Amek iteddu",
+    "step1": "Rnu asfku s iɣewwaren i tebɣiḍ",
+    "step2": "Tafelwit n usfku ad tettwaren s wudem awurman",
+    "step3": "Urar imnaḍen tawri tawri armi tagara",
+    "step4": "Amɣnas ad yettwaɣbel d amɣnas!",
     "status": {
-      "waiting": "Aḥeddu ɣef imdanen",
+      "waiting": "Aṛaǧu n imdanen",
       "inProgress": "Iteddu",
-      "finished": "Immed"
+      "finished": "Yemmed"
     }
   },
   "profile": {
     "title": "Amasnas",
     "actions": {
-      "title": "Tigawin tiruriyin",
+      "title": "Tigawin tururin",
       "editProfile": "Ẓreg amasnas",
       "changePassword": "Beddel awal uffir",
-      "changeAvatar": "Beddel tugna",
+      "changeAvatar": "Beddel tavuga",
       "logout": "Ffeɣ",
-      "toggle2FA": "Rmed/Kkes 2FA",
-      "addFriend": "Rnu d amdakkel",
-      "removeFriend": "Kkes amdakkel",
+      "toggle2FA": "Beddel 2FA",
+      "addFriend": "Rnu amdakkl",
+      "removeFriend": "Kkes amdakkl",
       "challenge": "Ceggaɛ"
     },
     "stats": {
-      "title": "Tigiwin",
-      "wins": "Tawaḍit",
+      "title": "Tigiwiyin",
+      "wins": "Tawadiyin",
       "losses": "Tuffɣa",
-      "totalGames": "Asemday n urar",
-      "gamesPlayed": "Urar yettwarnan",
-      "gamesWon": "Urar yettwaɣlaben",
-      "winRate": "Ameɣnas n tawaḍit",
-      "ranking": "Aseggas",
-      "rank": "Aseggas",
+      "totalGames": "Asmdan n uraren",
+      "gamesPlayed": "Urar yettwaren",
+      "gamesWon": "Urar yettwarebben",
+      "winRate": "Amɣnas n tawadiyin",
+      "ranking": "Asggas",
+      "rank": "Asggas",
       "highestScore": "Asin amasiḍ",
       "averageScore": "Asin alemmas",
       "currentStreak": "Amasnas amiran",
       "longestStreak": "Amasnas ameqqran",
-      "playtime": "Asemday n wakud n urar",
+      "playtime": "Akud n urar asmdan",
       "lastPlayed": "Urar aneggaru"
     },
     "history": {
-      "title": "Amezruy n yimnaḍen",
-      "noGames": "Ulac urar yettwarnan",
-      "noGamesDesc": "Bdu urar i twallit n umezruy-ik da",
-      "playFirstGame": "Urar amezwaru-iw",
-      "viewAll": "Wali meṛṛa amezruy",
-      "viewDetails": "Wali talɣut",
-      "noMatchesFilter": "Ulac imnaḍen i yesɛan astaray-agi",
+      "title": "Amzruy n imnaḍen",
+      "noGames": "Ula d yiwen urar yettwar ara",
+      "noGamesDesc": "Bdu urar i twalaḍ amzruy-ik da",
+      "playFirstGame": "Urar amezwaru-ik",
+      "viewAll": "Wali akk",
+      "viewDetails": "Wali tilɣa",
+      "noMatchesFilter": "Ula d yiwen umnaḍ yufan i usiẓreg-agi",
       "result": {
-        "win": "Tawaḍit",
+        "win": "Trbeḥt",
         "loss": "Tuffɣa"
       },
       "filters": {
         "all": "Akk",
-        "wins": "Tawaḍit",
+        "wins": "Tawadiyin",
         "losses": "Tuffɣa",
         "local": "Adigan",
-        "remote": "Seg uzetta",
-        "tournament": "Asefku"
+        "remote": "S yidels",
+        "tournament": "Asfku"
       },
       "stats": {
-        "totalGames": "Asemday",
-        "winRate": "Ameɣnas n tawaḍit",
-        "recent": "Imaynuten"
+        "totalGames": "Asmdan",
+        "winRate": "Amɣnas n tawadiyin",
+        "recent": "Inagan"
       }
     },
     "friends": {
-      "title": "Imdukkal",
-      "manage": "Sefrek imdukkal",
-      "noFriends": "Ulac imdukkal ar tura",
-      "findFriends": "Nadi imdukkal",
+      "title": "Imdakkl",
+      "manage": "Sefrek imdakkl",
+      "noFriends": "Ula d yiwen umdakkl ara tura",
+      "findFriends": "Nadi imdakkl",
       "viewAll": "Wali akk",
       "online": "Srid",
-      "offline": "Ur yesrid ara",
-      "justOffline": "Tura kan iḥbes",
-      "minsAgo": "Uqbel {mins} n tesdat",
-      "hoursAgo": "Uqbel {hours} n isragen",
-      "daysAgo": "Uqbel {days} n wussan",
+      "offline": "Ur yessirid ara",
+      "justOffline": "Yefsi ticki kan",
+      "minsAgo": "minuten {mins} aya",
+      "hoursAgo": "isragen {hours} aya",
+      "daysAgo": "ussan {days} aya",
       "viewProfile": "Wali amasnas",
       "challenge": "Ceggaɛ",
       "sendMessage": "Azen izen"
@@ -301,75 +394,98 @@
     "edit": {
       "title": "Ẓreg amasnas",
       "username": "Isem n useqdac",
-      "usernamePlaceholder": "Sekcem isem-inek",
+      "usernamePlaceholder": "Sekcem isem-ik n useqdac",
       "email": "Imayl",
-      "emailPlaceholder": "Sekcem imayl-inek",
-      "avatar": "Tugna",
+      "emailPlaceholder": "Sekcem imayl-ik",
+      "avatar": "Tavuga",
       "selectImage": "Fren tugna",
-      "save": "Sekles ibeddilen",
+      "changeAvatarHint": "Sit i ubeddel n tvuga-ik",
+      "save": "Sekles asnifel",
       "cancel": "Sefsex",
       "uploading": "Asali...",
       "errors": {
-        "updateFailed": "Tuccfa deg ubeddel n umasnas",
-        "invalidImage": "Amasal n tugna d arameɣtu",
-        "invalidImageType": "Amasal n tugna d arameɣtu",
+        "updateFailed": "Aleqqem n umasnas ur yeddi ara",
+        "invalidImage": "Tugna d tarameɣtut",
+        "invalidImageType": "Tugna d tarameɣtut",
         "imageTooLarge": "Tugna tameqqrant aṭas",
-        "avatarTooLarge": "Tugna tameqqrant aṭas (afellay 5MB)"
+        "avatarTooLarge": "Tugna tameqqrant aṭas (afellay 5MB)",
+        "usernameTooShort": "Isem n useqdac ilaq ad yegber 3 n isekkilen ma drus",
+        "usernameTooLong": "Isem n useqdac ilaq ad yegber drus 20 n isekkilen",
+        "invalidEmail": "Sekcem tansa n imayl tameɣtut"
       }
     },
     "changePassword": {
       "title": "Beddel awal uffir",
       "currentPassword": "Awal uffir amiran",
-      "currentPasswordPlaceholder": "Sekcem awal uffir-ik amiran",
+      "currentPasswordPlaceholder": "Sekcem awal-ik uffir amiran",
       "newPassword": "Awal uffir amaynut",
-      "newPasswordPlaceholder": "Sekcem awal uffir amaynut",
-      "confirmPassword": "Senqed awal uffir amaynut",
-      "confirmPasswordPlaceholder": "Senqed awal uffir amaynut",
+      "newPasswordPlaceholder": "Sekcem awal-ik uffir amaynut",
+      "confirmPassword": "Sentem awal uffir amaynut",
+      "confirmPasswordPlaceholder": "Sentem awal-ik uffir amaynut",
       "save": "Beddel awal uffir",
       "cancel": "Sefsex",
-      "saving": "Abeddel iteddu...",
-      "success": "Awal uffir ibeddel akken iwata!",
-      "error": "Tuccfa deg ubeddel n uwal uffir",
+      "saving": "Abeddel...",
+      "success": "Awal uffir yettwabeddel akken iwata!",
+      "error": "Tuccḍa deg ubeddel n wawal uffir",
       "validation": {
-        "required": "Urti-agi ilaq",
-        "minLength": "Awal uffir ilaq ad yesɛu 8 n isekkilen ma drus",
-        "mismatch": "Awalen uffir ur nelli ara akken iwata",
-        "weak": "Awal uffir d aḍaɛif aṭas"
+        "required": "Urt-agi ilaq",
+        "minLength": "Awal uffir ilaq ad yegber 8 n isekkilen ma drus",
+        "mismatch": "Awalen uffir ur mṣadan ara",
+        "weak": "Awal uffir d aḍebsan aṭas"
       }
     },
     "twoFactor": {
-      "title": "Asntam s sin iferdisen",
+      "title": "Asentem s sin ifreden",
+      "description": "Ḍmen amiḍan-ik s usentem s sin ifreden",
       "enable": "Rmed 2FA",
       "disable": "Kkes 2FA",
-      "enterCode": "Sekcem tangalt n usenqed",
+      "enterCode": "Sekcem tangalt n usentem",
       "codePlaceholder": "Tangalt s 6 n wuṭṭunen",
       "verify": "Sentem",
       "cancel": "Sefsex",
       "modal": {
-        "enableTitle": "Rmed asntam s sin iferdisen",
-        "enableDescription": "Tangalt n usenqed tettwazn ɣer imayl-ik. G fell-as ddaw-agi i urmed n 2FA.",
+        "enableTitle": "Rmed asentem s sin ifreden",
+        "enableDescription": "Tangalt n usentem tettwazen ɣer imayl-ik. Sekcem-itt da i urmad n 2FA.",
         "enableButton": "Rmed 2FA",
-        "disableTitle": "Kkes asntam s sin iferdisen",
-        "disableDescription": "G tangalt n usenqed i tukksa n 2FA.",
+        "disableTitle": "Kkes asentem s sin ifreden",
+        "disableDescription": "Sekcem tangalt n usentem-ik i ukess n 2FA.",
         "disableButton": "Kkes 2FA",
-        "codeLabel": "Tangalt n usenqed"
+        "codeLabel": "Tangalt n usentem"
       },
       "messages": {
-        "enabled": "2FA yettwarmad akken iwata!",
+        "enabled": "2FA yettwarmed akken iwata!",
         "disabled": "2FA yettwakkes akken iwata!",
-        "codeSent": "Tangalt n usenqed tettwazn ɣer imayl-ik",
-        "invalidCode": "Tangalt n usenqed d tarameɣtut",
+        "codeSent": "Tangalt n usentem tettwazen ɣer imayl-ik",
+        "invalidCode": "Tangalt n usentem d tarameɣtut",
         "error": "Tamhelt n 2FA ur teddi ara"
       }
     },
+    "themes": {
+      "title": "Asentel n urar",
+      "description": "Fren asentel n urar i tebɣiḍ",
+      "select": "Fren asentel n urar i tebɣiḍ",
+      "manageThemes": "Sefrek isental",
+      "currentTheme": "Asentel amiran:",
+      "current": "Amiran",
+      "saveTheme": "Sekles asentel",
+      "messages": {
+        "saved": "Asentel yettwasekles akken iwata!"
+      },
+      "errors": {
+        "saveFailed": "Asekles n usentel ur yeddi ara"
+      }
+    },
+    "lastLogin": "Akcem aneggaru",
+    "googleAccount": "Amiḍan Google",
     "errors": {
-      "userNotFound": "Aseqdac ur yettwaf ara",
-      "loadFailed": "Tuccfa deg usali n umasnas",
-      "unauthorized": "Ur tesɛiḍ ara tasiregt i twallit n umasnas-agi",
-      "networkError": "Tuccfa deg uẓeṭṭa. Ɛreḍ tikelt-nniḍen."
+      "userNotFound": "Aseqdac ur yufi ara",
+      "loadFailed": "Asali n umasnas ur yeddi ara",
+      "unauthorized": "Ur tesɛiḍ ara tasiregt i twala n umasnas-agi",
+      "networkError": "Tuccḍa n uẓeṭṭa. Ɛreḍ tikkelt-nniḍen.",
+      "changePasswordFailed": "Abeddel n wawal uffir ur yeddi ara"
     },
     "settings": {
-      "title": "Iɣewwaṛen",
+      "title": "Iɣewwaren",
       "language": "Tutlayt",
       "theme": "Asentel",
       "notifications": "Ilɣa",
@@ -378,23 +494,23 @@
     }
   },
   "friends": {
-    "title": "Asefrek n yimdukkal",
+    "title": "Asefrak n imdakkl",
     "search": {
-      "title": "Nadi imdukkal",
+      "title": "Nadi imdakkl",
       "placeholder": "Nadi iseqdacen...",
-      "noResults": "Ulac iseqdacen yettwafen",
-      "searchInstructions": "Sekcem 2 n yisekkilen ma drus i unadi"
+      "noResults": "Ula d yiwen useqdac yufan",
+      "searchInstructions": "Sekcem 2 n isekkilen ma drus i unadi"
     },
     "requests": {
-      "title": "Isutren n tdukla",
-      "noPending": "Ulac isutren ḥedrun",
-      "sentRequest": "Yuzen-ak asuter n tdukla",
-      "received": "Yettwarmsen",
+      "title": "Isutar n tdukla",
+      "noPending": "Ula d yiwen usuter yettraǧu",
+      "sentRequest": "Yuzen-ak-d asuter n tdukla",
+      "received": "Yettwarmen",
       "sent": "Yettwazen"
     },
     "actions": {
-      "addFriend": "Rnu d amdakkel",
-      "removeFriend": "Kkes amdakkel",
+      "addFriend": "Rnu d amdakkl",
+      "removeFriend": "Kkes amdakkl",
       "acceptRequest": "Qbel asuter",
       "cancelRequest": "Sefsex asuter",
       "accept": "Qbel",
@@ -403,48 +519,53 @@
     },
     "status": {
       "requestSent": "Asuter yettwazen",
-      "pending": "Ḥedru",
-      "friends": "Imdukkal"
+      "pending": "Yettraǧu",
+      "friends": "Imdakkl"
     },
     "messages": {
       "requestSent": "Asuter n tdukla yettwazen!",
-      "requestAccepted": "Asuter n tdukla yettwaqbal!",
-      "requestDeclined": "Asuter n tdukla yettwagin",
-      "friendRemoved": "Amdakkel yettwakkes",
-      "actionFailed": "Tamhelt ur teddi ara. Ɛreḍ tikelt-nniḍen.",
-      "userNotFound": "Aseqdac ur yettwaf ara",
-      "alreadyFriends": "Telliḍ yakan d amdakkel n useqdac-agi",
-      "cannotAddSelf": "Ur tezmireḍ ara ad trnuḍ iman-ik d amdakkel"
+      "requestAccepted": "Asuter n tdukla yettwaqbel!",
+      "requestDeclined": "Asuter n tdukla yettwagi",
+      "friendRemoved": "Amdakkl yettwakkes",
+      "friendAdded": "Amdakkl yettwarnu akken iwata!",
+      "actionFailed": "Tamhelt ur teddi ara. Ɛreḍ tikkelt-nniḍen.",
+      "userNotFound": "Aseqdac ur yufi ara",
+      "alreadyFriends": "Tettwaḍḍafeḍ yakan d imdakkl aked useqdac-agi",
+      "cannotAddSelf": "Ur tezmireḍ ara ad tarneḍ iman-ik d amdakkl",
+      "searchFailed": "Anadi ur yeddi ara. Ɛreḍ tikkelt-nniḍen."
     },
     "confirmations": {
-      "removeFriend": "Tebɣiḍ ad tekkseḍ amdakkel-agi?",
+      "removeFriend": "Tebɣiḍ ad tekkseḍ amdakkl-agi?",
       "declineRequest": "Tebɣiḍ ad tagiḍ asuter-agi n tdukla?"
     }
   },
   "settings": {
-    "title": "Iɣewwaṛen",
+    "title": "Iɣewwaren",
     "username": "Isem n useqdac",
     "email": "Imayl",
-    "save": "Sekles iɣewwaṛen",
+    "save": "Sekles iɣewwaren",
     "general": {
-      "title": "Iɣewwaṛen imatawen",
+      "title": "Iɣewwaren imuta",
       "language": "Tutlayt",
       "theme": "Asentel",
-      "timezone": "Tamnaḍt n wakud"
+      "notifications": "Ilɣa",
+      "privacy": "Tabaḍnit",
+      "security": "Taɣellist",
+      "timezone": "Tanzagt n wakud"
     },
     "notifications": {
       "title": "Ilɣa",
-      "email": "Ilɣa s imayl",
-      "push": "Ilɣa n tuɣin",
-      "gameInvites": "Tinnubgiwin n urar",
-      "friendRequests": "Isutren n tdukla",
-      "messages": "Iznan"
+      "email": "Ilɣa n imayl",
+      "push": "Ilɣa n tussfa",
+      "gameInvites": "Tinnubga n urar",
+      "friendRequests": "Isutar n tdukla",
+      "messages": "Izen"
     },
     "privacy": {
-      "title": "Iɣewwaṛen n tbaḍnit",
-      "profileVisibility": "Timeẓri n umasnas",
-      "onlineStatus": "Sken addad n tuqqna",
-      "gameHistory": "Sken amezruy n urar"
+      "title": "Iɣewwaren n tabaḍnit",
+      "profileVisibility": "Tumẓri n umasnas",
+      "onlineStatus": "Sken addad srid",
+      "gameHistory": "Sken amzruy n urar"
     },
     "account": {
       "title": "Amiḍan",
@@ -461,63 +582,63 @@
       "cancel": "Sefsex"
     },
     "error": {
-      "title": "Tuccfa",
-      "genericMessage": "Tella-d tuccfa. Ɛreḍ tikelt-nniḍen.",
+      "title": "Tuccḍa",
+      "genericMessage": "Tella-d tuccḍa. Ɛreḍ tikkelt-nniḍen.",
       "close": "Mdel"
     },
     "success": {
-      "title": "Tawaḍit",
+      "title": "Tawadiyt",
       "close": "Mdel"
     },
     "gameEnd": {
       "title": "Tagara n urar",
-      "winner": "Aneɣmas",
+      "winner": "Amɣnas",
       "finalScore": "Asin aneggaru",
-      "duration": "Tanila",
-      "playAgain": "Urar tikelt-nniḍen",
+      "duration": "Tanzagt",
+      "playAgain": "Urar tikkelt-nniḍen",
       "backToMenu": "Uɣal ɣer wumuɣ",
-      "tournamentContinue": "Kemmel asefku"
+      "tournamentContinue": "Kemmel asfku"
     }
   },
   "forms": {
     "validation": {
-      "required": "Urti-agi ilaq",
-      "email": "G tansa n imayl tameɣtut",
-      "minLength": "Ilaq ad yesɛu {min} n yisekkilen ma drus",
-      "maxLength": "Ilaq ur yettawe ara ɣef {max} n yisekkilen",
-      "password": "Awal uffir ilaq ad yesɛu 8 n yisekkilen ma drus",
-      "confirmPassword": "Awalen uffir ilaq ad nellen akken iwata",
-      "username": "Isem n useqdac ilaq ad yili gar 3 d 20 n yisekkilen yerna ad yesɛu kan isekkilen, uṭṭunen d yijerriḍen"
+      "required": "Urt-agi ilaq",
+      "email": "Sekcem tansa n imayl tameɣtut",
+      "minLength": "Ilaq ad yegber {min} n isekkilen ma drus",
+      "maxLength": "Ur ilaq ara ad yegber {max} n isekkilen",
+      "password": "Awal uffir ilaq ad yegber 8 n isekkilen ma drus",
+      "confirmPassword": "Awalen uffir ilaq ad mṣadan",
+      "username": "Isem n useqdac ilaq ad yegber 3 ɣer 20 n isekkilen d kan isekkilen, wuṭṭunen d ijerriḍen n wadda"
     },
     "placeholders": {
       "search": "Nadi...",
-      "email": "Sekcem imayl-inek",
-      "username": "Sekcem isem-inek",
-      "password": "Sekcem awal uffir-inek",
-      "message": "Aru izen-inek..."
+      "email": "Sekcem imayl-ik",
+      "username": "Sekcem isem n useqdac",
+      "password": "Sekcem awal uffir",
+      "message": "Aru izen-ik..."
     }
   },
   "time": {
     "now": "Tura",
-    "justNow": "Tura kan",
-    "minuteAgo": "Uqbel yiwet n tesdat",
-    "minutesAgo": "Uqbel {minutes} n tesdat",
-    "hourAgo": "Uqbel yiwet n usrag",
-    "hoursAgo": "Uqbel {hours} n yisragen",
-    "dayAgo": "Uqbel yiwen wass",
-    "daysAgo": "Uqbel {days} n wussan",
-    "weekAgo": "Uqbel yiwet n dduṛt",
-    "weeksAgo": "Uqbel {weeks} n dduṛt",
-    "monthAgo": "Uqbel yiwen waggur",
-    "monthsAgo": "Uqbel {months} n wagguren",
-    "yearAgo": "Uqbel yiwet n useggas",
-    "yearsAgo": "Uqbel {years} n yiseggasen"
+    "justNow": "Ticki kan",
+    "minuteAgo": "minut aya",
+    "minutesAgo": "{minutes} n tsedatin aya",
+    "hourAgo": "israg aya",
+    "hoursAgo": "{hours} n isragen aya",
+    "dayAgo": "ass aya",
+    "daysAgo": "{days} n wussan aya",
+    "weekAgo": "dduṛt aya",
+    "weeksAgo": "{weeks} n dduṛtat aya",
+    "monthAgo": "aggur aya",
+    "monthsAgo": "{months} n wagguren aya",
+    "yearAgo": "aseggas aya",
+    "yearsAgo": "{years} n iseggasen aya"
   },
   "common": {
     "loading": "Asali...",
-    "error": "Tuccfa",
-    "success": "Tawaḍit",
-    "warning": "Aɣtal",
+    "error": "Tuccḍa",
+    "success": "Tawadiyt",
+    "warning": "Alɣu",
     "info": "Talɣut",
     "cancel": "Sefsex",
     "confirm": "Sentem",
@@ -525,35 +646,35 @@
     "delete": "Kkes",
     "edit": "Ẓreg",
     "close": "Mdel",
-    "back": "Uɣal",
-    "next": "Zdat",
-    "previous": "Uɣal",
+    "backToMenu": "Uɣal ɣer wumuɣ",
+    "next": "D-iteddun",
+    "previous": "Uḍfir",
     "submit": "Azen",
-    "reset": "Awennez",
+    "reset": "Ales awennez",
     "clear": "Sfeḍ",
     "search": "Nadi",
-    "filter": "Astay",
+    "filter": "Sizreg",
     "sort": "Smizzwer",
     "refresh": "Smiren",
-    "retry": "Ɛreḍ tikelt-nniḍen",
+    "retry": "Ɛreḍ tikkelt-nniḍen",
     "yes": "Ih",
     "no": "Uhu",
     "ok": "Ih",
     "today": "Ass-a",
     "yesterday": "Iḍelli",
     "tomorrow": "Azekka",
-    "daysAgo": "Uqbel {days} n wussan",
+    "daysAgo": "ussan {days} aya",
     "online": "Srid",
-    "offline": "Ur yesrid ara",
+    "offline": "Ur yessirid ara",
     "connecting": "Tuqqna...",
     "connected": "Yeqqen",
-    "disconnected": "Ur yeqqin ara",
-    "tryAgain": "Ɛreḍ tikelt-nniḍen",
+    "disconnected": "Yefsi",
+    "tryAgain": "Ɛreḍ tikkelt-nniḍen",
     "goBack": "Uɣal",
     "seeMore": "Wali ugar",
-    "showLess": "Wali drus",
-    "expand": "Siɣzef",
-    "collapse": "Seɣmec",
+    "showLess": "Sken drus",
+    "expand": "Sineɣzef",
+    "collapse": "Sqemc",
     "pause": "Ḥbes",
     "resume": "Kemmel",
     "time": "Akud",
@@ -561,16 +682,17 @@
     "gameInfo": "Talɣut n urar",
     "or": "neɣ",
     "score": "Asin",
-    "toWin": "i uɣbalu",
-    "points": "tineqqiḍin",
+    "toWin": "i trbeḥt",
+    "points": "tinqiḍin",
     "medium": "Alemmas",
-    "slow": "Yeẓẓel",
-    "fast": "Urured",
-    "modeSelection": "Afran n wanaw",
-    "chooseModeDescription": "Fren amek tebɣiḍ ad turaḍ",
-    "changeMode": "Beddel anaw",
-    "confirmQuitGame": "Tebɣiḍ ad tffeɣeḍ seg urar?",
-    "canvasNotSupported": "Iminig-inek ur issefrak ara aferdis HTML5 Canvas."
+    "slow": "Ẓeẓẓel",
+    "fast": "Arured",
+    "modeSelection": "Afran n unaẓ",
+    "chooseModeDescription": "Fren amek tebɣiḍ ad tureḍ",
+    "changeMode": "Beddel anaẓ",
+    "confirmQuitGame": "Tebɣiḍ ad teǧǧiḍ urar?",
+    "canvasNotSupported": "Iminig-ik ur issefrak ara aferdis HTML5 Canvas.",
+    "saving": "Asekles..."
   },
   "languages": {
     "en": "English",
@@ -583,22 +705,32 @@
     "sg": "Sängö"
   },
   "footer": {
-    "description": "Tajruṛt n Pong tamezwarut. Urar, ceggaɛ, d teqqneḍ akked tdamsa.",
-    "allRightsReserved": "Akk izerfan ttusɛedmen.",
+    "description": "Tajruṭ n Pong tamazwarut. Urar, ceggaɛ, qqen aked tmezdagnut.",
+    "allRightsReserved": "Akk izrefan ttwaḥerzen.",
     "navigation": {
-      "title": "Anɣel",
-      "tournaments": "Isefka",
+      "title": "Tunigin",
+      "tournaments": "Isfka",
       "leaderboard": "Udrar"
     },
     "support": {
       "title": "Tallalt",
       "help": "Tallalt",
       "faq": "FAQ",
-      "contact": "Nermes",
+      "contact": "Anermis",
       "rules": "Ilugan"
     },
     "social": {
-      "title": "Tadamsa"
+      "title": "Tamezdagnut"
+    }
+  },
+  "error": {
+    "404": {
+      "title": "Asebter ur yufi ara",
+      "message": "Sur! Asebter i tettnadiḍ yebɣa yemḥu deg tallunt.",
+      "suggestions": {
+        "title": "Anda tebɣiḍ ad tedduḍ?"
+      },
+      "help": "Ma teẓriḍ d tuccḍa, senqed URL neɣ uɣal ɣer usebter agejdan."
     }
   }
 }

@@ -1,158 +1,736 @@
 {
   "app": {
     "title": "ft_transcendence",
-    "description": "Nyama na Pong asonga mingi"
+    "description": "Tî gbâ ti Pong"
   },
   "nav": {
-    "home": "Da",
-    "play": "Bara",
-    "profile": "Lakue ti lo",
-    "login": "Gue",
-    "logout": "Kiri",
-    "selectLanguage": "Ye yanga"
+    "home": "Ködörö",
+    "play": "Gâ",
+    "profile": "Mbëtï",
+    "login": "Dû",
+    "logout": "Fû",
+    "register": "Soro",
+    "selectLanguage": "Fa tâ sängö"
   },
   "home": {
-    "welcome": "Mbote na ft_transcendence",
-    "description": "Hinga bara Pong asonga mingi na bara na ndo sioni, tournament, na nyama ti bara asonga.",
-    "features": {
-        "multiplayer": {
-        "title": "Bara na ndo sioni",
-        "description": "Bara na aterene ti mo na tempo sioni na kodoro kue."
-        },
-        "tournaments": {
-        "title": "Tournament",
-        "description": "Gue na tournament be yeke na kanga na classification be fa champion."
-        },
-        "chat": {
-        "title": "Tene na sioni",
-        "description": "Tene na aterene bara ape ye fa aterene kodo na communaute."
-        }
+    "welcome": "Bâa na lê ti ft_transcendence",
+    "description": "Hâa tî gbâ ti Pong na lê ti gâ na lê ti mbênî, tî gbâ ti mbênî na lê ti mbênî, na lê ti gbâ ti mbênî.",
+    "gameModes": {
+      "title": "Fa tâ gâ ti mbênî",
+      "local": {
+        "title": "Gâ ti mbênî",
+        "description": "Gâ na lê ti mbênî na lê ti ordinateur. Tî gbâ ti gâ ti mbênî!",
+        "button": "Gâ na lê ti mbênî"
+      },
+      "remote": {
+        "title": "Gâ na lê ti mbênî",
+        "description": "Gbâ na lê ti mbênî na lê ti mbênî.",
+        "button": "Gâ na lê ti mbênî",
+        "loginRequired": "Dû ti gâ na lê ti mbênî"
+      },
+      "tournament": {
+        "title": "Gbâ ti mbênî",
+        "description": "Soro gbâ ti mbênî ti 8 mbênî na lê ti mbênî.",
+        "button": "Soro gbâ ti mbênî"
+      }
     },
-    "buttons": {
-        "play": "Bara",
-        "login": "Gue",
-        "register": "Ke compte",
-        "tournaments": "Tournament"
+    "features": {
+      "title": "Tî gbâ",
+      "multiplayer": {
+        "title": "Gâ na lê ti mbênî",
+        "description": "Gâ na lê ti mbênî na lê ti mbênî."
+      },
+      "tournaments": {
+        "title": "Gbâ ti mbênî",
+        "description": "Gbâ na lê ti gbâ ti mbênî na lê ti mbênî."
+      },
+      "singleplayer": {
+        "title": "Gâ ti mbênî",
+        "description": "Gâ na lê ti mbênî na lê ti mbênî."
+      }
+    },
+    "globalStats": {
+      "title": "Tî gbâ ti mbênî",
+      "totalPlayers": "Mbênî ti gâ",
+      "totalGames": "Gâ ti mbênî",
+      "onlinePlayers": "Mbênî ti gâ na lê ti mbênî",
+      "activeTournaments": "Gbâ ti mbênî ti gâ"
     },
     "stats": {
-        "title": "Amasnas ti lo",
-        "wins": "Longisa",
-        "losses": "Kua",
-        "winRate": "Ameɣnas ti longisa",
-        "rank": "Aseggas",
-        "highestScore": "Asin ti tɣerma",
-        "currentStreak": "Amasnas ti longisa",
-        "longestStreak": "Amasnas ti longisa d tɣerma",
-        "players": "Aterene bara",
-        "games": "Bara",
-        "tournaments": "Tournament",
-        "online": "Na sioni"
-    }
+      "title": "Tî gbâ ti mbênî",
+      "wins": "Gbâ",
+      "losses": "Gbâ",
+      "winRate": "Gbâ ti mbênî",
+      "rank": "Gbâ",
+      "highestScore": "Gbâ ti mbênî",
+      "currentStreak": "Gbâ ti mbênî",
+      "longestStreak": "Gbâ ti mbênî",
+      "players": "Mbênî",
+      "games": "Gâ",
+      "tournaments": "Gbâ",
+      "online": "Na lê ti mbênî"
     },
+    "buttons": {
+      "play": "Gâ",
+      "login": "Dû",
+      "register": "Soro",
+      "tournaments": "Gbâ"
+    }
+  },
   "auth": {
     "login": {
-      "title": "Gue",
-      "username": "Iri ti lo",
-      "password": "Mot susu",
-      "loginButton": "Gue",
-      "forgotPassword": "Mo hungara mot susu?",
-      "noAccount": "Ala na compte ape?",
-      "signUp": "Sura iri"
+      "title": "Dû",
+      "username": "Gbâ ti mbênî",
+      "usernamePlaceholder": "Gbâ ti mbênî",
+      "password": "Gbâ ti mbênî",
+      "passwordPlaceholder": "Gbâ ti mbênî",
+      "rememberMe": "Gbâ ti mbênî",
+      "submit": "Dû",
+      "loginButton": "Dû",
+      "loading": "Dû...",
+      "forgotPassword": "Gbâ ti mbênî",
+      "noAccount": "Gbâ ti mbênî",
+      "signUp": "Soro",
+      "or": "na lê ti",
+      "oauth42": "Dû na lê ti 42",
+      "google": "Dû na lê ti Google"
     },
     "register": {
-      "title": "Ke compte oko",
-      "username": "Iri ti lo",
-      "email": "Email",
-      "password": "Mot susu",
-      "confirmPassword": "Ye mot susu kua",
-      "registerButton": "Ke compte",
-      "haveAccount": "Mo ala na compte?",
-      "signIn": "Gue"
+      "title": "Soro mbênî",
+      "username": "Gbâ ti mbênî",
+      "usernamePlaceholder": "Gbâ ti mbênî",
+      "email": "Gbâ ti mbênî",
+      "emailPlaceholder": "Gbâ ti mbênî",
+      "password": "Gbâ ti mbênî",
+      "passwordPlaceholder": "Gbâ ti mbênî",
+      "confirmPassword": "Gbâ ti mbênî",
+      "confirmPasswordPlaceholder": "Gbâ ti mbênî",
+      "registerButton": "Soro mbênî",
+      "haveAccount": "Gbâ ti mbênî",
+      "signIn": "Dû"
+    },
+    "twoFactor": {
+      "title": "Gbâ ti mbênî",
+      "description": "Gbâ ti mbênî.",
+      "verify": "Gbâ",
+      "codeSent": "Gbâ ti mbênî"
     },
     "errors": {
-      "invalidCredentials": "Iri ti lo to mot susu ape gi",
-      "usernameTaken": "Iri ti lo so ale zua",
-      "emailTaken": "Email so ale zua",
-      "passwordMismatch": "Amot susu ape kelen-kelen ape",
-      "requiredField": "Champ so nyeke obligatoire"
+      "loginFailed": "Gbâ ti mbênî",
+      "missingFields": "Gbâ ti mbênî",
+      "invalidCredentials": "Gbâ ti mbênî",
+      "usernameTaken": "Gbâ ti mbênî",
+      "emailTaken": "Gbâ ti mbênî",
+      "passwordMismatch": "Gbâ ti mbênî",
+      "requiredField": "Gbâ ti mbênî",
+      "loginRequired": "Gbâ ti mbênî"
     }
   },
   "game": {
-    "title": "Arena Pong",
+    "title": "Gbâ ti Pong",
     "lobby": {
-      "title": "Da ti bara",
-      "waitingForPlayer": "Hinga aterene bara ape...",
-      "playerJoined": "Aterene bara gue!",
-      "startGame": "Banda bara",
-      "leaveGame": "Kiri bara"
+      "title": "Gbâ ti mbênî",
+      "waitingForPlayer": "Gbâ ti mbênî",
+      "playerJoined": "Gbâ ti mbênî",
+      "startGame": "Gâ",
+      "leaveGame": "Gbâ"
     },
     "controls": {
-      "instructions": "Senzbere W/S to asunga-bere be tene raquette ti mo",
-      "pause": "To ESPACE be pause"
+      "title": "Gbâ ti mbênî",
+      "instructions": "Gbâ ti mbênî",
+      "pause": "Gbâ",
+      "touch": "Gbâ ti mbênî"
     },
     "status": {
-      "waiting": "Hinga",
-      "playing": "Yeke bara",
-      "paused": "Pause",
-      "finished": "Bara leke"
+      "connecting_server": "Gbâ ti mbênî",
+      "connected": "Gbâ ti mbênî",
+      "connection_error": "Gbâ ti mbênî",
+      "disconnected": "Gbâ ti mbênî",
+      "searching_opponent": "Gbâ ti mbênî",
+      "opponent_found": "Gbâ ti mbênî",
+      "waiting_opponent": "Gbâ ti mbênî",
+      "starting_local": "Gbâ ti mbênî",
+      "opponent_disconnected": "Gbâ ti mbênî",
+      "forfeit_victory": "Gbâ ti mbênî",
+      "paused": "Gbâ ti mbênî",
+      "resumed": "Gbâ ti mbênî",
+      "go": "Gbâ",
+      "starting_in": "Gbâ ti mbênî",
+      "starting_as_host": "Gbâ ti mbênî",
+      "starting_as_guest": "Gbâ ti mbênî",
+      "connected_as_guest": "Gbâ ti mbênî",
+      "connected_as_host": "Gbâ ti mbênî",
+      "waiting_for_host": "Gbâ ti mbênî",
+      "received_host_settings": "Gbâ ti mbênî",
+      "applying_settings": "Gbâ ti mbênî",
+      "settings_applied": "Gbâ ti mbênî",
+      "game_starting": "Gbâ ti mbênî",
+      "game_ended": "Gbâ ti mbênî",
+      "game_over": "Gbâ ti mbênî",
+      "signaling_connected": "Gbâ ti mbênî",
+      "signaling_disconnected": "Gbâ ti mbênî"
     },
     "score": {
-      "you": "Mo",
-      "opponent": "Aterene bara"
+      "you": "Gbâ",
+      "opponent": "Gbâ"
+    },
+    "placeholder": {
+      "player": "Gbâ"
+    },
+    "modes": {
+      "local": "Gbâ",
+      "remote": "Gbâ",
+      "tournament": "Gbâ"
+    },
+    "speeds": {
+      "slow": "Gbâ",
+      "medium": "Gbâ",
+      "fast": "Gbâ"
+    },
+    "themes": {
+      "classic": "Gbâ",
+      "neon": "Gbâ",
+      "retro": "Gbâ",
+      "cyberpunk": "Gbâ",
+      "space": "Gbâ",
+      "italian": "Gbâ",
+      "matrix": "Gbâ",
+      "lava": "Gbâ"
+    },
+    "remote": {
+      "yourProfile": "Gbâ ti mbênî",
+      "speedNote": "Gbâ ti mbênî",
+      "powerUpsNote": "Gbâ ti mbênî",
+      "findOpponent": "Gbâ ti mbênî",
+      "hostSettings": {
+        "title": "Gbâ ti mbênî",
+        "description": "Gbâ ti mbênî"
+      },
+      "forfeit": {
+        "title": "Gbâ ti mbênî",
+        "message": "Gbâ ti mbênî",
+        "opponentWins": "Gbâ ti mbênî"
+      },
+      "howItWorks": {
+        "title": "Gbâ ti mbênî",
+        "host": {
+          "title": "Gbâ ti mbênî",
+          "description": "Gbâ ti mbênî"
+        },
+        "guest": {
+          "title": "Gbâ ti mbênî",
+          "description": "Gbâ ti mbênî"
+        },
+        "theme": {
+          "title": "Gbâ ti mbênî",
+          "description": "Gbâ ti mbênî"
+        }
+      }
+    },
+    "customization": {
+      "title": "Gbâ ti mbênî",
+      "ballSpeed": "Gbâ ti mbênî",
+      "paddleSpeed": "Gbâ ti mbênî",
+      "powerUps": "Gbâ ti mbênî",
+      "gameMode": "Gbâ ti mbênî",
+      "theme": "Gbâ ti mbênî",
+      "difficulty": "Gbâ ti mbênî",
+      "resetToDefault": "Gbâ ti mbênî",
+      "applySettings": "Gbâ ti mbênî",
+      "userTheme": "Gbâ ti mbênî",
+      "guestTheme": "Gbâ ti mbênî",
+      "changeInProfile": "Gbâ ti mbênî",
+      "willUseTheme": "Gbâ ti mbênî",
+      "tournamentTheme": "Gbâ ti mbênî",
+      "enablePowerUps": "Gbâ ti mbênî"
+    },
+    "endScreen": {
+      "title": "Gbâ ti mbênî",
+      "winnerText": "Gbâ ti mbênî",
+      "finalScore": "Gbâ ti mbênî",
+      "stats": {
+        "duration": "Gbâ ti mbênî",
+        "totalPoints": "Gbâ ti mbênî",
+        "winCondition": "Gbâ ti mbênî",
+        "mode": "Gbâ ti mbênî"
+      },
+      "actions": {
+        "playAgain": "Gbâ ti mbênî",
+        "backToMenu": "Gbâ ti mbênî",
+        "findNewOpponent": "Gbâ ti mbênî",
+        "tournamentContinue": "Gbâ ti mbênî",
+        "viewStats": "Gbâ ti mbênî"
+      }
+    }
+  },
+  "tournament": {
+    "title": "Gbâ ti mbênî",
+    "create": {
+      "title": "Gbâ ti mbênî",
+      "youAreIncluded": "Gbâ ti mbênî",
+      "enterOtherParticipants": "Gbâ ti mbênî",
+      "participantPlaceholder": "Gbâ ti mbênî",
+      "confirmed": "Gbâ ti mbênî",
+      "createTournament": "Gbâ ti mbênî"
+    },
+    "join": "Gbâ ti mbênî",
+    "waiting": "Gbâ ti mbênî",
+    "inProgress": "Gbâ ti mbênî",
+    "finished": "Gbâ ti mbênî",
+    "bracket": {
+      "title": "Gbâ ti mbênî"
+    },
+    "legend": {
+      "pending": "Gbâ ti mbênî",
+      "inProgress": "Gbâ ti mbênî",
+      "completed": "Gbâ ti mbênî"
+    },
+    "rounds": {
+      "quarterFinals": "Gbâ ti mbênî",
+      "semiFinals": "Gbâ ti mbênî",
+      "final": "Gbâ ti mbênî"
+    },
+    "currentMatch": "Gbâ ti mbênî",
+    "nextMatch": "Gbâ ti mbênî",
+    "winner": "Gbâ ti mbênî",
+    "participants": "Gbâ ti mbênî",
+    "participantsCount": "Gbâ ti mbênî",
+    "participantsNote": "Gbâ ti mbênî",
+    "matchNumber": "Gbâ ti mbênî",
+    "vs": "Gbâ ti mbênî",
+    "waitingForMatch": "Gbâ ti mbênî",
+    "matchInProgress": "Gbâ ti mbênî",
+    "matchCompleted": "Gbâ ti mbênî",
+    "yourParticipation": "Gbâ ti mbênî",
+    "authenticatedPlayer": "Gbâ ti mbênî",
+    "guestMode": "Gbâ ti mbênî",
+    "guestModeDescription": "Gbâ ti mbênî",
+    "winScore": "Gbâ ti mbênî",
+    "winScoreNote": "Gbâ ti mbênî",
+    "powerUpsNote": "Gbâ ti mbênî",
+    "howItWorks": "Gbâ ti mbênî",
+    "step1": "Gbâ ti mbênî",
+    "step2": "Gbâ ti mbênî",
+    "step3": "Gbâ ti mbênî",
+    "step4": "Gbâ ti mbênî",
+    "status": {
+      "waiting": "Gbâ ti mbênî",
+      "inProgress": "Gbâ ti mbênî",
+      "finished": "Gbâ ti mbênî"
     }
   },
   "profile": {
-    "title": "Lakue ti lo",
-    "stats": {
-        "title": "Statistique"
+    "title": "Gbâ ti mbênî",
+    "actions": {
+      "title": "Gbâ ti mbênî",
+      "editProfile": "Gbâ ti mbênî",
+      "changePassword": "Gbâ ti mbênî",
+      "changeAvatar": "Gbâ ti mbênî",
+      "logout": "Gbâ ti mbênî",
+      "toggle2FA": "Gbâ ti mbênî",
+      "addFriend": "Gbâ ti mbênî",
+      "removeFriend": "Gbâ ti mbênî",
+      "challenge": "Gbâ ti mbênî"
     },
-
+    "stats": {
+      "title": "Gbâ ti mbênî",
+      "wins": "Gbâ ti mbênî",
+      "losses": "Gbâ ti mbênî",
+      "totalGames": "Gbâ ti mbênî",
+      "gamesPlayed": "Gbâ ti mbênî",
+      "gamesWon": "Gbâ ti mbênî",
+      "winRate": "Gbâ ti mbênî",
+      "ranking": "Gbâ ti mbênî",
+      "rank": "Gbâ ti mbênî",
+      "highestScore": "Gbâ ti mbênî",
+      "averageScore": "Gbâ ti mbênî",
+      "currentStreak": "Gbâ ti mbênî",
+      "longestStreak": "Gbâ ti mbênî",
+      "playtime": "Gbâ ti mbênî",
+      "lastPlayed": "Gbâ ti mbênî"
+    },
     "history": {
-      "title": "Histoire ti match ape",
-      "noGames": "Bara oke ape",
+      "title": "Gbâ ti mbênî",
+      "noGames": "Gbâ ti mbênî",
+      "noGamesDesc": "Gbâ ti mbênî",
+      "playFirstGame": "Gbâ ti mbênî",
+      "viewAll": "Gbâ ti mbênî",
+      "viewDetails": "Gbâ ti mbênî",
+      "noMatchesFilter": "Gbâ ti mbênî",
       "result": {
-        "win": "Longisa",
-        "loss": "Kua"
+        "win": "Gbâ ti mbênî",
+        "loss": "Gbâ ti mbênî"
+      },
+      "filters": {
+        "all": "Gbâ ti mbênî",
+        "wins": "Gbâ ti mbênî",
+        "losses": "Gbâ ti mbênî",
+        "local": "Gbâ ti mbênî",
+        "remote": "Gbâ ti mbênî",
+        "tournament": "Gbâ ti mbênî"
+      },
+      "stats": {
+        "totalGames": "Gbâ ti mbênî",
+        "winRate": "Gbâ ti mbênî",
+        "recent": "Gbâ ti mbênî"
       }
     },
+    "friends": {
+      "title": "Gbâ ti mbênî",
+      "manage": "Gbâ ti mbênî",
+      "noFriends": "Gbâ ti mbênî",
+      "findFriends": "Gbâ ti mbênî",
+      "viewAll": "Gbâ ti mbênî",
+      "online": "Gbâ ti mbênî",
+      "offline": "Gbâ ti mbênî",
+      "justOffline": "Gbâ ti mbênî",
+      "minsAgo": "Gbâ ti mbênî",
+      "hoursAgo": "Gbâ ti mbênî",
+      "daysAgo": "Gbâ ti mbênî",
+      "viewProfile": "Gbâ ti mbênî",
+      "challenge": "Gbâ ti mbênî",
+      "sendMessage": "Gbâ ti mbênî"
+    },
+    "edit": {
+      "title": "Gbâ ti mbênî",
+      "username": "Gbâ ti mbênî",
+      "usernamePlaceholder": "Gbâ ti mbênî",
+      "email": "Gbâ ti mbênî",
+      "emailPlaceholder": "Gbâ ti mbênî",
+      "avatar": "Gbâ ti mbênî",
+      "selectImage": "Gbâ ti mbênî",
+      "changeAvatarHint": "Gbâ ti mbênî",
+      "save": "Gbâ ti mbênî",
+      "cancel": "Gbâ ti mbênî",
+      "uploading": "Gbâ ti mbênî",
+      "errors": {
+        "updateFailed": "Gbâ ti mbênî",
+        "invalidImage": "Gbâ ti mbênî",
+        "invalidImageType": "Gbâ ti mbênî",
+        "imageTooLarge": "Gbâ ti mbênî",
+        "avatarTooLarge": "Gbâ ti mbênî",
+        "usernameTooShort": "Gbâ ti mbênî",
+        "usernameTooLong": "Gbâ ti mbênî",
+        "invalidEmail": "Gbâ ti mbênî"
+      }
+    },
+    "changePassword": {
+      "title": "Gbâ ti mbênî",
+      "currentPassword": "Gbâ ti mbênî",
+      "currentPasswordPlaceholder": "Gbâ ti mbênî",
+      "newPassword": "Gbâ ti mbênî",
+      "newPasswordPlaceholder": "Gbâ ti mbênî",
+      "confirmPassword": "Gbâ ti mbênî",
+      "confirmPasswordPlaceholder": "Gbâ ti mbênî",
+      "save": "Gbâ ti mbênî",
+      "cancel": "Gbâ ti mbênî",
+      "saving": "Gbâ ti mbênî",
+      "success": "Gbâ ti mbênî",
+      "error": "Gbâ ti mbênî",
+      "validation": {
+        "required": "Gbâ ti mbênî",
+        "minLength": "Gbâ ti mbênî",
+        "mismatch": "Gbâ ti mbênî",
+        "weak": "Gbâ ti mbênî"
+      }
+    },
+    "twoFactor": {
+      "title": "Gbâ ti mbênî",
+      "description": "Gbâ ti mbênî",
+      "enable": "Gbâ ti mbênî",
+      "disable": "Gbâ ti mbênî",
+      "enterCode": "Gbâ ti mbênî",
+      "codePlaceholder": "Gbâ ti mbênî",
+      "verify": "Gbâ ti mbênî",
+      "cancel": "Gbâ ti mbênî",
+      "modal": {
+        "enableTitle": "Gbâ ti mbênî",
+        "enableDescription": "Gbâ ti mbênî",
+        "enableButton": "Gbâ ti mbênî",
+        "disableTitle": "Gbâ ti mbênî",
+        "disableDescription": "Gbâ ti mbênî",
+        "disableButton": "Gbâ ti mbênî",
+        "codeLabel": "Gbâ ti mbênî"
+      },
+      "messages": {
+        "enabled": "Gbâ ti mbênî",
+        "disabled": "Gbâ ti mbênî",
+        "codeSent": "Gbâ ti mbênî",
+        "invalidCode": "Gbâ ti mbênî",
+        "error": "Gbâ ti mbênî"
+      }
+    },
+    "themes": {
+      "title": "Gbâ ti mbênî",
+      "description": "Gbâ ti mbênî",
+      "select": "Gbâ ti mbênî",
+      "manageThemes": "Gbâ ti mbênî",
+      "currentTheme": "Gbâ ti mbênî",
+      "current": "Gbâ ti mbênî",
+      "saveTheme": "Gbâ ti mbênî",
+      "messages": {
+        "saved": "Gbâ ti mbênî"
+      },
+      "errors": {
+        "saveFailed": "Gbâ ti mbênî"
+      }
+    },
+    "lastLogin": "Gbâ ti mbênî",
+    "googleAccount": "Gbâ ti mbênî",
+    "errors": {
+      "userNotFound": "Gbâ ti mbênî",
+      "loadFailed": "Gbâ ti mbênî",
+      "unauthorized": "Gbâ ti mbênî",
+      "networkError": "Gbâ ti mbênî",
+      "changePasswordFailed": "Gbâ ti mbênî"
+    },
     "settings": {
-      "title": "Configuration",
-      "language": "Yanga",
-      "theme": "Theme",
-      "notifications": "Notification"
+      "title": "Gbâ ti mbênî",
+      "language": "Gbâ ti mbênî",
+      "theme": "Gbâ ti mbênî",
+      "notifications": "Gbâ ti mbênî",
+      "privacy": "Gbâ ti mbênî",
+      "security": "Gbâ ti mbênî"
     }
+  },
+  "friends": {
+    "title": "Gbâ ti mbênî",
+    "search": {
+      "title": "Gbâ ti mbênî",
+      "placeholder": "Gbâ ti mbênî",
+      "noResults": "Gbâ ti mbênî",
+      "searchInstructions": "Gbâ ti mbênî"
+    },
+    "requests": {
+      "title": "Gbâ ti mbênî",
+      "noPending": "Gbâ ti mbênî",
+      "sentRequest": "Gbâ ti mbênî",
+      "received": "Gbâ ti mbênî",
+      "sent": "Gbâ ti mbênî"
+    },
+    "actions": {
+      "addFriend": "Gbâ ti mbênî",
+      "removeFriend": "Gbâ ti mbênî",
+      "acceptRequest": "Gbâ ti mbênî",
+      "cancelRequest": "Gbâ ti mbênî",
+      "accept": "Gbâ ti mbênî",
+      "decline": "Gbâ ti mbênî",
+      "remove": "Gbâ ti mbênî"
+    },
+    "status": {
+      "requestSent": "Gbâ ti mbênî",
+      "pending": "Gbâ ti mbênî",
+      "friends": "Gbâ ti mbênî"
+    },
+    "messages": {
+      "requestSent": "Gbâ ti mbênî",
+      "requestAccepted": "Gbâ ti mbênî",
+      "requestDeclined": "Gbâ ti mbênî",
+      "friendRemoved": "Gbâ ti mbênî",
+      "friendAdded": "Gbâ ti mbênî",
+      "actionFailed": "Gbâ ti mbênî",
+      "userNotFound": "Gbâ ti mbênî",
+      "alreadyFriends": "Gbâ ti mbênî",
+      "cannotAddSelf": "Gbâ ti mbênî",
+      "searchFailed": "Gbâ ti mbênî"
+    },
+    "confirmations": {
+      "removeFriend": "Gbâ ti mbênî",
+      "declineRequest": "Gbâ ti mbênî"
+    }
+  },
+  "settings": {
+    "title": "Gbâ ti mbênî",
+    "username": "Gbâ ti mbênî",
+    "email": "Gbâ ti mbênî",
+    "save": "Gbâ ti mbênî",
+    "general": {
+      "title": "Gbâ ti mbênî",
+      "language": "Gbâ ti mbênî",
+      "theme": "Gbâ ti mbênî",
+      "notifications": "Gbâ ti mbênî",
+      "privacy": "Gbâ ti mbênî",
+      "security": "Gbâ ti mbênî",
+      "timezone": "Gbâ ti mbênî"
+    },
+    "notifications": {
+      "title": "Gbâ ti mbênî",
+      "email": "Gbâ ti mbênî",
+      "push": "Gbâ ti mbênî",
+      "gameInvites": "Gbâ ti mbênî",
+      "friendRequests": "Gbâ ti mbênî",
+      "messages": "Gbâ ti mbênî"
+    },
+    "privacy": {
+      "title": "Gbâ ti mbênî",
+      "profileVisibility": "Gbâ ti mbênî",
+      "onlineStatus": "Gbâ ti mbênî",
+      "gameHistory": "Gbâ ti mbênî"
+    },
+    "account": {
+      "title": "Gbâ ti mbênî",
+      "changePassword": "Gbâ ti mbênî",
+      "deleteAccount": "Gbâ ti mbênî",
+      "exportData": "Gbâ ti mbênî"
+    }
+  },
+  "modals": {
+    "confirm": {
+      "title": "Gbâ ti mbênî",
+      "message": "Gbâ ti mbênî",
+      "confirm": "Gbâ ti mbênî",
+      "cancel": "Gbâ ti mbênî"
+    },
+    "error": {
+      "title": "Gbâ ti mbênî",
+      "genericMessage": "Gbâ ti mbênî",
+      "close": "Gbâ ti mbênî"
+    },
+    "success": {
+      "title": "Gbâ ti mbênî",
+      "close": "Gbâ ti mbênî"
+    },
+    "gameEnd": {
+      "title": "Gbâ ti mbênî",
+      "winner": "Gbâ ti mbênî",
+      "finalScore": "Gbâ ti mbênî",
+      "duration": "Gbâ ti mbênî",
+      "playAgain": "Gbâ ti mbênî",
+      "backToMenu": "Gbâ ti mbênî",
+      "tournamentContinue": "Gbâ ti mbênî"
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "Gbâ ti mbênî",
+      "email": "Gbâ ti mbênî",
+      "minLength": "Gbâ ti mbênî",
+      "maxLength": "Gbâ ti mbênî",
+      "password": "Gbâ ti mbênî",
+      "confirmPassword": "Gbâ ti mbênî",
+      "username": "Gbâ ti mbênî"
+    },
+    "placeholders": {
+      "search": "Gbâ ti mbênî",
+      "email": "Gbâ ti mbênî",
+      "username": "Gbâ ti mbênî",
+      "password": "Gbâ ti mbênî",
+      "message": "Gbâ ti mbênî"
+    }
+  },
+  "time": {
+    "now": "Gbâ ti mbênî",
+    "justNow": "Gbâ ti mbênî",
+    "minuteAgo": "Gbâ ti mbênî",
+    "minutesAgo": "Gbâ ti mbênî",
+    "hourAgo": "Gbâ ti mbênî",
+    "hoursAgo": "Gbâ ti mbênî",
+    "dayAgo": "Gbâ ti mbênî",
+    "daysAgo": "Gbâ ti mbênî",
+    "weekAgo": "Gbâ ti mbênî",
+    "weeksAgo": "Gbâ ti mbênî",
+    "monthAgo": "Gbâ ti mbênî",
+    "monthsAgo": "Gbâ ti mbênî",
+    "yearAgo": "Gbâ ti mbênî",
+    "yearsAgo": "Gbâ ti mbênî"
   },
   "common": {
-    "loading": "Yeke charge...",
-    "error": "Faute",
-    "success": "Longisa",
-    "cancel": "Sio",
-    "confirm": "Ye na ndo",
-    "save": "Simbele",
-    "delete": "Fini",
-    "edit": "Changer",
-    "close": "Kangbi",
-    "back": "Rukua",
-    "next": "Na use",
-    "previous": "Na kota"
+    "loading": "Gbâ ti mbênî",
+    "error": "Gbâ ti mbênî",
+    "success": "Gbâ ti mbênî",
+    "warning": "Gbâ ti mbênî",
+    "info": "Gbâ ti mbênî",
+    "cancel": "Gbâ ti mbênî",
+    "confirm": "Gbâ ti mbênî",
+    "save": "Gbâ ti mbênî",
+    "delete": "Gbâ ti mbênî",
+    "edit": "Gbâ ti mbênî",
+    "close": "Gbâ ti mbênî",
+    "backToMenu": "Gbâ ti mbênî",
+    "next": "Gbâ ti mbênî",
+    "previous": "Gbâ ti mbênî",
+    "submit": "Gbâ ti mbênî",
+    "reset": "Gbâ ti mbênî",
+    "clear": "Gbâ ti mbênî",
+    "search": "Gbâ ti mbênî",
+    "filter": "Gbâ ti mbênî",
+    "sort": "Gbâ ti mbênî",
+    "refresh": "Gbâ ti mbênî",
+    "retry": "Gbâ ti mbênî",
+    "yes": "Gbâ ti mbênî",
+    "no": "Gbâ ti mbênî",
+    "ok": "Gbâ ti mbênî",
+    "today": "Gbâ ti mbênî",
+    "yesterday": "Gbâ ti mbênî",
+    "tomorrow": "Gbâ ti mbênî",
+    "daysAgo": "Gbâ ti mbênî",
+    "online": "Gbâ ti mbênî",
+    "offline": "Gbâ ti mbênî",
+    "connecting": "Gbâ ti mbênî",
+    "connected": "Gbâ ti mbênî",
+    "disconnected": "Gbâ ti mbênî",
+    "tryAgain": "Gbâ ti mbênî",
+    "goBack": "Gbâ ti mbênî",
+    "seeMore": "Gbâ ti mbênî",
+    "showLess": "Gbâ ti mbênî",
+    "expand": "Gbâ ti mbênî",
+    "collapse": "Gbâ ti mbênî",
+    "pause": "Gbâ ti mbênî",
+    "resume": "Gbâ ti mbênî",
+    "time": "Gbâ ti mbênî",
+    "status": "Gbâ ti mbênî",
+    "gameInfo": "Gbâ ti mbênî",
+    "or": "Gbâ ti mbênî",
+    "score": "Gbâ ti mbênî",
+    "toWin": "Gbâ ti mbênî",
+    "points": "Gbâ ti mbênî",
+    "medium": "Gbâ ti mbênî",
+    "slow": "Gbâ ti mbênî",
+    "fast": "Gbâ ti mbênî",
+    "modeSelection": "Gbâ ti mbênî",
+    "chooseModeDescription": "Gbâ ti mbênî",
+    "changeMode": "Gbâ ti mbênî",
+    "confirmQuitGame": "Gbâ ti mbênî",
+    "canvasNotSupported": "Gbâ ti mbênî",
+    "saving": "Gbâ ti mbênî"
+  },
+  "languages": {
+    "en": "Gbâ ti mbênî",
+    "fr": "Gbâ ti mbênî",
+    "it": "Gbâ ti mbênî",
+    "es": "Gbâ ti mbênî",
+    "kab": "Gbâ ti mbênî",
+    "kab-tfng": "Gbâ ti mbênî",
+    "ar": "Gbâ ti mbênî",
+    "sg": "Gbâ ti mbênî"
   },
   "footer": {
-    "description": "Nyama Pong asonga mingi. Bara, sioni na tene na communaute.",
-    "allRightsReserved": "Droit kue zua.",
+    "description": "Gbâ ti mbênî",
+    "allRightsReserved": "Gbâ ti mbênî",
     "navigation": {
-        "title": "Navigation",
-        "tournaments": "Tournament",
-        "leaderboard": "Classification"
+      "title": "Gbâ ti mbênî",
+      "tournaments": "Gbâ ti mbênî",
+      "leaderboard": "Gbâ ti mbênî"
     },
     "support": {
-        "title": "Support",
-        "help": "Gbata",
-        "faq": "FAQ",
-        "contact": "Contact",
-        "rules": "Loi"
+      "title": "Gbâ ti mbênî",
+      "help": "Gbâ ti mbênî",
+      "faq": "Gbâ ti mbênî",
+      "contact": "Gbâ ti mbênî",
+      "rules": "Gbâ ti mbênî"
     },
     "social": {
-        "title": "Reseaux sociaux"
+      "title": "Gbâ ti mbênî"
     }
+  },
+  "error": {
+    "404": {
+      "title": "Gbâ ti mbênî",
+      "message": "Gbâ ti mbênî",
+      "suggestions": {
+        "title": "Gbâ ti mbênî"
+      },
+      "help": "Gbâ ti mbênî"
     }
+  }
 }

@@ -113,7 +113,7 @@ export class TournamentBracket
    */
   private renderSVGBracket(): string
   {
-    const width = 900;
+    const width = 950;
     const height = 600;
 
     return `

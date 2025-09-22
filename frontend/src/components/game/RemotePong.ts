@@ -1,4 +1,5 @@
 import { Pong3D } from './Pong3D/Pong3D.js';
+import { i18n } from '@/services/i18nService.js';
 import { authService } from '../../services/authService.js';
 import { matchService } from '../../services/matchService.js';
 import { ApiConfig } from '../../config/api.js';
@@ -186,7 +187,7 @@ export class RemotePong extends Pong3D
     }
     
     console.log('🌐 Starting remote game...');
-    this.updateGameStatus('Connexion au serveur...');
+    this.updateGameStatus(i18n.t('game.status.connecting_server'));
     
     try
     {
@@ -199,7 +200,7 @@ export class RemotePong extends Pong3D
     } catch (error)
     {
       console.error('❌ Failed to start remote game:', error);
-      this.updateGameStatus('Erreur de connexion');
+      this.updateGameStatus(i18n.t('game.status.connection_error'));
     }
   }
 
@@ -286,7 +287,7 @@ export class RemotePong extends Pong3D
       }
     }));
 
-    this.updateGameStatus('Recherche d\'un adversaire...');
+    this.updateGameStatus(i18n.t('game.status.searching_opponent'));
   }
 
   /**
@@ -332,7 +333,7 @@ export class RemotePong extends Pong3D
     switch (message.type)
     {
       case 'waiting_opponent':
-        this.updateGameStatus('En attente d\'un adversaire...');
+        this.updateGameStatus(i18n.t('game.status.waiting_opponent'));
         break;
 
       case 'match_found':
@@ -358,7 +359,7 @@ export class RemotePong extends Pong3D
       case 'opponent_disconnected':
         // Adversaire déconnecté : gérer la fin de partie
         console.log(`❌ Opponent disconnected: ${message.disconnectedPlayer} (${message.reason})`);
-        this.updateGameStatus(`${message.disconnectedPlayer} s'est déconnecté`);
+        this.updateGameStatus(i18n.t('game.status.opponent_disconnected', { player: message.disconnectedPlayer }));
         this.handleOpponentDisconnection(message.reason || 'unknown');
         break;
     }
@@ -390,9 +391,9 @@ export class RemotePong extends Pong3D
       this.gameState.status = 'playing';
       this.saveGameStateToSession();
     }
-    
-    this.updateGameStatus(`Adversaire trouvé: ${message.opponent.username}`);
-    
+
+    this.updateGameStatus(i18n.t('game.status.opponent_found', { opponent: this.opponentUsername }));
+
     // Établir la connexion WebRTC P2P
     await this.setupWebRTCConnection();
   }
@@ -407,8 +408,8 @@ export class RemotePong extends Pong3D
     
     if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection)
     {
-      this.updateGameStatus('Connexion serveur perdue - partie en cours...');
-      
+      this.updateGameStatus(i18n.t('game.status.signaling_disconnected'));
+
       // Délai avant d'attribuer la victoire (permet la reconnexion)
       if (!this.dataChannel || this.dataChannel.readyState !== 'open')
       {
@@ -503,12 +504,12 @@ export class RemotePong extends Pong3D
       {
         // L'hôte envoie immédiatement ses paramètres de jeu
         this.sendGameSettingsToGuest();
-        this.updateGameStatus('🎮 Démarrage du jeu en tant qu\'hôte...');
+        this.updateGameStatus(i18n.t('game.status.starting_as_host'));
         this.startGameAsHost();
       } else
       {
         // L'invité attend les paramètres de l'hôte
-        this.updateGameStatus('👥 Connecté en tant qu\'invité - Réception des paramètres...');
+        this.updateGameStatus(i18n.t('game.status.starting_as_guest'));
       }
     };
 
@@ -876,7 +877,7 @@ export class RemotePong extends Pong3D
     this.settings.theme = preservedTheme; // Le thème reste personnel
     
     // Mise à jour du statut de connexion
-    this.updateConnectionStatus('👥 Connecté en tant qu\'invité - Paramètres reçus !');
+    this.updateConnectionStatus(i18n.t('game.status.connected_as_guest', { opponent: this.opponentUsername }));
     
     // Affichage des paramètres reçus après un délai
     setTimeout(() =>
@@ -973,9 +974,9 @@ export class RemotePong extends Pong3D
     const statusMessage = type === 'opponent_quit' 
       ? `${loserName} a quitté la partie`
       : `${loserName} s'est déconnecté`;
-      
-    this.updateGameStatus(`Victoire par forfait ! ${statusMessage}`);
-    
+
+    this.updateGameStatus(i18n.t('game.status.forfeit_victory', { statusMessage }));
+
     // Traitement de la victoire par forfait
     this.processForfeitVictory(winner, winnerName, loserName, reason);
   }
@@ -1523,7 +1524,7 @@ export class RemotePong extends Pong3D
       settingsContainer.innerHTML = `
         <div class="p-3 bg-gray-800/60 rounded-lg border border-green-500/20 mt-3">
           <div class="text-sm text-green-400 font-medium mb-2">
-            ✅ Paramètres reçus de l'hôte :
+            ${i18n.t('game.status.received_host_settings')} 
           </div>
           <div class="grid grid-cols-2 gap-2 text-xs">
             <div class="bg-gray-700/40 p-2 rounded">

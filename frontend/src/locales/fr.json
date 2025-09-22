@@ -142,10 +142,33 @@
       "touch": "Contrôles Tactiles"
     },
     "status": {
-      "waiting": "En attente",
-      "playing": "En cours",
-      "paused": "En pause",
-      "finished": "Terminé"
+      "connecting_server": "Connexion au serveur...",
+      "connected": "Connecté au serveur",
+      "connection_error": "Erreur de connexion",
+      "disconnected": "Déconnecté du serveur",
+      "searching_opponent": "Recherche d'un adversaire...",
+      "opponent_found": "Adversaire trouvé !",
+      "waiting_opponent": "En attente de l'adversaire...",
+      "starting_local": "Démarrage du jeu local...",
+      "opponent_disconnected" : "Adversaire déconnecté",
+      "forfeit_victory": "Victoire par forfait : {statusMessage}",
+      "paused": "Jeu en pause",
+      "resumed": "Jeu repris",
+      "go": "C'est parti !",
+      "starting_in": "Démarrage dans {count}...",
+      "starting_as_host": "Démarrage en tant qu'hôte",
+      "starting_as_guest": "Démarrage en tant qu'invité",
+      "connected_as_guest": "Connecté en tant qu'invité - Paramètres reçus !",
+      "connected_as_host": "Connecté en tant qu'hôte - Vous définissez les paramètres !",
+      "waiting_for_host": "En attente des paramètres de l'hôte...",
+      "received_host_settings": "Paramètres reçus de l'hôte",
+      "applying_settings": "Application des paramètres...",
+      "settings_applied": "Paramètres appliqués",
+      "game_starting": "Le jeu commence bientôt...",
+      "game_ended": "La partie est terminée",
+      "game_over": "Partie terminée",
+      "signaling_connected": "Signalement connecté",
+      "signaling_disconnected": "Signalement déconnecté"
     },
     "score": {
       "you": "Vous",
@@ -220,7 +243,25 @@
       "willUseTheme": "utilisera ce thème",
       "tournamentTheme": "thème du tournoi",
       "enablePowerUps": "Activer les Power-ups"
-    }
+    },
+    "endScreen": {
+        "title": "Fin de partie",
+        "winnerText": " a gagné la partie",
+        "finalScore": "Score final",
+        "stats" : {
+          "duration": "durée de la partie",
+          "totalPoints": "points totaux",
+          "winCondition": "condition de victoire",
+          "mode": "mode de jeu"
+        },
+        "actions": {
+          "playAgain": "Rejouer",
+          "backToMenu": "Retour au menu",
+          "findNewOpponent": "Trouver un nouvel adversaire",
+          "tournamentContinue": "Continuer le tournoi",
+          "viewStats": "Voir les statistiques"
+        }
+      }
   },
   "tournament": {
     "title": "Tournoi",
@@ -610,6 +651,7 @@
     "delete": "Supprimer",
     "edit": "Modifier",
     "close": "Fermer",
+    "backToMenu": "Retour au Menu",
     "back": "Retour",
     "next": "Suivant",
     "previous": "Précédent",

@@ -54,7 +54,6 @@ export class ProfileHeader
               <!-- Informations de base -->
               <div>
                 <h1 class="text-2xl md:text-3xl font-bold text-white mb-2">${this.user.username}</h1>
-                <p class="text-gray-400 mb-3">${this.user.email}</p>
                 <div class="flex items-center justify-center lg:justify-start space-x-4 text-sm text-gray-400 flex-wrap gap-2">
                   <span class="flex items-center">
                     <div class="w-2 h-2 ${this.user.isOnline ? 'bg-green-500' : 'bg-gray-500'} rounded-full mr-2"></div>
@@ -232,10 +231,6 @@ export class ProfileHeader
           <button id="header-add-friend" class="btn-primary w-full py-3 px-4 text-sm font-medium flex items-center justify-center">
             <i class="fas fa-user-plus mr-2"></i>
             ${i18n.t('profile.actions.addFriend')}
-          </button>
-          <button id="header-challenge-user" class="btn-secondary w-full py-3 px-4 text-sm font-medium flex items-center justify-center">
-            <i class="fas fa-gamepad mr-2"></i>
-            ${i18n.t('profile.actions.challenge')}
           </button>
         </div>
       `;
