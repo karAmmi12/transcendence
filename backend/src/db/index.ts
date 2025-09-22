@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import { Logger } from '../utils/logger.js';
 
-// ✅ Correction : utiliser undefined au lieu de false
+// Correction : utiliser undefined au lieu de false
 const db = new Database("database.db", { 
   verbose: process.env.NODE_ENV !== 'production' ? (message: any) => Logger.log(message) : () => {}
 });
@@ -98,7 +98,13 @@ function insertTestDataIfNotExists() {
             ('kanye', 'kanye@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-02 11:00:00', '/uploads/avatars/kanye.jpeg', 'lava'),
             ('travis', 'travis@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-03 12:00:00', '/uploads/avatars/travis.jpeg', 'lava'),
             ('future', 'future@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-04 13:00:00', '/uploads/avatars/future.jpeg', 'lava'),
-            ('pnd', 'pnd@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-05 14:00:00', '/uploads/avatars/pnd.jpeg', 'lava');
+            ('pnd', 'pnd@test.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 1, '2024-01-05 14:00:00', '/uploads/avatars/pnd.jpeg', 'lava'),
+            ('kammi', 'kammi@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/kammi.jpg', 'lava'),
+            ('tpassin', 'tpassin@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/tpassin.jpg', 'lava'),
+            ('apintus', 'apintus@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/apintus.jpg', 'lava'),
+            ('peche', 'peche@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/peche.jpeg', 'lava'),
+            ('raisin', 'raisin@example.com', '$2b$10$kC7jopUFsc6nxCbTK9rXx.JtL41o89.TmmyBum9NVIo3ZfTw7plfe', 0, '2024-01-01 10:00:00', '/uploads/avatars/raisin.jpg', 'lava');
+
 
             -- 🆕 Données IDENTIQUES à reset.ts
             INSERT OR IGNORE INTO matches (id, mode, tournament_id, started_at, ended_at, winner_id) VALUES 
