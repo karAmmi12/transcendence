@@ -1,4 +1,5 @@
 // import { CrashTest, CrashTestSuite } from './CrashTest';
+// import { Logger } from '@/utils/logger.js'; 
 
 // export class CrashTestUI {
 //   private static testButton: HTMLElement | null = null;
@@ -34,25 +35,25 @@
 //   }
 
 //   private static async runFullCrashTest(): Promise<void> {
-//     console.log('💥 Running full crash test suite...');
+//     Logger.log('💥 Running full crash test suite...');
     
 //     try {
 //       const result = await this.crashTest.runAllCrashTests();
 //       this.showCrashTestModal(result);
 //     } catch (error) {
-//       console.error('❌ Crash test failed:', error);
+//       Logger.error('❌ Crash test failed:', error);
 //       this.showErrorModal('Crash test execution failed');
 //     }
 //   }
 
 //   private static async runQuickCrashCheck(): Promise<void> {
-//     console.log('⚡ Running quick crash check...');
+//     Logger.log('⚡ Running quick crash check...');
     
 //     try {
 //       const result = await this.crashTest.runAllCrashTests();
 //       this.showQuickCrashNotification(result);
 //     } catch (error) {
-//       console.error('❌ Quick crash check failed:', error);
+//       Logger.error('❌ Quick crash check failed:', error);
 //     }
 //   }
 

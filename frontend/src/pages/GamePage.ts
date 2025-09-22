@@ -8,6 +8,7 @@ import { i18n } from '@/services/i18nService.js';
 import { GameManager } from '@/components/game/GameManager';
 import { RemotePong } from '@/components/game/RemotePong.js';
 import type { GameSettings, GameManagerConfig } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 // 🎯 IMPORTS DES COMPOSANTS
@@ -65,7 +66,7 @@ export class GamePage
 
   destroy(): void 
   {
-    console.log('🧹 Destruction de GamePage et nettoyage des jeux actifs');
+    Logger.log('🧹 Destruction de GamePage et nettoyage des jeux actifs');
 
     this.cleanupEventListeners();
     this.cleanupGameInstances();
@@ -206,7 +207,7 @@ export class GamePage
 
       if (targetRoute !== '/game' && this.remotePong && this.isRemoteGameInProgress()) 
       {
-        console.log('🚶 Sortie de la page de jeu pendant un match distant, nettoyage...');
+        Logger.log('🚶 Sortie de la page de jeu pendant un match distant, nettoyage...');
         this.destroy();
       }
     };
@@ -273,7 +274,7 @@ export class GamePage
   {
     try 
     {
-      console.log('🎮 Démarrage du jeu local...');
+      Logger.log('🎮 Démarrage du jeu local...');
 
       const gameSettings = this.gameSettingsComponent?.getGameSettings();
       if (!gameSettings) return;
@@ -284,11 +285,11 @@ export class GamePage
         canvasId: 'game-canvas',
         settings: gameSettings,
         onGameStart: () => {
-          console.log('✅ Jeu local démarré');
+          Logger.log('✅ Jeu local démarré');
           this.updateGameInterface(gameSettings);
         },
         onGameEnd: async (winner: string, scores: any, duration: number) => {
-          console.log('🏁 Jeu local terminé (callback) :', { winner, scores, duration });
+          Logger.log('🏁 Jeu local terminé (callback) :', { winner, scores, duration });
           await this.handleGameEnd(winner, scores, duration, gameSettings);
         }
       };
@@ -299,7 +300,7 @@ export class GamePage
 
     } catch (error) 
     {
-      console.error('❌ Échec du démarrage du jeu local :', error);
+      Logger.error('❌ Échec du démarrage du jeu local :', error);
       this.showError(i18n.t('common.error'));
     }
   }
@@ -308,7 +309,7 @@ export class GamePage
   {
     try 
     {
-      console.log('🌐 Démarrage du jeu distant...');
+      Logger.log('🌐 Démarrage du jeu distant...');
 
       const gameSettings = this.gameSettingsComponent?.getGameSettings();
       if (!gameSettings) 
@@ -316,14 +317,14 @@ export class GamePage
 
       this.showGameInterface();
 
-      console.log(' Création d\'une nouvelle instance RemotePong');
+      Logger.log(' Création d\'une nouvelle instance RemotePong');
       this.remotePong = new RemotePong('game-canvas', gameSettings);
 
       await this.remotePong.startRemoteGame();
 
     } catch (error) 
     {
-      console.error('❌ Échec du démarrage du jeu distant :', error);
+      Logger.error('❌ Échec du démarrage du jeu distant :', error);
       this.showError('Impossible de démarrer la partie en ligne');
     }
   }
@@ -377,10 +378,10 @@ export class GamePage
   {
     try 
     {
-      console.log('🎮 Partie terminée, données déjà sauvegardées par Pong3D');
+      Logger.log('🎮 Partie terminée, données déjà sauvegardées par Pong3D');
     } catch (error) 
     {
-      console.error('❌ Échec de la sauvegarde des données du match :', error);
+      Logger.error('❌ Échec de la sauvegarde des données du match :', error);
     }
   }
 
@@ -469,9 +470,9 @@ export class GamePage
       try {
         const currentUser = authService.getCurrentUser();
         this.userPreferredTheme = currentUser?.theme || null;
-        console.log('🎨 Thème préféré de l\'utilisateur chargé :', this.userPreferredTheme);
+        Logger.log('🎨 Thème préféré de l\'utilisateur chargé :', this.userPreferredTheme);
       } catch (error) {
-        console.error('❌ Échec du chargement du thème utilisateur :', error);
+        Logger.error('❌ Échec du chargement du thème utilisateur :', error);
         this.userPreferredTheme = null;
       }
     } else {
@@ -495,9 +496,9 @@ export class GamePage
   {
     const wasInGame = sessionStorage.getItem('remote_game_active');
     if (mode === 'remote' && authService.isAuthenticated() && wasInGame !== 'true') {
-      console.log('🎮 Démarrage automatique du matchmaking distant');
+      Logger.log('🎮 Démarrage automatique du matchmaking distant');
     } else if (mode === 'remote' && wasInGame === 'true') {
-      console.log('🚫 Pas de démarrage automatique en raison d\'une interruption de jeu - affichage du modal de défaite');
+      Logger.log('🚫 Pas de démarrage automatique en raison d\'une interruption de jeu - affichage du modal de défaite');
     }
   }
 
@@ -507,7 +508,7 @@ export class GamePage
 
   private handleThemeChanged = async (event: CustomEvent) => {
     const newTheme = event.detail.theme;
-    console.log('🎨 Événement de changement de thème reçu :', newTheme);
+    Logger.log('🎨 Événement de changement de thème reçu :', newTheme);
 
     const currentUser = authService.getCurrentUser();
     if (currentUser) 

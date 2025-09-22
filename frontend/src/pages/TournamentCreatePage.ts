@@ -10,6 +10,7 @@ import { i18n } from '@/services/i18nService';
 import { authService } from '@services/authService';
 import { tournamentService } from '@services/tournamentService';
 import { TournamentPage } from '@pages/TournamentPage';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 // CLASSE PRINCIPALE
@@ -259,7 +260,7 @@ export class TournamentCreatePage
         finalParticipants,
         this.gameSettings // ✅ Passer les paramètres
       );
-      console.log('Tournament created:', tournamentResponse);
+      Logger.log('Tournament created:', tournamentResponse);
 
       // Passer directement les données du tournoi à la page
       const tournamentPage = new TournamentPage();
@@ -274,7 +275,7 @@ export class TournamentCreatePage
     }
     catch (error)
     {
-      console.error('Failed to create tournament:', error);
+      Logger.error('Failed to create tournament:', error);
 
       const errorMessage = (error as Error).message || 'Une erreur est survenue lors de la création du tournoi.';
       this.showError(errorMessage);

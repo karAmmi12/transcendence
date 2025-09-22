@@ -41,7 +41,7 @@ export default async function authRoutes(app: FastifyInstance)
   //       error: 'No token provided' 
   //     });
   //   } catch (error) {
-  //     console.error('Test endpoint error:', error);
+  //     Logger.error('Test endpoint error:', error);
   //     return reply.status(500).send({ 
   //       error: 'Internal server error' 
   //     });
