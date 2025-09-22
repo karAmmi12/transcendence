@@ -173,11 +173,11 @@ export class Pong3D
     if (this.gameState.status === 'playing')
     {
       this.gameState.status = 'paused';
-      this.updateGameStatus('Jeu en pause');
+      this.updateGameStatus(i18n.t('game.status.paused'));
     } else if (this.gameState.status === 'paused')
     {
       this.gameState.status = 'playing';
-      this.updateGameStatus('Jeu en cours');
+      this.updateGameStatus(i18n.t('game.status.resumed'));
     }
   }
 
@@ -380,7 +380,7 @@ export class Pong3D
    */
   protected startLocalGame(): void
   {
-    this.updateGameStatus('Démarrage du jeu...');
+    this.updateGameStatus(i18n.t('game.status.starting_local'));
     this.physics.reset();
 
     // Démarrer le tracking du match
@@ -587,8 +587,7 @@ export class Pong3D
       // Activer le power-up
       this.powerUpManager.activatePowerUp(collidedPowerUp.id, targetPlayer);
 
-      // Afficher une notification
-      this.showPowerUpNotification(collidedPowerUp.type, targetPlayer);
+     
     }
   }
 
@@ -620,18 +619,18 @@ export class Pong3D
   private startCountdown(): void
   {
     let count = 3;
-    this.updateGameStatus(`Démarrage dans ${count}...`);
+    this.updateGameStatus(i18n.t('game.status.starting_in', { count: count.toString() }));
 
     const countdownInterval = setInterval(() => {
       count--;
       if (count > 0)
       {
-        this.updateGameStatus(`Démarrage dans ${count}...`);
+        this.updateGameStatus(i18n.t('game.status.starting_in', { count: count.toString() }));
       } else
       {
         clearInterval(countdownInterval);
         this.gameState.status = 'playing';
-        this.updateGameStatus('Jeu en cours');
+        this.updateGameStatus(i18n.t('game.status.go'));
         this.physics.launchBall();
       }
     }, 1000);
@@ -800,56 +799,6 @@ export class Pong3D
   }
 
   /**
-   * Affiche une notification de power-up
-   * @param type Type du power-up
-   * @param player Joueur cible
-   */
-  private showPowerUpNotification(type: PowerUpType, player: 'player1' | 'player2'): void
-  {
-    // Obtenir le nom lisible du power-up
-    const powerUpNames = {
-      [PowerUpType.PADDLE_SIZE]: i18n.t('powerups.paddle_size'),
-      [PowerUpType.REVERSE_CONTROLS]: i18n.t('powerups.reverse_controls'),
-      [PowerUpType.FREEZE_OPPONENT]: i18n.t('powerups.freeze_opponent')
-    };
-
-    const playerName = player === 'player1' ? this.settings.player1Name : this.settings.player2Name;
-    const powerUpName = powerUpNames[type] || type;
-
-    // Créer une notification stylée
-    const notification = document.createElement('div');
-    notification.className = `
-      fixed top-20 left-1/2 transform -translate-x-1/2
-      bg-gradient-to-r from-purple-600 to-blue-600
-      text-white px-6 py-3 rounded-lg z-50
-      transition-all duration-500 ease-in-out
-      shadow-lg border-2 border-white/20
-      animate-pulse
-    `;
-
-    notification.innerHTML = `
-      <div class="flex items-center space-x-2">
-        <span class="text-xl">⚡</span>
-        <span class="font-semibold">${i18n.t('game.powerupActivated', { player: playerName, powerUp: powerUpName })}</span>
-      </div>
-    `;
-
-    document.body.appendChild(notification);
-
-    // Animation d'entrée
-    setTimeout(() => {
-      notification.style.transform = 'translate(-50%, 0) scale(1.1)';
-    }, 100);
-
-    // Animation de sortie et suppression
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translate(-50%, -20px) scale(0.8)';
-      setTimeout(() => notification.remove(), 300);
-    }, 2700);
-  }
-
-  /**
    * Affiche le modal de fin de partie
    * @param winner Joueur gagnant
    * @param winnerName Nom du gagnant
@@ -1006,6 +955,6 @@ export class Pong3D
   private connectToServer(): void
   {
     console.log('🌐 Connecting to server...');
-    this.updateGameStatus('Connexion au serveur...');
+    this.updateGameStatus(i18n.t('game.status.connecting_server'));
   }
 }

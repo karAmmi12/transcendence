@@ -336,7 +336,6 @@ export class GameSettingsUI
         <div id="host-settings" class="mb-6">
           <div class="flex items-center justify-between mb-4">
             <h4 class="text-lg text-white">${i18n.t('game.remote.hostSettings.title')}</h4>
-            <span class="text-xs bg-blue-600 px-2 py-1 rounded">${i18n.t('game.remote.hostSettings.note')}</span>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -14,39 +14,39 @@
   },
   "home": {
     "welcome": "Welcome to ft_transcendence",
-    "description": "Experience the ultimate Pong game with local multiplayer, remote competitions, and tournaments.",
+    "description": "Discover the ultimate Pong game with local multiplayer, remote competitions, and tournaments.",
     "gameModes": {
       "title": "Choose Your Game Mode",
       "local": {
         "title": "Local Game",
-        "description": "Play with a friend on the same computer. Perfect for quick matches!",
-        "button": "Play Local"
+        "description": "Play with a friend on the same computer. Perfect for quick games!",
+        "button": "Play Locally"
       },
       "remote": {
-        "title": "Remote Game",
-        "description": "Challenge players online from around the world.",
+        "title": "Online Game",
+        "description": "Challenge players from around the world.",
         "button": "Play Online",
-        "loginRequired": "Login required for online play"
+        "loginRequired": "Login required to play online"
       },
       "tournament": {
         "title": "Tournament",
-        "description": "Compete in local tournaments and climb the leaderboard.",
-        "button": "Join Tournament"
+        "description": "Create an 8-player tournament and see who is the best!",
+        "button": "Create Tournament"
       }
     },
     "features": {
       "title": "Features",
       "multiplayer": {
         "title": "Real-time Multiplayer",
-        "description": "Play against friends in real-time from anywhere in the world."
+        "description": "Play against your friends in real-time from anywhere in the world."
       },
       "tournaments": {
         "title": "Tournaments",
-        "description": "Compete in tournaments and climb the leaderboard to become champion."
+        "description": "Participate in tournaments and climb the rankings to become champion."
       },
       "singleplayer": {
-        "title": "Single Player Mode",
-        "description": "Play against AI opponents and improve your skills."
+        "title": "Solo Mode",
+        "description": "Face AI opponents and improve your skills."
       }
     },
     "globalStats": {
@@ -88,7 +88,7 @@
       "submit": "Log In",
       "loginButton": "Log In",
       "loading": "Logging in...",
-      "forgotPassword": "Forgot Password?",
+      "forgotPassword": "Forgot password?",
       "noAccount": "Don't have an account?",
       "signUp": "Sign Up",
       "or": "or",
@@ -107,7 +107,7 @@
       "confirmPasswordPlaceholder": "Repeat your password",
       "registerButton": "Create Account",
       "haveAccount": "Already have an account?",
-      "signIn": "Sign In"
+      "signIn": "Log In"
     },
     "twoFactor": {
       "title": "Two-Factor Authentication",
@@ -130,22 +130,45 @@
     "title": "Pong Arena",
     "lobby": {
       "title": "Game Lobby",
-      "waitingForPlayer": "Waiting for opponent...",
-      "playerJoined": "Player joined!",
+      "waitingForPlayer": "Waiting for an opponent...",
+      "playerJoined": "A player has joined!",
       "startGame": "Start Game",
       "leaveGame": "Leave Game"
     },
     "controls": {
       "title": "Game Controls",
-      "instructions": "Use W/S or Arrow Keys to move your paddle",
+      "instructions": "Use W/S or arrow keys to move your paddle",
       "pause": "Press SPACE to pause",
       "touch": "Touch Controls"
     },
     "status": {
-      "waiting": "Waiting",
-      "playing": "Playing",
-      "paused": "Paused",
-      "finished": "Game Over"
+      "connecting_server": "Connecting to server...",
+      "connected": "Connected to server",
+      "connection_error": "Connection error",
+      "disconnected": "Disconnected from server",
+      "searching_opponent": "Searching for opponent...",
+      "opponent_found": "Opponent found!",
+      "waiting_opponent": "Waiting for opponent...",
+      "starting_local": "Starting local game...",
+      "opponent_disconnected": "Opponent disconnected",
+      "forfeit_victory": "Victory by forfeit: {statusMessage}",
+      "paused": "Game paused",
+      "resumed": "Game resumed",
+      "go": "Go!",
+      "starting_in": "Starting in {count}...",
+      "starting_as_host": "Starting as host",
+      "starting_as_guest": "Starting as guest",
+      "connected_as_guest": "Connected as guest - Settings received!",
+      "connected_as_host": "Connected as host - You set the settings!",
+      "waiting_for_host": "Waiting for host settings...",
+      "received_host_settings": "Received host settings",
+      "applying_settings": "Applying settings...",
+      "settings_applied": "Settings applied",
+      "game_starting": "Game starting soon...",
+      "game_ended": "Game ended",
+      "game_over": "Game over",
+      "signaling_connected": "Signaling connected",
+      "signaling_disconnected": "Signaling disconnected"
     },
     "score": {
       "you": "You",
@@ -156,10 +179,9 @@
     },
     "modes": {
       "local": "Local",
-      "remote": "Remote",
+      "remote": "Online",
       "tournament": "Tournament"
     },
-
     "speeds": {
       "slow": "Slow",
       "medium": "Medium",
@@ -178,8 +200,32 @@
     "remote": {
       "yourProfile": "Your Profile",
       "speedNote": "Note: Ball speed may be affected by network latency.",
-      "powerUpsNote": "Both players must agree on power-ups settings",
-      "findOpponent": "Find Opponent"
+      "powerUpsNote": "Both players must agree on power-up settings",
+      "findOpponent": "Find Opponent",
+      "hostSettings": {
+        "title": "Host Settings",
+        "description": "As host, you set the game parameters"
+      },
+      "forfeit": {
+        "title": "Defeat by disconnection",
+        "message": "You left the game",
+        "opponentWins": "Your opponent wins by forfeit"
+      },
+      "howItWorks": {
+        "title": "How it works?",
+        "host": {
+          "title": "As Host",
+          "description": "Your game settings will be applied for the match"
+        },
+        "guest": {
+          "title": "As Guest",
+          "description": "You will automatically receive the host's settings"
+        },
+        "theme": {
+          "title": "Personal theme",
+          "description": "Your visual theme remains yours in all cases"
+        }
+      }
     },
     "customization": {
       "title": "Game Settings",
@@ -197,6 +243,24 @@
       "willUseTheme": "will use this theme",
       "tournamentTheme": "tournament theme",
       "enablePowerUps": "Enable Power-ups"
+    },
+    "endScreen": {
+      "title": "Game End",
+      "winnerText": " won the game",
+      "finalScore": "Final Score",
+      "stats": {
+        "duration": "game duration",
+        "totalPoints": "total points",
+        "winCondition": "win condition",
+        "mode": "game mode"
+      },
+      "actions": {
+        "playAgain": "Play Again",
+        "backToMenu": "Back to Menu",
+        "findNewOpponent": "Find New Opponent",
+        "tournamentContinue": "Continue Tournament",
+        "viewStats": "View Statistics"
+      }
     }
   },
   "tournament": {
@@ -205,7 +269,6 @@
       "title": "Create Tournament",
       "youAreIncluded": "You are automatically included in the tournament!",
       "enterOtherParticipants": "Enter the names of the {count} other participants:",
-      "enterAllParticipants": "Enter the names of the {count} participants:",
       "participantPlaceholder": "Participant {number} name",
       "confirmed": "Confirmed",
       "createTournament": "Create Tournament"
@@ -230,14 +293,6 @@
     "currentMatch": "Current Match",
     "nextMatch": "Next Match",
     "winner": "Tournament Winner",
-    "player1": "Player 1",
-    "player2": "Player 2",
-    "startMatch": "Start Match",
-    "round": "Round",
-    "finals": "Finals",
-    "semifinals": "Semifinals",
-    "quarterfinals": "Quarterfinals",
-    "players": "Players",
     "participants": "Participants",
     "participantsCount": "participants",
     "participantsNote": "Number of players in the tournament",
@@ -249,14 +304,15 @@
     "yourParticipation": "Your Participation",
     "authenticatedPlayer": "Authenticated Player",
     "guestMode": "Guest Mode",
-    "guestModeDescription": "You're creating a tournament as a guest. Tournaments will only be stored temporarily.",
+    "guestModeDescription": "You are creating a tournament as a guest. Tournaments will be stored temporarily.",
+    "winScore": "Win Score",
     "winScoreNote": "Points needed to win each match",
     "powerUpsNote": "Enable power-ups for all tournament matches",
     "howItWorks": "How it works",
-    "step1": "Create tournament with desired settings",
-    "step2": "Tournament bracket will be automatically generated",
+    "step1": "Create a tournament with desired settings",
+    "step2": "The tournament bracket will be generated automatically",
     "step3": "Play matches round by round until the final",
-    "step4": "Winner will be crowned champion!",
+    "step4": "The winner will be crowned champion!",
     "status": {
       "waiting": "Waiting for players",
       "inProgress": "In Progress",
@@ -296,21 +352,21 @@
     "history": {
       "title": "Match History",
       "noGames": "No games played yet",
-      "noGamesDesc": "Start playing to see your match history here",
+      "noGamesDesc": "Start playing to see your history here",
       "playFirstGame": "Play your first game",
       "viewAll": "View all history",
       "viewDetails": "View details",
       "noMatchesFilter": "No matches found for this filter",
       "result": {
-        "win": "Victory",
-        "loss": "Defeat"
+        "win": "Win",
+        "loss": "Loss"
       },
       "filters": {
         "all": "All",
         "wins": "Wins",
         "losses": "Losses",
         "local": "Local",
-        "remote": "Remote",
+        "remote": "Online",
         "tournament": "Tournament"
       },
       "stats": {
@@ -348,7 +404,7 @@
       "cancel": "Cancel",
       "uploading": "Uploading...",
       "errors": {
-        "updateFailed": "Failed to update profile",
+        "updateFailed": "Profile update failed",
         "invalidImage": "Invalid image format",
         "invalidImageType": "Invalid image format",
         "imageTooLarge": "Image too large",
@@ -370,7 +426,7 @@
       "cancel": "Cancel",
       "saving": "Changing...",
       "success": "Password changed successfully!",
-      "error": "Failed to change password",
+      "error": "Password change failed",
       "validation": {
         "required": "This field is required",
         "minLength": "Password must be at least 8 characters",
@@ -413,22 +469,21 @@
       "current": "Current",
       "saveTheme": "Save Theme",
       "messages": {
-        "saved": "Theme successfully saved!"
+        "saved": "Theme saved successfully!"
       },
       "errors": {
-        "saveFailed": "Failed to save theme"
+        "saveFailed": "Theme save failed"
       }
     },
     "lastLogin": "Last login",
     "googleAccount": "Google Account",
     "errors": {
       "userNotFound": "User not found",
-      "loadFailed": "Failed to load profile",
-      "unauthorized": "You don't have permission to view this profile",
+      "loadFailed": "Profile loading failed",
+      "unauthorized": "You do not have permission to view this profile",
       "networkError": "Network error. Please try again.",
-      "changePasswordFailed": "Failed to change password"
+      "changePasswordFailed": "Password change failed"
     },
-
     "settings": {
       "title": "Settings",
       "language": "Language",
@@ -439,10 +494,10 @@
     }
   },
   "friends": {
-    "title": "Friends Management",
+    "title": "Friend Management",
     "search": {
       "title": "Find Friends",
-      "placeholder": "Search for users...",
+      "placeholder": "Search users...",
       "noResults": "No users found",
       "searchInstructions": "Enter at least 2 characters to search"
     },
@@ -493,13 +548,16 @@
       "title": "General Settings",
       "language": "Language",
       "theme": "Theme",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "security": "Security",
       "timezone": "Timezone"
     },
     "notifications": {
       "title": "Notifications",
       "email": "Email Notifications",
       "push": "Push Notifications",
-      "gameInvites": "Game Invitations",
+      "gameInvites": "Game Invites",
       "friendRequests": "Friend Requests",
       "messages": "Messages"
     },
@@ -519,7 +577,7 @@
   "modals": {
     "confirm": {
       "title": "Confirm Action",
-      "message": "Are you sure you want to proceed?",
+      "message": "Are you sure you want to continue?",
       "confirm": "Confirm",
       "cancel": "Cancel"
     },
@@ -533,7 +591,7 @@
       "close": "Close"
     },
     "gameEnd": {
-      "title": "Game Over",
+      "title": "Game End",
       "winner": "Winner",
       "finalScore": "Final Score",
       "duration": "Duration",
@@ -547,10 +605,10 @@
       "required": "This field is required",
       "email": "Please enter a valid email address",
       "minLength": "Must be at least {min} characters",
-      "maxLength": "Must be no more than {max} characters",
+      "maxLength": "Must not exceed {max} characters",
       "password": "Password must contain at least 8 characters",
       "confirmPassword": "Passwords must match",
-      "username": "Username must be 3-20 characters and contain only letters, numbers, and underscores"
+      "username": "Username must contain between 3 and 20 characters and only letters, numbers, and underscores"
     },
     "placeholders": {
       "search": "Search...",
@@ -588,7 +646,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "close": "Close",
-    "back": "Back",
+    "backToMenu": "Back to Menu",
     "next": "Next",
     "previous": "Previous",
     "submit": "Submit",
@@ -605,7 +663,7 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "tomorrow": "Tomorrow",
-    "daysAgo": "{days} days ago",
+    "daysAgo": "days ago",
     "online": "Online",
     "offline": "Offline",
     "connecting": "Connecting...",
@@ -663,6 +721,16 @@
     },
     "social": {
       "title": "Social"
+    }
+  },
+  "error": {
+    "404": {
+      "title": "Page Not Found",
+      "message": "Oops! The page you're looking for seems to have disappeared into space.",
+      "suggestions": {
+        "title": "Where would you like to go?"
+      },
+      "help": "If you think this is an error, please check the URL or return to the homepage."
     }
   }
 }
