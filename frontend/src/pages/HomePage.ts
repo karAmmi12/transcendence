@@ -17,19 +17,7 @@ import { HeroSection } from '@components/home/HeroSection';
 import { GlobalStatsCard } from '@components/home/GlobalStatsCard';
 import { UserStatsCard } from '@components/home/UserStatsCard';
 import { GameModeButtons } from '@components/home/GameModeButtons';
-
-// ==========================================
-// TYPES ET INTERFACES
-// ==========================================
-import type { User, GlobalStats } from '../types/index.js';
-
-export interface GameModeCallbacks
-{
-  onLocalGame: () => void;
-  onRemoteGame: () => void;
-  onTournament: () => void;
-  onLogin?: () => void;
-}
+import type { GlobalStats, GameModeCallbacks } from '@/types/index.js';
 
 // ==========================================
 // 🏠 CLASSE PRINCIPALE

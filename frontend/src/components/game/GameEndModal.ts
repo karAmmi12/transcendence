@@ -1,6 +1,8 @@
 import { i18n } from '@/services/i18nService.js';
+import type { GameEndStats } from '@/types/index.js';
 
-export interface GameEndStats {
+// Interface locale pour GameEndModal qui est différente de celle des types globaux
+export interface GameEndModalStats {
   winnerName: string;
   loserName: string;
   winnerScore: number;
@@ -11,19 +13,41 @@ export interface GameEndStats {
   winScore: number;
 }
 
-export interface GameEndCallbacks {
+export interface GameEndModalCallbacks {
   onPlayAgain?: () => void;
-  onBackToMenu?: () => void;
+  onBackToMenu: () => void;
+  onViewStats?: () => void;
+}
+
+// Fonction utilitaire pour convertir GameEndStats vers GameEndModalStats
+export function convertToModalStats(stats: GameEndStats): GameEndModalStats {
+  return {
+    winnerName: stats.winnerName || stats.winner,
+    loserName: stats.loserName || stats.loser,
+    winnerScore: stats.winnerScore || stats.finalScore?.winner || 0,
+    loserScore: stats.loserScore || stats.finalScore?.loser || 0,
+    matchDuration: stats.matchDuration || parseInt(stats.duration) || 0,
+    totalScore: stats.totalScore || (stats.winnerScore || 0) + (stats.loserScore || 0),
+    gameMode: (stats.gameMode === 'remote' ? 'remote' : 'local') as 'local' | 'remote',
+    winScore: stats.winScore || 5
+  };
+}
+
+export interface GameEndModalCallbacks {
+  onPlayAgain?: () => void;
+  onBackToMenu: () => void;
   onViewStats?: () => void;
 }
 
 export class GameEndModal {
+  private element: HTMLElement | null = null;
   private modal: HTMLElement | null = null;
-  private stats: GameEndStats;
-  private callbacks: GameEndCallbacks;
-  private isRemoteGame: boolean;
+  private stats: GameEndModalStats;
+  private callbacks: GameEndModalCallbacks;
+  private isVisible: boolean = false;
+  private isRemoteGame: boolean = false;
 
-  constructor(stats: GameEndStats, callbacks: GameEndCallbacks) {
+  constructor(stats: GameEndModalStats, callbacks: GameEndModalCallbacks) {
     this.stats = stats;
     this.callbacks = callbacks;
     this.isRemoteGame = stats.gameMode === 'remote';
@@ -225,7 +249,7 @@ export class GameEndModal {
     }, 500);
   }
 
-  public updateStats(newStats: GameEndStats): void {
+  public updateStats(newStats: GameEndModalStats): void {
     this.stats = newStats;
     if (this.modal) {
       const content = this.modal.querySelector('.modal-content');

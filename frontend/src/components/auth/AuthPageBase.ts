@@ -1,4 +1,3 @@
-import { i18n } from '@/services/i18nService';
 import { ErrorMessage } from './ErrorMessage';
 import { OAuthButtons } from './OAuthButtons';
 import { authService } from '@services/authService';

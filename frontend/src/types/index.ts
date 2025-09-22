@@ -1,107 +1,92 @@
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  avatarUrl?: string | null;
-  isOnline?: boolean;
-  twoFactorEnabled?: boolean;
-  createdAt?: string;
-  lastLogin?: string;
-  theme?: string;
-  googleId?: string; 
-  stats?: UserStats;
-}
+// Auth types
+export type {
+  User,
+  UserStats,
+  LoginData,
+  RegisterData,
+  TwoFactorResponse,
+  MatchHistory
+} from './auth.js';
 
-export interface UserStats {
-  wins: number;
-  losses: number;
-  totalGames: number;
-  winRate: number;
-  rank: number;
-  highestScore: number;
-  currentStreak: number;
-  longestStreak: number;
-  gamesPlayed: number;
-}
+export { TwoFactorRequiredError } from './auth.js';
 
-export interface LoginData {
-  username: string;
-  password: string;
-  // rememberMe?: boolean;
-}
+// Game types
+export type {
+  GameSettings,
+  GameState,
+  GameManagerConfig,
+  GameObjects,
+  ObjectPositions,
+  GameEndStats,
+  GameEndCallbacks
+} from './game.js';
 
-export interface RegisterData {
-  username: string;
-  email: string;
-  password: string;
-}
+// Theme types
+export type {
+  ThemeConfig,
+  MaterialConfig
+} from './theme.js';
 
-// Ajouter cette interface manquante :
-export interface MatchHistory {
-  id: string;
-  opponent: string;
-  opponentAvatar?: string | null; // Nouveau champ pour l'avatar de l'adversaire
-  result: 'win' | 'loss';
-  score: {
-    player: number;
-    opponent: number;
-  };
-  date: string;
-  duration?: number;
-  gameMode?: 'local' | 'remote' | 'tournament';
-}
+// PowerUp types
+export type {
+  PowerUp,
+  ActiveEffect,
+  PowerUpConfig,
+  PowerUpEffects
+} from './powerups.js';
 
-// export interface MatchData {
-//     id: number;
-//     userId: number;
-//     opponent: string;
-//     result: string; // win | loss
-//     score: {
-//         player: number;
-//         opponent: number;
-//     }
-//     date: string;
-//     duration: string;
-//     gameMode: string; // local | online | tournament
-// }
+// Social types
+export type {
+  Friend,
+  FriendRequest,
+  FriendshipStatus
+} from './social.js';
 
-export interface Friend {
-  id: number;
-  username: string;
-  avatarUrl?: string | null;
-  isOnline: boolean;
-  lastSeen?: string;
-  friendshipDate: string;
-}
+// Profile types
+export type {
+  ProfileComponents
+} from './profile.js';
 
-export interface FriendRequest {
-  id: number;
-  senderId: number;
-  receiverId: number;
-  status: 'pending' | 'accepted' | 'declined';
-  createdAt: string;
-  sender?: User;
-  receiver?: User;
-}
+// UI types
+export type {
+  ActionCallbacks,
+  GameModeCallbacks,
+  Translations,
+  Language
+} from './ui.js';
 
-export interface FriendshipStatus {
-  isFriend: boolean;
-  requestId?: number;
-}
+// Tournament types
+export type {
+  Tournament,
+  TournamentMatch,
+  TournamentBracket,
+  TournamentRound
+} from './tournament.js';
 
-export interface GlobalStats {
-  totalPlayers: number;
-  totalGames: number;
-  onlinePlayers: number;
-}
+// Stats types
+export type {
+  GlobalStats
+} from './stats.js';
 
-export interface GameSettings {
-  ballSpeed: 'slow' | 'medium' | 'fast';
-  winScore: number;
-  theme: string;
-  powerUps: boolean;
-}
+// Router types
+export type {
+  Route
+} from './router.js';
 
-// Ajouter le type Language manquant :
-export type Language = 'en' | 'fr' | 'it' | 'ar' | 'kab' | 'kab-tfng' | 'sg';
+// Network types
+export type {
+  WebRTCConfig,
+  GameMessage,
+  ConnectionState,
+  RemoteGameConfig
+} from './network.js';
 
+// API types
+export type {
+  ApiResponse,
+  PaginatedResponse,
+  ApiError
+} from './api.js';
+
+// Re-export enums
+export { PowerUpType } from './powerups.js';
