@@ -1,10 +1,29 @@
 import { i18n } from '@/services/i18nService';
 import type { ActionCallbacks } from '@/types/index.js';
 
-export class QuickActionsCard {
-  constructor(private callbacks: ActionCallbacks) {}
+export class QuickActionsCard
+{
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
 
-  render(): string {
+  /**
+   * Constructeur de la carte d'actions rapides
+   * @param callbacks Callbacks pour les actions
+   */
+  constructor(private callbacks: ActionCallbacks)
+  {
+  }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend la carte d'actions rapides
+   */
+  render(): string
+  {
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         <h2 class="text-xl font-bold mb-4 text-primary-400">${i18n.t('profile.actions.title')}</h2>
@@ -32,7 +51,11 @@ export class QuickActionsCard {
     `;
   }
 
-  bindEvents(): void {
+  /**
+   * Attache les événements aux boutons
+   */
+  bindEvents(): void
+  {
     document.getElementById('edit-profile')?.addEventListener('click', this.callbacks.onEditProfile);
     document.getElementById('logout')?.addEventListener('click', this.callbacks.onLogout);
     document.getElementById('change-password')?.addEventListener('click', this.callbacks.onChangePassword);
