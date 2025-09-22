@@ -28,7 +28,10 @@ export class OAuthController
             const authUrl = new URL(OAuthController.authEndpoint);
 
             authUrl.searchParams.set('client_id', process.env.GOOGLE_CLIENT_ID!);
-            authUrl.searchParams.set('redirect_uri', process.env.GOOGLE_REDIRECT_URI!);
+            if (process.env.NODE_ENV === 'production')
+                authUrl.searchParams.set('redirect_uri', process.env.GOOGLE_REDIRECT_URI!);
+            else
+                authUrl.searchParams.set('redirect_uri', `http://localhost:${process.env.PORT}/api/auth/oauth/google/callback`);
             authUrl.searchParams.set('response_type', 'code');
             authUrl.searchParams.set('scope', 'profile email');
             authUrl.searchParams.set('access_type', 'offline');
@@ -87,12 +90,15 @@ export class OAuthController
 
     static async exchangeCodeForToken(code: string) 
     {
+        let uri = `http://localhost:${process.env.PORT}/api/auth/oauth/google/callback`;
+        if (process.env.NODE_ENV === 'production')
+            uri = process.env.GOOGLE_REDIRECT_URI!;
 
         const params = new URLSearchParams({
             code, 
             client_id: process.env.GOOGLE_CLIENT_ID!,
             client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-            redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
+            redirect_uri: uri,
             grant_type: 'authorization_code',
         });
 

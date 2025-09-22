@@ -1,6 +1,7 @@
 import { ErrorMessage } from './ErrorMessage';
 import { OAuthButtons } from './OAuthButtons';
 import { authService } from '@services/authService';
+import { Logger } from '@/utils/logger.js'; 
 
 export abstract class AuthPageBase 
 {
@@ -90,7 +91,7 @@ export abstract class AuthPageBase
       authService.initiateGoogleLogin();
     } else 
     {
-      console.log('OAuth provider not implemented:', provider);
+      Logger.log('OAuth provider not implemented:', provider);
     }
   }
 
