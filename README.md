@@ -34,10 +34,9 @@ back:
 - nodemailer
 - node-cron
 - ws
-- tsx
+- tsx //utiliser seulement en dev
 
 front:
-- socket.io-client
 - eslint
 - tailwindcss
 - typescript
