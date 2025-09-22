@@ -72,8 +72,10 @@ clean:
 	@clear
 	@$(DC) down --rmi all --volumes --remove-orphans
 	@docker system prune -a -f
+	@docker volume prune -f
 	@rm -rf backend/node_modules frontend/node_modules frontend/dist backend/dist
 	@rm -rf backend/database.db  # Supprime la DB locale
+	@rm -f backend/package-lock.json frontend/package-lock.json  # Suppression des locks
 	@npm cache clean --force
 	@echo "$(GREEN)Total reset and cleanup completed!$(END)"
 	@echo "$(CYAN)Run 'make prod' to restart in production mode.$(END)"
