@@ -1,6 +1,9 @@
 import type { Translations, Language } from '@/types/index.js';
 
 export class I18nService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private static instance: I18nService;
   private currentLanguage: Language = 'en';
   private translations: Record<Language, Translations> = {
@@ -16,11 +19,21 @@ export class I18nService {
   private fallbackLanguage: Language = 'en';
   public translationsLoaded: Promise<void>;
 
+  // ==========================================
+  // INITIALISATION ET CONFIGURATION
+  // ==========================================
+
+  /**
+   * Constructeur privé pour le pattern Singleton
+   */
   private constructor() {
     this.translationsLoaded = this.loadTranslations();
     this.setLanguageFromStorage();
   }
 
+  /**
+   * Obtient l'instance unique du service (pattern Singleton)
+   */
   public static getInstance(): I18nService {
     if (!I18nService.instance) {
       I18nService.instance = new I18nService();
@@ -28,6 +41,13 @@ export class I18nService {
     return I18nService.instance;
   }
 
+  // ==========================================
+  // CHARGEMENT DES TRADUCTIONS
+  // ==========================================
+
+  /**
+   * Charge les traductions pour toutes les langues supportées
+   */
   private async loadTranslations(): Promise<void> {
     try {
       const languages: Language[] = ['en', 'fr', 'it', 'es', 'kab', 'kab-tfng', 'ar', 'sg'];
@@ -43,6 +63,13 @@ export class I18nService {
     }
   }
 
+  // ==========================================
+  // GESTION DE LA LANGUE
+  // ==========================================
+
+  /**
+   * Définit la langue à partir du stockage local
+   */
   private setLanguageFromStorage(): void {
     const savedLanguage = localStorage.getItem('language') as Language;
     if (savedLanguage && this.translations[savedLanguage]) {
@@ -50,10 +77,16 @@ export class I18nService {
     }
   }
 
+  /**
+   * Obtient la langue actuelle
+   */
   public getCurrentLanguage(): Language {
     return this.currentLanguage;
   }
 
+  /**
+   * Définit la langue actuelle
+   */
   public setLanguage(language: Language): void {
     this.currentLanguage = language;
     localStorage.setItem('language', language);
@@ -69,6 +102,9 @@ export class I18nService {
     window.dispatchEvent(new CustomEvent('languageChanged'));
   }
 
+  /**
+   * Obtient la liste des langues disponibles
+   */
   public getAvailableLanguages(): { code: Language; name: string; flag: string }[] {
     return [
       { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -96,6 +132,13 @@ export class I18nService {
     ];
   }
 
+  // ==========================================
+  // TRADUCTION
+  // ==========================================
+
+  /**
+   * Traduit une clé donnée avec des paramètres optionnels
+   */
   public t(key: string, params?: Record<string, string>): string {
     const keys = key.split('.');
     let value: any = this.translations[this.currentLanguage];

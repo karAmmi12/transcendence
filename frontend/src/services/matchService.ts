@@ -1,8 +1,16 @@
 import { authService } from "./authService";  
 import { ApiConfig } from "../config/api";
 
-class MatchService {
- private baseURL = ApiConfig.API_URL;
+export class MatchService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
+  private baseURL = ApiConfig.API_URL;
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
   /**
    * Crée et termine un match local en une seule opération
    */
@@ -14,9 +22,6 @@ class MatchService {
     duration: number,
   ): Promise<any> {
     try {
-
-
-      
       const response = await fetch(`${this.baseURL}/match/local`, {
         method: 'POST',
         headers: {
@@ -68,7 +73,6 @@ class MatchService {
       
     } catch (error) {
       console.error('❌ Failed to send local match data:', error);
-      // Ne pas bloquer l'expérience utilisateur si l'envoi échoue
     }
   }
 
@@ -110,7 +114,6 @@ class MatchService {
       
     } catch (error) {
       console.error('❌ Failed to send remote match data:', error);
-      // Ne pas bloquer l'expérience utilisateur si l'envoi échoue
     }
   }
 }

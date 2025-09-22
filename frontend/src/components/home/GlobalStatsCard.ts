@@ -1,10 +1,29 @@
 import { i18n } from '@/services/i18nService.js';
 import type { GlobalStats } from '../../types/index.js';
 
-export class GlobalStatsCard {
-  constructor(private stats: GlobalStats) {}
+export class GlobalStatsCard
+{
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
 
-  render(): string {
+  /**
+   * Constructeur de la carte des statistiques globales
+   * @param stats Statistiques globales
+   */
+  constructor(private stats: GlobalStats)
+  {
+  }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend la carte des statistiques globales
+   */
+  render(): string
+  {
     return `
       <div class="bg-gray-800 p-4 md:p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-colors">
         <h3 class="text-lg md:text-xl font-semibold mb-4 md:mb-6 flex items-center">

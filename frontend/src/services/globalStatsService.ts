@@ -1,11 +1,21 @@
 import type { GlobalStats } from '@/types/index.js';
 
-class GlobalStatsService {
-  // Utiliser la même logique d'URL que authService
+export class GlobalStatsService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api'  // Via le proxy nginx
     : `http://${location.hostname}:8000/api`; // Direct en dev
 
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Récupère les statistiques globales de la plateforme
+   * @returns Statistiques globales ou valeurs par défaut en cas d'erreur
+   */
   async getGlobalStats(): Promise<GlobalStats> {
     try {
       console.log('Fetching global stats from:', `${this.baseURL}/home/stats`);

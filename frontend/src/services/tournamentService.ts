@@ -1,8 +1,18 @@
 class TournamentService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api'
     : `http://${location.hostname}:8000/api`;
 
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Crée un nouveau tournoi avec les participants et paramètres de jeu
+   */
   async createTournament(participants: string[], gameSettings?: {
     ballSpeed: string;
     winScore: number;
@@ -17,7 +27,7 @@ class TournamentService {
       credentials: 'include',
       body: JSON.stringify({ 
         participants,
-        gameSettings // ✅ Ajouter les paramètres
+        gameSettings 
       })
     });
 
@@ -30,8 +40,9 @@ class TournamentService {
     return data.tournament;
   }
 
-
-
+  /**
+   * Récupère les données d'un tournoi spécifique
+   */
   async getTournament(tournamentId: number): Promise<any> {
     const response = await fetch(`${this.baseURL}/tournament/${tournamentId}`, {
       method: 'GET',
@@ -46,7 +57,7 @@ class TournamentService {
   }
 
   /**
-   * Terminer un match de tournoi
+   * Termine un match de tournoi
    */
   async finishMatch(
     tournamentId: number,
