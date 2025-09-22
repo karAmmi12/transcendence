@@ -1,11 +1,26 @@
 import { User, Friend } from '@/types/index.js';
 
 export class FriendService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private static instance: FriendService;
   private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api' 
     : `http://${location.hostname}:8000/api`;
 
+  // ==========================================
+  // INITIALISATION ET CONFIGURATION
+  // ==========================================
+
+  /**
+   * Constructeur privé pour le pattern Singleton
+   */
+  private constructor() {}
+
+  /**
+   * Obtient l'instance unique du service (pattern Singleton)
+   */
   public static getInstance(): FriendService {
     if (!FriendService.instance) {
       FriendService.instance = new FriendService();
@@ -13,31 +28,38 @@ export class FriendService {
     return FriendService.instance;
   }
 
-/**
- * Rechercher des utilisateurs par nom
- */
-public async searchUsers(query: string): Promise<User[]> {
-  try {
-    // Utiliser la route getAllUsers existante
-    const response = await fetch(`${this.baseURL}/user/users`, {
-      credentials: 'include'
-    });
-    
-    if (response.ok) {
-      const allUsers = await response.json();
-      // Filtrer côté client
-      return allUsers.filter((user: User) => 
-        user.username.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 10); // Limiter à 10 résultats
-    }
-    return [];
-  } catch (error) {
-    console.error('Failed to search users:', error);
-    return [];
-  }
-}
+  // ==========================================
+  // MÉTHODES DE RECHERCHE
+  // ==========================================
 
-  
+  /**
+   * Rechercher des utilisateurs par nom
+   */
+  public async searchUsers(query: string): Promise<User[]> {
+    try {
+      // Utiliser la route getAllUsers existante
+      const response = await fetch(`${this.baseURL}/user/users`, {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const allUsers = await response.json();
+        // Filtrer côté client
+        return allUsers.filter((user: User) => 
+          user.username.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 10); // Limiter à 10 résultats
+      }
+      return [];
+    } catch (error) {
+      console.error('Failed to search users:', error);
+      return [];
+    }
+  }
+
+  // ==========================================
+  // MÉTHODES DE GESTION DES AMIS
+  // ==========================================
+
   /**
    * Envoyer une demande d'ami
    */
@@ -58,7 +80,6 @@ public async searchUsers(query: string): Promise<User[]> {
       return false;
     }
   }
-
 
   /**
    * Supprimer un ami
@@ -95,8 +116,6 @@ public async searchUsers(query: string): Promise<User[]> {
       return [];
     }
   }
-
-  
 }
 
 export const friendService = FriendService.getInstance();

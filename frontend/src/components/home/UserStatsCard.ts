@@ -1,12 +1,15 @@
 import { i18n } from '@/services/i18nService.js';
 import type { User } from '../../types/index.js';
 
-export class UserStatsCard {
+export class UserStatsCard 
+{
   constructor(private user: User) {}
   
 
-  render(): string {
-    if (!this.user?.stats) return '';
+  render(): string 
+  {
+    if (!this.user?.stats) 
+      return '';
 
     return `
       <div class="bg-gray-800 p-4 md:p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-colors">

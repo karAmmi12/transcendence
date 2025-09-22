@@ -2,20 +2,37 @@ import type { User, MatchHistory } from '@/types/index.js';
 import { TwoFactorRequiredError } from '@/types/index.js';
 import { userService } from './userService.js';
 
+/**
+ * Service de gestion de l'authentification utilisateur
+ * Gère la connexion, l'inscription, la vérification d'état et l'accès aux données utilisateur
+ */
 export class AuthService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private static instance: AuthService;
   private currentUser: User | null = null;
   private authChecked = false;
-  // ✅ En production, utiliser le proxy nginx au lieu d'aller directement au backend
-  private baseURL = process.env.NODE_ENV === 'production' 
-    ? '/api'  // Via le proxy nginx
-    : `http://${location.hostname}:8000/api`; // Direct en dev
   
+  // Configuration de l'URL de base selon l'environnement
+  private baseURL = process.env.NODE_ENV === 'production' 
+    ? '/api'  // Via le proxy nginx en production
+    : `http://${location.hostname}:8000/api`; // Direct en développement
+
+  // ==========================================
+  // INITIALISATION ET CONFIGURATION
+  // ==========================================
+
+  /**
+   * Constructeur privé pour le pattern Singleton
+   */
   private constructor() {
     console.log('AuthService baseURL:', this.baseURL);
-
   }
 
+  /**
+   * Obtient l'instance unique du service (pattern Singleton)
+   */
   public static getInstance(): AuthService {
     if (!AuthService.instance) {
       AuthService.instance = new AuthService();
@@ -23,30 +40,16 @@ export class AuthService {
     return AuthService.instance;
   }
 
-  // public async login(username: string, password: string): Promise<{ user: User; token: string }> {
-  //   const response = await fetch(`${this.baseURL}/auth/login`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     credentials: 'include', // Important pour les cookies de session
-  //     body: JSON.stringify({ username, password })
-  //   });
+  // ==========================================
+  // MÉTHODES D'AUTHENTIFICATION
+  // ==========================================
 
-  //   if (!response.ok) {
-  //     const error = await response.json();
-  //     throw new Error(error.message || 'Login failed');
-  //   }
-
-  //   const data = await response.json();
-    
-  //   this.currentUser = data.user;
-
-  //   window.dispatchEvent(new CustomEvent('authStateChanged'));// declencher l'event de changement d'etat
-    
-  //   return data;
-  // }
-  
+  /**
+   * Effectue la connexion d'un utilisateur
+   * @param username Nom d'utilisateur
+   * @param password Mot de passe
+   * @returns Données utilisateur et token, ou erreur 2FA si nécessaire
+   */
   public async login(username: string, password: string): Promise<{ user: User; token: string }> {
     const response = await fetch(`${this.baseURL}/auth/login`, {
       method: 'POST',
@@ -59,7 +62,7 @@ export class AuthService {
 
     const data = await response.json();
 
-    // ✅ Vérifier d'abord si c'est une réponse 2FA (statut 202)
+    // Vérifier si une authentification 2FA est requise
     if (response.status === 202 && data.requiresTwoFactor) {
       throw new TwoFactorRequiredError(data.message, data.userId);
     }
@@ -68,8 +71,9 @@ export class AuthService {
       throw new Error(data.error || 'Login failed');
     }
 
+    // Traiter l'URL de l'avatar si présente
     if (data.user && data.user.avatarUrl) {
-        data.user.avatarUrl = userService.getAvatarUrl(data.user.avatarUrl);
+      data.user.avatarUrl = userService.getAvatarUrl(data.user.avatarUrl);
     }
 
     this.currentUser = data.user;
@@ -78,7 +82,12 @@ export class AuthService {
     return data;
   }
 
-  // ✅ Méthode pour la connexion 2FA
+  /**
+   * Effectue la connexion avec authentification 2FA
+   * @param userId ID de l'utilisateur
+   * @param code Code 2FA
+   * @returns Données utilisateur et token
+   */
   public async loginWith2FA(userId: number, code: string): Promise<{ user: User; token: string }> {
     const response = await fetch(`${this.baseURL}/auth/loginWith2FA`, {
       method: 'POST',
@@ -96,9 +105,9 @@ export class AuthService {
 
     const data = await response.json();
 
-       // ✅ Traiter l'avatar URL
+    // Traiter l'URL de l'avatar si présente
     if (data.user && data.user.avatarUrl) {
-        data.user.avatarUrl = userService.getAvatarUrl(data.user.avatarUrl);
+      data.user.avatarUrl = userService.getAvatarUrl(data.user.avatarUrl);
     }
     
     this.currentUser = data.user;
@@ -107,6 +116,13 @@ export class AuthService {
     return data;
   }
 
+  /**
+   * Effectue l'inscription d'un nouvel utilisateur
+   * @param username Nom d'utilisateur
+   * @param email Adresse email
+   * @param password Mot de passe
+   * @returns Données utilisateur et token
+   */
   public async register(username: string, email: string, password: string): Promise<{ user: User; token: string }> {
     const response = await fetch(`${this.baseURL}/auth/register`, {
       method: 'POST',
@@ -124,33 +140,40 @@ export class AuthService {
 
     const data = await response.json();
     
-    
     this.currentUser = data.user;
-
     window.dispatchEvent(new CustomEvent('authStateChanged'));
     
     return data;
   }
 
-
-
-  public initiateGoogleLogin(): void 
-  {
-    // Rediriger vers l'endpoint OAuth Google du backend
+  /**
+   * Initie la connexion via Google OAuth
+   */
+  public initiateGoogleLogin(): void {
     console.log('Initiating Google OAuth...');
     window.location.href = `${this.baseURL}/auth/oauth/google`;
   }
 
+  // ==========================================
+  // GESTION DE LA SESSION
+  // ==========================================
+
+  /**
+   * Vérifie si l'utilisateur est actuellement authentifié
+   * @returns true si authentifié, false sinon
+   */
   public isAuthenticated(): boolean {
     return this.currentUser !== null;
   }
 
+  /**
+   * Effectue la déconnexion de l'utilisateur
+   */
   public async logout(): Promise<void> {
-    
     try {
       await fetch(`${this.baseURL}/auth/logout`, {
         method: 'POST',
-        credentials: 'include' // ✅ Utiliser les cookies
+        credentials: 'include'
       });
     } catch (error) {
       console.error('Logout API call failed:', error);
@@ -158,26 +181,29 @@ export class AuthService {
 
     this.currentUser = null;
     localStorage.removeItem('authToken');
-    window.dispatchEvent(new CustomEvent('authStateChanged')); // Déclencher l'événement de changement d'état
+    window.dispatchEvent(new CustomEvent('authStateChanged'));
     window.dispatchEvent(new CustomEvent('navigate', { detail: '/login' }));
   }
 
+  /**
+   * Vérifie l'état d'authentification auprès du serveur
+   * @returns true si authentifié, false sinon
+   */
   public async checkAuthStatus(): Promise<boolean> {
     if (this.authChecked) {
       return this.currentUser !== null;
     }
 
-
     try {
       const response = await fetch(`${this.baseURL}/user/me`, {
         method: 'GET',
-        credentials: 'include' // Important pour les cookies
+        credentials: 'include'
       });
 
       if (response.ok) {
         const userData = await response.json();
 
-        // Construire l'url complète de l'avatar
+        // Construire l'URL complète de l'avatar
         if (userData.avatarUrl) {
           userData.avatarUrl = userService.getAvatarUrl(userData.avatarUrl);
         }
@@ -187,20 +213,17 @@ export class AuthService {
         window.dispatchEvent(new CustomEvent('authStateChanged'));
         return true;
       } else if (response.status === 401) {
-        // ✅ Utilisateur non authentifié - c'est NORMAL, pas une erreur
         console.log('🔐 User not authenticated');
         this.currentUser = null;
         this.authChecked = true;
         return false;
       } else {
-        // Autres erreurs (500, réseau, etc.) - celles-ci sont des vraies erreurs
         console.warn('⚠️ Auth check failed with status:', response.status);
         this.currentUser = null;
         this.authChecked = true;
         return false;
       }
     } catch (error) {
-      // Erreurs réseau ou autres - différencier du cas "non authentifié"
       if (error instanceof TypeError && error.message.includes('fetch')) {
         console.warn('🌐 Network error during auth check (server might be down)');
       } else {
@@ -213,10 +236,23 @@ export class AuthService {
     }
   }
 
+  // ==========================================
+  // ACCÈS AUX DONNÉES UTILISATEUR
+  // ==========================================
+
+  /**
+   * Obtient l'utilisateur actuellement connecté
+   * @returns Données de l'utilisateur ou null
+   */
   public getCurrentUser(): User | null {
     return this.currentUser;
   }
 
+  /**
+   * Obtient le profil d'un utilisateur (propre ou d'un autre)
+   * @param userId ID de l'utilisateur (optionnel pour le profil propre)
+   * @returns Données du profil ou null
+   */
   public async getUserProfile(userId?: string | null): Promise<User | null> {
     try {
       const endpoint = userId ? `/auth/profile/${userId}` : '/auth/me';
@@ -224,7 +260,6 @@ export class AuthService {
         method: 'GET',
         credentials: 'include'
       });
-    // Removed invalid return of boolean; method should return User or null
 
       if (response.ok) {
         return await response.json();
@@ -236,6 +271,11 @@ export class AuthService {
     }
   }
 
+  /**
+   * Obtient l'historique des matchs d'un utilisateur
+   * @param userId ID de l'utilisateur (optionnel pour l'historique propre)
+   * @returns Liste des matchs
+   */
   public async getMatchHistory(userId?: string | null): Promise<MatchHistory[]> {
     try {
       const endpoint = userId ? `/users/${userId}/matches` : '/auth/me/matches';
@@ -253,8 +293,10 @@ export class AuthService {
     }
   }
 
-
-  // Dans AuthService
+  /**
+   * Recharge les données de l'utilisateur actuel depuis le serveur
+   * @returns Données utilisateur mises à jour ou null
+   */
   public async loadCurrentUser(): Promise<User | null> {
     try {
       if (!this.isAuthenticated()) return null;
@@ -277,15 +319,13 @@ export class AuthService {
   }
 
   /**
-   * ✅ Mettre à jour l'utilisateur actuel en mémoire
+   * Met à jour l'utilisateur actuel en mémoire
+   * @param user Nouvelles données utilisateur
    */
-  updateCurrentUser(user: User): void {
+  public updateCurrentUser(user: User): void {
     this.currentUser = user;
     console.log('🔄 Current user updated in authService:', user);
   }
-
-
-
 }
 
 export const authService = AuthService.getInstance();

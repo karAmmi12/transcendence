@@ -2,22 +2,45 @@ import { i18n } from '@/services/i18nService';
 import { userService } from '@services/userService';
 import { User } from '@/types/index.js';
 
-export class ChangePasswordModal {
+export class ChangePasswordModal
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private modal: HTMLElement | null = null;
   private user: User;
   private onSuccess: () => void;
 
-  constructor(user: User, onSuccess: () => void) {
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur du modal de changement de mot de passe
+   * @param user Utilisateur actuel
+   * @param onSuccess Callback appelé en cas de succès
+   */
+  constructor(user: User, onSuccess: () => void)
+  {
     this.user = user;
     this.onSuccess = onSuccess;
   }
 
-  show(): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Affiche le modal avec animation
+   */
+  show(): void
+  {
     this.createModal();
     this.bindEvents();
-    
+
     // Animation d'apparition avec Tailwind
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.modal?.classList.remove('opacity-0');
       this.modal?.classList.add('opacity-100');
       const content = this.modal?.querySelector('.modal-content');
@@ -26,14 +49,44 @@ export class ChangePasswordModal {
     }, 10);
   }
 
-  private createModal(): void {
+  /**
+   * Ferme le modal avec animation
+   */
+  close(): void
+  {
+    if (!this.modal) return;
+
+    // Animation de fermeture
+    this.modal.classList.remove('opacity-100');
+    this.modal.classList.add('opacity-0');
+    const content = this.modal.querySelector('.modal-content');
+    content?.classList.remove('scale-100');
+    content?.classList.add('scale-95');
+
+    setTimeout(() =>
+    {
+      document.removeEventListener('keydown', this.handleKeydown);
+      this.modal?.remove();
+      this.modal = null;
+    }, 300);
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Crée et ajoute le modal au DOM
+   */
+  private createModal(): void
+  {
     // Supprimer le modal existant s'il y en a un
     this.close();
 
     this.modal = document.createElement('div');
     this.modal.id = 'change-password-modal';
     this.modal.className = 'fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300';
-    
+
     this.modal.innerHTML = `
       <div class="modal-content bg-gray-800 rounded-lg max-w-md w-full transform scale-95 transition-transform duration-300">
         <div class="p-6">
@@ -54,9 +107,9 @@ export class ChangePasswordModal {
               <label for="current-password" class="block text-sm font-medium text-gray-300 mb-2">
                 ${i18n.t('profile.changePassword.currentPassword')}
               </label>
-              <input 
-                type="password" 
-                id="current-password" 
+              <input
+                type="password"
+                id="current-password"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 placeholder="${i18n.t('profile.changePassword.currentPasswordPlaceholder')}"
                 required
@@ -68,9 +121,9 @@ export class ChangePasswordModal {
               <label for="new-password" class="block text-sm font-medium text-gray-300 mb-2">
                 ${i18n.t('profile.changePassword.newPassword')}
               </label>
-              <input 
-                type="password" 
-                id="new-password" 
+              <input
+                type="password"
+                id="new-password"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 placeholder="${i18n.t('profile.changePassword.newPasswordPlaceholder')}"
                 required
@@ -83,9 +136,9 @@ export class ChangePasswordModal {
               <label for="confirm-new-password" class="block text-sm font-medium text-gray-300 mb-2">
                 ${i18n.t('profile.changePassword.confirmPassword')}
               </label>
-              <input 
-                type="password" 
-                id="confirm-new-password" 
+              <input
+                type="password"
+                id="confirm-new-password"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 placeholder="${i18n.t('profile.changePassword.confirmPasswordPlaceholder')}"
                 required
@@ -100,15 +153,15 @@ export class ChangePasswordModal {
 
             <!-- Actions -->
             <div class="flex justify-end space-x-3 pt-4 border-t border-gray-700">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 id="cancel-password"
                 class="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors font-medium"
               >
                 ${i18n.t('profile.changePassword.cancel')}
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 id="save-password"
                 class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -126,20 +179,31 @@ export class ChangePasswordModal {
     document.body.appendChild(this.modal);
   }
 
-  private bindEvents(): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ÉVÉNEMENTS
+  // ==========================================
+
+  /**
+   * Attache les événements au modal
+   */
+  private bindEvents(): void
+  {
     if (!this.modal) return;
 
     // Fermer le modal
     const closeBtn = this.modal.querySelector('#close-modal');
     const cancelBtn = this.modal.querySelector('#cancel-password');
-    
-    [closeBtn, cancelBtn].forEach(btn => {
+
+    [closeBtn, cancelBtn].forEach(btn =>
+    {
       btn?.addEventListener('click', () => this.close());
     });
 
     // Fermer en cliquant sur l'overlay
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
+    this.modal.addEventListener('click', (e) =>
+    {
+      if (e.target === this.modal)
+      {
         this.close();
       }
     });
@@ -148,7 +212,8 @@ export class ChangePasswordModal {
     const newPasswordInput = this.modal.querySelector('#new-password') as HTMLInputElement;
     const confirmPasswordInput = this.modal.querySelector('#confirm-new-password') as HTMLInputElement;
 
-    [newPasswordInput, confirmPasswordInput].forEach(input => {
+    [newPasswordInput, confirmPasswordInput].forEach(input =>
+    {
       input?.addEventListener('input', () => this.validatePasswords());
     });
 
@@ -160,48 +225,24 @@ export class ChangePasswordModal {
     document.addEventListener('keydown', this.handleKeydown);
   }
 
-  private handleKeydown = (e: KeyboardEvent): void => {
-    if (e.key === 'Escape') {
+  /**
+   * Gestionnaire d'événement pour la touche Échap
+   */
+  private handleKeydown = (e: KeyboardEvent): void =>
+  {
+    if (e.key === 'Escape')
+    {
       this.close();
     }
   };
 
-  private validatePasswords(): void {
-    if (!this.modal) return;
-
-    const newPassword = (this.modal.querySelector('#new-password') as HTMLInputElement).value;
-    const confirmPassword = (this.modal.querySelector('#confirm-new-password') as HTMLInputElement).value;
-    const saveBtn = this.modal.querySelector('#save-password') as HTMLButtonElement;
-
-    let isValid = true;
-    let errorMessage = '';
-
-    // Vérifier la longueur du mot de passe
-    if (newPassword.length > 0 && newPassword.length < 8) {
-      isValid = false;
-      errorMessage = i18n.t('profile.changePassword.validation.minLength');
-    }
-
-    // Vérifier que les mots de passe correspondent
-    if (confirmPassword.length > 0 && newPassword !== confirmPassword) {
-      isValid = false;
-      errorMessage = i18n.t('profile.changePassword.validation.mismatch');
-    }
-
-    // Afficher/masquer l'erreur
-    if (errorMessage) {
-      this.showError(errorMessage);
-    } else {
-      this.hideError();
-    }
-
-    // Activer/désactiver le bouton
-    saveBtn.disabled = !isValid || newPassword.length === 0 || confirmPassword.length === 0;
-  }
-
-  private async handleSubmit(e: Event): Promise<void> {
+  /**
+   * Gère la soumission du formulaire
+   */
+  private async handleSubmit(e: Event): Promise<void>
+  {
     e.preventDefault();
-    
+
     const form = e.target as HTMLFormElement;
     const saveBtn = form.querySelector('#save-password') as HTMLButtonElement;
     const saveText = form.querySelector('#password-text') as HTMLElement;
@@ -213,34 +254,40 @@ export class ChangePasswordModal {
     saveSpinner.classList.remove('hidden');
     this.hideError();
 
-    try {
+    try
+    {
       const currentPassword = (form.querySelector('#current-password') as HTMLInputElement).value;
       const newPassword = (form.querySelector('#new-password') as HTMLInputElement).value;
       const confirmPassword = (form.querySelector('#confirm-new-password') as HTMLInputElement).value;
-      
+
       // Validation côté client
-      if (!currentPassword) {
+      if (!currentPassword)
+      {
         throw new Error(i18n.t('profile.changePassword.validation.required'));
       }
 
-      if (newPassword.length < 8) {
+      if (newPassword.length < 8)
+      {
         throw new Error(i18n.t('profile.changePassword.validation.minLength'));
       }
 
-      if (newPassword !== confirmPassword) {
+      if (newPassword !== confirmPassword)
+      {
         throw new Error(i18n.t('profile.changePassword.validation.mismatch'));
       }
 
       // Appel à l'API pour changer le mot de passe
       await userService.changePassword(currentPassword, newPassword);
-      
+
       // Succès
       this.close();
       this.onSuccess();
-      
-    } catch (error) {
+
+    } catch (error)
+    {
       this.showError((error as Error).message);
-    } finally {
+    } finally
+    {
       // Reset loading state
       saveBtn.disabled = false;
       saveText.textContent = i18n.t('profile.changePassword.save');
@@ -248,39 +295,76 @@ export class ChangePasswordModal {
     }
   }
 
-  private showError(message: string): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES DE VALIDATION
+  // ==========================================
+
+  /**
+   * Valide les mots de passe en temps réel
+   */
+  private validatePasswords(): void
+  {
     if (!this.modal) return;
-    
+
+    const newPassword = (this.modal.querySelector('#new-password') as HTMLInputElement).value;
+    const confirmPassword = (this.modal.querySelector('#confirm-new-password') as HTMLInputElement).value;
+    const saveBtn = this.modal.querySelector('#save-password') as HTMLButtonElement;
+
+    let isValid = true;
+    let errorMessage = '';
+
+    // Vérifier la longueur du mot de passe
+    if (newPassword.length > 0 && newPassword.length < 8)
+    {
+      isValid = false;
+      errorMessage = i18n.t('profile.changePassword.validation.minLength');
+    }
+
+    // Vérifier que les mots de passe correspondent
+    if (confirmPassword.length > 0 && newPassword !== confirmPassword)
+    {
+      isValid = false;
+      errorMessage = i18n.t('profile.changePassword.validation.mismatch');
+    }
+
+    // Afficher/masquer l'erreur
+    if (errorMessage)
+    {
+      this.showError(errorMessage);
+    } else
+    {
+      this.hideError();
+    }
+
+    // Activer/désactiver le bouton
+    saveBtn.disabled = !isValid || newPassword.length === 0 || confirmPassword.length === 0;
+  }
+
+  /**
+   * Affiche un message d'erreur
+   */
+  private showError(message: string): void
+  {
+    if (!this.modal) return;
+
     const errorMessage = this.modal.querySelector('#password-error-message');
     const errorDescription = this.modal.querySelector('#password-error-description');
-    
-    if (errorMessage && errorDescription) {
+
+    if (errorMessage && errorDescription)
+    {
       errorDescription.textContent = message;
       errorMessage.classList.remove('hidden');
     }
   }
 
-  private hideError(): void {
+  /**
+   * Masque le message d'erreur
+   */
+  private hideError(): void
+  {
     if (!this.modal) return;
-    
+
     const errorMessage = this.modal.querySelector('#password-error-message');
     errorMessage?.classList.add('hidden');
-  }
-
-  close(): void {
-    if (!this.modal) return;
-
-    // Animation de fermeture
-    this.modal.classList.remove('opacity-100');
-    this.modal.classList.add('opacity-0');
-    const content = this.modal.querySelector('.modal-content');
-    content?.classList.remove('scale-100');
-    content?.classList.add('scale-95');
-
-    setTimeout(() => {
-      document.removeEventListener('keydown', this.handleKeydown);
-      this.modal?.remove();
-      this.modal = null;
-    }, 300);
   }
 }

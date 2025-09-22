@@ -1,23 +1,52 @@
 import { i18n } from '@/services/i18nService';
 import type { Language } from '@/types/index.js';
 
-export class LanguageSelector {
+export class LanguageSelector
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private isOpen = false;
 
-  mount(selector: string): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Monte le sélecteur de langue dans l'élément spécifié
+   */
+  mount(selector: string): void
+  {
     const element = document.querySelector(selector);
     if (!element) return;
 
     this.render(element as HTMLElement);
     this.bindEvents(element as HTMLElement);
 
-    // Listen for language changes
-    window.addEventListener('languageChanged', () => {
+    // Écouter les changements de langue
+    window.addEventListener('languageChanged', () =>
+    {
       this.render(element as HTMLElement);
     });
   }
 
-  private render(element: HTMLElement): void {
+  /**
+   * Nettoie les ressources du sélecteur
+   */
+  destroy(): void
+  {
+    // Nettoyer les écouteurs d'événements si nécessaire
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Rend le sélecteur de langue
+   */
+  private render(element: HTMLElement): void
+  {
     const currentLang = i18n.getCurrentLanguage();
     const languages = i18n.getAvailableLanguages();
     const currentLanguage = languages.find(lang => lang.code === currentLang);
@@ -64,31 +93,45 @@ export class LanguageSelector {
     `;
   }
 
-  private bindEvents(element: HTMLElement): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ÉVÉNEMENTS
+  // ==========================================
+
+  /**
+   * Attache les événements au sélecteur
+   */
+  private bindEvents(element: HTMLElement): void
+  {
     const toggleButton = element.querySelector('#language-toggle');
     const dropdown = element.querySelector('#language-dropdown');
     const options = element.querySelectorAll('.language-option');
 
-    // Toggle dropdown
-    toggleButton?.addEventListener('click', (e) => {
+    // Basculer le dropdown
+    toggleButton?.addEventListener('click', (e) =>
+    {
       e.stopPropagation();
       this.isOpen = !this.isOpen;
       this.render(element);
     });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!element.contains(e.target as Node)) {
+    // Fermer le dropdown en cliquant à l'extérieur
+    document.addEventListener('click', (e) =>
+    {
+      if (!element.contains(e.target as Node))
+      {
         this.isOpen = false;
         this.render(element);
       }
     });
 
-    // Handle language selection
-    options.forEach(option => {
-      option.addEventListener('click', (e) => {
+    // Gérer la sélection de langue
+    options.forEach(option =>
+    {
+      option.addEventListener('click', (e) =>
+      {
         const lang = (e.currentTarget as HTMLElement).dataset.lang as Language;
-        if (lang) {
+        if (lang)
+        {
           i18n.setLanguage(lang);
           this.isOpen = false;
           this.render(element);
@@ -96,16 +139,14 @@ export class LanguageSelector {
       });
     });
 
-    // Close dropdown on Escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isOpen) {
+    // Fermer le dropdown avec Échap
+    document.addEventListener('keydown', (e) =>
+    {
+      if (e.key === 'Escape' && this.isOpen)
+      {
         this.isOpen = false;
         this.render(element);
       }
     });
-  }
-
-  destroy(): void {
-    // Cleanup event listeners if needed
   }
 }

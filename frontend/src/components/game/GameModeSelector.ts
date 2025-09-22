@@ -1,13 +1,15 @@
 import { i18n } from '@/services/i18nService.js';
 
-export class GameModeSelector {
+export class GameModeSelector 
+{
   constructor(private callbacks: {
     onLocalMode: () => void;
     onRemoteMode: () => void;
     onTournamentMode: () => void;
   }) {}
 
-  render(): string {
+  render(): string 
+  {
     return `
       <div class="bg-gray-800 rounded-lg p-6 mb-6">
         <h3 class="text-xl mb-4">${i18n.t('home.gameModes.title')}</h3>
@@ -29,7 +31,8 @@ export class GameModeSelector {
     `;
   }
 
-  bindEvents(): void {
+  bindEvents(): void 
+  {
     document.getElementById('mode-local')?.addEventListener('click', this.callbacks.onLocalMode);
     document.getElementById('mode-remote')?.addEventListener('click', this.callbacks.onRemoteMode);
     document.getElementById('mode-tournament')?.addEventListener('click', this.callbacks.onTournamentMode);

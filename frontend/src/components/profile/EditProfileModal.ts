@@ -2,22 +2,45 @@ import { i18n } from '@/services/i18nService.js';
 import { userService } from '@services/userService';
 import type { User } from '../../types/index.js';
 
-export class EditProfileModal {
+export class EditProfileModal
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private modal: HTMLElement | null = null;
   private user: User;
   private onSave: (updatedUser: User) => void;
 
-  constructor(user: User, onSave: (updatedUser: User) => void) {
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur du modal d'édition de profil
+   * @param user Utilisateur actuel
+   * @param onSave Callback appelé en cas de sauvegarde réussie
+   */
+  constructor(user: User, onSave: (updatedUser: User) => void)
+  {
     this.user = user;
     this.onSave = onSave;
   }
 
-  show(): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Affiche le modal avec animation
+   */
+  show(): void
+  {
     this.createModal();
     this.bindEvents();
-    
+
     // Animation d'apparition avec Tailwind
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.modal?.classList.remove('opacity-0');
       this.modal?.classList.add('opacity-100');
       const content = this.modal?.querySelector('.modal-content');
@@ -26,14 +49,44 @@ export class EditProfileModal {
     }, 10);
   }
 
-  private createModal(): void {
+  /**
+   * Ferme le modal avec animation
+   */
+  close(): void
+  {
+    if (!this.modal) return;
+
+    // Animation de fermeture
+    this.modal.classList.remove('opacity-100');
+    this.modal.classList.add('opacity-0');
+    const content = this.modal.querySelector('.modal-content');
+    content?.classList.remove('scale-100');
+    content?.classList.add('scale-95');
+
+    setTimeout(() =>
+    {
+      document.removeEventListener('keydown', this.handleKeydown);
+      this.modal?.remove();
+      this.modal = null;
+    }, 300);
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Crée et ajoute le modal au DOM
+   */
+  private createModal(): void
+  {
     // Supprimer le modal existant s'il y en a un
     this.close();
 
     this.modal = document.createElement('div');
     this.modal.id = 'edit-profile-modal';
     this.modal.className = 'fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4 opacity-0 transition-opacity duration-300';
-    
+
     this.modal.innerHTML = `
       <div class="modal-content bg-gray-800 rounded-lg max-w-md w-full transform scale-95 transition-transform duration-300">
         <div class="p-6">
@@ -52,14 +105,14 @@ export class EditProfileModal {
             <!-- Avatar Section -->
             <div class="text-center">
               <div class="relative inline-block group">
-                <img 
-                  id="preview-avatar" 
-                  src="${this.user.avatarUrl || '/images/default-avatar.png'}" 
-                  alt="${this.user.username}" 
+                <img
+                  id="preview-avatar"
+                  src="${this.user.avatarUrl || '/images/default-avatar.png'}"
+                  alt="${this.user.username}"
                   class="w-24 h-24 rounded-full object-cover border-4 border-primary-500 transition-transform group-hover:scale-105"
                 />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   id="change-avatar-btn"
                   class="absolute inset-0 bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                 >
@@ -78,9 +131,9 @@ export class EditProfileModal {
               <label for="edit-username" class="block text-sm font-medium text-gray-300 mb-2">
                 ${i18n.t('profile.edit.username')}
               </label>
-              <input 
-                type="text" 
-                id="edit-username" 
+              <input
+                type="text"
+                id="edit-username"
                 value="${this.user.username}"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 required
@@ -88,15 +141,15 @@ export class EditProfileModal {
                 maxlength="20"
               />
             </div>
-            
+
             <!-- Email -->
             <div>
               <label for="edit-email" class="block text-sm font-medium text-gray-300 mb-2">
                 ${i18n.t('profile.edit.email')}
               </label>
-              <input 
-                type="email" 
-                id="edit-email" 
+              <input
+                type="email"
+                id="edit-email"
                 value="${this.user.email || ''}"
                 class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors ${this.user.googleId ? 'cursor-not-allowed opacity-50' : ''}"
                 ${this.user.googleId ? 'readonly' : 'required'}
@@ -115,15 +168,15 @@ export class EditProfileModal {
 
             <!-- Actions -->
             <div class="flex justify-end space-x-3 pt-4 border-t border-gray-700">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 id="cancel-edit"
                 class="px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors font-medium"
               >
                 ${i18n.t('common.cancel')}
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 id="save-profile"
                 class="px-6 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors font-medium flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -141,20 +194,31 @@ export class EditProfileModal {
     document.body.appendChild(this.modal);
   }
 
-  private bindEvents(): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ÉVÉNEMENTS
+  // ==========================================
+
+  /**
+   * Attache les événements au modal
+   */
+  private bindEvents(): void
+  {
     if (!this.modal) return;
 
     // Fermer le modal
     const closeBtn = this.modal.querySelector('#close-modal');
     const cancelBtn = this.modal.querySelector('#cancel-edit');
-    
-    [closeBtn, cancelBtn].forEach(btn => {
+
+    [closeBtn, cancelBtn].forEach(btn =>
+    {
       btn?.addEventListener('click', () => this.close());
     });
 
     // Fermer en cliquant sur l'overlay
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
+    this.modal.addEventListener('click', (e) =>
+    {
+      if (e.target === this.modal)
+      {
         this.close();
       }
     });
@@ -164,28 +228,35 @@ export class EditProfileModal {
     const avatarUpload = this.modal.querySelector('#avatar-upload') as HTMLInputElement;
     const previewAvatar = this.modal.querySelector('#preview-avatar') as HTMLImageElement;
 
-    changeAvatarBtn?.addEventListener('click', () => {
+    changeAvatarBtn?.addEventListener('click', () =>
+    {
       avatarUpload.click();
     });
 
-    avatarUpload?.addEventListener('change', (e) => {
+    avatarUpload?.addEventListener('change', (e) =>
+    {
       const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
+      if (file)
+      {
         // Validation de la taille (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
+        if (file.size > 5 * 1024 * 1024)
+        {
           this.showError(i18n.t('profile.edit.errors.avatarTooLarge'));
           return;
         }
 
         // Validation du type
-        if (!file.type.startsWith('image/')) {
+        if (!file.type.startsWith('image/'))
+        {
           this.showError(i18n.t('profile.edit.errors.invalidImageType'));
           return;
         }
 
         const reader = new FileReader();
-        reader.onload = (e) => {
-          if (previewAvatar && e.target?.result) {
+        reader.onload = (e) =>
+        {
+          if (previewAvatar && e.target?.result)
+          {
             previewAvatar.src = e.target.result as string;
           }
         };
@@ -201,15 +272,24 @@ export class EditProfileModal {
     document.addEventListener('keydown', this.handleKeydown);
   }
 
-  private handleKeydown = (e: KeyboardEvent): void => {
-    if (e.key === 'Escape') {
+  /**
+   * Gestionnaire d'événement pour la touche Échap
+   */
+  private handleKeydown = (e: KeyboardEvent): void =>
+  {
+    if (e.key === 'Escape')
+    {
       this.close();
     }
   };
 
-  private async handleSubmit(e: Event): Promise<void> {
+  /**
+   * Gère la soumission du formulaire
+   */
+  private async handleSubmit(e: Event): Promise<void>
+  {
     e.preventDefault();
-    
+
     const form = e.target as HTMLFormElement;
     const saveBtn = form.querySelector('#save-profile') as HTMLButtonElement;
     const saveText = form.querySelector('#save-text') as HTMLElement;
@@ -222,21 +302,25 @@ export class EditProfileModal {
     saveSpinner.classList.remove('hidden');
     errorMessage.classList.add('hidden');
 
-    try {
+    try
+    {
       const avatarFile = (form.querySelector('#avatar-upload') as HTMLInputElement).files?.[0];
       const username = (form.querySelector('#edit-username') as HTMLInputElement).value.trim();
       const email = (form.querySelector('#edit-email') as HTMLInputElement).value.trim();
-      
+
       // Validation côté client
-      if (username.length < 3) {
+      if (username.length < 3)
+      {
         throw new Error(i18n.t('profile.edit.errors.usernameTooShort'));
       }
-      
-      if (username.length > 20) {
+
+      if (username.length > 20)
+      {
         throw new Error(i18n.t('profile.edit.errors.usernameTooLong'));
       }
 
-      if (!email.includes('@')) {
+      if (!email.includes('@'))
+      {
         throw new Error(i18n.t('profile.edit.errors.invalidEmail'));
       }
 
@@ -247,18 +331,18 @@ export class EditProfileModal {
 
       // Appel à l'API pour mettre à jour le profil
       const updatedUser = await userService.updateProfile(updatedData, avatarFile);
-      
+
       // Appeler le callback avec les données mises à jour
       this.onSave(updatedUser);
-      
-      // ❌ SUPPRIMER cette ligne qui cause la redirection vers home
-      // window.dispatchEvent(new CustomEvent('authStateChanged'));
-      
+
+
       this.close();
-      
-    } catch (error) {
+
+    } catch (error)
+    {
       this.showError((error as Error).message);
-    } finally {
+    } finally
+    {
       // Reset loading state
       saveBtn.disabled = false;
       saveText.textContent = i18n.t('common.save');
@@ -266,37 +350,30 @@ export class EditProfileModal {
     }
   }
 
-  private showError(message: string): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES DE VALIDATION
+  // ==========================================
+
+  /**
+   * Affiche un message d'erreur
+   */
+  private showError(message: string): void
+  {
     if (!this.modal) return;
-    
+
     const errorMessage = this.modal.querySelector('#edit-error-message');
     const errorDescription = this.modal.querySelector('#edit-error-description');
-    
-    if (errorMessage && errorDescription) {
+
+    if (errorMessage && errorDescription)
+    {
       errorDescription.textContent = message;
       errorMessage.classList.remove('hidden');
-      
+
       // Auto-hide après 5 secondes
-      setTimeout(() => {
+      setTimeout(() =>
+      {
         errorMessage.classList.add('hidden');
       }, 5000);
     }
-  }
-
-  close(): void {
-    if (!this.modal) return;
-
-    // Animation de fermeture
-    this.modal.classList.remove('opacity-100');
-    this.modal.classList.add('opacity-0');
-    const content = this.modal.querySelector('.modal-content');
-    content?.classList.remove('scale-100');
-    content?.classList.add('scale-95');
-
-    setTimeout(() => {
-      document.removeEventListener('keydown', this.handleKeydown);
-      this.modal?.remove();
-      this.modal = null;
-    }, 300);
   }
 }

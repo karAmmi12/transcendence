@@ -1,7 +1,12 @@
 import * as BABYLON from '@babylonjs/core';
 import type { ThemeConfig } from '@/types/index.js';
 
-export class EffectsManager {
+export class EffectsManager
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
+
   private scene: BABYLON.Scene;
   private theme: ThemeConfig;
   private trailSystem: BABYLON.TrailMesh | null = null;
@@ -10,25 +15,46 @@ export class EffectsManager {
   private fieldAnimationTimer: number = 0;
   private beforeRenderObserver: BABYLON.Nullable<BABYLON.Observer<BABYLON.Scene>> = null;
 
-  constructor(scene: BABYLON.Scene, theme: ThemeConfig) {
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur du gestionnaire d'effets
+   * @param scene Scène Babylon.js
+   * @param theme Configuration du thème
+   */
+  constructor(scene: BABYLON.Scene, theme: ThemeConfig)
+  {
     this.scene = scene;
     this.theme = theme;
   }
 
-  // Mise à jour de enableBallTrail pour l'effet mozzarella
-  enableBallTrail(ball: BABYLON.Mesh): void {
-    if (this.trailSystem) {
+  // ==========================================
+  // MÉTHODES PUBLIQUES D'ACTIVATION DES EFFETS
+  // ==========================================
+
+  /**
+   * Active l'effet de traînée de la balle
+   * @param ball Mesh de la balle
+   */
+  enableBallTrail(ball: BABYLON.Mesh): void
+  {
+    if (this.trailSystem)
+    {
       this.trailSystem.dispose();
     }
 
     // Adapter les paramètres selon le thème
     let trailDiameter = 0.05;
     let trailLength = 30;
-    
-    if (this.theme.id === 'italian') {
+
+    if (this.theme.id === 'italian')
+    {
       trailDiameter = 0.04; // ✅ Plus fin pour un effet plus subtil
       trailLength = 20;     // ✅ Plus court pour éviter l'étirement excessif
-    } else if (this.theme.id === 'lava') {
+    } else if (this.theme.id === 'lava')
+    {
       trailDiameter = 0.08;
       trailLength = 40;
     }
@@ -43,9 +69,10 @@ export class EffectsManager {
     );
 
     const trailMaterial = new BABYLON.StandardMaterial('trailMaterial', this.scene);
-    
+
     // Adapter la traînée selon le thème
-    switch (this.theme.id) {
+    switch (this.theme.id)
+    {
       case 'italian':
         // Effet mozzarella qui s'étire légèrement
         trailMaterial.diffuseColor = new BABYLON.Color3(0.95, 0.92, 0.85);
@@ -65,19 +92,112 @@ export class EffectsManager {
         trailMaterial.emissiveColor = this.theme.colors.ball;
         trailMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
     }
-    
+
     trailMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     this.trailSystem.material = trailMaterial;
 
     console.log(`🎯 ${this.theme.name} ball trail enabled`);
   }
 
-  // Ajouter un effet de vapeur pour la cuisine
-  private createSteamEffect(): void {
+  /**
+   * Active les effets de particules
+   */
+  enableParticles(): void
+  {
+    if (this.particleSystem)
+    {
+      this.particleSystem.dispose();
+    }
+
+    // Créer le système de particules
+    this.particleSystem = new BABYLON.ParticleSystem('particles', 1000, this.scene);
+
+    // Adapter les particules selon le thème
+    switch (this.theme.id)
+    {
+      case 'italian':
+        this.createFlourParticles();
+        break;
+      case 'lava':
+        this.createLavaParticles();
+        break;
+      case 'matrix':
+        // Pas de particules pour Matrix (on utilise la pluie de code)
+        return;
+      default:
+        this.createGenericParticles();
+    }
+  }
+
+  /**
+   * Active l'effet de lueur
+   * @param meshes Meshes à faire luire
+   */
+  enableGlow(meshes: BABYLON.Mesh[]): void
+  {
+    if (this.glowLayer)
+    {
+      this.glowLayer.dispose();
+    }
+
+    this.glowLayer = new BABYLON.GlowLayer('glow', this.scene);
+
+    // Adapter l'intensité selon le thème
+    switch (this.theme.id)
+    {
+      case 'lava':
+        this.glowLayer.intensity = 0.8;
+        break;
+      case 'matrix':
+        this.glowLayer.intensity = 0.6;
+        break;
+      case 'italian':
+        this.glowLayer.intensity = 0.3; // Lueur douce
+        break;
+      default:
+        this.glowLayer.intensity = 0.5;
+    }
+
+    meshes.forEach(mesh => {
+      this.glowLayer!.addIncludedOnlyMesh(mesh);
+    });
+
+    console.log(`✨ Glow effect enabled for ${this.theme.name} theme`);
+  }
+
+  /**
+   * Active les effets spécifiques au thème
+   */
+  enableThemeSpecificEffects(): void
+  {
+    switch (this.theme.id)
+    {
+      case 'matrix':
+        this.enableMatrixRain();
+        break;
+      case 'lava':
+        this.enableFieldAnimation();
+        break;
+      case 'italian':
+        this.createSteamEffect();
+        console.log('🍕 Italian kitchen atmosphere enabled');
+        break;
+    }
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE CRÉATION DES EFFETS
+  // ==========================================
+
+  /**
+   * Crée l'effet de vapeur pour la cuisine italienne
+   */
+  private createSteamEffect(): void
+  {
     if (this.theme.id !== 'italian') return;
 
     const steamSystem = new BABYLON.ParticleSystem('steam', 300, this.scene);
-    
+
     steamSystem.particleTexture = new BABYLON.Texture('data:image/svg+xml;base64,' + btoa(`
       <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -114,31 +234,11 @@ export class EffectsManager {
     console.log('💨 Italian kitchen steam effect enabled');
   }
 
-  enableParticles(): void {
-    if (this.particleSystem) {
-      this.particleSystem.dispose();
-    }
-
-    // Créer le système de particules
-    this.particleSystem = new BABYLON.ParticleSystem('particles', 1000, this.scene);
-    
-    // Adapter les particules selon le thème
-    switch (this.theme.id) {
-      case 'italian':
-        this.createFlourParticles();
-        break;
-      case 'lava':
-        this.createLavaParticles();
-        break;
-      case 'matrix':
-        // Pas de particules pour Matrix (on utilise la pluie de code)
-        return;
-      default:
-        this.createGenericParticles();
-    }
-  }
-
-  private createFlourParticles(): void {
+  /**
+   * Crée les particules de farine pour le thème italien
+   */
+  private createFlourParticles(): void
+  {
     if (!this.particleSystem) return;
 
     // Texture améliorée pour la farine
@@ -189,10 +289,14 @@ export class EffectsManager {
     console.log('🍕 Italian flour particles enabled');
   }
 
-  private createIngredientParticles(): void {
+  /**
+   * Crée les particules d'ingrédients pour le thème italien
+   */
+  private createIngredientParticles(): void
+  {
     // ✅ Système séparé pour les tomates (rouge)
     const tomatoSystem = new BABYLON.ParticleSystem('tomatoes', 100, this.scene);
-    
+
     tomatoSystem.particleTexture = new BABYLON.Texture('data:image/svg+xml;base64,' + btoa(`
       <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -230,7 +334,7 @@ export class EffectsManager {
 
     // ✅ Système séparé pour le basilic (vert)
     const basilSystem = new BABYLON.ParticleSystem('basil', 80, this.scene);
-    
+
     basilSystem.particleTexture = new BABYLON.Texture('data:image/svg+xml;base64,' + btoa(`
       <svg width="16" height="20" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -268,7 +372,12 @@ export class EffectsManager {
 
     console.log('🍅🌿 Italian ingredients (tomatoes & basil) particles enabled');
   }
-  private createLavaParticles(): void {
+
+  /**
+   * Crée les particules de lave pour le thème volcanique
+   */
+  private createLavaParticles(): void
+  {
     if (!this.particleSystem) return;
 
     // Texture simple pour les particules de lave
@@ -305,7 +414,11 @@ export class EffectsManager {
     console.log('🌋 Lava particles enabled');
   }
 
-  private createGenericParticles(): void {
+  /**
+   * Crée les particules génériques
+   */
+  private createGenericParticles(): void
+  {
     if (!this.particleSystem) return;
 
     this.particleSystem.particleTexture = new BABYLON.Texture('data:image/svg+xml;base64,' + btoa(`
@@ -319,15 +432,15 @@ export class EffectsManager {
     this.particleSystem.maxEmitBox = new BABYLON.Vector3(5, 0, 3);
 
     this.particleSystem.color1 = new BABYLON.Color4(
-      this.theme.colors.ball.r, 
-      this.theme.colors.ball.g, 
-      this.theme.colors.ball.b, 
+      this.theme.colors.ball.r,
+      this.theme.colors.ball.g,
+      this.theme.colors.ball.b,
       0.5
     );
     this.particleSystem.color2 = new BABYLON.Color4(
-      this.theme.colors.borders.r, 
-      this.theme.colors.borders.g, 
-      this.theme.colors.borders.b, 
+      this.theme.colors.borders.r,
+      this.theme.colors.borders.g,
+      this.theme.colors.borders.b,
       0.3
     );
 
@@ -338,69 +451,34 @@ export class EffectsManager {
     this.particleSystem.start();
   }
 
-  enableGlow(meshes: BABYLON.Mesh[]): void {
-    if (this.glowLayer) {
-      this.glowLayer.dispose();
-    }
-
-    this.glowLayer = new BABYLON.GlowLayer('glow', this.scene);
-    
-    // Adapter l'intensité selon le thème
-    switch (this.theme.id) {
-      case 'lava':
-        this.glowLayer.intensity = 0.8;
-        break;
-      case 'matrix':
-        this.glowLayer.intensity = 0.6;
-        break;
-      case 'italian':
-        this.glowLayer.intensity = 0.3; // Lueur douce
-        break;
-      default:
-        this.glowLayer.intensity = 0.5;
-    }
-
-    meshes.forEach(mesh => {
-      this.glowLayer!.addIncludedOnlyMesh(mesh);
-    });
-
-    console.log(`✨ Glow effect enabled for ${this.theme.name} theme`);
-  }
-
-  // Méthode pour les effets spéciaux de thème
-  enableThemeSpecificEffects(): void {
-    switch (this.theme.id) {
-      case 'matrix':
-        this.enableMatrixRain();
-        break;
-      case 'lava':
-        this.enableFieldAnimation();
-        break;
-      case 'italian':
-        this.createSteamEffect();
-        console.log('🍕 Italian kitchen atmosphere enabled');
-        break;
-    }
-  }
-
-  private enableMatrixRain(): void {
+  /**
+   * Active la pluie de code Matrix
+   */
+  private enableMatrixRain(): void
+  {
     // Créer un effet de pluie de code Matrix simple
     console.log('🌧️ Matrix rain effect enabled');
     // TODO: Implémenter la pluie de code avec des textures
   }
 
-  private enableFieldAnimation(): void {
-    if (this.beforeRenderObserver) {
+  /**
+   * Active l'animation du terrain de lave
+   */
+  private enableFieldAnimation(): void
+  {
+    if (this.beforeRenderObserver)
+    {
       this.scene.onBeforeRenderObservable.remove(this.beforeRenderObserver);
     }
 
     // Animation du terrain de lave qui bouillonne
     this.beforeRenderObserver = this.scene.onBeforeRenderObservable.add(() => {
       this.fieldAnimationTimer += 0.02;
-      
+
       // Trouver le terrain et animer sa position Y légèrement
       const field = this.scene.getMeshByName('field');
-      if (field) {
+      if (field)
+      {
         field.position.y = 0.005 * Math.sin(this.fieldAnimationTimer * 2);
       }
     });
@@ -408,23 +486,35 @@ export class EffectsManager {
     console.log('🌋 Lava field animation enabled');
   }
 
-  dispose(): void {
-    if (this.trailSystem) {
+  // ==========================================
+  // MÉTHODES PUBLIQUES UTILITAIRES
+  // ==========================================
+
+  /**
+   * Libère les ressources
+   */
+  dispose(): void
+  {
+    if (this.trailSystem)
+    {
       this.trailSystem.dispose();
       this.trailSystem = null;
     }
 
-    if (this.particleSystem) {
+    if (this.particleSystem)
+    {
       this.particleSystem.dispose();
       this.particleSystem = null;
     }
 
-    if (this.glowLayer) {
+    if (this.glowLayer)
+    {
       this.glowLayer.dispose();
       this.glowLayer = null;
     }
 
-    if (this.beforeRenderObserver) {
+    if (this.beforeRenderObserver)
+    {
       this.scene.onBeforeRenderObservable.remove(this.beforeRenderObserver);
       this.beforeRenderObserver = null;
     }

@@ -3,20 +3,34 @@ import { friendService } from '@services/friendsService';
 import { userService } from '@services/userService';
 import { User, Friend } from '../../types/index.js';
 
-export class FriendsManagementModal {
+export class FriendsManagementModal
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private modal: HTMLElement | null = null;
   private currentTab: 'friends' | 'search' = 'friends';
   private friends: Friend[] = [];
   private searchResults: User[] = [];
 
-  public async show(): Promise<void> {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Affiche le modal de gestion des amis
+   */
+  public async show(): Promise<void>
+  {
     await this.loadData();
     this.createModal();
     this.bindEvents();
     
     // Animation d'ouverture
-    setTimeout(() => {
-      if (this.modal) {
+    setTimeout(() =>
+    {
+      if (this.modal)
+      {
         this.modal.classList.remove('opacity-0');
         this.modal.classList.add('opacity-100');
         const content = this.modal.querySelector('.modal-content');
@@ -26,11 +40,49 @@ export class FriendsManagementModal {
     }, 10);
   }
 
-  private async loadData(): Promise<void> {
+  /**
+   * Ferme le modal avec animation
+   */
+  public close(): void
+  {
+    if (!this.modal) return;
+
+    this.modal.classList.remove('opacity-100');
+    this.modal.classList.add('opacity-0');
+    const content = this.modal.querySelector('.modal-content');
+    content?.classList.remove('scale-100');
+    content?.classList.add('scale-95');
+
+    window.dispatchEvent(new CustomEvent('friendsUpdated'));
+
+    setTimeout(() =>
+    {
+      this.modal?.remove();
+      this.modal = null;
+    }, 300);
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE CHARGEMENT
+  // ==========================================
+
+  /**
+   * Charge les données des amis
+   */
+  private async loadData(): Promise<void>
+  {
     this.friends = await friendService.getFriends();
   }
 
-  private createModal(): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Crée et ajoute le modal au DOM
+   */
+  private createModal(): void
+  {
     this.close();
 
     this.modal = document.createElement('div');
@@ -70,8 +122,13 @@ export class FriendsManagementModal {
     document.body.appendChild(this.modal);
   }
 
-  private renderTabContent(): string {
-    switch (this.currentTab) {
+  /**
+   * Rend le contenu de l'onglet actif
+   */
+  private renderTabContent(): string
+  {
+    switch (this.currentTab)
+    {
       case 'friends':
         return this.renderFriendsList();
       case 'search':
@@ -81,9 +138,14 @@ export class FriendsManagementModal {
     }
   }
 
-  private renderFriendsList(): string {
+  /**
+   * Rend la liste des amis
+   */
+  private renderFriendsList(): string
+  {
     
-    if (this.friends.length === 0) {
+    if (this.friends.length === 0)
+    {
       return `
         <div class="text-center py-12">
           <div class="text-gray-400 text-4xl mb-4">👥</div>
@@ -138,7 +200,11 @@ export class FriendsManagementModal {
     `;
   }
 
-  private renderSearchTab(): string {
+  /**
+   * Rend l'onglet de recherche
+   */
+  private renderSearchTab(): string
+  {
     return `
       <div>
         <!-- Search Input -->
@@ -170,8 +236,13 @@ export class FriendsManagementModal {
     `;
   }
 
-  private renderSearchResults(): string {
-    if (this.searchResults.length === 0) {
+  /**
+   * Rend les résultats de recherche
+   */
+  private renderSearchResults(): string
+  {
+    if (this.searchResults.length === 0)
+    {
       return `
         <div class="text-center py-12">
           <div class="text-gray-400 text-4xl mb-4">🔍</div>
@@ -182,7 +253,8 @@ export class FriendsManagementModal {
 
     return `
       <div class="space-y-3">
-        ${this.searchResults.map(user => {
+        ${this.searchResults.map(user =>
+        {
           const isFriend = this.friends.some(friend => friend.id === user.id);
           
           return `
@@ -237,23 +309,34 @@ export class FriendsManagementModal {
     `;
   }
 
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ÉVÉNEMENTS
+  // ==========================================
 
-  private bindEvents(): void {
+  /**
+   * Attache les événements au modal
+   */
+  private bindEvents(): void
+  {
     if (!this.modal) return;
 
     // Fermer le modal
     const closeBtn = this.modal.querySelector('#close-modal');
     closeBtn?.addEventListener('click', () => this.close());
 
-    this.modal.addEventListener('click', (e) => {
-      if (e.target === this.modal) {
+    this.modal.addEventListener('click', (e) =>
+    {
+      if (e.target === this.modal)
+      {
         this.close();
       }
     });
 
     // Gestion des onglets
-    this.modal.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    this.modal.querySelectorAll('.tab-btn').forEach(btn =>
+    {
+      btn.addEventListener('click', (e) =>
+      {
         const target = e.target as HTMLElement;
         const tabId = target.id.replace('tab-', '') as 'friends' | 'search';
         this.switchTab(tabId);
@@ -264,7 +347,8 @@ export class FriendsManagementModal {
     this.bindSearchEvents();
 
     // Actions - MODIFIER ICI pour éviter la double exécution
-    this.modal.addEventListener('click', async (e) => {
+    this.modal.addEventListener('click', async (e) =>
+    {
       e.preventDefault();
       e.stopPropagation();
       
@@ -275,15 +359,18 @@ export class FriendsManagementModal {
 
       console.log('Action clicked:', action, 'Target:', target); // Debug
 
-      try {
+      try
+      {
         let success = false;
         
-        switch (action) {
+        switch (action)
+        {
           case 'view-profile':
             const userId = target.dataset.userid;
             console.log('User ID récupéré pour view-profile:', userId); // Debug
             
-            if (!userId || userId === '0' || userId === 'undefined') {
+            if (!userId || userId === '0' || userId === 'undefined')
+            {
               console.error('ID utilisateur invalide:', userId);
               return;
             }
@@ -292,7 +379,8 @@ export class FriendsManagementModal {
             this.close();
             
             // Attendre un petit délai pour s'assurer que le modal est fermé
-            setTimeout(() => {
+            setTimeout(() =>
+            {
               window.dispatchEvent(new CustomEvent('navigate', { detail: `/profile/${userId}` }));
             }, 100);
             
@@ -301,12 +389,14 @@ export class FriendsManagementModal {
           case 'add-friend':
             const userIdToAdd = parseInt(target.dataset.userid || '0');
             console.log('Adding friend with ID:', userIdToAdd);
-            if (userIdToAdd === 0) {
+            if (userIdToAdd === 0)
+            {
               console.error('ID utilisateur invalide pour ajout ami');
               return;
             }
             success = await friendService.sendFriendRequest(userIdToAdd);
-            if (success) {
+            if (success)
+            {
               this.showMessage(i18n.t('friends.messages.friendAdded'), 'success');
               await this.loadData();
               this.updateTabContent();
@@ -319,13 +409,16 @@ export class FriendsManagementModal {
           case 'remove-friend':
             const friendId = parseInt(target.dataset.userid || '0');
             console.log('Removing friend with ID:', friendId);
-            if (friendId === 0) {
+            if (friendId === 0)
+            {
               console.error('ID ami invalide pour suppression');
               return;
             }
-            if (confirm(i18n.t('friends.confirmations.removeFriend'))) {
+            if (confirm(i18n.t('friends.confirmations.removeFriend')))
+            {
               success = await friendService.removeFriend(friendId);
-              if (success) {
+              if (success)
+              {
                 this.showMessage(i18n.t('friends.messages.friendRemoved'), 'success');
                 await this.loadData();
                 this.updateTabContent();
@@ -337,17 +430,22 @@ export class FriendsManagementModal {
             break;
         }
         
-        if (!success && action !== 'view-profile') {
+        if (!success && action !== 'view-profile')
+        {
           this.showMessage(i18n.t('friends.messages.actionFailed'), 'error');
         }
         
-      } catch (error) {
+      } catch (error)
+      {
         console.error('Action failed:', error);
         this.showMessage(i18n.t('friends.messages.actionFailed'), 'error');
       }
     });
   }
 
+  /**
+   * Attache les événements de recherche
+   */
   private bindSearchEvents(): void 
   {
     const searchInput = this.modal?.querySelector('#search-input') as HTMLInputElement;
@@ -355,59 +453,80 @@ export class FriendsManagementModal {
     
     if (!searchInput || !searchBtn) return;
     
-    const performSearch = async () => {
+    const performSearch = async () =>
+    {
       const query = searchInput.value.trim();
       
-      if (query && query.length >= 2) {
-        try {
+      if (query && query.length >= 2)
+      {
+        try
+        {
           this.searchResults = await friendService.searchUsers(query);
           this.updateSearchResults();
-        } catch (error) {
+        } catch (error)
+        {
           console.error('Search error:', error);
           this.showMessage(i18n.t('friends.messages.searchFailed'), 'error');
         }
-      } else if (query.length === 0) {
+      } else if (query.length === 0)
+      {
         this.searchResults = [];
         this.updateSearchResults();
       }
     };
 
     // Recherche sur Enter
-    searchInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') {
+    searchInput.addEventListener('keyup', (e) =>
+    {
+      if (e.key === 'Enter')
+      {
         performSearch();
       }
     });
 
     // Recherche sur clic du bouton
-    searchBtn.addEventListener('click', (e) => {
+    searchBtn.addEventListener('click', (e) =>
+    {
       e.preventDefault();
       performSearch();
     });
 
     // Recherche en temps réel avec debounce
     let searchTimeout: number;
-    searchInput.addEventListener('input', () => {
+    searchInput.addEventListener('input', () =>
+    {
       const query = searchInput.value.trim();
       
       clearTimeout(searchTimeout);
       
-      if (query.length >= 2) {
-        searchTimeout = window.setTimeout(() => {
+      if (query.length >= 2)
+      {
+        searchTimeout = window.setTimeout(() =>
+        {
           performSearch();
         }, 500);
-      } else if (query.length === 0) {
+      } else if (query.length === 0)
+      {
         this.searchResults = [];
         this.updateSearchResults();
       }
     });
   }
 
-  private switchTab(tab: 'friends' | 'search'): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES DE GESTION
+  // ==========================================
+
+  /**
+   * Change d'onglet
+   */
+  private switchTab(tab: 'friends' | 'search'): void
+  {
     this.currentTab = tab;
     
     // Mettre à jour les styles des onglets
-    this.modal?.querySelectorAll('.tab-btn').forEach(btn => {
+    this.modal?.querySelectorAll('.tab-btn').forEach(btn =>
+    {
       btn.classList.remove('bg-blue-600', 'text-white');
       btn.classList.add('text-gray-300');
     });
@@ -419,34 +538,51 @@ export class FriendsManagementModal {
     this.updateTabContent();
     
     // Re-attacher les événements de recherche si on passe à l'onglet search
-    if (tab === 'search') {
-      setTimeout(() => {
+    if (tab === 'search')
+    {
+      setTimeout(() =>
+      {
         this.bindSearchEvents();
       }, 50);
     }
   }
 
-  private updateTabContent(): void {
+  /**
+   * Met à jour le contenu de l'onglet actif
+   */
+  private updateTabContent(): void
+  {
     const content = this.modal?.querySelector('#tab-content');
-    if (content) {
+    if (content)
+    {
       content.innerHTML = this.renderTabContent();
       
       // Mettre à jour le compteur d'amis dans l'onglet
       const friendsTab = this.modal?.querySelector('#tab-friends');
-      if (friendsTab) {
+      if (friendsTab)
+      {
         friendsTab.textContent = `${i18n.t('profile.friends.title')} (${this.friends.length})`;
       }
     }
   }
 
-  private updateSearchResults(): void {
+  /**
+   * Met à jour les résultats de recherche
+   */
+  private updateSearchResults(): void
+  {
     const searchResults = this.modal?.querySelector('#search-results');
-    if (searchResults) {
+    if (searchResults)
+    {
       searchResults.innerHTML = this.renderSearchResults();
     }
   }
 
-  private showMessage(message: string, type: 'success' | 'error'): void {
+  /**
+   * Affiche un message de notification
+   */
+  private showMessage(message: string, type: 'success' | 'error'): void
+  {
     const notification = document.createElement('div');
     notification.className = `fixed top-4 right-4 z-[60] px-4 py-2 rounded-lg text-white font-medium ${
       type === 'success' ? 'bg-green-600' : 'bg-red-600'
@@ -455,34 +591,18 @@ export class FriendsManagementModal {
     
     document.body.appendChild(notification);
     
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       notification.classList.remove('translate-x-full');
     }, 10);
     
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       notification.classList.add('translate-x-full');
-      setTimeout(() => {
+      setTimeout(() =>
+      {
         notification.remove();
       }, 300);
     }, 3000);
-  }
-
-  public close(): void {
-    if (!this.modal) return;
-
-    this.modal.classList.remove('opacity-100');
-    this.modal.classList.add('opacity-0');
-    const content = this.modal.querySelector('.modal-content');
-    content?.classList.remove('scale-100');
-    content?.classList.add('scale-95');
-
-    window.dispatchEvent(new CustomEvent('friendsUpdated'));
-
-    setTimeout(() => {
-
-
-      this.modal?.remove();
-      this.modal = null;
-    }, 300);
   }
 }

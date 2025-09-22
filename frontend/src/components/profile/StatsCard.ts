@@ -1,18 +1,38 @@
 import { i18n } from '@/services/i18nService.js';
 import type { User } from '../../types/index.js';
 
-export class StatsCard {
-  constructor(private user: User) {}
+export class StatsCard
+{
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
 
-  render(): string {
+  /**
+   * Constructeur de la carte de statistiques
+   * @param user Utilisateur dont afficher les statistiques
+   */
+  constructor(private user: User)
+  {
+  }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend la carte de statistiques
+   */
+  render(): string
+  {
     // Vérification de sécurité
-    if (!this.user) {
+    if (!this.user)
+    {
       return this.renderError();
     }
 
     // Extraction des stats avec valeurs par défaut
     const stats = this.user.stats || this.getDefaultStats();
-    
+
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         ${this.renderHeader()}
@@ -21,20 +41,15 @@ export class StatsCard {
     `;
   }
 
-  private getDefaultStats() {
-    return {
-      wins: 0,
-      losses: 0,
-      totalGames: 0,
-      winRate: 0,
-      rank: 0,
-      highestScore: 0,
-      currentStreak: 0,
-      longestStreak: 0
-    };
-  }
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
 
-  private renderError(): string {
+  /**
+   * Rend l'état d'erreur
+   */
+  private renderError(): string
+  {
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         <div class="text-center py-8">
@@ -46,7 +61,11 @@ export class StatsCard {
     `;
   }
 
-  private renderHeader(): string {
+  /**
+   * Rend l'en-tête de la carte
+   */
+  private renderHeader(): string
+  {
     return `
       <h2 class="text-xl font-bold mb-6 text-primary-400 flex items-center">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +76,11 @@ export class StatsCard {
     `;
   }
 
-  private renderMainStats(stats: any): string {
+  /**
+   * Rend les statistiques principales
+   */
+  private renderMainStats(stats: any): string
+  {
     // Calculs dérivés pour assurer la cohérence
     const totalGames = stats.wins + stats.losses;
     const winRate = totalGames > 0 ? Math.round((stats.wins / totalGames) * 100) : 0;
@@ -87,44 +110,54 @@ export class StatsCard {
     `;
   }
 
-//   private renderSecondaryStats(stats: any): string {
-//     return `
-//       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-//         <div class="text-center p-3 bg-gray-700 rounded-lg">
-//           <div class="text-lg font-bold text-purple-400">${stats.rank ? `#${stats.rank}` : 'N/A'}</div>
-//           <div class="text-gray-400 text-xs">${i18n.t('profile.stats.rank')}</div>
-//         </div>
-//         <div class="text-center p-3 bg-gray-700 rounded-lg">
-//           <div class="text-lg font-bold text-yellow-400">${stats.highestScore || 0}</div>
-//           <div class="text-gray-400 text-xs">${i18n.t('profile.stats.highestScore')}</div>
-//         </div>
-//         <div class="text-center p-3 bg-gray-700 rounded-lg">
-//           <div class="text-lg font-bold text-orange-400">${stats.currentStreak || 0}</div>
-//           <div class="text-gray-400 text-xs">${i18n.t('profile.stats.currentStreak')}</div>
-//         </div>
-//         <div class="text-center p-3 bg-gray-700 rounded-lg">
-//           <div class="text-lg font-bold text-pink-400">${stats.longestStreak || 0}</div>
-//           <div class="text-gray-400 text-xs">${i18n.t('profile.stats.longestStreak')}</div>
-//         </div>
-//       </div>
-//     `;
-//   }
+  // ==========================================
+  // MÉTHODES PRIVÉES UTILITAIRES
+  // ==========================================
 
-  private getWinRateColor(winRate: number): string {
+  /**
+   * Obtenir les statistiques par défaut
+   */
+  private getDefaultStats()
+  {
+    return {
+      wins: 0,
+      losses: 0,
+      totalGames: 0,
+      winRate: 0,
+      rank: 0,
+      highestScore: 0,
+      currentStreak: 0,
+      longestStreak: 0
+    };
+  }
+
+  /**
+   * Obtenir la couleur du taux de victoire
+   */
+  private getWinRateColor(winRate: number): string
+  {
     if (winRate >= 70) return 'text-green-400';
     if (winRate >= 50) return 'text-yellow-400';
     if (winRate >= 30) return 'text-orange-400';
     return 'text-red-400';
   }
 
-  private getWinRateBgColor(winRate: number): string {
+  /**
+   * Obtenir la couleur de fond du taux de victoire
+   */
+  private getWinRateBgColor(winRate: number): string
+  {
     if (winRate >= 70) return 'bg-green-900/20';
     if (winRate >= 50) return 'bg-yellow-900/20';
     if (winRate >= 30) return 'bg-orange-900/20';
     return 'bg-red-900/20';
   }
 
-  private getWinRateBorderColor(winRate: number): string {
+  /**
+   * Obtenir la couleur de bordure du taux de victoire
+   */
+  private getWinRateBorderColor(winRate: number): string
+  {
     if (winRate >= 70) return 'border-green-700/30';
     if (winRate >= 50) return 'border-yellow-700/30';
     if (winRate >= 30) return 'border-orange-700/30';

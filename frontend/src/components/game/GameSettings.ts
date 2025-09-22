@@ -2,7 +2,18 @@ import { i18n } from '@/services/i18nService.js';
 import { authService } from '@/services/authService.js';
 import type { GameSettings as Pong3DGameSettings }  from '@/types/index.js';
 
-export class GameSettingsUI {
+export class GameSettingsUI
+{
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur de l'interface des paramètres de jeu
+   * @param mode Mode de jeu (local, remote, tournament)
+   * @param userPreferredTheme Thème préféré de l'utilisateur
+   * @param callbacks Callbacks pour les actions
+   */
   constructor(
     private mode: 'local' | 'remote' | 'tournament',
     private userPreferredTheme: string | null,
@@ -13,10 +24,21 @@ export class GameSettingsUI {
       onBackToModes: () => void;
       onChangeTheme: () => void;
     }
-  ) {}
+  )
+  {
+  }
 
-  render(): string {
-    switch (this.mode) {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend l'interface des paramètres selon le mode
+   */
+  render(): string
+  {
+    switch (this.mode)
+    {
       case 'local':
         return this.renderLocalSettings();
       case 'remote':
@@ -28,7 +50,107 @@ export class GameSettingsUI {
     }
   }
 
-  private renderLocalSettings(): string {
+  /**
+   * Attache les événements aux éléments de l'interface
+   */
+  bindEvents(): void
+  {
+    // Start buttons
+    document.getElementById('start-local-game')?.addEventListener('click', this.callbacks.onStartLocal);
+    document.getElementById('start-remote-game')?.addEventListener('click', this.callbacks.onStartRemote);
+    document.getElementById('create-tournament')?.addEventListener('click', this.callbacks.onCreateTournament);
+
+    // Back buttons
+    document.querySelectorAll('#back-to-modes').forEach(btn =>
+    {
+      btn.addEventListener('click', this.callbacks.onBackToModes);
+    });
+
+    // Theme change buttons
+    document.getElementById('change-theme-profile')?.addEventListener('click', this.callbacks.onChangeTheme);
+    document.getElementById('change-theme-profile-remote')?.addEventListener('click', this.callbacks.onChangeTheme);
+    document.getElementById('change-theme-profile-tournament')?.addEventListener('click', this.callbacks.onChangeTheme);
+
+    // Back to menu from forfeit
+    document.getElementById('back-to-menu-from-forfeit')?.addEventListener('click', () =>
+    {
+      console.log('🧹 Cleaning up session storage before returning to menu');
+      sessionStorage.removeItem('remote_game_active');
+      sessionStorage.removeItem('remote_game_data');
+      window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
+    });
+  }
+
+  /**
+   * Récupère les paramètres de jeu configurés
+   */
+  getGameSettings(): Pong3DGameSettings
+  {
+    const isAuthenticated = authService.isAuthenticated();
+    const currentUser = authService.getCurrentUser();
+    
+    // Noms des joueurs selon le mode
+    let player1Name: string;
+    let player2Name: string;
+    
+    if (this.mode === 'remote')
+    {
+      player1Name = currentUser?.username || 'Player';
+      player2Name = 'Opponent'; // Sera mis à jour lors du matchmaking
+    } else if (this.mode === 'tournament')
+    {
+      player1Name = currentUser?.username || 'Player';
+      player2Name = 'Opponent'; // Sera mis à jour lors du tournoi
+    } else
+    {
+      // Mode local
+      player1Name = isAuthenticated && currentUser 
+        ? currentUser.username 
+        : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || 'Player 1';
+      player2Name = (document.getElementById('player2-name-input') as HTMLInputElement)?.value || 'Player 2';
+    }
+    
+    // Récupérer les paramètres selon le mode
+    const prefix = this.mode === 'remote' ? 'remote-' : 
+                  this.mode === 'tournament' ? 'tournament-' : '';
+    
+    const ballSpeedEl = document.getElementById(`${prefix}ball-speed`) as HTMLSelectElement;
+    const winScoreEl = document.getElementById(`${prefix}win-score`) as HTMLSelectElement;
+    const powerUpsEl = document.getElementById(`${prefix}enable-powerups`) as HTMLInputElement;
+    const themeEl = document.getElementById(`${prefix}theme`) as HTMLSelectElement;
+    
+    // Thème : préféré utilisateur ou sélection manuelle
+    let selectedTheme: string;
+    if (isAuthenticated && this.userPreferredTheme)
+    {
+      selectedTheme = this.userPreferredTheme;
+    } else
+    {
+      const themeSelector = document.getElementById(this.mode === 'local' ? 'game-theme' : `${prefix}theme`) as HTMLSelectElement;
+      selectedTheme = themeSelector?.value || 'classic';
+      console.log('🎨 Using selected theme from UI:', selectedTheme, 'from selector:', themeSelector?.id);
+    }
+    
+    return {
+      player1Name,
+      player2Name,
+      ballSpeed: ballSpeedEl?.value as 'slow' | 'medium' | 'fast' || 'medium',
+      winScore: parseInt(winScoreEl?.value || '5'),
+      theme: selectedTheme,
+      enableEffects: false, // Toujours false pour l'instant
+      powerUps: powerUpsEl?.checked || false
+    };
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Rend les paramètres pour le mode local
+   */
+  private renderLocalSettings(): string
+  {
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
     const defaultTheme = this.userPreferredTheme || 'classic';
@@ -118,10 +240,15 @@ export class GameSettingsUI {
     `;
   }
 
-  private renderRemoteSettings(): string {
+  /**
+   * Rend les paramètres pour le mode remote
+   */
+  private renderRemoteSettings(): string
+  {
     const isAuthenticated = authService.isAuthenticated();
     
-    if (!isAuthenticated) {
+    if (!isAuthenticated)
+    {
       return `
         <div class="bg-gray-800 rounded-lg p-6 text-center">
           <h3 class="text-xl mb-4 text-yellow-400">${i18n.t('home.gameModes.remote.loginRequired')}</h3>
@@ -150,7 +277,8 @@ export class GameSettingsUI {
       }
     });
     
-    if (wasInGame === 'true') {
+    if (wasInGame === 'true')
+    {
       console.log('🚫 GamePage detected game interruption - showing forfeit modal instead of matchmaking interface');
       return `
         <div class="bg-gray-800 rounded-lg p-6 text-center">
@@ -257,7 +385,11 @@ export class GameSettingsUI {
     `;
   }
 
-  private renderTournamentSettings(): string {
+  /**
+   * Rend les paramètres pour le mode tournament
+   */
+  private renderTournamentSettings(): string
+  {
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
     const defaultTheme = this.userPreferredTheme || 'classic';
@@ -375,84 +507,17 @@ export class GameSettingsUI {
     `;
   }
 
-  bindEvents(): void {
-    // Start buttons
-    document.getElementById('start-local-game')?.addEventListener('click', this.callbacks.onStartLocal);
-    document.getElementById('start-remote-game')?.addEventListener('click', this.callbacks.onStartRemote);
-    document.getElementById('create-tournament')?.addEventListener('click', this.callbacks.onCreateTournament);
+  // ==========================================
+  // MÉTHODES PRIVÉES UTILITAIRES
+  // ==========================================
 
-    // Back buttons
-    document.querySelectorAll('#back-to-modes').forEach(btn => {
-      btn.addEventListener('click', this.callbacks.onBackToModes);
-    });
-
-    // Theme change buttons
-    document.getElementById('change-theme-profile')?.addEventListener('click', this.callbacks.onChangeTheme);
-    document.getElementById('change-theme-profile-remote')?.addEventListener('click', this.callbacks.onChangeTheme);
-    document.getElementById('change-theme-profile-tournament')?.addEventListener('click', this.callbacks.onChangeTheme);
-
-    // Back to menu from forfeit
-    document.getElementById('back-to-menu-from-forfeit')?.addEventListener('click', () => {
-      console.log('🧹 Cleaning up session storage before returning to menu');
-      sessionStorage.removeItem('remote_game_active');
-      sessionStorage.removeItem('remote_game_data');
-      window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
-    });
-  }
-
-  getGameSettings(): Pong3DGameSettings {
-    const isAuthenticated = authService.isAuthenticated();
-    const currentUser = authService.getCurrentUser();
-    
-    // Noms des joueurs selon le mode
-    let player1Name: string;
-    let player2Name: string;
-    
-    if (this.mode === 'remote') {
-      player1Name = currentUser?.username || 'Player';
-      player2Name = 'Opponent'; // Sera mis à jour lors du matchmaking
-    } else if (this.mode === 'tournament') {
-      player1Name = currentUser?.username || 'Player';
-      player2Name = 'Opponent'; // Sera mis à jour lors du tournoi
-    } else {
-      // Mode local
-      player1Name = isAuthenticated && currentUser 
-        ? currentUser.username 
-        : (document.getElementById('player1-name-input') as HTMLInputElement)?.value || 'Player 1';
-      player2Name = (document.getElementById('player2-name-input') as HTMLInputElement)?.value || 'Player 2';
-    }
-    
-    // Récupérer les paramètres selon le mode
-    const prefix = this.mode === 'remote' ? 'remote-' : 
-                  this.mode === 'tournament' ? 'tournament-' : '';
-    
-    const ballSpeedEl = document.getElementById(`${prefix}ball-speed`) as HTMLSelectElement;
-    const winScoreEl = document.getElementById(`${prefix}win-score`) as HTMLSelectElement;
-    const powerUpsEl = document.getElementById(`${prefix}enable-powerups`) as HTMLInputElement;
-    const themeEl = document.getElementById(`${prefix}theme`) as HTMLSelectElement;
-    
-    // Thème : préféré utilisateur ou sélection manuelle
-    let selectedTheme: string;
-    if (isAuthenticated && this.userPreferredTheme) {
-      selectedTheme = this.userPreferredTheme;
-    } else {
-      const themeSelector = document.getElementById(this.mode === 'local' ? 'game-theme' : `${prefix}theme`) as HTMLSelectElement;
-      selectedTheme = themeSelector?.value || 'classic';
-      console.log('🎨 Using selected theme from UI:', selectedTheme, 'from selector:', themeSelector?.id);
-    }
-    
-    return {
-      player1Name,
-      player2Name,
-      ballSpeed: ballSpeedEl?.value as 'slow' | 'medium' | 'fast' || 'medium',
-      winScore: parseInt(winScoreEl?.value || '5'),
-      theme: selectedTheme,
-      enableEffects: false, // Toujours false pour l'instant
-      powerUps: powerUpsEl?.checked || false
-    };
-  }
-
-  private getThemeName(themeId: string): string {
+  /**
+   * Obtient le nom d'affichage du thème
+   * @param themeId ID du thème
+   * @returns Nom d'affichage du thème
+   */
+  private getThemeName(themeId: string): string
+  {
     const nameMap: Record<string, string> = {
       classic: i18n.t('game.themes.classic'),
       neon: i18n.t('game.themes.neon'),

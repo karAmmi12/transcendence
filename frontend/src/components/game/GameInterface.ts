@@ -1,26 +1,48 @@
 import { i18n } from '@/services/i18nService.js';
 
-export class GameInterface {
+export class GameInterface
+{
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur de l'interface de jeu
+   * @param mode Mode de jeu (local, remote, tournament)
+   * @param callbacks Callbacks pour les actions de pause et de quitter
+   */
   constructor(
     private mode: 'local' | 'remote' | 'tournament',
     private callbacks: {
       onPause: () => void;
       onQuit: () => void;
     }
-  ) {}
+  )
+  {
+  }
 
-  render(): string {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend l'interface complète du jeu
+   */
+  render(): string
+  {
     return `
       <!-- Header du jeu -->
       <div class="bg-gray-800/50 backdrop-blur-sm rounded-t-lg p-3 md:p-4 flex justify-between items-center border-b border-gray-700/50">
         <h2 class="text-lg md:text-xl font-bold">${this.getGameModeTitle()}</h2>
         <div class="flex gap-2 md:gap-3">
-          <button id="pause-game" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm transition-colors">
-            ⏸️ <span class="hidden sm:inline">${i18n.t('common.pause')}</span>
-          </button>
-          <button id="quit-game" class="bg-red-600 hover:bg-red-700 px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm transition-colors">
-            <span class="hidden sm:inline">${i18n.t('game.lobby.leaveGame')}</span><span class="sm:hidden">✕</span>
-          </button>
+          ${this.mode !== 'remote' ? `
+            <button id="pause-game" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm transition-colors">
+              ⏸️ <span class="hidden sm:inline">${i18n.t('common.pause')}</span>
+            </button>
+            <button id="quit-game" class="bg-red-600 hover:bg-red-700 px-3 py-2 md:px-4 md:py-2 rounded-lg text-xs md:text-sm transition-colors">
+              <span class="hidden sm:inline">${i18n.t('game.lobby.leaveGame')}</span><span class="sm:hidden">✕</span>
+            </button>
+          ` : ''}
         </div>
       </div>
 
@@ -44,7 +66,116 @@ export class GameInterface {
     `;
   }
 
-  private renderGameOverlay(): string {
+  /**
+   * Attache les événements aux éléments de l'interface
+   */
+  bindEvents(): void
+  {
+    const pauseBtn = document.getElementById('pause-game');
+    const quitBtn = document.getElementById('quit-game');
+
+    pauseBtn?.addEventListener('click', this.callbacks.onPause);
+    quitBtn?.addEventListener('click', () =>
+    {
+      if (confirm(i18n.t('common.confirmQuitGame')))
+      {
+        this.callbacks.onQuit();
+      }
+    });
+  }
+
+  /**
+   * Met à jour le bouton de pause selon l'état du jeu
+   * @param isPaused État de pause du jeu
+   */
+  updatePauseButton(isPaused: boolean): void
+  {
+    const pauseBtn = document.getElementById('pause-game');
+    if (!pauseBtn) return;
+
+    if (isPaused)
+    {
+      pauseBtn.innerHTML = `▶️ ${i18n.t('common.resume')}`;
+      pauseBtn.className = 'bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition-colors';
+    } else
+    {
+      pauseBtn.innerHTML = `⏸️ ${i18n.t('common.pause')}`;
+      pauseBtn.className = 'bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg text-sm transition-colors';
+    }
+  }
+
+  /**
+   * Met à jour le statut du jeu affiché
+   * @param status Nouveau statut
+   * @param scores Scores formatés
+   * @param timer Temps formaté
+   */
+  updateGameStatus(status: string, scores: string, timer: string): void
+  {
+    const statusEl = document.getElementById('game-status');
+    const scoresEl = document.getElementById('game-scores');
+    const timerEl = document.getElementById('game-timer-display');
+    const mobileScoresEl = document.getElementById('game-scores-mobile');
+    const mobileTimerEl = document.getElementById('game-timer-mobile');
+
+    if (statusEl) statusEl.textContent = status;
+    if (scoresEl) scoresEl.textContent = scores;
+    if (timerEl) timerEl.textContent = timer;
+    if (mobileScoresEl) mobileScoresEl.textContent = scores;
+    if (mobileTimerEl) mobileTimerEl.textContent = timer;
+  }
+
+  /**
+   * Met à jour les noms des joueurs affichés
+   * @param player1Name Nom du joueur 1
+   * @param player2Name Nom du joueur 2
+   */
+  updatePlayerNames(player1Name: string, player2Name: string): void
+  {
+    const p1NameEl = document.getElementById('player1-name');
+    const p2NameEl = document.getElementById('player2-name');
+
+    if (p1NameEl) p1NameEl.textContent = player1Name;
+    if (p2NameEl) p2NameEl.textContent = player2Name;
+  }
+
+  /**
+   * Met à jour les scores affichés
+   * @param player1Score Score du joueur 1
+   * @param player2Score Score du joueur 2
+   */
+  updateScores(player1Score: number, player2Score: number): void
+  {
+    const p1ScoreEl = document.getElementById('player1-score');
+    const p2ScoreEl = document.getElementById('player2-score');
+
+    if (p1ScoreEl) p1ScoreEl.textContent = player1Score.toString();
+    if (p2ScoreEl) p2ScoreEl.textContent = player2Score.toString();
+  }
+
+  /**
+   * Met à jour l'affichage du chronomètre
+   * @param timeString Temps formaté (MM:SS)
+   */
+  updateTimer(timeString: string): void
+  {
+    const timerEl = document.getElementById('game-timer');
+    if (timerEl)
+    {
+      const timeDiv = timerEl.querySelector('div:last-child');
+      if (timeDiv) timeDiv.textContent = timeString;
+    }
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Rend l'overlay du jeu avec scores et timer
+   */
+  private renderGameOverlay(): string
+  {
     return `
       <div id="game-overlay" class="absolute inset-0 pointer-events-none">
         <!-- Overlay responsive pour les scores -->
@@ -92,7 +223,11 @@ export class GameInterface {
     `;
   }
 
-  private renderGameControls(): string {
+  /**
+   * Rend les contrôles du jeu (desktop et mobile)
+   */
+  private renderGameControls(): string
+  {
     return `
       <div class="p-3 md:p-4 grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
         <!-- Desktop Controls -->
@@ -134,7 +269,11 @@ export class GameInterface {
     `;
   }
 
-  private renderMobileControls(): string {
+  /**
+   * Rend les contrôles tactiles pour mobile
+   */
+  private renderMobileControls(): string
+  {
     return `
       <div class="bg-gray-700/50 rounded-lg p-4">
         <h4 class="text-lg mb-3 text-center">${i18n.t('game.controls.touch')}</h4>
@@ -167,71 +306,13 @@ export class GameInterface {
     `;
   }
 
-  bindEvents(): void {
-    const pauseBtn = document.getElementById('pause-game');
-    const quitBtn = document.getElementById('quit-game');
-
-    pauseBtn?.addEventListener('click', this.callbacks.onPause);
-    quitBtn?.addEventListener('click', () => {
-      if (confirm(i18n.t('common.confirmQuitGame'))) {
-        this.callbacks.onQuit();
-      }
-    });
-  }
-
-  updatePauseButton(isPaused: boolean): void {
-    const pauseBtn = document.getElementById('pause-game');
-    if (!pauseBtn) return;
-
-    if (isPaused) {
-      pauseBtn.innerHTML = `▶️ ${i18n.t('common.resume')}`;
-      pauseBtn.className = 'bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition-colors';
-    } else {
-      pauseBtn.innerHTML = `⏸️ ${i18n.t('common.pause')}`;
-      pauseBtn.className = 'bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg text-sm transition-colors';
-    }
-  }
-
-  updateGameStatus(status: string, scores: string, timer: string): void {
-    const statusEl = document.getElementById('game-status');
-    const scoresEl = document.getElementById('game-scores');
-    const timerEl = document.getElementById('game-timer-display');
-    const mobileScoresEl = document.getElementById('game-scores-mobile');
-    const mobileTimerEl = document.getElementById('game-timer-mobile');
-
-    if (statusEl) statusEl.textContent = status;
-    if (scoresEl) scoresEl.textContent = scores;
-    if (timerEl) timerEl.textContent = timer;
-    if (mobileScoresEl) mobileScoresEl.textContent = scores;
-    if (mobileTimerEl) mobileTimerEl.textContent = timer;
-  }
-
-  updatePlayerNames(player1Name: string, player2Name: string): void {
-    const p1NameEl = document.getElementById('player1-name');
-    const p2NameEl = document.getElementById('player2-name');
-
-    if (p1NameEl) p1NameEl.textContent = player1Name;
-    if (p2NameEl) p2NameEl.textContent = player2Name;
-  }
-
-  updateScores(player1Score: number, player2Score: number): void {
-    const p1ScoreEl = document.getElementById('player1-score');
-    const p2ScoreEl = document.getElementById('player2-score');
-
-    if (p1ScoreEl) p1ScoreEl.textContent = player1Score.toString();
-    if (p2ScoreEl) p2ScoreEl.textContent = player2Score.toString();
-  }
-
-  updateTimer(timeString: string): void {
-    const timerEl = document.getElementById('game-timer');
-    if (timerEl) {
-      const timeDiv = timerEl.querySelector('div:last-child');
-      if (timeDiv) timeDiv.textContent = timeString;
-    }
-  }
-
-  private getGameModeTitle(): string {
-    switch (this.mode) {
+  /**
+   * Obtient le titre du mode de jeu selon le mode actuel
+   */
+  private getGameModeTitle(): string
+  {
+    switch (this.mode)
+    {
       case 'local': return i18n.t('game.modes.local');
       case 'remote': return i18n.t('game.modes.remote');
       case 'tournament': return i18n.t('game.modes.tournament');
