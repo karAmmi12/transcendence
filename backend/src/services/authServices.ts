@@ -5,7 +5,7 @@ import { serialize } from '../utils/serialize.js';
 import db from "../db/index.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { Logger } from '../utils/logger.js';
 
 /**

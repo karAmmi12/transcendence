@@ -1,7 +1,7 @@
 import { i18n } from '@/services/i18nService.js';
 import { userService } from '../../services/userService.js';
 import { friendService } from '@/services/friendsService.js';
-import type { Friend } from '../../types/index.js';
+import type { Friend } from '@/types/index.js';
 import { FriendsManagementModal } from './FriendsManagementModal.js';
 
 export class FriendsSection {

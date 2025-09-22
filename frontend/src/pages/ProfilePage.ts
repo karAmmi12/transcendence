@@ -24,11 +24,8 @@ import { ChangePasswordModal } from '@components/profile/ChangePasswordModal';
 import { ThemeSelectionModal } from '@components/profile/ThemeSelectionModal';
 import { TwoFactorModal } from '@components/auth/TwoFactorModal';
 
-// ==========================================
-// TYPES ET INTERFACES
-// ==========================================
-import { ProfileLayout, type ProfileComponents } from '@components/profile/ProfileLayout';
-import type { User, MatchHistory, Friend, FriendshipStatus } from '../types/index.js';
+import { ProfileLayout } from '@components/profile/ProfileLayout';
+import type { User, MatchHistory, Friend, FriendshipStatus, ProfileComponents } from '@/types/index.js';
 
 // ==========================================
 // CLASSE PRINCIPALE

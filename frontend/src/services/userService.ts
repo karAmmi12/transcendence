@@ -1,4 +1,4 @@
-import { User } from '../types/index.js';
+import type { User } from '@/types/index.js';
 import { i18n } from '@/services/i18nService.js';
 
 export class UserService {

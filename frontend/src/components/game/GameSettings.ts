@@ -1,6 +1,6 @@
 import { i18n } from '@/services/i18nService.js';
 import { authService } from '@/services/authService.js';
-import type { GameSettings as Pong3DGameSettings } from '@/components/game/Pong3D/Pong3D.js';
+import type { GameSettings as Pong3DGameSettings }  from '@/types/index.js';
 
 export class GameSettingsUI {
   constructor(

@@ -1,14 +1,4 @@
-import type { ProfileHeader } from './ProfileHeader';
-import type { StatsCard } from './StatsCard';
-import type { MatchHistoryCard } from './MatchHistoryCard';
-import type { FriendsSection } from './FriendsSection';
-
-export interface ProfileComponents {
-  header: ProfileHeader;
-  stats: StatsCard;
-  history?: MatchHistoryCard;
-  friends?: FriendsSection;
-}
+import type { ProfileComponents } from '@/types/index.js';
 
 export class ProfileLayout {
   constructor(
