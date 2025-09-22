@@ -8,6 +8,7 @@
 // ==========================================
 import { i18n } from '@/services/i18nService';
 import { tournamentService } from '@/services/tournamentService';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 //  IMPORTS DES COMPOSANTS
@@ -69,14 +70,14 @@ export class TournamentPage
   {
     try
     {
-      console.log('📊 Chargement des données du tournoi:', tournamentId);
+      Logger.log('📊 Chargement des données du tournoi:', tournamentId);
       this.tournament = await tournamentService.getTournament(tournamentId);
       this.currentMatch = this.tournament.nextMatch;
-      console.log('✅ Données du tournoi chargées:', this.tournament);
+      Logger.log('✅ Données du tournoi chargées:', this.tournament);
     }
     catch (error)
     {
-      console.error('❌ Échec du chargement du tournoi:', error);
+      Logger.error('❌ Échec du chargement du tournoi:', error);
       throw error;
     }
   }
@@ -93,7 +94,7 @@ export class TournamentPage
       return;
     }
 
-    console.log('🎨 Rendu de la page tournoi');
+    Logger.log('🎨 Rendu de la page tournoi');
 
     const bracket = new TournamentBracket(this.tournament.bracket);
 
@@ -218,7 +219,7 @@ export class TournamentPage
 
   private bindEvents(): void
   {
-    console.log('🎧 Configuration des écouteurs d\'événements');
+    Logger.log('🎧 Configuration des écouteurs d\'événements');
 
     // Écouter les événements de fin de match
     window.addEventListener('matchFinished', (event: CustomEvent) =>
@@ -250,7 +251,7 @@ export class TournamentPage
   {
     try
     {
-      console.log('🏆 Traitement du match terminé:', matchData);
+      Logger.log('🏆 Traitement du match terminé:', matchData);
 
       const result = await tournamentService.finishMatch(
         this.tournament.id,
@@ -262,7 +263,7 @@ export class TournamentPage
         matchData.duration
       );
 
-      console.log(' Réponse du backend:', result);
+      Logger.log(' Réponse du backend:', result);
 
       //  Mettre à jour avec la structure correcte
       if (result.tournament)
@@ -281,7 +282,7 @@ export class TournamentPage
     }
     catch (error)
     {
-      console.error('❌ Échec de la finalisation du match:', error);
+      Logger.error('❌ Échec de la finalisation du match:', error);
       this.showNotification('Erreur lors de la sauvegarde du match', 'error');
     }
   }
@@ -298,7 +299,7 @@ export class TournamentPage
     }
     catch (error)
     {
-      console.error('Échec du rafraîchissement du tournoi:', error);
+      Logger.error('Échec du rafraîchissement du tournoi:', error);
     }
   }
 
@@ -324,7 +325,7 @@ export class TournamentPage
 
   private showMatchDetails(matchId: number): void
   {
-    console.log('📋 Affichage des détails du match:', matchId);
+    Logger.log('📋 Affichage des détails du match:', matchId);
 
     // Trouver le match correspondant
     const allMatches = [
@@ -336,7 +337,7 @@ export class TournamentPage
     const match = allMatches.find(m => m.id === matchId);
     if (!match)
     {
-      console.warn('Match non trouvé:', matchId);
+      Logger.warn('Match non trouvé:', matchId);
       return;
     }
 
@@ -412,7 +413,7 @@ export class TournamentPage
 
   private showNotification(message: string, type: 'success' | 'error'): void
   {
-    console.log('🔔 Affichage de la notification:', message);
+    Logger.log('🔔 Affichage de la notification:', message);
 
     // Créer une notification temporaire
     const notification = document.createElement('div');

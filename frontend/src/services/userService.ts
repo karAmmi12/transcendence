@@ -1,5 +1,6 @@
 import type { User } from '@/types/index.js';
 import { i18n } from '@/services/i18nService.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class UserService {
   // ==========================================
@@ -92,7 +93,7 @@ export class UserService {
    */
   public async getUserProfile(userId?: string | null): Promise<User | null> {
     try {
-      console.log('Fetching user profile for userId:', userId);
+      Logger.log('Fetching user profile for userId:', userId);
       const endpoint = userId ? `/user/profile/${userId}` : '/user/me';
       const response = await fetch(`${this.baseURL}${endpoint}`, {
         method: 'GET',
@@ -109,7 +110,7 @@ export class UserService {
       }
       return null;
     } catch (error) {
-      console.error('Failed to fetch user profile:', error);
+      Logger.error('Failed to fetch user profile:', error);
       return null;
     }
   }
@@ -124,14 +125,14 @@ export class UserService {
         credentials: 'include'
       });
 
-      console.log('response from match history:', response);
+      Logger.log('response from match history:', response);
 
       if (response.ok) {
         return await response.json();
       }
       return [];
     } catch (error) {
-      console.error('Failed to fetch match history:', error);
+      Logger.error('Failed to fetch match history:', error);
       return [];
     }
   }
@@ -163,7 +164,7 @@ export class UserService {
    */
   public async saveUserTheme(theme: string): Promise<boolean> {
     try {
-      console.log('🎨 Sending theme update request:', theme);
+      Logger.log('🎨 Sending theme update request:', theme);
       
       const response = await fetch(`${this.baseURL}/user/updateTheme`, {
         method: 'PUT',
@@ -174,21 +175,21 @@ export class UserService {
         body: JSON.stringify({ theme })
       });
 
-      console.log('🎨 Response status:', response.status, response.statusText);
+      Logger.log('🎨 Response status:', response.status, response.statusText);
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({ error: 'Unknown server error' }));
-        console.error('❌ Theme save failed:', error);
+        Logger.error('❌ Theme save failed:', error);
         throw new Error(error.error || 'Failed to save theme');
       }
 
       const data = await response.json();
-      console.log('✅ Theme save successful:', data);
+      Logger.log('✅ Theme save successful:', data);
       
       return true;
       
     } catch (error) {
-      console.error('❌ Theme save error:', error);
+      Logger.error('❌ Theme save error:', error);
       return false;
     }
   }

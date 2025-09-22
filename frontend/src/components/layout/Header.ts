@@ -1,6 +1,7 @@
 import { i18n } from '@/services/i18nService';
 import { authService } from '@/services/authService';
 import { userService } from '@/services/userService';
+import { Logger } from '@/utils/logger.js'; 
 
 export class Header
 {
@@ -351,7 +352,7 @@ export class Header
             const lang = (e.currentTarget as HTMLElement).dataset.lang;
             if (lang)
             {
-                console.log('Setting language to:', lang);
+                Logger.log('Setting language to:', lang);
                 i18n.setLanguage(lang as any);
                 languageDropdown?.classList.add('opacity-0', 'invisible');
                 languageDropdown?.classList.remove('opacity-100', 'visible');
@@ -367,7 +368,7 @@ export class Header
             const lang = (e.currentTarget as HTMLElement).dataset.lang;
             if (lang)
             {
-                console.log('Setting mobile language to:', lang);
+                Logger.log('Setting mobile language to:', lang);
                 i18n.setLanguage(lang as any);
                 mobileLanguageDropdown?.classList.add('hidden');
                 mobileMenu?.classList.add('hidden'); // Fermer le menu mobile

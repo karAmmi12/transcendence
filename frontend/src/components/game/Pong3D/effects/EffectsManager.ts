@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import type { ThemeConfig } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class EffectsManager
 {
@@ -96,7 +97,7 @@ export class EffectsManager
     trailMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
     this.trailSystem.material = trailMaterial;
 
-    console.log(`🎯 ${this.theme.name} ball trail enabled`);
+    Logger.log(`🎯 ${this.theme.name} ball trail enabled`);
   }
 
   /**
@@ -162,7 +163,7 @@ export class EffectsManager
       this.glowLayer!.addIncludedOnlyMesh(mesh);
     });
 
-    console.log(`✨ Glow effect enabled for ${this.theme.name} theme`);
+    Logger.log(`✨ Glow effect enabled for ${this.theme.name} theme`);
   }
 
   /**
@@ -180,7 +181,7 @@ export class EffectsManager
         break;
       case 'italian':
         this.createSteamEffect();
-        console.log('🍕 Italian kitchen atmosphere enabled');
+        Logger.log('🍕 Italian kitchen atmosphere enabled');
         break;
     }
   }
@@ -231,7 +232,7 @@ export class EffectsManager
     steamSystem.gravity = new BABYLON.Vector3(0, 0.1, 0); // Légèrement vers le haut
 
     steamSystem.start();
-    console.log('💨 Italian kitchen steam effect enabled');
+    Logger.log('💨 Italian kitchen steam effect enabled');
   }
 
   /**
@@ -286,7 +287,7 @@ export class EffectsManager
       this.createIngredientParticles();
     }, 500);
 
-    console.log('🍕 Italian flour particles enabled');
+    Logger.log('🍕 Italian flour particles enabled');
   }
 
   /**
@@ -370,7 +371,7 @@ export class EffectsManager
 
     basilSystem.start();
 
-    console.log('🍅🌿 Italian ingredients (tomatoes & basil) particles enabled');
+    Logger.log('🍅🌿 Italian ingredients (tomatoes & basil) particles enabled');
   }
 
   /**
@@ -411,7 +412,7 @@ export class EffectsManager
     this.particleSystem.maxEmitPower = 2;
 
     this.particleSystem.start();
-    console.log('🌋 Lava particles enabled');
+    Logger.log('🌋 Lava particles enabled');
   }
 
   /**
@@ -457,7 +458,7 @@ export class EffectsManager
   private enableMatrixRain(): void
   {
     // Créer un effet de pluie de code Matrix simple
-    console.log('🌧️ Matrix rain effect enabled');
+    Logger.log('🌧️ Matrix rain effect enabled');
     // TODO: Implémenter la pluie de code avec des textures
   }
 
@@ -483,7 +484,7 @@ export class EffectsManager
       }
     });
 
-    console.log('🌋 Lava field animation enabled');
+    Logger.log('🌋 Lava field animation enabled');
   }
 
   // ==========================================
@@ -519,6 +520,6 @@ export class EffectsManager
       this.beforeRenderObserver = null;
     }
 
-    console.log('🧹 Effects manager disposed');
+    Logger.log('🧹 Effects manager disposed');
   }
 }
