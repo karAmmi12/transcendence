@@ -9,6 +9,7 @@
 import { i18n } from '@/services/i18nService.js';
 import { authService } from '@services/authService';
 import { globalStatsService } from '@services/globalStatsService';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 // IMPORTS DES COMPOSANTS
@@ -60,7 +61,7 @@ export class HomePage
 
   destroy(): void
   {
-    console.log('🧹 Destruction de HomePage et nettoyage des écouteurs');
+    Logger.log('🧹 Destruction de HomePage et nettoyage des écouteurs');
 
     if (this.languageListener)
     {
@@ -83,13 +84,13 @@ export class HomePage
   {
     try
     {
-      console.log('📊 Chargement des statistiques globales...');
+      Logger.log('📊 Chargement des statistiques globales...');
       this.globalStats = await globalStatsService.getGlobalStats();
-      console.log('✅ Statistiques globales chargées:', this.globalStats);
+      Logger.log('✅ Statistiques globales chargées:', this.globalStats);
     }
     catch (error)
     {
-      console.error('❌ Échec du chargement des statistiques globales:', error);
+      Logger.error('❌ Échec du chargement des statistiques globales:', error);
       // Valeurs par défaut en cas d'erreur
       this.globalStats = {
         totalPlayers: 0,
@@ -103,7 +104,7 @@ export class HomePage
   {
     try
     {
-      console.log('🔐 Vérification de l\'authentification...');
+      Logger.log('🔐 Vérification de l\'authentification...');
 
       // Vérifier si l'utilisateur est connecté et charger ses données si nécessaire
       if (authService.isAuthenticated())
@@ -111,17 +112,17 @@ export class HomePage
         const currentUser = authService.getCurrentUser();
         if (!currentUser || !currentUser.stats)
         {
-          console.log('👤 Rechargement des données utilisateur...');
+          Logger.log('👤 Rechargement des données utilisateur...');
           // Recharger les données utilisateur si elles sont incomplètes
           await authService.loadCurrentUser();
         }
       }
 
-      console.log('✅ Authentification vérifiée');
+      Logger.log('✅ Authentification vérifiée');
     }
     catch (error)
     {
-      console.error('❌ Échec de la vérification de l\'authentification:', error);
+      Logger.error('❌ Échec de la vérification de l\'authentification:', error);
     }
   }
 
@@ -131,12 +132,12 @@ export class HomePage
 
   private setupEventListeners(): void
   {
-    console.log('🎧 Configuration des écouteurs d\'événements...');
+    Logger.log('🎧 Configuration des écouteurs d\'événements...');
 
     // Écouteur pour les changements de langue
     this.languageListener = () =>
     {
-      console.log('🌐 Changement de langue détecté, re-rendu de la page');
+      Logger.log('🌐 Changement de langue détecté, re-rendu de la page');
       const element = document.querySelector('#page-content');
       if (element) this.render(element);
     };
@@ -145,7 +146,7 @@ export class HomePage
     // Écouteur pour les changements d'authentification
     this.authListener = () =>
     {
-      console.log('🔐 Changement d\'authentification détecté, re-rendu de la page');
+      Logger.log('🔐 Changement d\'authentification détecté, re-rendu de la page');
       const element = document.querySelector('#page-content');
       if (element) this.render(element);
     };
@@ -158,7 +159,7 @@ export class HomePage
 
   private render(element: Element): void
   {
-    console.log('🎨 Rendu de la page d\'accueil...');
+    Logger.log('🎨 Rendu de la page d\'accueil...');
 
     const isAuthenticated = authService.isAuthenticated();
     const currentUser = authService.getCurrentUser();
@@ -184,30 +185,30 @@ export class HomePage
     {
       onLocalGame: () =>
       {
-        console.log('🎮 Navigation vers le jeu local');
+        Logger.log('🎮 Navigation vers le jeu local');
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=local' }));
       },
       onRemoteGame: () =>
       {
         if (isAuthenticated)
         {
-          console.log('🌐 Navigation vers le jeu distant');
+          Logger.log('🌐 Navigation vers le jeu distant');
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=remote' }));
         }
         else
         {
-          console.log('🔐 Redirection vers la connexion pour le jeu distant');
+          Logger.log('🔐 Redirection vers la connexion pour le jeu distant');
           window.dispatchEvent(new CustomEvent('navigate', { detail: '/login?redirect=/game?mode=remote' }));
         }
       },
       onTournament: () =>
       {
-        console.log('🏆 Navigation vers les tournois');
+        Logger.log('🏆 Navigation vers les tournois');
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/game?mode=tournament' }));
       },
       onLogin: () =>
       {
-        console.log('🔐 Redirection vers la connexion');
+        Logger.log('🔐 Redirection vers la connexion');
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/login?redirect=/game?mode=remote' }));
       }
     };
@@ -230,7 +231,7 @@ export class HomePage
     // Attacher les événements des composants
     gameModeButtons.bindEvents();
 
-    console.log('✅ Page d\'accueil rendue avec succès');
+    Logger.log('✅ Page d\'accueil rendue avec succès');
   }
 
   private renderStatsSection(globalStatsCard: any, userStatsCard: any): string
@@ -238,14 +239,14 @@ export class HomePage
     // Si aucune statistique à afficher
     if (!globalStatsCard && !userStatsCard)
     {
-      console.log('📊 Aucune statistique à afficher');
+      Logger.log('📊 Aucune statistique à afficher');
       return '';
     }
 
     // Si seulement une carte à afficher, la centrer
     if (globalStatsCard && !userStatsCard)
     {
-      console.log('📊 Affichage des statistiques globales uniquement');
+      Logger.log('📊 Affichage des statistiques globales uniquement');
       return `
         <div class="flex justify-center mb-12">
           <div class="w-full max-w-md">
@@ -257,7 +258,7 @@ export class HomePage
 
     if (!globalStatsCard && userStatsCard)
     {
-      console.log('📊 Affichage des statistiques utilisateur uniquement');
+      Logger.log('📊 Affichage des statistiques utilisateur uniquement');
       return `
         <div class="flex justify-center mb-12">
           <div class="w-full max-w-md">
@@ -268,7 +269,7 @@ export class HomePage
     }
 
     // Si les deux cartes sont présentes, utiliser une grille responsive
-    console.log('📊 Affichage des statistiques globales et utilisateur');
+    Logger.log('📊 Affichage des statistiques globales et utilisateur');
     return `
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
         ${globalStatsCard.render()}

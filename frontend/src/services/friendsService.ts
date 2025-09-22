@@ -1,4 +1,5 @@
 import { User, Friend } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js';
 
 export class FriendService {
   // ==========================================
@@ -51,7 +52,7 @@ export class FriendService {
       }
       return [];
     } catch (error) {
-      console.error('Failed to search users:', error);
+      Logger.error('Failed to search users:', error);
       return [];
     }
   }
@@ -76,7 +77,7 @@ export class FriendService {
       
       return response.ok;
     } catch (error) {
-      console.error('Failed to send friend request:', error);
+      Logger.error('Failed to send friend request:', error);
       return false;
     }
   }
@@ -93,7 +94,7 @@ export class FriendService {
       
       return response.ok;
     } catch (error) {
-      console.error('Failed to remove friend:', error);
+      Logger.error('Failed to remove friend:', error);
       return false;
     }
   }
@@ -112,7 +113,7 @@ export class FriendService {
       }
       return [];
     } catch (error) {
-      console.error('Failed to get friends:', error);
+      Logger.error('Failed to get friends:', error);
       return [];
     }
   }

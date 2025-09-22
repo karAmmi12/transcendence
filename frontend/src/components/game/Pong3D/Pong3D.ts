@@ -9,6 +9,7 @@ import { PowerUpManager } from '../powerups/PowerUpManager.js';
 import { i18n } from '@/services/i18nService.js';
 import type { GameSettings, GameState, GameEndStats, GameEndCallbacks } from '@/types/index.js';
 import { PowerUpType } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class Pong3D
 {
@@ -73,7 +74,7 @@ export class Pong3D
     // Initialiser les thèmes
     GameThemes.initialize();
 
-    console.log(`🎮 Initializing Pong3D in ${mode} mode on canvas:`, canvasId);
+    Logger.log(`🎮 Initializing Pong3D in ${mode} mode on canvas:`, canvasId);
 
     this.initEngine();
     this.initComponents();
@@ -110,7 +111,7 @@ export class Pong3D
    */
   private initComponents(): void
   {
-    console.log('🔧 Initializing game components...');
+    Logger.log('🔧 Initializing game components...');
 
     // Initialiser les composants avec les bons paramètres
     this.renderer = new GameRenderer(this.scene, this.canvas, this.settings.theme || 'classic');
@@ -124,7 +125,7 @@ export class Pong3D
     if (this.settings.powerUps)
     {
       this.powerUpManager.enable();
-      console.log('🔋 Power-ups activated!');
+      Logger.log('🔋 Power-ups activated!');
     }
 
     // Démarrer la boucle de rendu
@@ -154,7 +155,7 @@ export class Pong3D
    */
   public startGame(): void
   {
-    console.log('🚀 Starting game...');
+    Logger.log('🚀 Starting game...');
 
     if (this.isRemoteGame)
     {
@@ -235,11 +236,11 @@ export class Pong3D
       if (enabled)
       {
         this.powerUpManager.enable();
-        console.log('🔋 Power-ups enabled');
+        Logger.log('🔋 Power-ups enabled');
       } else
       {
         this.powerUpManager.disable();
-        console.log('🚫 Power-ups disabled');
+        Logger.log('🚫 Power-ups disabled');
       }
     }
   }
@@ -258,7 +259,7 @@ export class Pong3D
    */
   public destroy(): void
   {
-    console.log('🗑️ Destroying Pong3D...');
+    Logger.log('🗑️ Destroying Pong3D...');
 
     this.clearAllEffectIndicators();
 
@@ -298,7 +299,7 @@ export class Pong3D
     // Vérifier que le renderer est initialisé
     if (!this.renderer.isInitialized())
     {
-      console.warn('🚨 Renderer not fully initialized yet');
+      Logger.warn('🚨 Renderer not fully initialized yet');
       return;
     }
 
@@ -342,7 +343,7 @@ export class Pong3D
       return;
 
     const activeEffects = this.powerUpManager.getActiveEffects();
-    console.log(`🔮 Active effects count: ${activeEffects.size}`);
+    Logger.log(`🔮 Active effects count: ${activeEffects.size}`);
 
     // Réinitialiser les valeurs par défaut
     this.physics.resetSpeed();
@@ -355,7 +356,7 @@ export class Pong3D
     // Appliquer les effets de modification
     for (const effect of activeEffects.values())
     {
-      console.log(`🔥 Applying effect: ${effect.type} for ${effect.targetPlayer}`);
+      Logger.log(`🔥 Applying effect: ${effect.type} for ${effect.targetPlayer}`);
 
       switch (effect.type)
       {
@@ -401,7 +402,7 @@ export class Pong3D
     const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
     const loserName = winner === 'player1' ? this.settings.player2Name : this.settings.player1Name;
 
-    console.log(`🏁 Game finished! Winner: ${winnerName}`);
+    Logger.log(`🏁 Game finished! Winner: ${winnerName}`);
 
     // Nettoyer tous les indicateurs d'effets actifs
     this.clearAllEffectIndicators();
@@ -410,18 +411,18 @@ export class Pong3D
     if (this.onGameEnd)
     {
       const duration = (Date.now() - this.matchStartTime) / 1000;
-      console.log('🏆 Tournament match ended, calling callback');
+      Logger.log('🏆 Tournament match ended, calling callback');
       this.onGameEnd(winnerName, this.gameState.scores, duration);
     }
 
     // Afficher le modal seulement en mode local
     if (this.mode === 'local')
     {
-      console.log('🎮 Local game - showing end modal');
+      Logger.log('🎮 Local game - showing end modal');
       this.showGameEndModal(winner, winnerName, loserName);
     } else
     {
-      console.log(`🏆 ${this.mode} game - modal handled by parent component`);
+      Logger.log(`🏆 ${this.mode} game - modal handled by parent component`);
     }
 
     // Envoyer les données du match si c'est une partie locale (pas un tournoi)
@@ -566,7 +567,7 @@ export class Pong3D
 
     if (collidedPowerUp)
     {
-      console.log(`🎯 Power-up collision detected: ${collidedPowerUp.type} at`, ballPosition);
+      Logger.log(`🎯 Power-up collision detected: ${collidedPowerUp.type} at`, ballPosition);
 
       // Déterminer le joueur en fonction de la direction de la balle
       const ballVelocity = this.physics.getBallVelocity();
@@ -582,7 +583,7 @@ export class Pong3D
         targetPlayer = 'player2';
       }
 
-      console.log(`🎯 Ball velocity: ${ballVelocity.x}, assigning power-up to: ${targetPlayer}`);
+      Logger.log(`🎯 Ball velocity: ${ballVelocity.x}, assigning power-up to: ${targetPlayer}`);
 
       // Activer le power-up
       this.powerUpManager.activatePowerUp(collidedPowerUp.id, targetPlayer);
@@ -600,7 +601,7 @@ export class Pong3D
   {
     this.gameState.scores[scorer]++;
 
-    console.log(`🥅 Goal by ${scorer}! Score: ${this.gameState.scores.player1}-${this.gameState.scores.player2}`);
+    Logger.log(`🥅 Goal by ${scorer}! Score: ${this.gameState.scores.player1}-${this.gameState.scores.player2}`);
 
     // Vérifier la fin de partie
     if (this.gameState.scores[scorer] >= this.settings.winScore)
@@ -903,7 +904,7 @@ export class Pong3D
    */
   private restartGame(): void
   {
-    console.log('🔄 Restarting game...');
+    Logger.log('🔄 Restarting game...');
 
     // Réafficher l'overlay de jeu
     const gameOverlay = document.getElementById('game-overlay');
@@ -931,7 +932,7 @@ export class Pong3D
    */
   private backToMenu(): void
   {
-    console.log('🏠 Going back to menu...');
+    Logger.log('🏠 Going back to menu...');
 
     // Naviguer vers la page de sélection de mode
     window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
@@ -942,7 +943,7 @@ export class Pong3D
    */
   private showMatchStats(): void
   {
-    console.log('📊 Showing match statistics...');
+    Logger.log('📊 Showing match statistics...');
 
     // Naviguer vers la page de profil/statistiques
     window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
@@ -969,7 +970,7 @@ export class Pong3D
         duration
       };
 
-      console.log('📊 Match data to send:', matchData);
+      Logger.log('📊 Match data to send:', matchData);
 
       await matchService.sendLocalMatchData(
         matchData.player1,
@@ -979,11 +980,11 @@ export class Pong3D
         matchData.duration
       );
 
-      console.log('✅ Match data sent successfully');
+      Logger.log('✅ Match data sent successfully');
 
     } catch (error)
     {
-      console.error('❌ Failed to send match data:', error);
+      Logger.error('❌ Failed to send match data:', error);
       // Remettre le flag à false en cas d'erreur pour permettre une nouvelle tentative
       this.isMatchDataSent = false;
     }
@@ -1005,7 +1006,7 @@ export class Pong3D
    */
   private connectToServer(): void
   {
-    console.log('🌐 Connecting to server...');
+    Logger.log('🌐 Connecting to server...');
     this.updateGameStatus('Connexion au serveur...');
   }
 }

@@ -1,3 +1,5 @@
+import { Logger } from '@/utils/logger.js'; 
+
 export class ApiConfig {
   private static getBaseUrl(): string {
     // Simple détection: si c'est HTTPS ou si on est sur un port 443/80, c'est la production
@@ -61,12 +63,12 @@ export class ApiConfig {
                          window.location.port === '80' ||
                          window.location.port === '');
     
-    console.log('🔗 API Configuration:');
-    console.log('  - Current host:', window.location.hostname);
-    console.log('  - Current port:', window.location.port);
-    console.log('  - Current protocol:', window.location.protocol);
-    console.log('  - API URL:', ApiConfig.API_URL);
-    console.log('  - WebSocket URL:', ApiConfig.WS_URL);
-    console.log('  - Environment:', isProduction ? 'production' : 'development');
+    Logger.log('🔗 API Configuration:');
+    Logger.log('  - Current host:', window.location.hostname);
+    Logger.log('  - Current port:', window.location.port);
+    Logger.log('  - Current protocol:', window.location.protocol);
+    Logger.log('  - API URL:', ApiConfig.API_URL);
+    Logger.log('  - WebSocket URL:', ApiConfig.WS_URL);
+    Logger.log('  - Environment:', isProduction ? 'production' : 'development');
   }
 }
