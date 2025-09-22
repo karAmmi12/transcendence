@@ -3,6 +3,7 @@ import { userService } from '../../services/userService.js';
 import { friendService } from '@/services/friendsService.js';
 import type { Friend } from '@/types/index.js';
 import { FriendsManagementModal } from './FriendsManagementModal.js';
+import { Logger } from '@/utils/logger.js';
 
 export class FriendsSection
 {
@@ -234,7 +235,7 @@ export class FriendsSection
 
     } catch (error)
     {
-      console.error('Failed to open friends management modal:', error);
+      Logger.error('Failed to open friends management modal:', error);
     }
   }
 
@@ -296,7 +297,7 @@ export class FriendsSection
 
     } catch (error)
     {
-      console.error('Failed to refresh friends list:', error);
+      Logger.error('Failed to refresh friends list:', error);
     }
   }
 

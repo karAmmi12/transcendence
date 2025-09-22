@@ -1,3 +1,5 @@
+import { Logger } from '@/utils/logger.js';
+
 export class TwoFactorService {
   // ==========================================
   // PROPRIÉTÉS PRIVÉES
@@ -44,7 +46,7 @@ export class TwoFactorService {
 
       return data;
     } catch (error) {
-      console.error('Failed to enable 2FA:', error);
+      Logger.error('Failed to enable 2FA:', error);
       throw error;
     }
   }
@@ -71,7 +73,7 @@ export class TwoFactorService {
 
       return data;
     } catch (error) {
-      console.error('Failed to verify 2FA:', error);
+      Logger.error('Failed to verify 2FA:', error);
       throw error;
     }
   }
@@ -95,7 +97,7 @@ export class TwoFactorService {
 
       return data;
     } catch (error) {
-      console.error('Failed to disable 2FA:', error);
+      Logger.error('Failed to disable 2FA:', error);
       throw error;
     }
   }

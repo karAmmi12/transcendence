@@ -13,6 +13,7 @@ import { AuthFormInput } from '@components/auth/AuthFormInput';
 import { AuthSubmitButton } from '@components/auth/AuthSubmitButton';
 import { TwoFactorModal } from '../components/auth/TwoFactorModal.js';
 import { TwoFactorRequiredError } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 // CLASSE PRINCIPALE
@@ -188,7 +189,7 @@ export class LoginPage extends AuthPageBase
       () =>
       {
         // Callback d'annulation - retour au formulaire de connexion
-        console.log('2FA annulé');
+        Logger.log('2FA annulé');
       }
     );
 
