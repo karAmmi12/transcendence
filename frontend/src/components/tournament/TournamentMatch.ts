@@ -2,12 +2,27 @@ import { i18n } from '@/services/i18nService';
 import { GameManager } from '@/components/game/GameManager';
 import type { GameSettings, GameManagerConfig } from '@/types/index.js';
 
-export class TournamentMatch {
+export class TournamentMatch
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private gameManager: GameManager | null = null;
   private isLandscape: boolean = false;
   private gameSettings: GameSettings;
 
-  constructor(private match: any, private tournamentId: number, gameSettings?: GameSettings) {
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur du match de tournoi
+   * @param match Données du match
+   * @param tournamentId ID du tournoi
+   * @param gameSettings Paramètres du jeu
+   */
+  constructor(private match: any, private tournamentId: number, gameSettings?: GameSettings)
+  {
     this.match = match;
     this.tournamentId = tournamentId;
     this.gameSettings = gameSettings;
@@ -16,17 +31,23 @@ export class TournamentMatch {
     this.handleOrientationChange = this.handleOrientationChange.bind(this);
     window.addEventListener('orientationchange', this.handleOrientationChange);
     window.addEventListener('resize', this.handleOrientationChange);
-
-
   }
 
-  render(): string {
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend le match de tournoi
+   */
+  render(): string
+  {
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         <h3 class="text-xl font-semibold mb-4 text-center">
           ${this.match.round} - Match ${this.match.matchNumber}
         </h3>
-        
+
         <!-- Vue d'avant match -->
         <div id="tournament-match-setup">
           <div class="grid grid-cols-2 gap-6 mb-6">
@@ -34,7 +55,7 @@ export class TournamentMatch {
               <h4 class="text-lg font-semibold mb-2 text-blue-400">${this.match.player1}</h4>
               <span class="text-gray-400">${i18n.t('tournament.player1')}</span>
             </div>
-            
+
             <div class="bg-red-900/30 rounded-lg p-4 text-center border border-red-500/30">
               <h4 class="text-lg font-semibold mb-2 text-red-400">${this.match.player2}</h4>
               <span class="text-gray-400">${i18n.t('tournament.player2')}</span>
@@ -42,7 +63,7 @@ export class TournamentMatch {
           </div>
 
           <div class="text-center">
-            <button id="start-tournament-match" 
+            <button id="start-tournament-match"
                     class="bg-primary-600 hover:bg-primary-700 px-8 py-3 rounded-lg font-medium transition-colors">
               ${i18n.t('tournament.startMatch')}
             </button>
@@ -57,7 +78,56 @@ export class TournamentMatch {
     `;
   }
 
-  private renderGameInterface(): string {
+  /**
+   * Attache les événements aux éléments du match
+   */
+  bindEvents(): void
+  {
+    setTimeout(() =>
+    {
+      const startBtn = document.getElementById('start-tournament-match');
+
+      if (startBtn)
+      {
+        startBtn.addEventListener('click', () =>
+        {
+          console.log('🎮 Start tournament match clicked!');
+          this.startMatch();
+        });
+      }
+
+      // Attacher les contrôles de jeu
+      this.bindGameControls();
+
+      // Attacher les contrôles mobiles
+      this.bindMobileControls();
+    }, 100);
+  }
+
+  /**
+   * Nettoie les ressources du match
+   */
+  destroy(): void
+  {
+    window.removeEventListener('orientationchange', this.handleOrientationChange);
+    window.removeEventListener('resize', this.handleOrientationChange);
+
+    if (this.gameManager)
+    {
+      this.gameManager.destroy();
+      this.gameManager = null;
+    }
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Rend l'interface de jeu du tournoi
+   */
+  private renderGameInterface(): string
+  {
     return `
       <!-- Header du jeu -->
       <div class="bg-gray-800/50 backdrop-blur-sm rounded-t-lg p-4 flex justify-between items-center border-b border-gray-700/50 mb-4">
@@ -76,22 +146,26 @@ export class TournamentMatch {
       <div class="relative bg-gray-800 rounded-lg overflow-hidden">
         <!-- Canvas Container -->
         <div class="relative w-full" style="padding-bottom: 56.25%;">
-          <canvas id="tournament-game-canvas" 
+          <canvas id="tournament-game-canvas"
                   class="absolute top-0 left-0 w-full h-full"
                   style="background: linear-gradient(45deg, #1a1a2e, #16213e);">
           </canvas>
-          
+
           <!-- Game Overlay avec scores -->
           ${this.renderTournamentGameOverlay()}
         </div>
-        
+
         <!-- Game Controls -->
         ${this.renderTournamentGameControls()}
       </div>
     `;
   }
 
-  private renderTournamentGameOverlay(): string {
+  /**
+   * Rend l'overlay du jeu de tournoi
+   */
+  private renderTournamentGameOverlay(): string
+  {
     return `
       <div id="tournament-game-overlay" class="absolute inset-0 pointer-events-none">
         <!-- Overlay responsive pour les scores -->
@@ -103,7 +177,7 @@ export class TournamentMatch {
               <div class="text-xl md:text-3xl font-mono font-bold" id="tournament-player1-score">0</div>
             </div>
           </div>
-          
+
           <!-- Timer central -->
           <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-gray-500/30 mx-2 min-w-0 flex-shrink-0">
             <div id="tournament-game-timer" class="text-white text-center">
@@ -114,7 +188,7 @@ export class TournamentMatch {
               ${this.match.round}
             </div>
           </div>
-          
+
           <!-- Score Joueur 2 -->
           <div class="bg-black/60 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4 shadow-lg border border-red-500/30 min-w-0 flex-shrink-0">
             <div id="tournament-player2-info" class="text-white text-right">
@@ -123,7 +197,7 @@ export class TournamentMatch {
             </div>
           </div>
         </div>
-        
+
         <!-- Status mobile en bas (visible uniquement sur mobile) -->
         <div class="absolute bottom-2 left-2 right-2 md:hidden">
           <div class="bg-black/60 backdrop-blur-sm rounded-lg p-2 text-center border border-gray-500/30">
@@ -139,7 +213,11 @@ export class TournamentMatch {
     `;
   }
 
-  private renderTournamentGameControls(): string {
+  /**
+   * Rend les contrôles du jeu de tournoi
+   */
+  private renderTournamentGameControls(): string
+  {
     return `
       <div class="p-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
         <!-- Desktop Controls -->
@@ -153,7 +231,7 @@ export class TournamentMatch {
             Appuyez sur ESPACE pour pause
           </div>
         </div>
-        
+
         <!-- Game Status -->
         <div class="bg-gray-700/50 rounded-lg p-4">
           <h4 class="text-lg mb-3">Status du Match</h4>
@@ -172,7 +250,11 @@ export class TournamentMatch {
     `;
   }
 
-  private renderTournamentMobileControls(): string {
+  /**
+   * Rend les contrôles mobiles du tournoi
+   */
+  private renderTournamentMobileControls(): string
+  {
     return `
       <div class="bg-gray-700/50 rounded-lg p-4 orientation-transition">
         <h4 class="text-lg mb-3 text-center hidden-landscape">Contrôles Tactiles</h4>
@@ -180,17 +262,17 @@ export class TournamentMatch {
           <div class="text-center player-controls">
             <div class="text-xs mb-2 text-blue-300 font-semibold hidden-landscape">${this.match.player1}</div>
             <div class="flex gap-3 landscape:flex-row portrait:flex-col">
-              <button id="tournament-p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition" 
+              <button id="tournament-p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
               <button id="tournament-p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation orientation-transition"
                       style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
             </div>
           </div>
-          
+
           <div class="text-center px-4 flex-1 hidden-landscape">
             <div class="text-xs text-gray-400 mb-2">Maintenez pour bouger</div>
           </div>
-          
+
           <div class="text-center player-controls">
             <div class="text-xs mb-2 text-red-300 font-semibold hidden-landscape">${this.match.player2}</div>
             <div class="flex gap-3 landscape:flex-row portrait:flex-col">
@@ -205,131 +287,68 @@ export class TournamentMatch {
     `;
   }
 
-  // private renderTournamentMobileControls(): string {
-  //   return `
-  //     <div class="bg-gray-700/50 rounded-lg p-4">
-  //       <h4 class="text-lg mb-3 text-center">Contrôles Tactiles</h4>
-  //       <div class="flex justify-between items-center">
-  //         <div class="text-center">
-  //           <div class="text-xs mb-2 text-blue-300 font-semibold">${this.match.player1}</div>
-  //           <div class="flex flex-col gap-3">
-  //             <button id="tournament-p1-up" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation" 
-  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-  //             <button id="tournament-p1-down" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-xl touch-manipulation"
-  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
-  //           </div>
-  //         </div>
-          
-  //         <div class="text-center px-4 flex-1">
-  //           <div class="text-xs text-gray-400 mb-2">Maintenez pour bouger</div>
-  //         </div>
-          
-  //         <div class="text-center">
-  //           <div class="text-xs mb-2 text-red-300 font-semibold">${this.match.player2}</div>
-  //           <div class="flex flex-col gap-3">
-  //             <button id="tournament-p2-up" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
-  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↑</button>
-  //             <button id="tournament-p2-down" class="bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl touch-manipulation"
-  //                     style="min-width: 70px; min-height: 70px; font-size: 1.8rem;">↓</button>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `;
-  // }
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ÉVÉNEMENTS
+  // ==========================================
 
-  bindEvents(): void {
-    setTimeout(() => {
-      const startBtn = document.getElementById('start-tournament-match');
-      
-      if (startBtn) {
-        startBtn.addEventListener('click', () => {
-          console.log('🎮 Start tournament match clicked!');
-          this.startMatch();
-        });
-      }
-      
-      // Bind des contrôles de jeu
-      this.bindGameControls();
-      
-      // Bind des contrôles mobiles
-      this.bindMobileControls();
-    }, 100);
-  }
-
-  private bindGameControls(): void {
+  /**
+   * Attache les contrôles de jeu
+   */
+  private bindGameControls(): void
+  {
     const pauseBtn = document.getElementById('pause-tournament-game');
     const quitBtn = document.getElementById('quit-tournament-game');
 
-    pauseBtn?.addEventListener('click', () => {
-      if (this.gameManager) {
+    pauseBtn?.addEventListener('click', () =>
+    {
+      if (this.gameManager)
+      {
         this.gameManager.pauseGame();
         this.updatePauseButton();
       }
     });
 
-    quitBtn?.addEventListener('click', () => {
-      if (confirm('Êtes-vous sûr de vouloir abandonner ce match de tournoi ?')) {
+    quitBtn?.addEventListener('click', () =>
+    {
+      if (confirm('Êtes-vous sûr de vouloir abandonner ce match de tournoi ?'))
+      {
         this.quitMatch();
       }
     });
   }
- 
 
-  // Gérer l'orientation et les changements de taille
-  private handleOrientationChange(): void {
-    setTimeout(() => {
-      const wasLandscape = this.isLandscape;
-      this.isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 768;
-      
-      if (wasLandscape !== this.isLandscape && this.gameManager) {
-        this.updateTournamentInterfaceForOrientation();
-      }
-    }, 100);
-  }
-
-  private updateTournamentInterfaceForOrientation(): void {
-    const gameInterface = document.getElementById('tournament-game-interface');
-    const mobileControls = document.getElementById('tournament-mobile-controls');
-    const gameOverlay = document.getElementById('tournament-game-overlay');
-    
-    if (this.isLandscape) {
-      gameInterface?.classList.add('landscape-game-interface');
-      mobileControls?.classList.add('landscape-mobile-controls');
-      gameOverlay?.classList.add('landscape-game-overlay');
-    } else {
-      gameInterface?.classList.remove('landscape-game-interface');
-      mobileControls?.classList.remove('landscape-mobile-controls');
-      gameOverlay?.classList.remove('landscape-game-overlay');
-    }
-    
-    if (this.gameManager) {
-      this.gameManager.handleResize();
-    }
-  }
-
-  private bindMobileControls(): void {
+  /**
+   * Attache les contrôles mobiles
+   */
+  private bindMobileControls(): void
+  {
     const controls = ['tournament-p1-up', 'tournament-p1-down', 'tournament-p2-up', 'tournament-p2-down'];
-    
-    controls.forEach(controlId => {
+
+    controls.forEach(controlId =>
+    {
       const btn = document.getElementById(controlId);
-      if (btn) {
-        btn.addEventListener('touchstart', (e) => {
+      if (btn)
+      {
+        btn.addEventListener('touchstart', (e) =>
+        {
           e.preventDefault();
           this.handleMobileControlStart(controlId);
         });
-        
-        btn.addEventListener('touchend', (e) => {
+
+        btn.addEventListener('touchend', (e) =>
+        {
           e.preventDefault();
           this.handleMobileControlEnd(controlId);
         });
 
-        btn.addEventListener('mousedown', (e) => {
+        btn.addEventListener('mousedown', (e) =>
+        {
           e.preventDefault();
           this.handleMobileControlStart(controlId);
         });
 
-        btn.addEventListener('mouseup', (e) => {
+        btn.addEventListener('mouseup', (e) =>
+        {
           e.preventDefault();
           this.handleMobileControlEnd(controlId);
         });
@@ -337,45 +356,66 @@ export class TournamentMatch {
     });
   }
 
-  private handleMobileControlStart(controlId: string): void {
-    if (this.gameManager) {
+  /**
+   * Gère le début d'un contrôle mobile
+   */
+  private handleMobileControlStart(controlId: string): void
+  {
+    if (this.gameManager)
+    {
       const isUp = controlId.includes('up');
       const player = controlId.includes('p1') ? 'player1' : 'player2';
       this.gameManager.handleMobileInput(player, isUp ? 'up' : 'down', true);
     }
   }
 
-  private handleMobileControlEnd(controlId: string): void {
-    if (this.gameManager) {
+  /**
+   * Gère la fin d'un contrôle mobile
+   */
+  private handleMobileControlEnd(controlId: string): void
+  {
+    if (this.gameManager)
+    {
       const isUp = controlId.includes('up');
       const player = controlId.includes('p1') ? 'player1' : 'player2';
       this.gameManager.handleMobileInput(player, isUp ? 'up' : 'down', false);
     }
   }
 
-  private updatePauseButton(): void {
+  /**
+   * Met à jour le bouton de pause
+   */
+  private updatePauseButton(): void
+  {
     const pauseBtn = document.getElementById('pause-tournament-game');
     if (!pauseBtn || !this.gameManager) return;
 
     const status = this.gameManager.getGameStatus();
-    
-    if (status === 'playing') {
+
+    if (status === 'playing')
+    {
       pauseBtn.innerHTML = '⏸️ Pause';
       pauseBtn.className = 'bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg text-sm transition-colors';
-    } else if (status === 'paused') {
+    } else if (status === 'paused')
+    {
       pauseBtn.innerHTML = '▶️ Reprendre';
       pauseBtn.className = 'bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition-colors';
     }
   }
 
-  private startMatch(): void {
+  /**
+   * Démarre le match
+   */
+  private startMatch(): void
+  {
     console.log('🚀 Starting tournament match...');
-    
+
     // Masquer la vue setup et afficher l'interface de jeu
     const setupDiv = document.getElementById('tournament-match-setup');
     const gameInterface = document.getElementById('tournament-game-interface');
-    
-    if (setupDiv && gameInterface) {
+
+    if (setupDiv && gameInterface)
+    {
       setupDiv.classList.add('hidden');
       gameInterface.classList.remove('hidden');
     }
@@ -393,34 +433,43 @@ export class TournamentMatch {
         powerUps: this.gameSettings?.powerUps || false, // ✅ Utiliser les paramètres
         enableEffects: false
       },
-      onGameStart: () => {
+      onGameStart: () =>
+      {
         console.log('✅ Tournament game started');
         this.updateTournamentGameInterface();
       },
-      onGameEnd: (winner: string, scores: any, duration: number) => {
+      onGameEnd: (winner: string, scores: any, duration: number) =>
+      {
         console.log('🏁 Tournament match ended (callback):', { winner, scores, duration });
         this.handleMatchEnd(winner, scores, duration);
       }
     };
 
-    try {
+    try
+    {
       // Créer le gestionnaire de jeu
       this.gameManager = new GameManager(gameConfig);
-      
+
       // Démarrer le jeu
-      this.gameManager.startGame().then(() => {
+      this.gameManager.startGame().then(() =>
+      {
         console.log('✅ Tournament game started successfully');
-      }).catch(error => {
+      }).catch(error =>
+      {
         console.error('❌ Failed to start tournament game:', error);
       });
-      
-    } catch (error) {
+
+    } catch (error)
+    {
       console.error('❌ Failed to start tournament match:', error);
     }
   }
 
-
-  private updateTournamentGameInterface(): void {
+  /**
+   * Met à jour l'interface du jeu de tournoi
+   */
+  private updateTournamentGameInterface(): void
+  {
     // Mettre à jour les noms des joueurs
     const p1Name = document.getElementById('tournament-player1-name');
     const p2Name = document.getElementById('tournament-player2-name');
@@ -429,34 +478,45 @@ export class TournamentMatch {
 
     // Mettre à jour le statut
     const statusEl = document.getElementById('tournament-game-status');
-    if (statusEl) {
+    if (statusEl)
+    {
       statusEl.textContent = 'Match en cours';
       statusEl.className = 'text-green-400 text-sm';
     }
   }
 
-  private quitMatch(): void {
-    if (this.gameManager) {
+  /**
+   * Quitte le match
+   */
+  private quitMatch(): void
+  {
+    if (this.gameManager)
+    {
       this.gameManager.destroy();
       this.gameManager = null;
     }
-    
+
     // Retourner à la vue setup
     const setupDiv = document.getElementById('tournament-match-setup');
     const gameInterface = document.getElementById('tournament-game-interface');
-    
-    if (setupDiv && gameInterface) {
+
+    if (setupDiv && gameInterface)
+    {
       gameInterface.classList.add('hidden');
       setupDiv.classList.remove('hidden');
     }
   }
 
-  private handleMatchEnd(winner: string, scores: any, duration: number): void {
+  /**
+   * Gère la fin du match
+   */
+  private handleMatchEnd(winner: string, scores: any, duration: number): void
+  {
     console.log('🏆 Tournament match ended, processing results...');
-    
+
     // Afficher une notification temporaire de fin de match
     this.showMatchEndNotification(winner, scores);
-    
+
     // Préparer les données du match
     const matchData = {
       tournamentId: this.tournamentId,
@@ -469,15 +529,72 @@ export class TournamentMatch {
       winner
     };
 
+    // Nettoyer le gestionnaire de jeu
+    if (this.gameManager)
+    {
+      this.gameManager.destroy();
+      this.gameManager = null;
+    }
+
     // Déclencher l'événement pour notifier la page parent
-    window.dispatchEvent(new CustomEvent('matchFinished', { 
-      detail: matchData 
+    window.dispatchEvent(new CustomEvent('matchFinished', {
+      detail: matchData
     }));
   }
 
-  
+  // ==========================================
+  // MÉTHODES PRIVÉES UTILITAIRES
+  // ==========================================
 
-  private showMatchEndNotification(winner: string, scores: any): void {
+  /**
+   * Gère le changement d'orientation
+   */
+  private handleOrientationChange(): void
+  {
+    setTimeout(() =>
+    {
+      const wasLandscape = this.isLandscape;
+      this.isLandscape = window.innerWidth > window.innerHeight && window.innerWidth <= 768;
+
+      if (wasLandscape !== this.isLandscape && this.gameManager)
+      {
+        this.updateTournamentInterfaceForOrientation();
+      }
+    }, 100);
+  }
+
+  /**
+   * Met à jour l'interface pour l'orientation
+   */
+  private updateTournamentInterfaceForOrientation(): void
+  {
+    const gameInterface = document.getElementById('tournament-game-interface');
+    const mobileControls = document.getElementById('tournament-mobile-controls');
+    const gameOverlay = document.getElementById('tournament-game-overlay');
+
+    if (this.isLandscape)
+    {
+      gameInterface?.classList.add('landscape-game-interface');
+      mobileControls?.classList.add('landscape-mobile-controls');
+      gameOverlay?.classList.add('landscape-game-overlay');
+    } else
+    {
+      gameInterface?.classList.remove('landscape-game-interface');
+      mobileControls?.classList.remove('landscape-mobile-controls');
+      gameOverlay?.classList.remove('landscape-game-overlay');
+    }
+
+    if (this.gameManager)
+    {
+      this.gameManager.handleResize();
+    }
+  }
+
+  /**
+   * Affiche la notification de fin de match
+   */
+  private showMatchEndNotification(winner: string, scores: any): void
+  {
     const gameInterface = document.getElementById('tournament-game-interface');
     if (!gameInterface) return;
 
@@ -504,18 +621,9 @@ export class TournamentMatch {
     gameInterface.appendChild(overlay);
 
     // Supprimer l'overlay après 3 secondes
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       overlay.remove();
     }, 3000);
-  }
-
-  destroy(): void {
-    window.removeEventListener('orientationchange', this.handleOrientationChange);
-    window.removeEventListener('resize', this.handleOrientationChange);
-    
-    if (this.gameManager) {
-      this.gameManager.destroy();
-      this.gameManager = null;
-    }
   }
 }

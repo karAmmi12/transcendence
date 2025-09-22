@@ -1,4 +1,5 @@
-export class MobileControls {
+export class MobileControls 
+{
   constructor(
     private callbacks: {
       onPlayer1Up: (pressed: boolean) => void;
@@ -8,12 +9,14 @@ export class MobileControls {
     }
   ) {}
 
-  bindEvents(): void {
+  bindEvents(): void 
+  {
     const controls = ['p1-up', 'p1-down', 'p2-up', 'p2-down'];
     
     controls.forEach(controlId => {
       const btn = document.getElementById(controlId);
-      if (btn) {
+      if (btn) 
+      {
         // Touch events
         btn.addEventListener('touchstart', (e) => {
           e.preventDefault();
@@ -39,8 +42,10 @@ export class MobileControls {
     });
   }
 
-  private handleControlStart(controlId: string): void {
-    switch (controlId) {
+  private handleControlStart(controlId: string): void 
+  {
+    switch (controlId) 
+    {
       case 'p1-up':
         this.callbacks.onPlayer1Up(true);
         break;
@@ -56,8 +61,10 @@ export class MobileControls {
     }
   }
 
-  private handleControlEnd(controlId: string): void {
-    switch (controlId) {
+  private handleControlEnd(controlId: string): void 
+  {
+    switch (controlId) 
+    {
       case 'p1-up':
         this.callbacks.onPlayer1Up(false);
         break;

@@ -1,15 +1,29 @@
 export class TwoFactorService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private static instance: TwoFactorService;
   private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api' 
     : `http://${location.hostname}:8000/api`;
 
+  // ==========================================
+  // INITIALISATION ET CONFIGURATION
+  // ==========================================
+
+  /**
+   * Obtient l'instance unique du service (pattern Singleton)
+   */
   public static getInstance(): TwoFactorService {
     if (!TwoFactorService.instance) {
       TwoFactorService.instance = new TwoFactorService();
     }
     return TwoFactorService.instance;
   }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
 
   /**
    * Activer 2FA - envoie un code par email

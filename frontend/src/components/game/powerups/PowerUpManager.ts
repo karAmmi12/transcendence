@@ -2,7 +2,12 @@ import * as BABYLON from '@babylonjs/core';
 import { PowerUp, PowerUpType, PowerUpConfig, ActiveEffect } from '../../../types/powerups.js';
 import { i18n } from '@services/i18nService.js';
 
-export class PowerUpManager {
+export class PowerUpManager
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
+
   private scene: BABYLON.Scene;
   private powerUps: Map<string, PowerUp> = new Map();
   private activeEffects: Map<string, ActiveEffect> = new Map();
@@ -11,8 +16,11 @@ export class PowerUpManager {
   private maxPowerUps: number = 2;
   private enabled: boolean = false;
 
+  // ==========================================
+  // CONFIGURATIONS DES POWER-UPS
+  // ==========================================
+
   private configs: Map<PowerUpType, PowerUpConfig> = new Map([
-  
     [PowerUpType.PADDLE_SIZE, {
       type: PowerUpType.PADDLE_SIZE,
       name: i18n.t('powerups.paddle_size'),
@@ -23,7 +31,7 @@ export class PowerUpManager {
       lifespan: 15,
       effects: { paddleSizeMultiplier: 1.7 }
     }],
-  
+
     [PowerUpType.REVERSE_CONTROLS, {
       type: PowerUpType.REVERSE_CONTROLS,
       name: i18n.t('powerups.reverse_controls'),
@@ -34,6 +42,7 @@ export class PowerUpManager {
       lifespan: 10,
       effects: { reverseControls: true }
     }],
+
     [PowerUpType.FREEZE_OPPONENT, {
       type: PowerUpType.FREEZE_OPPONENT,
       name: i18n.t('powerups.freeze_opponent'),
@@ -46,66 +55,374 @@ export class PowerUpManager {
     }]
   ]);
 
-  constructor(scene: BABYLON.Scene) {
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur du gestionnaire de power-ups
+   * @param scene Scène Babylon.js
+   */
+  constructor(scene: BABYLON.Scene)
+  {
     this.scene = scene;
   }
 
-  public enable(): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES DE CONTRÔLE
+  // ==========================================
+
+  /**
+   * Active les power-ups
+   */
+  public enable(): void
+  {
     this.enabled = true;
     console.log('🔋 Power-ups enabled');
   }
 
-  public disable(): void {
+  /**
+   * Désactive les power-ups
+   */
+  public disable(): void
+  {
     this.enabled = false;
     this.clearAllPowerUps();
     this.clearAllEffects();
     console.log('🚫 Power-ups disabled');
   }
 
-  public update(deltaTime: number): void {
+  /**
+   * Met à jour le gestionnaire de power-ups
+   * @param deltaTime Temps écoulé depuis la dernière mise à jour
+   */
+  public update(deltaTime: number): void
+  {
     if (!this.enabled) return;
 
     console.log('🔄 Updating PowerUpManager'); // ✅ Debug
 
     this.spawnTimer += deltaTime;
-    
+
     // Spawner de nouveaux power-ups
-    if (this.spawnTimer >= this.spawnInterval && this.powerUps.size < this.maxPowerUps) {
+    if (this.spawnTimer >= this.spawnInterval && this.powerUps.size < this.maxPowerUps)
+    {
       this.spawnRandomPowerUp();
       this.spawnTimer = 0;
     }
 
     // Mettre à jour les power-ups existants
     this.updatePowerUps();
-    
+
     // Mettre à jour les effets actifs
     this.updateActiveEffects();
   }
 
-  private spawnRandomPowerUp(): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES DE GESTION DES POWER-UPS
+  // ==========================================
+
+  /**
+   * Vérifie les collisions avec la balle
+   * @param ballPosition Position de la balle
+   * @returns Power-up en collision ou null
+   */
+  public checkCollision(ballPosition: { x: number; y: number; z: number }): PowerUp | null
+  {
+    for (const powerUp of this.powerUps.values())
+    {
+      if (powerUp.isActive) continue;
+
+      const distance = Math.sqrt(
+        Math.pow(ballPosition.x - powerUp.position.x, 2) +
+        Math.pow(ballPosition.y - powerUp.position.y, 2) +
+        Math.pow(ballPosition.z - powerUp.position.z, 2)
+      );
+
+      // ✅ Augmenter le rayon de collision pour faciliter la détection
+      if (distance < 0.4)
+      { // Était 0.25, maintenant 0.4
+        console.log(`🎯 Collision detected! Distance: ${distance.toFixed(3)}, PowerUp: ${powerUp.type}`);
+        return powerUp;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Active un power-up pour un joueur
+   * @param powerUpId ID du power-up
+   * @param targetPlayer Joueur cible
+   */
+  public activatePowerUp(powerUpId: string, targetPlayer: 'player1' | 'player2'): void
+  {
+    const powerUp = this.powerUps.get(powerUpId);
+    if (!powerUp || powerUp.isActive) return;
+
+    const config = this.configs.get(powerUp.type)!;
+
+    // Marquer comme actif et masquer
+    powerUp.isActive = true;
+    powerUp.mesh.setEnabled(false);
+
+    // Créer l'effet actif
+    const effectId = `effect_${Date.now()}_${Math.random()}`;
+    const effect: ActiveEffect = {
+      id: effectId,
+      type: powerUp.type,
+      targetPlayer,
+      startTime: Date.now(),
+      duration: config.duration * 1000
+    };
+
+    this.activeEffects.set(effectId, effect);
+
+    // Supprimer le power-up après un délai
+    setTimeout(() =>
+    {
+      this.removePowerUp(powerUpId);
+    }, 1000);
+
+    console.log(`⚡ Activated power-up: ${config.name} for ${targetPlayer}`);
+  }
+
+  /**
+   * Obtient les effets actifs
+   * @returns Map des effets actifs
+   */
+  public getActiveEffects(): Map<string, ActiveEffect>
+  {
+    return new Map(this.activeEffects);
+  }
+
+  /**
+   * Vérifie si un joueur a un effet actif
+   * @param player Joueur
+   * @param type Type d'effet
+   * @returns True si l'effet est actif
+   */
+  public hasEffect(player: 'player1' | 'player2', type: PowerUpType): boolean
+  {
+    for (const effect of this.activeEffects.values())
+    {
+      if (effect.targetPlayer === player && effect.type === type)
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES DE SYNCHRONISATION P2P
+  // ==========================================
+
+  /**
+   * Obtient les power-ups actifs pour synchronisation
+   * @returns Liste des power-ups actifs
+   */
+  public getActivePowerUps(): any[]
+  {
+    const activePowerUps = [];
+    for (const [id, powerUp] of this.powerUps.entries())
+    {
+      activePowerUps.push({
+        id: id,
+        type: powerUp.type,
+        position: {
+          x: powerUp.mesh.position.x,
+          y: powerUp.mesh.position.y,
+          z: powerUp.mesh.position.z
+        },
+        scale: {
+          x: powerUp.mesh.scaling.x,
+          y: powerUp.mesh.scaling.y,
+          z: powerUp.mesh.scaling.z
+        },
+        rotation: powerUp.mesh.rotation.y,
+        spawned: powerUp.spawned,
+        lifespan: powerUp.lifespan
+      });
+    }
+    return activePowerUps;
+  }
+
+  /**
+   * Obtient les effets des paddles pour synchronisation
+   * @returns Effets des paddles
+   */
+  public getPaddleEffects(): any
+  {
+    const effects: any = {};
+    for (const [id, effect] of this.activeEffects.entries())
+    {
+      effects[effect.targetPlayer] = effects[effect.targetPlayer] || [];
+      effects[effect.targetPlayer].push({
+        id: id,
+        type: effect.type,
+        effects: effect.effects,
+        startTime: effect.startTime,
+        duration: effect.duration
+      });
+    }
+    return effects;
+  }
+
+  /**
+   * Synchronise les power-ups actifs depuis l'hôte
+   * @param remotePowerUps Power-ups distants
+   */
+  public syncActivePowerUps(remotePowerUps: any[]): void
+  {
+    // Supprimer les power-ups qui n'existent plus côté host
+    const remoteIds = new Set(remotePowerUps.map(p => p.id));
+    const toRemove = [];
+    for (const [id] of this.powerUps.entries())
+    {
+      if (!remoteIds.has(id))
+      {
+        toRemove.push(id);
+      }
+    }
+    toRemove.forEach(id => this.removePowerUp(id));
+
+    // Ajouter ou mettre à jour les power-ups
+    for (const remotePowerUp of remotePowerUps)
+    {
+      let localPowerUp = this.powerUps.get(remotePowerUp.id);
+
+      if (!localPowerUp)
+      {
+        // Créer un nouveau power-up
+        const config = this.configs.get(remotePowerUp.type);
+        if (config)
+        {
+          localPowerUp = this.createPowerUpMesh(remotePowerUp.id, config);
+          this.powerUps.set(remotePowerUp.id, localPowerUp);
+        }
+      }
+
+      if (localPowerUp)
+      {
+        // ✅ Mettre à jour la position avec validation de Y
+        const posY = Math.max(remotePowerUp.position.y, 0.3); // Minimum Y = 0.3 pour éviter l'enfoncement
+
+        localPowerUp.mesh.position.set(
+          remotePowerUp.position.x,
+          posY, // Position Y corrigée
+          remotePowerUp.position.z
+        );
+
+        // Mettre à jour la position stockée aussi
+        localPowerUp.position = {
+          x: remotePowerUp.position.x,
+          y: posY,
+          z: remotePowerUp.position.z
+        };
+
+        localPowerUp.mesh.scaling.set(
+          remotePowerUp.scale.x,
+          remotePowerUp.scale.y,
+          remotePowerUp.scale.z
+        );
+        localPowerUp.mesh.rotation.y = remotePowerUp.rotation;
+        localPowerUp.spawned = remotePowerUp.spawned;
+        localPowerUp.lifespan = remotePowerUp.lifespan;
+
+        console.log(`🔋 Guest synced power-up ${remotePowerUp.id} at position Y: ${posY}`);
+      }
+    }
+  }
+
+  /**
+   * Synchronise les effets des paddles depuis l'hôte
+   * @param remoteEffects Effets distants
+   */
+  public syncPaddleEffects(remoteEffects: any): void
+  {
+    // Nettoyer les effets actuels
+    this.activeEffects.clear();
+
+    // Appliquer les effets du host
+    for (const [targetPlayer, effects] of Object.entries(remoteEffects))
+    {
+      if (Array.isArray(effects))
+      {
+        for (const effect of effects)
+        {
+          this.activeEffects.set(effect.id, {
+            id: effect.id,
+            type: effect.type,
+            targetPlayer: targetPlayer as 'player1' | 'player2',
+            effects: effect.effects,
+            startTime: effect.startTime,
+            duration: effect.duration
+          });
+        }
+      }
+    }
+  }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES UTILITAIRES
+  // ==========================================
+
+  /**
+   * Libère les ressources
+   */
+  public dispose(): void
+  {
+    this.clearAllPowerUps();
+    this.clearAllEffects();
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE SPAWN
+  // ==========================================
+
+  /**
+   * Fait apparaître un power-up aléatoire
+   */
+  private spawnRandomPowerUp(): void
+  {
     const types = Array.from(this.configs.keys());
     const weights = types.map(type => this.configs.get(type)!.spawnWeight);
     const selectedType = this.weightedRandomSelect(types, weights);
-    
+
     const position = this.getRandomSpawnPosition();
     this.createPowerUp(selectedType, position);
   }
 
-  private weightedRandomSelect<T>(items: T[], weights: number[]): T {
+  /**
+   * Sélectionne un élément pondéré aléatoirement
+   * @param items Éléments à choisir
+   * @param weights Poids de chaque élément
+   * @returns Élément sélectionné
+   */
+  private weightedRandomSelect<T>(items: T[], weights: number[]): T
+  {
     const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
     let random = Math.random() * totalWeight;
-    
-    for (let i = 0; i < items.length; i++) {
+
+    for (let i = 0; i < items.length; i++)
+    {
       random -= weights[i];
-      if (random <= 0) {
+      if (random <= 0)
+      {
         return items[i];
       }
     }
-    
+
     return items[items.length - 1];
   }
 
-  private getRandomSpawnPosition(): { x: number; y: number; z: number } {
+  /**
+   * Obtient une position de spawn aléatoire
+   * @returns Position de spawn
+   */
+  private getRandomSpawnPosition(): { x: number; y: number; z: number }
+  {
     return {
       x: (Math.random() - 0.5) * 6, // Entre -3 et 3
       y: 0.3,
@@ -113,7 +430,13 @@ export class PowerUpManager {
     };
   }
 
-  private createPowerUp(type: PowerUpType, position: { x: number; y: number; z: number }): void {
+  /**
+   * Crée un power-up
+   * @param type Type du power-up
+   * @param position Position du power-up
+   */
+  private createPowerUp(type: PowerUpType, position: { x: number; y: number; z: number }): void
+  {
     const config = this.configs.get(type)!;
     const id = `powerup_${Date.now()}_${Math.random()}`;
 
@@ -121,8 +444,8 @@ export class PowerUpManager {
 
     // ✅ Créer un mesh spécifique selon le type de power-up
     let mesh: BABYLON.Mesh;
-    
-    switch (type) 
+
+    switch (type)
     {
       case PowerUpType.PADDLE_SIZE:
         mesh = this.createPaddleSizeMesh(id);
@@ -140,9 +463,9 @@ export class PowerUpManager {
         mesh = this.createDefaultMesh(id, config.color);
         console.log('⚪ Created default mesh for', type);
     }
-    
+
     mesh.position = new BABYLON.Vector3(position.x, position.y, position.z);
-    
+
     // Animation de rotation et flottement
     this.animatePowerUp(mesh);
 
@@ -161,10 +484,17 @@ export class PowerUpManager {
     console.log(`🔋 Spawned power-up: ${config.name} at`, position);
   }
 
-  
+  // ==========================================
+  // MÉTHODES PRIVÉES DE CRÉATION DES MESHES
+  // ==========================================
 
-  // ✅ Power-up Taille de Palette : Paddle géant simple
-  private createPaddleSizeMesh(id: string): BABYLON.Mesh {
+  /**
+   * Crée le mesh pour le power-up taille de paddle
+   * @param id ID du mesh
+   * @returns Mesh créé
+   */
+  private createPaddleSizeMesh(id: string): BABYLON.Mesh
+  {
     const paddle = BABYLON.MeshBuilder.CreateBox(
       `paddle_size_${id}`,
       {
@@ -174,21 +504,26 @@ export class PowerUpManager {
       },
       this.scene
     );
-    
+
     // Matériau bleu brillant
     const material = new BABYLON.StandardMaterial(`paddle_mat_${id}`, this.scene);
     material.diffuseColor = new BABYLON.Color3(0, 0.5, 1);
     material.emissiveColor = new BABYLON.Color3(0, 0.2, 0.5);
     material.specularColor = new BABYLON.Color3(0.5, 0.8, 1);
     paddle.material = material;
-    
+
     return paddle;
   }
 
-  // ✅ Power-up Contrôles Inversés : Flèches circulaires
-  private createReverseControlsMesh(id: string): BABYLON.Mesh {
+  /**
+   * Crée le mesh pour le power-up contrôles inversés
+   * @param id ID du mesh
+   * @returns Mesh créé
+   */
+  private createReverseControlsMesh(id: string): BABYLON.Mesh
+  {
     const parent = new BABYLON.Mesh(`reverse_${id}`, this.scene);
-    
+
     // Anneau central
     const ring = BABYLON.MeshBuilder.CreateTorus(
       `reverse_ring_${id}`,
@@ -200,9 +535,10 @@ export class PowerUpManager {
       this.scene
     );
     ring.parent = parent;
-    
+
     // 4 flèches autour du cercle
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++)
+    {
       const arrow = BABYLON.MeshBuilder.CreateCylinder(
         `reverse_arrow_${id}_${i}`,
         {
@@ -213,33 +549,38 @@ export class PowerUpManager {
         },
         this.scene
       );
-      
+
       const angle = (i * Math.PI) / 2;
       arrow.position.x = Math.cos(angle) * 0.25;
       arrow.position.z = Math.sin(angle) * 0.25;
       arrow.rotation.y = angle + Math.PI / 2; // Orientation circulaire
       arrow.parent = parent;
-      
+
       // Matériau magenta
       const arrowMaterial = new BABYLON.StandardMaterial(`reverse_arrow_mat_${id}_${i}`, this.scene);
       arrowMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
       arrowMaterial.emissiveColor = new BABYLON.Color3(0.5, 0, 0.5);
       arrow.material = arrowMaterial;
     }
-    
+
     // Matériau de l'anneau
     const ringMaterial = new BABYLON.StandardMaterial(`reverse_ring_mat_${id}`, this.scene);
     ringMaterial.diffuseColor = new BABYLON.Color3(0.8, 0, 0.8);
     ringMaterial.emissiveColor = new BABYLON.Color3(0.3, 0, 0.3);
     ring.material = ringMaterial;
-    
+
     return parent;
   }
 
-  // ✅ Power-up Gel : Cristal de glace simple
-  private createFreezeMesh(id: string): BABYLON.Mesh {
+  /**
+   * Crée le mesh pour le power-up gel
+   * @param id ID du mesh
+   * @returns Mesh créé
+   */
+  private createFreezeMesh(id: string): BABYLON.Mesh
+  {
     const parent = new BABYLON.Mesh(`freeze_${id}`, this.scene);
-    
+
     // Cristal principal (diamant)
     const crystal = BABYLON.MeshBuilder.CreatePolyhedron(
       `freeze_crystal_${id}`,
@@ -250,9 +591,10 @@ export class PowerUpManager {
       this.scene
     );
     crystal.parent = parent;
-    
+
     // 4 petits cristaux autour
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++)
+    {
       const smallCrystal = BABYLON.MeshBuilder.CreatePolyhedron(
         `freeze_small_${id}_${i}`,
         {
@@ -261,13 +603,13 @@ export class PowerUpManager {
         },
         this.scene
       );
-      
+
       const angle = (i * Math.PI) / 2;
       smallCrystal.position.x = Math.cos(angle) * 0.2;
       smallCrystal.position.z = Math.sin(angle) * 0.2;
       smallCrystal.position.y = Math.random() * 0.1 - 0.05;
       smallCrystal.parent = parent;
-      
+
       // Matériau cristallin
       const smallMaterial = new BABYLON.StandardMaterial(`freeze_small_mat_${id}_${i}`, this.scene);
       smallMaterial.diffuseColor = new BABYLON.Color3(0.8, 0.95, 1);
@@ -275,7 +617,7 @@ export class PowerUpManager {
       smallMaterial.emissiveColor = new BABYLON.Color3(0, 0.1, 0.2);
       smallCrystal.material = smallMaterial;
     }
-    
+
     // Matériau du cristal principal
     const material = new BABYLON.StandardMaterial(`freeze_mat_${id}`, this.scene);
     material.diffuseColor = new BABYLON.Color3(0.5, 0.9, 1);
@@ -283,28 +625,43 @@ export class PowerUpManager {
     material.emissiveColor = new BABYLON.Color3(0, 0.3, 0.4);
     material.alpha = 0.9; // Légère transparence
     crystal.material = material;
-    
+
     return parent;
   }
 
-  // ✅ Mesh par défaut : Sphère colorée simple
-  private createDefaultMesh(id: string, color: BABYLON.Color3): BABYLON.Mesh {
+  /**
+   * Crée un mesh par défaut
+   * @param id ID du mesh
+   * @param color Couleur du mesh
+   * @returns Mesh créé
+   */
+  private createDefaultMesh(id: string, color: BABYLON.Color3): BABYLON.Mesh
+  {
     const mesh = BABYLON.MeshBuilder.CreateSphere(
       `powerup_${id}`,
       { diameter: 0.4 },
       this.scene
     );
-    
+
     const material = new BABYLON.StandardMaterial(`powerup_mat_${id}`, this.scene);
     material.diffuseColor = color;
     material.emissiveColor = color.scale(0.4);
     material.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
     mesh.material = material;
-    
+
     return mesh;
   }
 
-  private animatePowerUp(mesh: BABYLON.Mesh): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ANIMATION
+  // ==========================================
+
+  /**
+   * Anime un power-up
+   * @param mesh Mesh à animer
+   */
+  private animatePowerUp(mesh: BABYLON.Mesh): void
+  {
     // Animation de rotation
     const rotationAnimation = new BABYLON.Animation(
       'powerUpRotation',
@@ -360,76 +717,22 @@ export class PowerUpManager {
     this.scene.beginAnimation(mesh, 0, 60, true);
   }
 
-  public checkCollision(ballPosition: { x: number; y: number; z: number }): PowerUp | null {
-    for (const powerUp of this.powerUps.values()) {
-        if (powerUp.isActive) continue;
+  // ==========================================
+  // MÉTHODES PRIVÉES DE MISE À JOUR
+  // ==========================================
 
-        const distance = Math.sqrt(
-            Math.pow(ballPosition.x - powerUp.position.x, 2) +
-            Math.pow(ballPosition.y - powerUp.position.y, 2) +
-            Math.pow(ballPosition.z - powerUp.position.z, 2)
-        );
-
-      
-        // ✅ Augmenter le rayon de collision pour faciliter la détection
-        if (distance < 0.4) { // Était 0.25, maintenant 0.4
-        console.log(`🎯 Collision detected! Distance: ${distance.toFixed(3)}, PowerUp: ${powerUp.type}`);
-        return powerUp;
-        }
-    }
-
-    return null;
-  }
-
-  public activatePowerUp(powerUpId: string, targetPlayer: 'player1' | 'player2'): void {
-    const powerUp = this.powerUps.get(powerUpId);
-    if (!powerUp || powerUp.isActive) return;
-
-    const config = this.configs.get(powerUp.type)!;
-    
-    // Marquer comme actif et masquer
-    powerUp.isActive = true;
-    powerUp.mesh.setEnabled(false);
-
-    // Créer l'effet actif
-    const effectId = `effect_${Date.now()}_${Math.random()}`;
-    const effect: ActiveEffect = {
-      id: effectId,
-      type: powerUp.type,
-      targetPlayer,
-      startTime: Date.now(),
-      duration: config.duration * 1000
-    };
-
-    this.activeEffects.set(effectId, effect);
-
-    // Supprimer le power-up après un délai
-    setTimeout(() => {
-      this.removePowerUp(powerUpId);
-    }, 1000);
-
-    console.log(`⚡ Activated power-up: ${config.name} for ${targetPlayer}`);
-  }
-
-  public getActiveEffects(): Map<string, ActiveEffect> {
-    return new Map(this.activeEffects);
-  }
-
-  public hasEffect(player: 'player1' | 'player2', type: PowerUpType): boolean {
-    for (const effect of this.activeEffects.values()) {
-      if (effect.targetPlayer === player && effect.type === type) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private updatePowerUps(): void {
+  /**
+   * Met à jour les power-ups
+   */
+  private updatePowerUps(): void
+  {
     const now = Date.now();
     const toRemove: string[] = [];
 
-    for (const [id, powerUp] of this.powerUps.entries()) {
-      if (now > powerUp.expiresAt && !powerUp.isActive) {
+    for (const [id, powerUp] of this.powerUps.entries())
+    {
+      if (now > powerUp.expiresAt && !powerUp.isActive)
+      {
         toRemove.push(id);
       }
     }
@@ -437,172 +740,89 @@ export class PowerUpManager {
     toRemove.forEach(id => this.removePowerUp(id));
   }
 
-  private updateActiveEffects(): void {
+  /**
+   * Met à jour les effets actifs
+   */
+  private updateActiveEffects(): void
+  {
     const now = Date.now();
     const toRemove: string[] = [];
 
-    for (const [id, effect] of this.activeEffects.entries()) {
-      if (now > effect.startTime + effect.duration) {
+    for (const [id, effect] of this.activeEffects.entries())
+    {
+      if (now > effect.startTime + effect.duration)
+      {
         toRemove.push(id);
       }
     }
 
-    toRemove.forEach(id => {
+    toRemove.forEach(id =>
+    {
       const effect = this.activeEffects.get(id);
-      if (effect) {
+      if (effect)
+      {
         console.log(`⏰ Effect expired: ${effect.type} for ${effect.targetPlayer}`);
         this.activeEffects.delete(id);
       }
     });
   }
 
-  private removePowerUp(id: string): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES UTILITAIRES
+  // ==========================================
+
+  /**
+   * Supprime un power-up
+   * @param id ID du power-up
+   */
+  private removePowerUp(id: string): void
+  {
     const powerUp = this.powerUps.get(id);
-    if (powerUp) {
+    if (powerUp)
+    {
       powerUp.mesh.dispose();
       this.powerUps.delete(id);
     }
   }
 
-  private clearAllPowerUps(): void {
-    for (const powerUp of this.powerUps.values()) {
+  /**
+   * Supprime tous les power-ups
+   */
+  private clearAllPowerUps(): void
+  {
+    for (const powerUp of this.powerUps.values())
+    {
       powerUp.mesh.dispose();
     }
     this.powerUps.clear();
   }
 
-  private clearAllEffects(): void {
+  /**
+   * Supprime tous les effets
+   */
+  private clearAllEffects(): void
+  {
     this.activeEffects.clear();
   }
 
-  public dispose(): void {
-    this.clearAllPowerUps();
-    this.clearAllEffects();
-  }
+  // ==========================================
+  // MÉTHODES PRIVÉES DE SYNCHRONISATION
+  // ==========================================
 
-  // ✅ Méthodes pour la synchronisation P2P
-  public getActivePowerUps(): any[] {
-    const activePowerUps = [];
-    for (const [id, powerUp] of this.powerUps.entries()) {
-      activePowerUps.push({
-        id: id,
-        type: powerUp.type,
-        position: {
-          x: powerUp.mesh.position.x,
-          y: powerUp.mesh.position.y,
-          z: powerUp.mesh.position.z
-        },
-        scale: {
-          x: powerUp.mesh.scaling.x,
-          y: powerUp.mesh.scaling.y,
-          z: powerUp.mesh.scaling.z
-        },
-        rotation: powerUp.mesh.rotation.y,
-        spawned: powerUp.spawned,
-        lifespan: powerUp.lifespan
-      });
-    }
-    return activePowerUps;
-  }
-
-  public getPaddleEffects(): any {
-    const effects: any = {};
-    for (const [id, effect] of this.activeEffects.entries()) {
-      effects[effect.targetPlayer] = effects[effect.targetPlayer] || [];
-      effects[effect.targetPlayer].push({
-        id: id,
-        type: effect.type,
-        effects: effect.effects,
-        startTime: effect.startTime,
-        duration: effect.duration
-      });
-    }
-    return effects;
-  }
-
-  public syncActivePowerUps(remotePowerUps: any[]): void {
-    // Supprimer les power-ups qui n'existent plus côté host
-    const remoteIds = new Set(remotePowerUps.map(p => p.id));
-    const toRemove = [];
-    for (const [id] of this.powerUps.entries()) {
-      if (!remoteIds.has(id)) {
-        toRemove.push(id);
-      }
-    }
-    toRemove.forEach(id => this.removePowerUp(id));
-
-    // Ajouter ou mettre à jour les power-ups
-    for (const remotePowerUp of remotePowerUps) {
-      let localPowerUp = this.powerUps.get(remotePowerUp.id);
-      
-      if (!localPowerUp) {
-        // Créer un nouveau power-up
-        const config = this.configs.get(remotePowerUp.type);
-        if (config) {
-          localPowerUp = this.createPowerUpMesh(remotePowerUp.id, config);
-          this.powerUps.set(remotePowerUp.id, localPowerUp);
-        }
-      }
-      
-      if (localPowerUp) {
-        // ✅ Mettre à jour la position avec validation de Y
-        const posY = Math.max(remotePowerUp.position.y, 0.3); // Minimum Y = 0.3 pour éviter l'enfoncement
-        
-        localPowerUp.mesh.position.set(
-          remotePowerUp.position.x,
-          posY, // Position Y corrigée
-          remotePowerUp.position.z
-        );
-        
-        // Mettre à jour la position stockée aussi
-        localPowerUp.position = {
-          x: remotePowerUp.position.x,
-          y: posY,
-          z: remotePowerUp.position.z
-        };
-        
-        localPowerUp.mesh.scaling.set(
-          remotePowerUp.scale.x,
-          remotePowerUp.scale.y,
-          remotePowerUp.scale.z
-        );
-        localPowerUp.mesh.rotation.y = remotePowerUp.rotation;
-        localPowerUp.spawned = remotePowerUp.spawned;
-        localPowerUp.lifespan = remotePowerUp.lifespan;
-        
-        console.log(`🔋 Guest synced power-up ${remotePowerUp.id} at position Y: ${posY}`);
-      }
-    }
-  }
-
-  public syncPaddleEffects(remoteEffects: any): void {
-    // Nettoyer les effets actuels
-    this.activeEffects.clear();
-    
-    // Appliquer les effets du host
-    for (const [targetPlayer, effects] of Object.entries(remoteEffects)) {
-      if (Array.isArray(effects)) {
-        for (const effect of effects) {
-          this.activeEffects.set(effect.id, {
-            id: effect.id,
-            type: effect.type,
-            targetPlayer: targetPlayer as 'player1' | 'player2',
-            effects: effect.effects,
-            startTime: effect.startTime,
-            duration: effect.duration
-          });
-        }
-      }
-    }
-  }
-
-  // ✅ Méthode pour créer un mesh de power-up (pour synchronisation)
-  public createPowerUpMesh(id: string, config: PowerUpConfig): PowerUp {
+  /**
+   * Crée un mesh de power-up pour synchronisation
+   * @param id ID du power-up
+   * @param config Configuration du power-up
+   * @returns Power-up créé
+   */
+  private createPowerUpMesh(id: string, config: PowerUpConfig): PowerUp
+  {
     console.log(`🔧 Creating power-up mesh for sync: ${config.type}`);
 
     let mesh: BABYLON.Mesh;
-    
-    switch (config.type) {
+
+    switch (config.type)
+    {
       case PowerUpType.PADDLE_SIZE:
         mesh = this.createPaddleSizeMesh(id);
         break;
@@ -615,10 +835,10 @@ export class PowerUpManager {
       default:
         mesh = this.createDefaultMesh(id, config.color);
     }
-    
+
     // Position Y par défaut valide pour éviter l'enfoncement
     mesh.position.y = 0.3;
-    
+
     // Animation de rotation et flottement
     this.animatePowerUp(mesh);
 

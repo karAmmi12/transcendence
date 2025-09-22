@@ -2,14 +2,28 @@ import { i18n } from '@/services/i18nService.js';
 import type { MatchHistory } from '../../types/index.js';
 import { userService } from '@/services/userService.js';
 
-export class MatchHistoryCard {
+export class MatchHistoryCard
+{
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private filteredMatches: MatchHistory[] = [];
   private currentResultFilter: string = 'all';
   private currentModeFilter: string = 'all';
 
-  constructor(private matchHistory: MatchHistory[], private isOwnProfile: boolean) {
+  // ==========================================
+  // CONSTRUCTEUR
+  // ==========================================
+
+  /**
+   * Constructeur de la carte d'historique des matchs
+   * @param matchHistory Historique des matchs
+   * @param isOwnProfile Si c'est le profil de l'utilisateur actuel
+   */
+  constructor(private matchHistory: MatchHistory[], private isOwnProfile: boolean)
+  {
     this.filteredMatches = [...this.matchHistory];
-    
+
      // ✅ Debug plus détaillé pour voir la structure exacte
     console.log('MatchHistoryCard - Match history data:', this.matchHistory);
     console.log('MatchHistoryCard - First match structure:', this.matchHistory[0]);
@@ -20,8 +34,16 @@ export class MatchHistoryCard {
       keys: Object.keys(m)
     })));
   }
-  
-  render(): string {
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
+
+  /**
+   * Rend la carte d'historique des matchs
+   */
+  render(): string
+  {
     console.log('Rendering MatchHistoryCard with', this.matchHistory.length, 'matches');
     return `
       <div class="bg-gray-800 rounded-lg p-6">
@@ -40,10 +62,51 @@ export class MatchHistoryCard {
     `;
   }
 
-  private renderFilters(): string {
+  /**
+   * Attache les événements des filtres
+   */
+  bindFilterEvents(container: Element): void
+  {
+    const resultFilter = container.querySelector('#match-filter') as HTMLSelectElement;
+    const modeFilter = container.querySelector('#mode-filter') as HTMLSelectElement;
+
+    if (!resultFilter || !modeFilter)
+    {
+      console.error('Filter elements not found');
+      return;
+    }
+
+    const updateFilters = () =>
+    {
+      const resultValue = resultFilter.value || 'all';
+      const modeValue = modeFilter.value || 'all';
+
+      console.log('Filter change:', { resultValue, modeValue });
+
+      this.applyFilters(resultValue, modeValue);
+
+      // Mettre à jour seulement les sections nécessaires
+      this.updateVisualContent(container);
+    };
+
+    resultFilter.addEventListener('change', updateFilters);
+    modeFilter.addEventListener('change', updateFilters);
+
+    console.log('Filter events bound successfully');
+  }
+
+  // ==========================================
+  // MÉTHODES PRIVÉES DE RENDU
+  // ==========================================
+
+  /**
+   * Rend les filtres
+   */
+  private renderFilters(): string
+  {
     const gameModes = [...new Set(this.matchHistory.map(m => m.gameMode).filter(Boolean))];
     console.log('Rendering filters with game modes:', gameModes);
-    
+
     return `
       <div class="flex flex-col sm:flex-row gap-2">
         <select id="match-filter" class="bg-gray-700 text-white text-sm rounded px-3 py-1 border border-gray-600 focus:border-primary-500 focus:outline-none">
@@ -51,7 +114,7 @@ export class MatchHistoryCard {
           <option value="wins" ${this.currentResultFilter === 'wins' ? 'selected' : ''}>${i18n.t('profile.history.filters.wins')}</option>
           <option value="losses" ${this.currentResultFilter === 'losses' ? 'selected' : ''}>${i18n.t('profile.history.filters.losses')}</option>
         </select>
-        
+
         <select id="mode-filter" class="bg-gray-700 text-white text-sm rounded px-3 py-1 border border-gray-600 focus:border-primary-500 focus:outline-none">
           <option value="all" ${this.currentModeFilter === 'all' ? 'selected' : ''}>${i18n.t('profile.history.filters.all')} (Modes)</option>
           ${gameModes.length > 0 ? gameModes.map(mode => `
@@ -66,16 +129,11 @@ export class MatchHistoryCard {
     `;
   }
 
-  private getModeDisplayName(mode: string): string {
-    const modeNames: Record<string, string> = {
-      'local': 'Local',
-      'remote': 'Remote', 
-      'tournament': 'Tournament'
-    };
-    return modeNames[mode] || mode.charAt(0).toUpperCase() + mode.slice(1);
-  }
-
-  private renderVisualStats(): string {
+  /**
+   * Rend les statistiques visuelles
+   */
+  private renderVisualStats(): string
+  {
     if (this.filteredMatches.length === 0) return '';
 
     const wins = this.filteredMatches.filter(m => m.result === 'win').length;
@@ -86,13 +144,13 @@ export class MatchHistoryCard {
     return `
       <div class="bg-gradient-to-br from-gray-700/50 to-gray-800/50 rounded-xl p-6 mb-6 border border-gray-600/30">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          
+
           <!-- Section Camembert -->
           <div class="flex flex-col items-center">
             <div class="relative w-40 h-40 mb-4">
               ${this.renderAdvancedPieChart(winRate)}
             </div>
-            
+
             <!-- Légende du camembert -->
             <div class="flex gap-4 text-sm">
               <div class="flex items-center gap-2">
@@ -112,17 +170,17 @@ export class MatchHistoryCard {
               <div class="text-3xl font-bold text-emerald-400 mb-2">${wins}</div>
               <div class="text-sm text-gray-300 uppercase tracking-wide">Victoires</div>
             </div>
-            
+
             <div class="text-center p-4 bg-red-900/30 rounded-lg border border-red-700/50 hover:bg-red-900/40 transition-colors">
               <div class="text-3xl font-bold text-red-400 mb-2">${losses}</div>
               <div class="text-sm text-gray-300 uppercase tracking-wide">Défaites</div>
             </div>
-            
+
             <div class="text-center p-4 bg-blue-900/30 rounded-lg border border-blue-700/50 hover:bg-blue-900/40 transition-colors">
               <div class="text-3xl font-bold text-blue-400 mb-2">${total}</div>
               <div class="text-sm text-gray-300 uppercase tracking-wide">Total</div>
             </div>
-            
+
             <div class="text-center p-4 bg-purple-900/30 rounded-lg border border-purple-700/50 hover:bg-purple-900/40 transition-colors">
               <div class="text-3xl font-bold text-purple-400 mb-2">${winRate}%</div>
               <div class="text-sm text-gray-300 uppercase tracking-wide">Taux victoires</div>
@@ -136,18 +194,22 @@ export class MatchHistoryCard {
     `;
   }
 
-  private renderAdvancedPieChart(winRate: number): string {
+  /**
+   * Rend le graphique en camembert avancé
+   */
+  private renderAdvancedPieChart(winRate: number): string
+  {
     const winPercentage = winRate;
     const lossPercentage = 100 - winRate;
-    
+
     // Calcul des angles pour le SVG (commencer à -90° pour avoir le début en haut)
     const startAngle = -90;
     const winAngle = (winPercentage / 100) * 360;
-    
+
     // Créer les paths pleins pour un camembert épuré
     const winPath = this.createFilledArcPath(80, 80, 60, startAngle, startAngle + winAngle);
     const lossPath = this.createFilledArcPath(80, 80, 60, startAngle + winAngle, startAngle + 360);
-    
+
     return `
       <svg class="w-40 h-40 drop-shadow-lg" viewBox="0 0 160 160">
         <!-- Dégradés épurés -->
@@ -164,13 +226,13 @@ export class MatchHistoryCard {
             <feDropShadow dx="0" dy="4" stdDeviation="4" flood-opacity="0.15"/>
           </filter>
         </defs>
-        
+
         <!-- Segment des défaites (fond) -->
         ${lossPercentage > 0 ? `<path d="${lossPath}" fill="url(#lossGradient)" filter="url(#softShadow)"/>` : ''}
-        
+
         <!-- Segment des victoires (par-dessus) -->
         ${winPercentage > 0 ? `<path d="${winPath}" fill="url(#winGradient)" filter="url(#softShadow)"/>` : ''}
-        
+
         <!-- Cercle de base si pas de données -->
         ${winPercentage === 0 && lossPercentage === 0 ? `
           <circle cx="80" cy="80" r="60" fill="#374151" stroke="#4B5563" stroke-width="2"/>
@@ -179,26 +241,36 @@ export class MatchHistoryCard {
     `;
   }
 
-  private createFilledArcPath(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number): string {
+  /**
+   * Crée un chemin d'arc rempli pour le camembert
+   */
+  private createFilledArcPath(centerX: number, centerY: number, radius: number, startAngle: number, endAngle: number): string
+  {
     if (startAngle === endAngle) return '';
-    
+
     const startAngleRad = (startAngle * Math.PI) / 180;
     const endAngleRad = (endAngle * Math.PI) / 180;
-    
+
     const x1 = centerX + radius * Math.cos(startAngleRad);
     const y1 = centerY + radius * Math.sin(startAngleRad);
     const x2 = centerX + radius * Math.cos(endAngleRad);
     const y2 = centerY + radius * Math.sin(endAngleRad);
-    
+
     const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
-    
+
     // Créer un path rempli qui forme une portion de camembert
     return `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
   }
 
-  private renderGameModeChart(): string {
-    const modes = this.filteredMatches.reduce((acc, match) => {
-      if (match.gameMode) {
+  /**
+   * Rend le graphique des modes de jeu
+   */
+  private renderGameModeChart(): string
+  {
+    const modes = this.filteredMatches.reduce((acc, match) =>
+    {
+      if (match.gameMode)
+      {
         acc[match.gameMode] = (acc[match.gameMode] || 0) + 1;
       }
       return acc;
@@ -208,7 +280,7 @@ export class MatchHistoryCard {
 
     const maxCount = Math.max(...Object.values(modes));
     const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-yellow-500', 'bg-pink-500'];
-    
+
     return `
       <div class="mt-6 pt-6 border-t border-gray-600/50">
         <h4 class="text-lg font-semibold text-gray-200 mb-4 flex items-center">
@@ -218,11 +290,12 @@ export class MatchHistoryCard {
           Modes de jeu
         </h4>
         <div class="space-y-3">
-          ${Object.entries(modes).map(([mode, count], index) => {
+          ${Object.entries(modes).map(([mode, count], index) =>
+          {
             const percentage = (count / this.filteredMatches.length) * 100;
-            const barWidth = (count / maxCount) * 100;
+            const barWidth = percentage;
             const color = colors[index % colors.length];
-            
+
             return `
               <div class="group hover:bg-gray-700/30 p-3 rounded-lg transition-all duration-200">
                 <div class="flex items-center justify-between text-sm mb-2">
@@ -240,8 +313,13 @@ export class MatchHistoryCard {
     `;
   }
 
-  private renderMatches(): string {
-    if (this.matchHistory.length === 0) {
+  /**
+   * Rend la liste des matchs
+   */
+  private renderMatches(): string
+  {
+    if (this.matchHistory.length === 0)
+    {
       return `
         <div class="text-center py-12">
           <div class="text-gray-400 text-6xl mb-4">🏓</div>
@@ -257,7 +335,7 @@ export class MatchHistoryCard {
     }
 
     const recentMatches = this.filteredMatches.slice(0, 10);
-    
+
     return `
       <div class="space-y-3 max-h-96 overflow-y-auto custom-scrollbar">
         ${recentMatches.length > 0 ? recentMatches.map(match => this.renderMatch(match)).join('') : `
@@ -278,23 +356,27 @@ export class MatchHistoryCard {
     `;
   }
 
-  private renderMatch(match: MatchHistory): string {
+  /**
+   * Rend un match individuel
+   */
+  private renderMatch(match: MatchHistory): string
+  {
     const isWin = match.result === 'win';
     const resultColor = isWin ? 'text-emerald-400' : 'text-red-400';
     const bgColor = isWin ? 'bg-emerald-900/20 hover:bg-emerald-900/30' : 'bg-red-900/20 hover:bg-red-900/30';
     const borderColor = isWin ? 'border-emerald-500/50' : 'border-red-500/50';
     const iconBg = isWin ? 'bg-emerald-500' : 'bg-red-500';
-    
+
     // Utiliser l'avatar de l'adversaire ou l'avatar par défaut
     const opponentAvatar = userService.getAvatarUrl(match.opponentAvatar) || '/images/default-avatar.png';
-    
+
     return `
       <div class="flex items-center justify-between p-4 ${bgColor} rounded-xl border-l-4 ${borderColor} transition-all backdrop-blur-sm" data-match-id="${match.id}">
         <div class="flex items-center space-x-4">
           <div class="flex flex-col items-center">
             <div class="w-4 h-4 rounded-full ${iconBg} mb-2 shadow-lg flex items-center justify-center">
-              ${isWin ? 
-                '<svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' : 
+              ${isWin ?
+                '<svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>' :
                 '<svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>'
               }
             </div>
@@ -302,16 +384,16 @@ export class MatchHistoryCard {
               ${isWin ? 'Victoire' : 'Défaite'}
             </span>
           </div>
-          
+
           <!-- Nom de l'adversaire suivi de son avatar -->
           <div class="flex items-center space-x-3">
             <div class="flex-1">
               <div class="flex items-center space-x-3 mb-2">
                 <span class="text-white font-semibold text-lg">vs ${match.opponent}</span>
                 <!-- Avatar de l'adversaire après le nom -->
-                <img 
-                  src="${opponentAvatar}" 
-                  alt="${match.opponent}" 
+                <img
+                  src="${opponentAvatar}"
+                  alt="${match.opponent}"
                   class="w-10 h-10 rounded-full bg-gray-600 object-cover border-2 border-gray-500 shadow-md"
                   onerror="this.src='/images/default-avatar.png'"
                 />
@@ -349,7 +431,11 @@ export class MatchHistoryCard {
     `;
   }
 
-  private renderQuickStats(): string {
+  /**
+   * Rend les statistiques rapides
+   */
+  private renderQuickStats(): string
+  {
     if (this.filteredMatches.length === 0) return '';
 
     const wins = this.filteredMatches.filter(m => m.result === 'win').length;
@@ -376,133 +462,152 @@ export class MatchHistoryCard {
     `;
   }
 
-  // Méthode pour appliquer les filtres
-  applyFilters(resultFilter: string = 'all', modeFilter: string = 'all'): void {
+  // ==========================================
+  // MÉTHODES PRIVÉES D'ÉVÉNEMENTS
+  // ==========================================
+
+  /**
+   * Applique les filtres aux matchs
+   */
+  applyFilters(resultFilter: string = 'all', modeFilter: string = 'all'): void
+  {
     console.log('Applying filters:', { resultFilter, modeFilter });
-    
+
     this.currentResultFilter = resultFilter;
     this.currentModeFilter = modeFilter;
-    
-    this.filteredMatches = this.matchHistory.filter(match => {
+
+    this.filteredMatches = this.matchHistory.filter(match =>
+    {
       // Filtre par résultat
       let matchesResult = true;
-      if (resultFilter !== 'all') {
-        if (resultFilter === 'wins') {
+      if (resultFilter !== 'all')
+      {
+        if (resultFilter === 'wins')
+        {
           matchesResult = match.result === 'win';
-        } else if (resultFilter === 'losses') {
+        } else if (resultFilter === 'losses')
+        {
           matchesResult = match.result === 'loss';
         }
       }
-      
+
       // Filtre par mode
       let matchesMode = true;
-      if (modeFilter !== 'all') {
+      if (modeFilter !== 'all')
+      {
         // Normaliser les valeurs pour comparaison (en minuscules et sans espaces)
         const normalizedMatchMode = (match.gameMode || '').toLowerCase().trim();
         const normalizedFilterMode = modeFilter.toLowerCase().trim();
-        
-        console.log('Comparing modes:', { 
-          matchMode: normalizedMatchMode, 
+
+        console.log('Comparing modes:', {
+          matchMode: normalizedMatchMode,
           filterMode: normalizedFilterMode,
-          originalMatch: match.gameMode 
+          originalMatch: match.gameMode
         });
-        
+
         matchesMode = normalizedMatchMode === normalizedFilterMode;
-        
+
       }
-      
+
       const result = matchesResult && matchesMode;
-      console.log('Match filter result:', { 
-        matchId: match.id, 
-        result, 
-        matchesResult, 
-        matchesMode, 
-        gameMode: match.gameMode 
+      console.log('Match filter result:', {
+        matchId: match.id,
+        result,
+        matchesResult,
+        matchesMode,
+        gameMode: match.gameMode
       });
-      
+
       return result;
       });
-    
+
     console.log('Filtered matches:', this.filteredMatches.length, 'out of', this.matchHistory.length);
   }
 
-  bindFilterEvents(container: Element): void {
-    const resultFilter = container.querySelector('#match-filter') as HTMLSelectElement;
-    const modeFilter = container.querySelector('#mode-filter') as HTMLSelectElement;
-
-    if (!resultFilter || !modeFilter) {
-      console.error('Filter elements not found');
-      return;
-    }
-
-    const updateFilters = () => {
-      const resultValue = resultFilter.value || 'all';
-      const modeValue = modeFilter.value || 'all';
-      
-      console.log('Filter change:', { resultValue, modeValue });
-      
-      this.applyFilters(resultValue, modeValue);
-      
-      // Mettre à jour seulement les sections nécessaires
-      this.updateVisualContent(container);
-    };
-
-    resultFilter.addEventListener('change', updateFilters);
-    modeFilter.addEventListener('change', updateFilters);
-    
-    console.log('Filter events bound successfully');
-  }
-
-  private updateVisualContent(container: Element): void {
+  /**
+   * Met à jour le contenu visuel
+   */
+  private updateVisualContent(container: Element): void
+  {
     // Mettre à jour les statistiques visuelles
     const statsContainer = container.querySelector('.bg-gradient-to-br.from-gray-700\\/50');
-    if (statsContainer) {
+    if (statsContainer)
+    {
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = this.renderVisualStats();
       const newStats = tempDiv.children[0];
-      if (newStats) {
+      if (newStats)
+      {
         statsContainer.replaceWith(newStats);
       }
     }
-    
+
     // Mettre à jour la liste des matchs
     const matchesContainer = container.querySelector('.space-y-3.max-h-96');
-    if (matchesContainer) {
+    if (matchesContainer)
+    {
       const recentMatches = this.filteredMatches.slice(0, 10);
-      matchesContainer.innerHTML = recentMatches.length > 0 ? 
-        recentMatches.map(match => this.renderMatch(match)).join('') : 
+      matchesContainer.innerHTML = recentMatches.length > 0 ?
+        recentMatches.map(match => this.renderMatch(match)).join('') :
         `<div class="text-center py-8">
           <div class="text-gray-400 text-4xl mb-2">🔍</div>
           <p class="text-gray-500">Aucun match trouvé pour ce filtre</p>
         </div>`;
     }
-    
+
     // Mettre à jour le bouton "Voir tout"
     const viewAllContainer = container.querySelector('#view-all-matches')?.parentElement;
-    if (viewAllContainer) {
-      if (this.filteredMatches.length > 10) {
+    if (viewAllContainer)
+    {
+      if (this.filteredMatches.length > 10)
+      {
         const viewAllBtn = viewAllContainer.querySelector('#view-all-matches');
-        if (viewAllBtn) {
+        if (viewAllBtn)
+        {
           viewAllBtn.textContent = `Voir tout l'historique (${this.filteredMatches.length})`;
         }
-      } else {
+      } else
+      {
         viewAllContainer.remove();
       }
     }
-    
+
     // Mettre à jour les stats rapides
     const quickStatsContainer = container.querySelector('.mt-6.pt-6.border-t');
-    if (quickStatsContainer) {
+    if (quickStatsContainer)
+    {
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = this.renderQuickStats();
       const newQuickStats = tempDiv.children[0];
-      if (newQuickStats) {
+      if (newQuickStats)
+      {
         quickStatsContainer.replaceWith(newQuickStats);
       }
     }
   }
 
-  private formatDate(dateString: string): string {
+  // ==========================================
+  // MÉTHODES PRIVÉES UTILITAIRES
+  // ==========================================
+
+  /**
+   * Obtenir le nom d'affichage du mode de jeu
+   */
+  private getModeDisplayName(mode: string): string
+  {
+    const modeNames: Record<string, string> = {
+      'local': 'Local',
+      'remote': 'Remote',
+      'tournament': 'Tournament'
+    };
+    return modeNames[mode] || mode.charAt(0).toUpperCase() + mode.slice(1);
+  }
+
+  /**
+   * Formate la date
+   */
+  private formatDate(dateString: string): string
+  {
     const date = new Date(dateString);
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
@@ -510,11 +615,15 @@ export class MatchHistoryCard {
     if (diffDays === 0) return 'Aujourd\'hui';
     if (diffDays === 1) return 'Hier';
     if (diffDays < 7) return `Il y a ${diffDays} jours`;
-    
+
     return date.toLocaleDateString('fr-FR');
   }
 
-  private formatDuration(seconds: number): string {
+  /**
+   * Formate la durée
+   */
+  private formatDuration(seconds: number): string
+  {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
