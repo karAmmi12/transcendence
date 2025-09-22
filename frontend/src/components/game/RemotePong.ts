@@ -15,7 +15,8 @@ import type { GameSettings, GameEndStats, GameEndCallbacks } from '@/types/index
  * - Synchronisation des états de jeu
  * - Gestion des déconnexions et interruptions
  */
-export class RemotePong extends Pong3D {
+export class RemotePong extends Pong3D
+{
   // =================================
   // PROPRIÉTÉS
   // =================================
@@ -54,7 +55,8 @@ export class RemotePong extends Pong3D {
    * @param canvasId ID du canvas HTML pour le rendu 3D
    * @param settings Paramètres de jeu (vitesse, score, thème, etc.)
    */
-  constructor(canvasId: string, settings: GameSettings) {
+  constructor(canvasId: string, settings: GameSettings)
+  {
     // Appel du constructeur parent avec isRemote=true et mode='remote'
     super(canvasId, settings, true, 'remote');
     
@@ -65,7 +67,8 @@ export class RemotePong extends Pong3D {
     this.checkForGameInterruption();
     
     // Si le jeu a été interrompu, arrêter l'initialisation normale
-    if (this.gameWasInterrupted) {
+    if (this.gameWasInterrupted)
+    {
       console.log('🚫 Game was interrupted, skipping normal initialization');
       return;
     }
@@ -77,7 +80,7 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // GESTION DES INTERRUPTIONS
+  // MÉTHODES PRIVÉES D'INTERRUPTION
   // =================================
 
   /**
@@ -86,36 +89,43 @@ export class RemotePong extends Pong3D {
    * 
    * Utilise sessionStorage pour persister l'état du jeu entre les sessions
    */
-  private checkForGameInterruption(): void {
+  private checkForGameInterruption(): void
+  {
     const wasInGame = sessionStorage.getItem('remote_game_active');
     const gameData = sessionStorage.getItem('remote_game_data');
     
-    if (wasInGame === 'true' && gameData) {
+    if (wasInGame === 'true' && gameData)
+    {
       console.log('🔄 Detected page refresh during remote game');
       this.gameWasInterrupted = true;
       
       // Masquer immédiatement l'interface de jeu
       this.hideGameInterface();
       
-      try {
+      try
+      {
         const data = JSON.parse(gameData);
         console.log('📊 Previous game data:', data);
         
         // Vérifier si on est sur la page /game
         const currentPath = window.location.pathname;
-        if (currentPath === '/game') {
+        if (currentPath === '/game')
+        {
           console.log('🏠 On game page - GamePage.ts will handle the forfeit modal');
           return;
         }
         
         // Afficher le modal de défaite par forfait après un court délai
-        setTimeout(() => {
+        setTimeout(() =>
+        {
           this.showGameInterruptionModal(data.opponentUsername || 'Adversaire');
         }, 100);
         
-      } catch (error) {
+      } catch (error)
+      {
         console.error('❌ Failed to parse game data:', error);
-        setTimeout(() => {
+        setTimeout(() =>
+        {
           this.showGameInterruptionModal('Adversaire');
         }, 100);
       }
@@ -126,7 +136,8 @@ export class RemotePong extends Pong3D {
    * Masque tous les éléments d'interface de jeu lors d'une interruption
    * Évite l'affichage d'éléments visuels indésirables
    */
-  private hideGameInterface(): void {
+  private hideGameInterface(): void
+  {
     console.log('🙈 Hiding game interface due to interruption');
     
     // Liste des éléments à masquer
@@ -135,9 +146,11 @@ export class RemotePong extends Pong3D {
       'cancel-matchmaking', 'leave-game'
     ];
     
-    elementsToHide.forEach(id => {
+    elementsToHide.forEach(id =>
+    {
       const element = document.getElementById(id);
-      if (element) {
+      if (element)
+      {
         element.style.display = 'none';
         element.style.visibility = 'hidden';
       }
@@ -145,8 +158,10 @@ export class RemotePong extends Pong3D {
     
     // Masquer également tous les canvas (éléments de rendu 3D)
     const canvases = document.querySelectorAll('canvas');
-    canvases.forEach(canvas => {
-      if (canvas instanceof HTMLCanvasElement) {
+    canvases.forEach(canvas =>
+    {
+      if (canvas instanceof HTMLCanvasElement)
+      {
         canvas.style.display = 'none';
         canvas.style.visibility = 'hidden';
       }
@@ -154,16 +169,18 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // CONNEXION ET MATCHMAKING
+  // MÉTHODES PRIVÉES DE CONNEXION
   // =================================
 
   /**
    * Point d'entrée principal pour démarrer une partie en ligne
    * Orchestre la séquence complète : connexion → matchmaking → jeu
    */
-  public async startRemoteGame(): Promise<void> {
+  public async startRemoteGame(): Promise<void>
+  {
     // Bloquer le matchmaking si le jeu a été interrompu
-    if (this.gameWasInterrupted) {
+    if (this.gameWasInterrupted)
+    {
       console.log('🚫 Preventing matchmaking due to game interruption');
       return;
     }
@@ -171,14 +188,16 @@ export class RemotePong extends Pong3D {
     console.log('🌐 Starting remote game...');
     this.updateGameStatus('Connexion au serveur...');
     
-    try {
+    try
+    {
       // Étape 1: Connexion au serveur WebSocket
       await this.connectToSignalingServer();
       
       // Étape 2: Rejoindre la file d'attente
       this.joinMatchmaking();
       
-    } catch (error) {
+    } catch (error)
+    {
       console.error('❌ Failed to start remote game:', error);
       this.updateGameStatus('Erreur de connexion');
     }
@@ -188,8 +207,10 @@ export class RemotePong extends Pong3D {
    * Établit la connexion WebSocket avec le serveur de matchmaking
    * @returns Promise résolue quand la connexion est établie
    */
-  private async connectToSignalingServer(): Promise<void> {
-    return new Promise((resolve, reject) => {
+  private async connectToSignalingServer(): Promise<void>
+  {
+    return new Promise((resolve, reject) =>
+    {
       const wsUrl = ApiConfig.WS_URL;
       console.log('🔗 Connecting to WebSocket:', wsUrl);
       ApiConfig.logUrls();
@@ -198,31 +219,37 @@ export class RemotePong extends Pong3D {
       this.signalingWS = new WebSocket(wsUrl);
       
       // Gestionnaire de connexion établie
-      this.signalingWS.onopen = () => {
+      this.signalingWS.onopen = () =>
+      {
         console.log('✅ Connected to signaling server');
         resolve();
       };
 
       // Gestionnaire de messages du serveur
-      this.signalingWS.onmessage = (event) => {
+      this.signalingWS.onmessage = (event) =>
+      {
         this.handleSignalingMessage(JSON.parse(event.data));
       };
 
       // Gestionnaire de déconnexion du serveur
-      this.signalingWS.onclose = () => {
+      this.signalingWS.onclose = () =>
+      {
         console.log('❌ Signaling server disconnected');
         this.handleSignalingDisconnect();
       };
 
       // Gestionnaire d'erreur de connexion
-      this.signalingWS.onerror = (error) => {
+      this.signalingWS.onerror = (error) =>
+      {
         console.error('❌ Signaling server error:', error);
         reject(error);
       };
 
       // Timeout de connexion (10 secondes)
-      setTimeout(() => {
-        if (this.signalingWS?.readyState !== WebSocket.OPEN) {
+      setTimeout(() =>
+      {
+        if (this.signalingWS?.readyState !== WebSocket.OPEN)
+        {
           reject(new Error('Connection timeout'));
         }
       }, 10000);
@@ -233,7 +260,8 @@ export class RemotePong extends Pong3D {
    * Rejoint la file d'attente de matchmaking
    * Envoie les informations du joueur et ses paramètres de jeu
    */
-  private joinMatchmaking(): void {
+  private joinMatchmaking(): void
+  {
     if (!this.signalingWS || this.gameWasInterrupted) return;
 
     // Récupération des informations utilisateur
@@ -265,9 +293,11 @@ export class RemotePong extends Pong3D {
    * Affiche les paramètres de jeu actuels pendant la phase de matchmaking
    * Montre à l'utilisateur ce qui sera appliqué en tant qu'hôte
    */
-  private showCurrentGameSettings(): void {
+  private showCurrentGameSettings(): void
+  {
     const statusEl = document.getElementById('game-status');
-    if (statusEl) {
+    if (statusEl)
+    {
       statusEl.innerHTML = `
         <div class="text-center space-y-3">
           <div class="text-lg text-blue-400">🔍 Recherche d'un adversaire...</div>
@@ -287,18 +317,20 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // GESTION DES MESSAGES SIGNALING
+  // MÉTHODES PRIVÉES DE SIGNALING
   // =================================
 
   /**
    * Traite tous les messages reçus du serveur de matchmaking
    * @param message Objet message du serveur
    */
-  private async handleSignalingMessage(message: any): Promise<void> {
+  private async handleSignalingMessage(message: any): Promise<void>
+  {
     console.log('📨 Signaling message:', message.type);
 
     // Routage des messages selon leur type
-    switch (message.type) {
+    switch (message.type)
+    {
       case 'waiting_opponent':
         this.updateGameStatus('En attente d\'un adversaire...');
         break;
@@ -337,7 +369,8 @@ export class RemotePong extends Pong3D {
    * Stocke les informations de l'adversaire et initie WebRTC
    * @param message Données du match trouvé
    */
-  private async handleMatchFound(message: any): Promise<void> {
+  private async handleMatchFound(message: any): Promise<void>
+  {
     // Stockage des informations du match et de l'adversaire
     this.matchId = message.matchId;
     this.isHost = message.role === 'host';
@@ -352,7 +385,8 @@ export class RemotePong extends Pong3D {
     });
     
     // Sauvegarde immédiate en sessionStorage pour le joueur invité
-    if (!this.isHost) {
+    if (!this.isHost)
+    {
       this.gameState.status = 'playing';
       this.saveGameStateToSession();
     }
@@ -363,15 +397,42 @@ export class RemotePong extends Pong3D {
     await this.setupWebRTCConnection();
   }
 
+  /**
+   * Gère la déconnexion du serveur de signaling
+   * Peut déclencher une attribution de victoire si le jeu est en cours
+   */
+  private handleSignalingDisconnect(): void
+  {
+    console.log('📡 Signaling server disconnected');
+    
+    if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection)
+    {
+      this.updateGameStatus('Connexion serveur perdue - partie en cours...');
+      
+      // Délai avant d'attribuer la victoire (permet la reconnexion)
+      if (!this.dataChannel || this.dataChannel.readyState !== 'open')
+      {
+        setTimeout(() =>
+        {
+          if (!this.gameEndedByDisconnection)
+          {
+            this.handleOpponentDisconnection('signaling_disconnect');
+          }
+        }, 5000);
+      }
+    }
+  }
+
   // =================================
-  // WEBRTC ET CONNEXION P2P
+  // MÉTHODES PRIVÉES WEBRTC
   // =================================
 
   /**
    * Configure la connexion WebRTC peer-to-peer
    * L'hôte crée le dataChannel, l'invité l'attend
    */
-  private async setupWebRTCConnection(): Promise<void> {
+  private async setupWebRTCConnection(): Promise<void>
+  {
     // Configuration des serveurs STUN pour NAT traversal
     this.peerConnection = new RTCPeerConnection({
       iceServers: [
@@ -381,8 +442,10 @@ export class RemotePong extends Pong3D {
     });
 
     // Gestionnaire de candidats ICE (pour traverser les NAT/firewalls)
-    this.peerConnection.onicecandidate = (event) => {
-      if (event.candidate && this.signalingWS) {
+    this.peerConnection.onicecandidate = (event) =>
+    {
+      if (event.candidate && this.signalingWS)
+      {
         // Envoi du candidat ICE via le serveur de signaling
         this.signalingWS.send(JSON.stringify({
           type: 'webrtc_ice_candidate',
@@ -391,7 +454,8 @@ export class RemotePong extends Pong3D {
       }
     };
 
-    if (this.isHost) {
+    if (this.isHost)
+    {
       // L'hôte crée le canal de données pour le jeu
       this.dataChannel = this.peerConnection.createDataChannel('gameData', {
         ordered: false, // Pas besoin d'ordre pour les inputs de jeu
@@ -411,9 +475,11 @@ export class RemotePong extends Pong3D {
         offer: offer
       }));
       
-    } else {
+    } else
+    {
       // L'invité attend que l'hôte crée le canal de données
-      this.peerConnection.ondatachannel = (event) => {
+      this.peerConnection.ondatachannel = (event) =>
+      {
         this.dataChannel = event.channel;
         this.setupDataChannelHandlers();
       };
@@ -424,42 +490,51 @@ export class RemotePong extends Pong3D {
    * Configure les gestionnaires d'événements pour le canal de données WebRTC
    * Gère l'ouverture, les messages et les erreurs du canal P2P
    */
-  private setupDataChannelHandlers(): void {
+  private setupDataChannelHandlers(): void
+  {
     if (!this.dataChannel) return;
 
     // Gestionnaire d'ouverture du canal
-    this.dataChannel.onopen = () => {
+    this.dataChannel.onopen = () =>
+    {
       console.log('🔗 WebRTC P2P connection established');
       
-      if (this.isHost) {
+      if (this.isHost)
+      {
         // L'hôte envoie immédiatement ses paramètres de jeu
         this.sendGameSettingsToGuest();
         this.updateGameStatus('🎮 Démarrage du jeu en tant qu\'hôte...');
         this.startGameAsHost();
-      } else {
+      } else
+      {
         // L'invité attend les paramètres de l'hôte
         this.updateGameStatus('👥 Connecté en tant qu\'invité - Réception des paramètres...');
       }
     };
 
     // Gestionnaire de messages P2P
-    this.dataChannel.onmessage = (event) => {
+    this.dataChannel.onmessage = (event) =>
+    {
       const data = JSON.parse(event.data);
       this.handleP2PMessage(data);
     };
 
     // Gestionnaire de fermeture inattendue
-    this.dataChannel.onclose = () => {
+    this.dataChannel.onclose = () =>
+    {
       console.log('❌ P2P connection closed unexpectedly');
-      if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
+      if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection)
+      {
         this.handleOpponentDisconnection('connection_lost');
       }
     };
 
     // Gestionnaire d'erreur de connexion
-    this.dataChannel.onerror = (error) => {
+    this.dataChannel.onerror = (error) =>
+    {
       console.error('❌ P2P connection error:', error);
-      if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
+      if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection)
+      {
         this.handleOpponentDisconnection('connection_error');
       }
     };
@@ -469,7 +544,8 @@ export class RemotePong extends Pong3D {
    * Traite une offre WebRTC reçue (côté invité)
    * @param message Message contenant l'offre WebRTC
    */
-  private async handleWebRTCOffer(message: any): Promise<void> {
+  private async handleWebRTCOffer(message: any): Promise<void>
+  {
     if (!this.peerConnection) return;
 
     // Application de l'offre distante
@@ -490,7 +566,8 @@ export class RemotePong extends Pong3D {
    * Traite une réponse WebRTC reçue (côté hôte)
    * @param message Message contenant la réponse WebRTC
    */
-  private async handleWebRTCAnswer(message: any): Promise<void> {
+  private async handleWebRTCAnswer(message: any): Promise<void>
+  {
     if (!this.peerConnection) return;
     await this.peerConnection.setRemoteDescription(message.answer);
   }
@@ -500,20 +577,22 @@ export class RemotePong extends Pong3D {
    * Ajoute le candidat à la connexion WebRTC pour établir le P2P
    * @param message Message contenant le candidat ICE
    */
-  private async handleICECandidate(message: any): Promise<void> {
+  private async handleICECandidate(message: any): Promise<void>
+  {
     if (!this.peerConnection) return;
     await this.peerConnection.addIceCandidate(message.candidate);
   }
 
   // =================================
-  // LOGIQUE DE JEU HÔTE/GUEST
+  // MÉTHODES PRIVÉES DE LOGIQUE DE JEU
   // =================================
 
   /**
    * Démarre le jeu côté hôte
    * Configure les noms des joueurs et lance la boucle de jeu
    */
-  private startGameAsHost(): void {
+  private startGameAsHost(): void
+  {
     console.log('🎮 Starting game as HOST');
     
     // Configuration des noms de joueurs
@@ -531,11 +610,14 @@ export class RemotePong extends Pong3D {
    * Boucle principale d'envoi des mises à jour de jeu (côté hôte uniquement)
    * Envoie l'état complet du jeu à l'invité 60 fois par seconde
    */
-  private startGameUpdateLoop(): void {
+  private startGameUpdateLoop(): void
+  {
     if (!this.isHost) return;
 
-    const sendUpdate = () => {
-      if (this.dataChannel?.readyState === 'open') {
+    const sendUpdate = () =>
+    {
+      if (this.dataChannel?.readyState === 'open')
+      {
         // Récupération des positions actuelles depuis la physique
         const positions = this.physics.getPositions();
         
@@ -562,7 +644,8 @@ export class RemotePong extends Pong3D {
       }
       
       // Continuer la boucle tant que le jeu n'est pas fini
-      if (this.gameState.status !== 'finished') {
+      if (this.gameState.status !== 'finished')
+      {
         requestAnimationFrame(sendUpdate);
       }
     };
@@ -575,8 +658,10 @@ export class RemotePong extends Pong3D {
    * Override de la méthode updateGame du parent
    * Différencie la logique selon le rôle (hôte/invité)
    */
-  protected updateGame(): void {
-    if (!this.isHost) {
+  protected updateGame(): void
+  {
+    if (!this.isHost)
+    {
       // Côté invité : envoyer les inputs à l'hôte
       this.sendContinuousInputToHost();
       return;
@@ -604,7 +689,8 @@ export class RemotePong extends Pong3D {
    * Envoie continuellement les inputs du joueur invité à l'hôte
    * Appelé à chaque frame côté invité
    */
-  private sendContinuousInputToHost(): void {
+  private sendContinuousInputToHost(): void
+  {
     if (!this.dataChannel || this.dataChannel.readyState !== 'open') return;
 
     // Récupération des inputs actuels
@@ -621,21 +707,24 @@ export class RemotePong extends Pong3D {
     }));
 
     // Log seulement quand il y a du mouvement
-    if (input.up || input.down) {
+    if (input.up || input.down)
+    {
       console.log('📤 Guest sending input to host:', input);
     }
   }
 
   // =================================
-  // GESTION DES MESSAGES P2P
+  // MÉTHODES PRIVÉES P2P
   // =================================
 
   /**
    * Traite tous les messages reçus via le canal WebRTC P2P
    * @param data Objet message reçu
    */
-  private handleP2PMessage(data: any): void {
-    switch (data.type) {
+  private handleP2PMessage(data: any): void
+  {
+    switch (data.type)
+    {
       case 'game_settings':
         // Réception des paramètres de jeu de l'hôte
         console.log('📥 Guest received game settings from host:', data.settings);
@@ -644,14 +733,16 @@ export class RemotePong extends Pong3D {
 
       case 'game_update':
         // Mise à jour de l'état du jeu (côté invité uniquement)
-        if (!this.isHost) {
+        if (!this.isHost)
+        {
           this.applyRemoteGameState(data.state);
         }
         break;
 
       case 'player_input':
         // Réception des inputs de l'invité (côté hôte uniquement)
-        if (this.isHost) {
+        if (this.isHost)
+        {
           this.applyRemoteInput(data.input);
         }
         break;
@@ -659,7 +750,8 @@ export class RemotePong extends Pong3D {
       case 'player_disconnect':
         // Déconnexion volontaire de l'adversaire
         console.log('🚪 Opponent disconnected voluntarily:', data.reason);
-        if (!this.gameEndedByDisconnection) {
+        if (!this.gameEndedByDisconnection)
+        {
           this.handleOpponentQuit(data.reason);
         }
         break;
@@ -683,7 +775,8 @@ export class RemotePong extends Pong3D {
    * Met à jour toutes les positions, scores, et effets visuels
    * @param state État complet du jeu envoyé par l'hôte
    */
-  private applyRemoteGameState(state: any): void {
+  private applyRemoteGameState(state: any): void
+  {
     // Mise à jour des positions 3D
     this.renderer.updatePositions({
       player1Paddle: state.paddles.player1Paddle,
@@ -698,9 +791,11 @@ export class RemotePong extends Pong3D {
     this.gameState.winner = state.winner;
     
     // Synchronisation des power-ups si activés
-    if (this.powerUpManager && state.powerUps) {
+    if (this.powerUpManager && state.powerUps)
+    {
       this.powerUpManager.syncActivePowerUps(state.powerUps);
-      if (state.paddleEffects) {
+      if (state.paddleEffects)
+      {
         this.powerUpManager.syncPaddleEffects(state.paddleEffects);
         this.applyPhysicsEffects();
       }
@@ -714,7 +809,8 @@ export class RemotePong extends Pong3D {
     this.updateTimerDisplay();
 
     // Gestion de la fin de partie
-    if (state.status === 'finished') {
+    if (state.status === 'finished')
+    {
       sessionStorage.removeItem('remote_game_active');
       sessionStorage.removeItem('remote_game_data');
       this.handleRemoteGameEnd();
@@ -725,7 +821,8 @@ export class RemotePong extends Pong3D {
    * Applique les inputs reçus de l'invité (côté hôte)
    * @param input Objet contenant les états des touches up/down
    */
-  private applyRemoteInput(input: any): void {
+  private applyRemoteInput(input: any): void
+  {
     console.log('🎯 Host received input:', input);
     this.guestInputs = {
       up: input.up || false,
@@ -734,14 +831,15 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // PARAMÈTRES DE JEU
+  // MÉTHODES PRIVÉES DE PARAMÈTRES
   // =================================
 
   /**
    * Envoie les paramètres de jeu à l'invité (côté hôte)
    * Ces paramètres seront appliqués automatiquement côté invité
    */
-  private sendGameSettingsToGuest(): void {
+  private sendGameSettingsToGuest(): void
+  {
     if (!this.dataChannel || this.dataChannel.readyState !== 'open') return;
     
     const gameSettings = {
@@ -763,7 +861,8 @@ export class RemotePong extends Pong3D {
    * Le thème personnel est préservé côté invité
    * @param hostSettings Paramètres envoyés par l'hôte
    */
-  private applyHostGameSettings(hostSettings: any): void {
+  private applyHostGameSettings(hostSettings: any): void
+  {
     console.log('🔧 Applying host settings:', hostSettings);
     
     // Préservation du thème personnel de l'invité
@@ -780,12 +879,14 @@ export class RemotePong extends Pong3D {
     this.updateConnectionStatus('👥 Connecté en tant qu\'invité - Paramètres reçus !');
     
     // Affichage des paramètres reçus après un délai
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.addSettingsToStatus(hostSettings, preservedTheme);
     }, 500);
     
     // Démarrage du jeu côté invité après avoir laissé le temps d'afficher les paramètres
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.startLocalGameAsGuest();
     }, 3000);
   }
@@ -794,7 +895,8 @@ export class RemotePong extends Pong3D {
    * Démarre le jeu local côté invité
    * Configure les noms des joueurs et initialise le chronomètre
    */
-  private startLocalGameAsGuest(): void {
+  private startLocalGameAsGuest(): void
+  {
     console.log('👥 Starting game as GUEST');
     
     // Configuration des noms (inversés côté invité)
@@ -807,14 +909,15 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // GESTION DES DÉCONNEXIONS
+  // MÉTHODES PRIVÉES DE DÉCONNEXION
   // =================================
 
   /**
    * Gère la déconnexion volontaire de l'adversaire
    * @param reason Raison de la déconnexion
    */
-  private handleOpponentQuit(reason: string): void {
+  private handleOpponentQuit(reason: string): void
+  {
     if (this.gameState.status === 'finished' || this.gameEndedByDisconnection) return;
 
     console.log(`❌ Opponent quit the game (${reason}) - awarding victory`);
@@ -826,7 +929,8 @@ export class RemotePong extends Pong3D {
    * Gère la déconnexion involontaire de l'adversaire
    * @param reason Raison de la déconnexion
    */
-  private handleOpponentDisconnection(reason: string): void {
+  private handleOpponentDisconnection(reason: string): void
+  {
     if (this.gameState.status === 'finished' || this.gameEndedByDisconnection) return;
 
     console.log(`❌ Opponent disconnected (${reason}) - awarding victory`);
@@ -839,18 +943,21 @@ export class RemotePong extends Pong3D {
    * @param type Type de déconnexion (volontaire/involontaire)
    * @param reason Raison détaillée
    */
-  private awardVictoryByForfeit(type: 'opponent_quit' | 'opponent_disconnected', reason: string): void {
+  private awardVictoryByForfeit(type: 'opponent_quit' | 'opponent_disconnected', reason: string): void
+  {
     // Détermination du gagnant selon le rôle
     const currentUser = authService.getCurrentUser();
     let winner: 'player1' | 'player2';
     let winnerName: string;
     let loserName: string;
 
-    if (this.isHost) {
+    if (this.isHost)
+    {
       winner = 'player1'; // L'hôte gagne
       winnerName = currentUser?.username || 'Host';
       loserName = this.opponentUsername;
-    } else {
+    } else
+    {
       winner = 'player2'; // L'invité gagne
       winnerName = currentUser?.username || 'Guest';
       loserName = this.opponentUsername;
@@ -881,27 +988,33 @@ export class RemotePong extends Pong3D {
    * @param loserName Nom du perdant
    * @param reason Raison de la déconnexion
    */
-  private async processForfeitVictory(winner: 'player1' | 'player2', winnerName: string, loserName: string, reason: string): Promise<void> {
+  private async processForfeitVictory(winner: 'player1' | 'player2', winnerName: string, loserName: string, reason: string): Promise<void>
+  {
     console.log(`🏆 Processing forfeit victory: ${winnerName} wins (${reason})`);
     
     // Sauvegarde des données du match si possible
-    if (this.opponentUserId && !this.isMatchDataSent) {
-      try {
+    if (this.opponentUserId && !this.isMatchDataSent)
+    {
+      try
+      {
         await this.saveRemoteMatchDataByWinner(winner);
         console.log('✅ Forfeit match data saved by winner');
         this.notifyMatchSaved();
-      } catch (error) {
+      } catch (error)
+      {
         console.error('❌ Failed to save forfeit match data:', error);
       }
     }
 
     // Affichage du modal de victoire après un délai
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.showForfeitVictoryModal(winnerName, loserName, reason);
     }, 1000);
 
     // Nettoyage des connexions après un délai plus long
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.cleanupConnections();
     }, 3000);
   }
@@ -910,11 +1023,13 @@ export class RemotePong extends Pong3D {
    * Notifie l'adversaire de la déconnexion volontaire
    * @param reason Raison de la déconnexion
    */
-  private notifyVoluntaryDisconnection(reason: string): void {
+  private notifyVoluntaryDisconnection(reason: string): void
+  {
     console.log(`📡 Notifying voluntary disconnection: ${reason}`);
     
     // Notification via WebRTC si disponible
-    if (this.dataChannel?.readyState === 'open') {
+    if (this.dataChannel?.readyState === 'open')
+    {
       this.dataChannel.send(JSON.stringify({
         type: 'voluntary_disconnect',
         playerId: this.playerId,
@@ -924,7 +1039,8 @@ export class RemotePong extends Pong3D {
     }
 
     // Notification via WebSocket si disponible
-    if (this.signalingWS?.readyState === WebSocket.OPEN) {
+    if (this.signalingWS?.readyState === WebSocket.OPEN)
+    {
       this.signalingWS.send(JSON.stringify({
         type: 'player_quit',
         playerId: this.playerId,
@@ -938,8 +1054,10 @@ export class RemotePong extends Pong3D {
   /**
    * Notifie que les données du match ont été sauvegardées
    */
-  private notifyMatchSaved(): void {
-    if (this.dataChannel?.readyState === 'open') {
+  private notifyMatchSaved(): void
+  {
+    if (this.dataChannel?.readyState === 'open')
+    {
       this.dataChannel.send(JSON.stringify({
         type: 'match_saved',
         playerId: this.playerId,
@@ -949,7 +1067,7 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // FIN DE PARTIE
+  // MÉTHODES PRIVÉES DE FIN DE PARTIE
   // =================================
 
   /**
@@ -957,7 +1075,8 @@ export class RemotePong extends Pong3D {
    * Gère spécifiquement la fin de partie en mode remote
    * @param winner Joueur gagnant
    */
-  protected endGame(winner: 'player1' | 'player2'): void {
+  protected endGame(winner: 'player1' | 'player2'): void
+  {
     console.log('🏁 Remote game ending via endGame override');
     
     // Nettoyage du sessionStorage
@@ -972,7 +1091,8 @@ export class RemotePong extends Pong3D {
     const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
     
     // Notification du callback si défini
-    if (this.onGameEnd) {
+    if (this.onGameEnd)
+    {
       const duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
       this.onGameEnd(winnerName, this.gameState.scores, duration);
     }
@@ -985,45 +1105,56 @@ export class RemotePong extends Pong3D {
    * Gère la fin de partie spécifique au mode remote
    * Sauvegarde les données du match et affiche le modal
    */
-  private async handleRemoteGameEnd(): Promise<void> {
+  private async handleRemoteGameEnd(): Promise<void>
+  {
     console.log('🏁 Remote game ended');
     
     // Sauvegarde des données du match
-    if (this.opponentUserId && !this.isMatchDataSent) {
-      try {
-        if (this.isHost) {
+    if (this.opponentUserId && !this.isMatchDataSent)
+    {
+      try
+      {
+        if (this.isHost)
+        {
           // L'hôte sauvegarde en premier
           await this.saveRemoteMatchData();
           this.notifyMatchSaved();
-        } else {
+        } else
+        {
           // L'invité attend un peu puis sauvegarde si l'hôte n'a pas sauvegardé
-          setTimeout(async () => {
-            if (!this.isMatchDataSent && this.opponentUserId) {
+          setTimeout(async () =>
+          {
+            if (!this.isMatchDataSent && this.opponentUserId)
+            {
               console.log('🔄 Host did not save, guest taking over...');
               await this.saveRemoteMatchDataByWinner(this.gameState.winner!);
             }
           }, 2000);
         }
-      } catch (error) {
+      } catch (error)
+      {
         console.error('❌ Failed to save remote match data:', error);
       }
     }
     
     // Affichage du modal de fin si il y a un gagnant
-    if (this.gameState.winner) {
+    if (this.gameState.winner)
+    {
       const winner = this.gameState.winner;
       const winnerName = winner === 'player1' ? this.settings.player1Name : this.settings.player2Name;
       const loserName = winner === 'player1' ? this.settings.player2Name : this.settings.player1Name;
       
       console.log(`🎭 Showing game end modal for ${this.isHost ? 'HOST' : 'GUEST'}: ${winnerName} wins`);
       
-      setTimeout(() => {
+      setTimeout(() =>
+      {
         this.showGameEndModal(winner, winnerName, loserName);
       }, 500);
     }
     
     // Nettoyage des connexions après un délai
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.cleanupConnections();
     }, 3000);
   }
@@ -1034,10 +1165,12 @@ export class RemotePong extends Pong3D {
    * @param winnerName Nom du gagnant
    * @param loserName Nom du perdant
    */
-  protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void {
+  protected showGameEndModal(winner: 'player1' | 'player2', winnerName: string, loserName: string): void
+  {
     // Masquage de l'overlay de jeu
     const gameOverlay = document.getElementById('game-overlay');
-    if (gameOverlay) {
+    if (gameOverlay)
+    {
       gameOverlay.style.display = 'none';
     }
 
@@ -1066,12 +1199,14 @@ export class RemotePong extends Pong3D {
     // Configuration des callbacks du modal
     const callbacks: GameEndCallbacks = {
       onPlayAgain: undefined, // Pas de rejouer en remote
-      onBackToMenu: () => {
+      onBackToMenu: () =>
+      {
         console.log('🏠 Going back to menu from remote game...');
         this.destroy();
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
       },
-      onViewStats: () => {
+      onViewStats: () =>
+      {
         console.log('📊 Showing match statistics from remote game...');
         this.destroy();
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
@@ -1084,17 +1219,19 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // SAUVEGARDE DES DONNÉES
+  // MÉTHODES PRIVÉES DE SAUVEGARDE
   // =================================
 
   /**
    * Sauvegarde l'état actuel du jeu en sessionStorage
    * Permet la reprise en cas d'interruption (refresh, etc.)
    */
-  private saveGameStateToSession(): void {
+  private saveGameStateToSession(): void
+  {
     console.log('💾 saveGameStateToSession called with status:', this.gameState.status, 'isHost:', this.isHost);
     
-    if (this.gameState.status === 'playing') {
+    if (this.gameState.status === 'playing')
+    {
       sessionStorage.setItem('remote_game_active', 'true');
       sessionStorage.setItem('remote_game_data', JSON.stringify({
         opponentUsername: this.opponentUsername,
@@ -1112,21 +1249,26 @@ export class RemotePong extends Pong3D {
    * Sauvegarde les données du match terminé côté hôte
    * Envoie les scores au service de match pour stockage en DB
    */
-  private async saveRemoteMatchData(): Promise<void> {
-    if (!this.opponentUserId) {
+  private async saveRemoteMatchData(): Promise<void>
+  {
+    if (!this.opponentUserId)
+    {
       console.error('❌ Cannot save remote match: opponent user ID missing');
       return;
     }
 
     // Calcul de la durée du match
     let duration: number;
-    if (this.gameState.timer > 0) {
+    if (this.gameState.timer > 0)
+    {
       duration = Math.floor(this.gameState.timer);
-    } else {
+    } else
+    {
       duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
     }
     
-    try {
+    try
+    {
       // Envoi des données au service de match
       await matchService.sendRemoteMatchData(
         this.opponentUserId,
@@ -1137,7 +1279,8 @@ export class RemotePong extends Pong3D {
       
       this.isMatchDataSent = true;
       console.log('✅ Remote match data saved successfully');
-    } catch (error) {
+    } catch (error)
+    {
       console.error('❌ Failed to save remote match data:', error);
       throw error;
     }
@@ -1148,17 +1291,21 @@ export class RemotePong extends Pong3D {
    * Utile pour les victoires par forfait
    * @param winner Joueur déterminé comme gagnant
    */
-  private async saveRemoteMatchDataByWinner(winner: 'player1' | 'player2'): Promise<void> {
-    if (!this.opponentUserId) {
+  private async saveRemoteMatchDataByWinner(winner: 'player1' | 'player2'): Promise<void>
+  {
+    if (!this.opponentUserId)
+    {
       console.error('❌ Cannot save remote match: opponent user ID missing');
       return;
     }
 
     // Calcul de la durée du match
     let duration: number;
-    if (this.gameState.timer > 0) {
+    if (this.gameState.timer > 0)
+    {
       duration = Math.floor(this.gameState.timer);
-    } else {
+    } else
+    {
       duration = Math.floor((Date.now() - this.matchStartTime) / 1000);
     }
 
@@ -1166,15 +1313,18 @@ export class RemotePong extends Pong3D {
     let myScore: number;
     let opponentScore: number;
 
-    if (this.isHost) {
+    if (this.isHost)
+    {
       myScore = this.gameState.scores.player1;
       opponentScore = this.gameState.scores.player2;
-    } else {
+    } else
+    {
       myScore = this.gameState.scores.player2;
       opponentScore = this.gameState.scores.player1;
     }
     
-    try {
+    try
+    {
       // Envoi des données avec les scores corrects
       await matchService.sendRemoteMatchData(
         this.opponentUserId,
@@ -1185,21 +1335,23 @@ export class RemotePong extends Pong3D {
       
       this.isMatchDataSent = true;
       console.log('✅ Forfeit match data saved successfully');
-    } catch (error) {
+    } catch (error)
+    {
       console.error('❌ Failed to save forfeit match data:', error);
       throw error;
     }
   }
 
   // =================================
-  // MODALS ET AFFICHAGE
+  // MÉTHODES PRIVÉES DE MODALS
   // =================================
 
   /**
    * Affiche le modal d'interruption de jeu (défaite par forfait)
    * @param opponentName Nom de l'adversaire qui a gagné
    */
-  private showGameInterruptionModal(opponentName: string): void {
+  private showGameInterruptionModal(opponentName: string): void
+  {
     this.updateGameStatus('');
     
     const currentUser = authService.getCurrentUser();
@@ -1224,12 +1376,14 @@ export class RemotePong extends Pong3D {
     // Configuration des callbacks
     const callbacks: GameEndCallbacks = {
       onPlayAgain: undefined,
-      onBackToMenu: () => {
+      onBackToMenu: () =>
+      {
         console.log('🏠 Going back to menu after game interruption...');
         this.destroy();
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
       },
-      onViewStats: () => {
+      onViewStats: () =>
+      {
         console.log('📊 Showing stats after game interruption...');
         this.destroy();
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
@@ -1240,19 +1394,23 @@ export class RemotePong extends Pong3D {
     const gameEndModal = new GameEndModal(convertToModalStats(stats), callbacks);
     
     const originalShow = gameEndModal.show.bind(gameEndModal);
-    gameEndModal.show = () => {
+    gameEndModal.show = () =>
+    {
       originalShow();
       
       // Personnalisation du contenu après affichage
-      setTimeout(() => {
+      setTimeout(() =>
+      {
         const titleElement = document.querySelector('.game-end-modal h2');
-        if (titleElement) {
+        if (titleElement)
+        {
           titleElement.textContent = 'Défaite par forfait';
           titleElement.className = 'text-2xl font-bold text-red-400 mb-4';
         }
         
         const messageElement = document.querySelector('.game-end-modal .result-message');
-        if (messageElement) {
+        if (messageElement)
+        {
           messageElement.innerHTML = `
             <div class="text-center mb-4">
               <div class="text-6xl mb-4">😔</div>
@@ -1273,10 +1431,12 @@ export class RemotePong extends Pong3D {
    * @param loserName Nom du perdant
    * @param reason Raison de la déconnexion
    */
-  private showForfeitVictoryModal(winnerName: string, loserName: string, reason: string): void {
+  private showForfeitVictoryModal(winnerName: string, loserName: string, reason: string): void
+  {
     // Masquage de l'overlay de jeu
     const gameOverlay = document.getElementById('game-overlay');
-    if (gameOverlay) {
+    if (gameOverlay)
+    {
       gameOverlay.style.display = 'none';
     }
 
@@ -1299,12 +1459,14 @@ export class RemotePong extends Pong3D {
     // Configuration des callbacks
     const callbacks: GameEndCallbacks = {
       onPlayAgain: undefined,
-      onBackToMenu: () => {
+      onBackToMenu: () =>
+      {
         console.log('🏠 Going back to menu from forfeit...');
         this.destroy();
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
       },
-      onViewStats: () => {
+      onViewStats: () =>
+      {
         console.log('📊 Showing forfeit statistics...');
         this.destroy();
         window.dispatchEvent(new CustomEvent('navigate', { detail: '/profile' }));
@@ -1316,17 +1478,25 @@ export class RemotePong extends Pong3D {
     gameEndModal.show();
   }
 
+  // =================================
+  // MÉTHODES PRIVÉES D'AFFICHAGE
+  // =================================
+
   /**
    * Met à jour le statut de connexion affiché
    * @param message Nouveau message de statut
    */
-  private updateConnectionStatus(message: string): void {
+  private updateConnectionStatus(message: string): void
+  {
     const statusEl = document.getElementById('game-status');
-    if (statusEl) {
+    if (statusEl)
+    {
       const mainMessage = statusEl.querySelector('.main-status-message');
-      if (mainMessage) {
+      if (mainMessage)
+      {
         mainMessage.textContent = message;
-      } else {
+      } else
+      {
         // Reconstruction du HTML si le message principal n'existe pas
         statusEl.innerHTML = `
           <div class="text-center space-y-3">
@@ -1343,11 +1513,13 @@ export class RemotePong extends Pong3D {
    * @param hostSettings Paramètres reçus de l'hôte
    * @param preservedTheme Thème préservé côté invité
    */
-  private addSettingsToStatus(hostSettings: any, preservedTheme: string): void {
+  private addSettingsToStatus(hostSettings: any, preservedTheme: string): void
+  {
     const statusEl = document.getElementById('game-status');
     const settingsContainer = statusEl?.querySelector('.settings-info');
 
-    if (settingsContainer) {
+    if (settingsContainer)
+    {
       settingsContainer.innerHTML = `
         <div class="p-3 bg-gray-800/60 rounded-lg border border-green-500/20 mt-3">
           <div class="text-sm text-green-400 font-medium mb-2">
@@ -1382,7 +1554,8 @@ export class RemotePong extends Pong3D {
    * Met à jour l'affichage du chronomètre côté invité
    * Synchronise avec les données reçues de l'hôte
    */
-  private updateTimerDisplay(): void {
+  private updateTimerDisplay(): void
+  {
     const minutes = Math.floor(this.gameState.timer / 60);
     const seconds = Math.floor(this.gameState.timer % 60);
     const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -1395,7 +1568,8 @@ export class RemotePong extends Pong3D {
       document.getElementById('game-timer-mobile')
     ];
     
-    timerElements.forEach(el => {
+    timerElements.forEach(el =>
+    {
       if (el) el.textContent = timeString;
     });
     
@@ -1407,8 +1581,10 @@ export class RemotePong extends Pong3D {
    * Bloque les mises à jour si le jeu a été interrompu
    * @param status Nouveau statut à afficher
    */
-  protected updateGameStatus(status: string): void {
-    if (this.gameWasInterrupted) {
+  protected updateGameStatus(status: string): void
+  {
+    if (this.gameWasInterrupted)
+    {
       console.log('🚫 Blocking status update due to interruption:', status);
       return;
     }
@@ -1418,7 +1594,7 @@ export class RemotePong extends Pong3D {
   }
 
   // =================================
-  // UTILITAIRES
+  // MÉTHODES PRIVÉES UTILITAIRES
   // =================================
 
   /**
@@ -1426,7 +1602,8 @@ export class RemotePong extends Pong3D {
    * @param speed Valeur de vitesse (slow/medium/fast)
    * @returns Nom d'affichage en français
    */
-  private getSpeedDisplayName(speed: string): string {
+  private getSpeedDisplayName(speed: string): string
+  {
     const speedMap: Record<string, string> = {
       slow: 'Lent',
       medium: 'Moyen', 
@@ -1440,7 +1617,8 @@ export class RemotePong extends Pong3D {
    * @param theme Valeur du thème
    * @returns Nom d'affichage en français
    */
-  private getThemeDisplayName(theme: string): string {
+  private getThemeDisplayName(theme: string): string
+  {
     const themeMap: Record<string, string> = {
       classic: 'Classique',
       neon: 'Néon',
@@ -1454,41 +1632,23 @@ export class RemotePong extends Pong3D {
     return themeMap[theme] || theme;
   }
 
-  /**
-   * Gère la déconnexion du serveur de signaling
-   * Peut déclencher une attribution de victoire si le jeu est en cours
-   */
-  private handleSignalingDisconnect(): void {
-    console.log('📡 Signaling server disconnected');
-    
-    if (this.gameState.status === 'playing' && !this.gameEndedByDisconnection) {
-      this.updateGameStatus('Connexion serveur perdue - partie en cours...');
-      
-      // Délai avant d'attribuer la victoire (permet la reconnexion)
-      if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
-        setTimeout(() => {
-          if (!this.gameEndedByDisconnection) {
-            this.handleOpponentDisconnection('signaling_disconnect');
-          }
-        }, 5000);
-      }
-    }
-  }
-
   // =================================
-  // GESTION DE LA NAVIGATION
+  // MÉTHODES PRIVÉES DE NAVIGATION
   // =================================
 
   /**
    * Configure la détection des événements de navigation
    * Permet de gérer proprement les interruptions de jeu
    */
-  private setupPageLeaveDetection(): void {
+  private setupPageLeaveDetection(): void
+  {
     // Gestionnaire de fermeture/refresh de page
-    this.beforeUnloadHandler = (event: BeforeUnloadEvent) => {
+    this.beforeUnloadHandler = (event: BeforeUnloadEvent) =>
+    {
       console.log('🚪 Page is being closed/refreshed');
       
-      if (this.gameState.status === 'playing') {
+      if (this.gameState.status === 'playing')
+      {
         // Sauvegarde de l'état avant fermeture
         this.saveGameStateToSession();
         this.notifyVoluntaryDisconnection('page_refresh');
@@ -1501,9 +1661,11 @@ export class RemotePong extends Pong3D {
     };
     
     // Gestionnaire de navigation interne (SPA)
-    this.navigationHandler = (event: CustomEvent) => {
+    this.navigationHandler = (event: CustomEvent) =>
+    {
       const targetRoute = event.detail;
-      if (targetRoute !== '/game' && this.gameState.status === 'playing') {
+      if (targetRoute !== '/game' && this.gameState.status === 'playing')
+      {
         console.log('🚶 User navigating away from game:', targetRoute);
         this.saveGameStateToSession();
         this.notifyVoluntaryDisconnection('page_navigation');
@@ -1511,14 +1673,18 @@ export class RemotePong extends Pong3D {
     };
     
     // Gestionnaire de visibilité de page (onglet actif/inactif)
-    this.visibilityChangeHandler = () => {
-      if (document.hidden && this.gameState.status === 'playing') {
+    this.visibilityChangeHandler = () =>
+    {
+      if (document.hidden && this.gameState.status === 'playing')
+      {
         console.log('👁️ Page became hidden during game');
         this.saveGameStateToSession();
         
         // Déconnexion automatique après inactivité prolongée
-        setTimeout(() => {
-          if (document.hidden && this.gameState.status === 'playing') {
+        setTimeout(() =>
+        {
+          if (document.hidden && this.gameState.status === 'playing')
+          {
             console.log('⏰ User inactive too long, disconnecting');
             this.saveGameStateToSession();
             this.notifyVoluntaryDisconnection('inactivity');
@@ -1537,48 +1703,56 @@ export class RemotePong extends Pong3D {
    * Supprime tous les gestionnaires d'événements de navigation
    * Appelé lors de la destruction de l'instance
    */
-  private removePageLeaveDetection(): void {
-    if (this.beforeUnloadHandler) {
+  private removePageLeaveDetection(): void
+  {
+    if (this.beforeUnloadHandler)
+    {
       window.removeEventListener('beforeunload', this.beforeUnloadHandler);
       this.beforeUnloadHandler = null;
     }
     
-    if (this.visibilityChangeHandler) {
+    if (this.visibilityChangeHandler)
+    {
       document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
       this.visibilityChangeHandler = null;
     }
     
-    if (this.navigationHandler) {
+    if (this.navigationHandler)
+    {
       window.removeEventListener('beforeNavigate', this.navigationHandler as EventListener);
       this.navigationHandler = null;
     }
   }
 
   // =================================
-  // NETTOYAGE ET DESTRUCTION
+  // MÉTHODES PRIVÉES DE NETTOYAGE
   // =================================
 
   /**
    * Nettoie toutes les connexions réseau
    * Ferme proprement WebSocket et WebRTC
    */
-  private cleanupConnections(): void {
+  private cleanupConnections(): void
+  {
     console.log('🔌 Cleaning up connections');
     
     // Fermeture du canal de données WebRTC
-    if (this.dataChannel) {
+    if (this.dataChannel)
+    {
       this.dataChannel.close();
       this.dataChannel = null;
     }
 
     // Fermeture de la connexion WebRTC
-    if (this.peerConnection) {
+    if (this.peerConnection)
+    {
       this.peerConnection.close();
       this.peerConnection = null;
     }
 
     // Fermeture de la connexion WebSocket
-    if (this.signalingWS && this.signalingWS.readyState === WebSocket.OPEN) {
+    if (this.signalingWS && this.signalingWS.readyState === WebSocket.OPEN)
+    {
       this.signalingWS.send(JSON.stringify({ 
         type: 'leave_matchmaking',
         playerId: this.playerId
@@ -1588,11 +1762,16 @@ export class RemotePong extends Pong3D {
     }
   }
 
+  // =================================
+  // MÉTHODES PUBLIQUES
+  // =================================
+
   /**
    * Méthode de destruction complète de l'instance
    * Nettoie toutes les ressources et connexions
    */
-  public destroy(): void {
+  public destroy(): void
+  {
     console.log('🧹 Destroying RemotePong instance');
     
     // Nettoyage du sessionStorage

@@ -1,24 +1,44 @@
 import type { PaddleInputs } from './GamePhysics.js';
 
-export class GameControls 
+export class GameControls
 {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
+
   private keys: { [key: string]: boolean } = {};
   private mobileInputs: { [key: string]: boolean } = {};
-  
+
+  // ==========================================
+  // GESTIONNAIRES D'ÉVÉNEMENTS
+  // ==========================================
+
   private keydownHandler = (e: KeyboardEvent) => {
     this.keys[e.code.toLowerCase()] = true;
   };
-  
+
   private keyupHandler = (e: KeyboardEvent) => {
     this.keys[e.code.toLowerCase()] = false;
   };
 
-  public bindKeyboardEvents(): void {
+  // ==========================================
+  // MÉTHODES PUBLIQUES DE CONTRÔLE
+  // ==========================================
+
+  /**
+   * Attache les événements clavier
+   */
+  public bindKeyboardEvents(): void
+  {
     document.addEventListener('keydown', this.keydownHandler);
     document.addEventListener('keyup', this.keyupHandler);
   }
 
-  public getInputs(): PaddleInputs 
+  /**
+   * Obtient les entrées actuelles des paddles
+   * @returns Entrées des paddles
+   */
+  public getInputs(): PaddleInputs
   {
     return {
       player1: {
@@ -32,13 +52,22 @@ export class GameControls
     };
   }
 
-  public handleMobileInput(player: string, direction: string, pressed: boolean): void 
+  /**
+   * Gère les entrées mobiles
+   * @param player Joueur concerné
+   * @param direction Direction de l'entrée
+   * @param pressed État de pression
+   */
+  public handleMobileInput(player: string, direction: string, pressed: boolean): void
   {
     const key = `${player}_${direction}`;
     this.mobileInputs[key] = pressed;
   }
 
-  public destroy(): void 
+  /**
+   * Détruit les contrôles et nettoie les événements
+   */
+  public destroy(): void
   {
     document.removeEventListener('keydown', this.keydownHandler);
     document.removeEventListener('keyup', this.keyupHandler);

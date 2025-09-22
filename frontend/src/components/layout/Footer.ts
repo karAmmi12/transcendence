@@ -1,11 +1,14 @@
 import { i18n } from '@/services/i18nService';
 
-export class Footer {
+export class Footer 
+{
     private languageListener: (() => void) | null = null;
 
-    mount(selector: string): void {
+    mount(selector: string): void 
+    {
         const element = document.querySelector(selector);
-        if (!element) return;
+        if (!element) 
+            return;
 
         this.render(element);
 
@@ -19,7 +22,8 @@ export class Footer {
         window.addEventListener('languageChanged', this.languageListener);
     }
 
-    private render(element: Element): void {
+    private render(element: Element): void 
+    {
         const currentYear = new Date().getFullYear();
 
         element.innerHTML = `
@@ -44,8 +48,10 @@ export class Footer {
         `;
     }
 
-    destroy(): void {
-        if (this.languageListener) {
+    destroy(): void 
+    {
+        if (this.languageListener) 
+        {
             window.removeEventListener('languageChanged', this.languageListener);
             this.languageListener = null;
         }
