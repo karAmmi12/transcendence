@@ -13,8 +13,7 @@ import { tournamentService } from '@/services/tournamentService';
 //  IMPORTS DES COMPOSANTS
 // ==========================================
 import { TournamentBracket } from '@/components/tournament/TournamentBracket';
-import { TournamentMatch } from '@/components/tournament/TournamentMatch';
-
+import { TournamentMatch as TournamentMatchComponent } from '@components/tournament/TournamentMatch';
 // ==========================================
 //  CLASSE PRINCIPALE
 // ==========================================
@@ -185,7 +184,7 @@ export class TournamentPage
   {
     if (!this.currentMatch) return '';
 
-    const match = new TournamentMatch(this.currentMatch, this.tournament.id, this.tournament.gameSettings);
+    const match = new TournamentMatchComponent(this.currentMatch, this.tournament.id, this.tournament.gameSettings);
     const html = match.render();
 
     // Attacher les événements du match après le rendu

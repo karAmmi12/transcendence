@@ -5,9 +5,9 @@
 
 import { authService } from '@/services/authService.js';
 import { i18n } from '@/services/i18nService.js';
-import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
-import type { GameSettings } from '@/components/game/Pong3D/Pong3D.js';
+import { GameManager } from '@/components/game/GameManager';
 import { RemotePong } from '@/components/game/RemotePong.js';
+import type { GameSettings, GameManagerConfig } from '@/types/index.js';
 
 // ==========================================
 // 🎯 IMPORTS DES COMPOSANTS
