@@ -1,5 +1,4 @@
-import type { GameSettings } from './Pong3D.js';
-import type { ObjectPositions } from './GameRenderer.js';
+import type { GameSettings, ObjectPositions } from '@/types/index.js';
 
 export interface PaddleInputs {
   player1: { up: boolean; down: boolean };

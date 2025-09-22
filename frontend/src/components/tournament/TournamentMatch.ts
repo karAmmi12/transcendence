@@ -1,6 +1,6 @@
 import { i18n } from '@/services/i18nService';
-import { GameManager, GameManagerConfig } from '@/components/game/GameManager';
-import { GameSettings } from '../../types/index';
+import { GameManager } from '@/components/game/GameManager';
+import type { GameSettings, GameManagerConfig } from '@/types/index.js';
 
 export class TournamentMatch {
   private gameManager: GameManager | null = null;

@@ -1,5 +1,3 @@
-import { i18n } from '@/services/i18nService.js';
-
 export class MobileControls {
   constructor(
     private callbacks: {

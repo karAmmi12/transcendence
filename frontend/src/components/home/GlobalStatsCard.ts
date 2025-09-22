@@ -1,9 +1,6 @@
 import { i18n } from '@/services/i18nService.js';
 import type { GlobalStats } from '../../types/index.js';
 
-
-
-
 export class GlobalStatsCard {
   constructor(private stats: GlobalStats) {}
 

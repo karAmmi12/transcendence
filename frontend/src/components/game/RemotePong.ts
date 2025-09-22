@@ -1,9 +1,9 @@
 import { Pong3D } from './Pong3D/Pong3D.js';
-import { GameSettings } from './Pong3D/Pong3D.js';
 import { authService } from '../../services/authService.js';
 import { matchService } from '../../services/matchService.js';
 import { ApiConfig } from '../../config/api.js';
-import { GameEndModal, GameEndStats, GameEndCallbacks } from '../game/GameEndModal.js';
+import { GameEndModal, convertToModalStats } from '../game/GameEndModal.js';
+import type { GameSettings, GameEndStats, GameEndCallbacks } from '@/types/index.js';
 
 /**
  * Classe RemotePong - Gestion des parties en ligne via WebRTC
@@ -1049,13 +1049,17 @@ export class RemotePong extends Pong3D {
 
     // Construction des statistiques pour le modal
     const stats: GameEndStats = {
+      winner: winner,
+      loser: winner === 'player1' ? 'player2' : 'player1',
+      finalScore: { winner: winnerScore, loser: loserScore },
+      duration: matchDuration.toString(),
+      gameMode: 'remote',
       winnerName,
       loserName,
       winnerScore,
       loserScore,
       matchDuration,
       totalScore,
-      gameMode: 'remote',
       winScore: this.settings.winScore
     };
 
@@ -1075,7 +1079,7 @@ export class RemotePong extends Pong3D {
     };
 
     // Création et affichage du modal
-    const gameEndModal = new GameEndModal(stats, callbacks);
+    const gameEndModal = new GameEndModal(convertToModalStats(stats), callbacks);
     gameEndModal.show();
   }
 
@@ -1203,13 +1207,17 @@ export class RemotePong extends Pong3D {
     
     // Construction des statistiques pour le modal
     const stats: GameEndStats = {
+      winner: 'player2',
+      loser: 'player1',
+      finalScore: { winner: 5, loser: 0 },
+      duration: '0',
+      gameMode: 'remote',
       winnerName: opponentName,
       loserName: playerName,
       winnerScore: 5,
       loserScore: 0,
       matchDuration: 0,
       totalScore: 5,
-      gameMode: 'remote',
       winScore: this.settings.winScore
     };
 
@@ -1229,7 +1237,7 @@ export class RemotePong extends Pong3D {
     };
 
     // Création du modal avec personnalisation pour l'interruption
-    const gameEndModal = new GameEndModal(stats, callbacks);
+    const gameEndModal = new GameEndModal(convertToModalStats(stats), callbacks);
     
     const originalShow = gameEndModal.show.bind(gameEndModal);
     gameEndModal.show = () => {
@@ -1274,13 +1282,17 @@ export class RemotePong extends Pong3D {
 
     // Construction des statistiques
     const stats: GameEndStats = {
+      winner: 'player1',
+      loser: 'player2',
+      finalScore: { winner: 5, loser: 0 },
+      duration: Math.floor(this.gameState.timer).toString(),
+      gameMode: 'remote',
       winnerName,
       loserName,
       winnerScore: 5,
       loserScore: 0,
       matchDuration: Math.floor(this.gameState.timer),
       totalScore: 5,
-      gameMode: 'remote',
       winScore: this.settings.winScore
     };
 
@@ -1300,7 +1312,7 @@ export class RemotePong extends Pong3D {
     };
 
     // Création et affichage du modal
-    const gameEndModal = new GameEndModal(stats, callbacks);
+    const gameEndModal = new GameEndModal(convertToModalStats(stats), callbacks);
     gameEndModal.show();
   }
 

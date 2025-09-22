@@ -1,4 +1,4 @@
-import { User, Friend, FriendshipStatus, FriendRequest } from '../types/index';
+import { User, Friend } from '@/types/index.js';
 
 export class FriendService {
   private static instance: FriendService;

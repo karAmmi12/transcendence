@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import db from "../db/index.js"
 import {SessionResult, TokenPayload} from "../types/jwt.js";
-import 'dotenv/config'
+import dotenv from 'dotenv';
 import { Logger } from '../utils/logger.js';
 
 const ACCESS_TOKEN_SECRET =  process.env.ACCESS_TOKEN_SECRET || 'fallback-access-secret';

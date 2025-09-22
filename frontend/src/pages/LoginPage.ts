@@ -11,12 +11,8 @@ import { authService } from '@services/authService';
 import { AuthPageBase } from '@components/auth/AuthPageBase';
 import { AuthFormInput } from '@components/auth/AuthFormInput';
 import { AuthSubmitButton } from '@components/auth/AuthSubmitButton';
-
-// ==========================================
-// IMPORTS SPÉCIALISÉS
-// ==========================================
 import { TwoFactorModal } from '../components/auth/TwoFactorModal.js';
-import { TwoFactorRequiredError } from '../types/errors.js';
+import { TwoFactorRequiredError } from '@/types/index.js';
 
 // ==========================================
 // CLASSE PRINCIPALE

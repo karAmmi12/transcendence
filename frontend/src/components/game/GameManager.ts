@@ -1,13 +1,5 @@
 import { Pong3D } from './Pong3D/Pong3D';
-import { GameSettings } from './Pong3D/Pong3D';
-
-export interface GameManagerConfig {
-  mode: 'local' | 'tournament' | 'remote';
-  canvasId: string;
-  settings: GameSettings;
-  onGameEnd?: (winner: string, scores: any, duration: number) => void;
-  onGameStart?: () => void;
-}
+import type { GameManagerConfig } from '@/types/index.js';
 
 export class GameManager {
   private game: Pong3D | null = null;

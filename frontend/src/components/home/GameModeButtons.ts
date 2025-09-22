@@ -1,5 +1,5 @@
 import { i18n } from '@/services/i18nService.js';
-import type { GameModeCallbacks } from '../../pages/HomePage.js';
+import type { GameModeCallbacks } from '@/types/index.js';
 
 export class GameModeButtons {
   constructor(
