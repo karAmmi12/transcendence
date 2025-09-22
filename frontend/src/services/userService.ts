@@ -2,20 +2,37 @@ import type { User } from '@/types/index.js';
 import { i18n } from '@/services/i18nService.js';
 
 export class UserService {
+  // ==========================================
+  // PROPRIÉTÉS PRIVÉES
+  // ==========================================
   private static instance: UserService;
   // ✅ En production, utiliser le proxy nginx au lieu d'aller directement au backend
   private baseURL = process.env.NODE_ENV === 'production' 
     ? '/api'  // Via le proxy nginx
     : `http://${location.hostname}:8000/api`; // Direct en dev
 
+  // ==========================================
+  // INITIALISATION ET CONFIGURATION
+  // ==========================================
+
+  /**
+   * Constructeur privé pour le pattern Singleton
+   */
   private constructor() {}
 
+  /**
+   * Obtient l'instance unique du service (pattern Singleton)
+   */
   public static getInstance(): UserService {
     if (!UserService.instance) {
       UserService.instance = new UserService();
     }
     return UserService.instance;
   }
+
+  // ==========================================
+  // MÉTHODES PUBLIQUES
+  // ==========================================
 
   /**
    * Construit l'URL complète pour un avatar
@@ -144,8 +161,7 @@ export class UserService {
   /**
    * Sauvegarder le thème préféré de l'utilisateur
    */
-
-    public async saveUserTheme(theme: string): Promise<boolean> {
+  public async saveUserTheme(theme: string): Promise<boolean> {
     try {
       console.log('🎨 Sending theme update request:', theme);
       
@@ -176,8 +192,6 @@ export class UserService {
       return false;
     }
   }
-
-
 }
 
 export const userService = UserService.getInstance();
