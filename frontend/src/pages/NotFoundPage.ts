@@ -7,6 +7,7 @@
 // IMPORTS
 // ==========================================
 import { i18n } from '@/services/i18nService';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 // CLASSE PRINCIPALE
@@ -41,7 +42,7 @@ export class NotFoundPage
 
   destroy(): void
   {
-    console.log('🧹 Destruction de NotFoundPage et nettoyage des écouteurs');
+    Logger.log('🧹 Destruction de NotFoundPage et nettoyage des écouteurs');
 
     if (this.languageListener)
     {
@@ -56,12 +57,12 @@ export class NotFoundPage
 
   private setupEventListeners(): void
   {
-    console.log('🎧 Configuration des écouteurs d\'événements');
+    Logger.log('🎧 Configuration des écouteurs d\'événements');
 
     // Écouteur pour les changements de langue
     this.languageListener = () =>
     {
-      console.log('🌐 Changement de langue détecté, re-rendu de la page 404');
+      Logger.log('🌐 Changement de langue détecté, re-rendu de la page 404');
       const element = document.querySelector('#page-content');
       if (element) this.render(element);
     };
@@ -70,34 +71,34 @@ export class NotFoundPage
 
   private bindEvents(): void
   {
-    console.log('🎯 Configuration des événements de navigation');
+    Logger.log('🎯 Configuration des événements de navigation');
 
     // Navigation vers les pages principales
     document.getElementById('home-link')?.addEventListener('click', (e) =>
     {
       e.preventDefault();
-      console.log('🏠 Navigation vers l\'accueil depuis 404');
+      Logger.log('🏠 Navigation vers l\'accueil depuis 404');
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/' }));
     });
 
     document.getElementById('game-link')?.addEventListener('click', (e) =>
     {
       e.preventDefault();
-      console.log('🎮 Navigation vers le jeu depuis 404');
+      Logger.log('🎮 Navigation vers le jeu depuis 404');
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/game' }));
     });
 
     document.getElementById('tournament-link')?.addEventListener('click', (e) =>
     {
       e.preventDefault();
-      console.log('🏆 Navigation vers la création de tournoi depuis 404');
+      Logger.log('🏆 Navigation vers la création de tournoi depuis 404');
       window.dispatchEvent(new CustomEvent('navigate', { detail: '/tournament/create' }));
     });
 
     // Bouton retour
     document.getElementById('back-button')?.addEventListener('click', () =>
     {
-      console.log('⬅️ Bouton retour cliqué');
+      Logger.log('⬅️ Bouton retour cliqué');
       if (window.history.length > 1)
       {
         window.history.back();
@@ -115,7 +116,7 @@ export class NotFoundPage
 
   private render(element: Element): void
   {
-    console.log('🎨 Rendu de la page 404');
+    Logger.log('🎨 Rendu de la page 404');
 
     element.innerHTML = `
       <div class="min-h-screen bg-gray-900 text-white flex items-center justify-center">

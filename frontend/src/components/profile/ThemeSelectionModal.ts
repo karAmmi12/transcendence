@@ -1,6 +1,7 @@
 import { i18n } from '@/services/i18nService';
 import { userService } from '@services/userService';
 import { User } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js';
 
 export class ThemeSelectionModal
 {
@@ -346,7 +347,7 @@ export class ThemeSelectionModal
 
     } catch (error)
     {
-      console.error('❌ Theme save error:', error);
+      Logger.error('❌ Theme save error:', error);
       this.showError((error as Error).message);
 
       // Reset loading state on error

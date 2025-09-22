@@ -11,6 +11,7 @@ import { userService } from '@services/userService';
 import { authService } from '@services/authService';
 import { friendService } from '@services/friendsService';
 import { twoFactorService } from '@services/twoFactorService';
+import { Logger } from '@/utils/logger.js'; 
 
 // ==========================================
 // IMPORTS DES COMPOSANTS
@@ -138,7 +139,7 @@ export class ProfilePage
     }
     catch (error)
     {
-      console.error('Failed to load user data:', error);
+      Logger.error('Failed to load user data:', error);
       this.renderError(element, i18n.t('profile.errors.loadFailed'));
     }
   }
@@ -163,7 +164,7 @@ export class ProfilePage
     }
     catch (error)
     {
-      console.error('Failed to refresh friends data:', error);
+      Logger.error('Failed to refresh friends data:', error);
     }
   }
 
@@ -176,7 +177,7 @@ export class ProfilePage
     // Vérifier si l'utilisateur est dans la liste d'amis
     const isFriend = this.friends.some(friend => friend.id === userId);
 
-    console.log('🔍 Checking friendship status:', {
+    Logger.log('🔍 Checking friendship status:', {
       userId,
       friendsCount: this.friends.length,
       friendsIds: this.friends.map(f => f.id),
@@ -322,7 +323,7 @@ export class ProfilePage
     }
     catch (error)
     {
-      console.error('Failed to perform friend action:', error);
+      Logger.error('Failed to perform friend action:', error);
     }
   }
 
@@ -482,7 +483,7 @@ export class ProfilePage
     }
     catch (error)
     {
-      console.error('2FA toggle error:', error);
+      Logger.error('2FA toggle error:', error);
       alert((error as Error).message);
       throw error; // Permet au ProfileHeader de revert le toggle
     }

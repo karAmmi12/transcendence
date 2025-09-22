@@ -57,7 +57,7 @@ dev: set-dev-env install
 
 prod: set-prod-env
 	@echo "$(BLUE)Launching in prod mode...$(END)"
-	@$(DC) up --build
+	@$(DC) up --build -d
 	@echo "$(GREEN)Containers have started in production mode!$(END)"
 	@echo "$(CYAN)Access your app here: http://localhost:8080$(END)"
 	@echo "$(CYAN)HTTPS access: https://localhost:8443$(END)"
@@ -68,9 +68,15 @@ down:
 	@echo "$(GREEN)Containers stopped!$(END)"
 
 clean:
-	@echo "$(YELLOW)Cleaning containers and images...$(END)"
+	@echo "$(YELLOW)Performing total reset and cleanup...$(END)"
+	@clear
 	@$(DC) down --rmi all --volumes --remove-orphans
-	@echo "$(GREEN)Cleanup completed!$(END)"
+	@docker system prune -a -f
+	@rm -rf backend/node_modules frontend/node_modules frontend/dist backend/dist
+	@rm -rf backend/database.db  # Supprime la DB locale
+	@npm cache clean --force
+	@echo "$(GREEN)Total reset and cleanup completed!$(END)"
+	@echo "$(CYAN)Run 'make prod' to restart in production mode.$(END)"
 
 logs:
 	@$(DC) logs -f
@@ -80,4 +86,4 @@ restart:
 	@$(DC) restart
 	@echo "$(GREEN)Containers restarted!$(END)"
 
-.PHONY: help install dev prod down clean logs restart
+.PHONY: help install dev prod down clean logs restart set-dev-env set-dev-env

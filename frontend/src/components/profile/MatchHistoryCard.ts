@@ -1,6 +1,7 @@
 import { i18n } from '@/services/i18nService.js';
 import type { MatchHistory } from '../../types/index.js';
 import { userService } from '@/services/userService.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class MatchHistoryCard
 {
@@ -25,9 +26,9 @@ export class MatchHistoryCard
     this.filteredMatches = [...this.matchHistory];
 
      // ✅ Debug plus détaillé pour voir la structure exacte
-    console.log('MatchHistoryCard - Match history data:', this.matchHistory);
-    console.log('MatchHistoryCard - First match structure:', this.matchHistory[0]);
-    console.log('MatchHistoryCard - Game modes found:', this.matchHistory.map(m => ({
+    Logger.log('MatchHistoryCard - Match history data:', this.matchHistory);
+    Logger.log('MatchHistoryCard - First match structure:', this.matchHistory[0]);
+    Logger.log('MatchHistoryCard - Game modes found:', this.matchHistory.map(m => ({
       id: m.id,
       gameMode: m.gameMode,
       typeof: typeof m.gameMode,
@@ -44,7 +45,7 @@ export class MatchHistoryCard
    */
   render(): string
   {
-    console.log('Rendering MatchHistoryCard with', this.matchHistory.length, 'matches');
+    Logger.log('Rendering MatchHistoryCard with', this.matchHistory.length, 'matches');
     return `
       <div class="bg-gray-800 rounded-lg p-6">
         <div class="flex justify-between items-center mb-6">
@@ -72,7 +73,7 @@ export class MatchHistoryCard
 
     if (!resultFilter || !modeFilter)
     {
-      console.error('Filter elements not found');
+      Logger.error('Filter elements not found');
       return;
     }
 
@@ -81,7 +82,7 @@ export class MatchHistoryCard
       const resultValue = resultFilter.value || 'all';
       const modeValue = modeFilter.value || 'all';
 
-      console.log('Filter change:', { resultValue, modeValue });
+      Logger.log('Filter change:', { resultValue, modeValue });
 
       this.applyFilters(resultValue, modeValue);
 
@@ -92,7 +93,7 @@ export class MatchHistoryCard
     resultFilter.addEventListener('change', updateFilters);
     modeFilter.addEventListener('change', updateFilters);
 
-    console.log('Filter events bound successfully');
+    Logger.log('Filter events bound successfully');
   }
 
   // ==========================================
@@ -105,7 +106,7 @@ export class MatchHistoryCard
   private renderFilters(): string
   {
     const gameModes = [...new Set(this.matchHistory.map(m => m.gameMode).filter(Boolean))];
-    console.log('Rendering filters with game modes:', gameModes);
+    Logger.log('Rendering filters with game modes:', gameModes);
 
     return `
       <div class="flex flex-col sm:flex-row gap-2">
@@ -471,7 +472,7 @@ export class MatchHistoryCard
    */
   applyFilters(resultFilter: string = 'all', modeFilter: string = 'all'): void
   {
-    console.log('Applying filters:', { resultFilter, modeFilter });
+    Logger.log('Applying filters:', { resultFilter, modeFilter });
 
     this.currentResultFilter = resultFilter;
     this.currentModeFilter = modeFilter;
@@ -499,7 +500,7 @@ export class MatchHistoryCard
         const normalizedMatchMode = (match.gameMode || '').toLowerCase().trim();
         const normalizedFilterMode = modeFilter.toLowerCase().trim();
 
-        console.log('Comparing modes:', {
+        Logger.log('Comparing modes:', {
           matchMode: normalizedMatchMode,
           filterMode: normalizedFilterMode,
           originalMatch: match.gameMode
@@ -510,7 +511,7 @@ export class MatchHistoryCard
       }
 
       const result = matchesResult && matchesMode;
-      console.log('Match filter result:', {
+      Logger.log('Match filter result:', {
         matchId: match.id,
         result,
         matchesResult,
@@ -521,7 +522,7 @@ export class MatchHistoryCard
       return result;
       });
 
-    console.log('Filtered matches:', this.filteredMatches.length, 'out of', this.matchHistory.length);
+    Logger.log('Filtered matches:', this.filteredMatches.length, 'out of', this.matchHistory.length);
   }
 
   /**

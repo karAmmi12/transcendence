@@ -1,3 +1,5 @@
+// import { Logger } from '@/utils/logger.js'; 
+
 // export interface CrashTestResult {
 //   testName: string;
 //   passed: boolean;
@@ -16,7 +18,7 @@
 // export class CrashTest {
 //   private static instance: CrashTest;
 //   private testResults: CrashTestResult[] = [];
-//   private originalConsoleError: typeof console.error;
+//   private originalConsoleError: typeof Logger.error;
 //   private originalWindowOnError: typeof window.onerror;
 
 //   public static getInstance(): CrashTest {
@@ -27,7 +29,7 @@
 //   }
 
 //   public async runAllCrashTests(): Promise<CrashTestSuite> {
-//     console.log('🧪 Running comprehensive crash tests...');
+//     Logger.log('🧪 Running comprehensive crash tests...');
     
 //     this.setupErrorInterception();
     
@@ -69,10 +71,10 @@
 //     }
 
 //   private setupErrorInterception(): void {
-//     this.originalConsoleError = console.error;
+//     this.originalConsoleError = Logger.error;
 //     this.originalWindowOnError = window.onerror;
     
-//     console.error = (...args) => {
+//     Logger.error = (...args) => {
 //       this.testResults.push({
 //         testName: 'Console Error Intercepted',
 //         passed: false,
@@ -96,7 +98,7 @@
 //   }
 
 //   private restoreErrorInterception(): void {
-//     console.error = this.originalConsoleError;
+//     Logger.error = this.originalConsoleError;
 //     window.onerror = this.originalWindowOnError;
 //   }
 
@@ -473,7 +475,7 @@
 //     try {
 
         
-//         console.log('Testing token expiration handling...');
+//         Logger.log('Testing token expiration handling...');
 //         // Créer un token JWT vraiment expiré (date dans le passé)
 //         const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
         
@@ -487,7 +489,7 @@
 //             'Content-Type': 'application/json'
 //         }
 //         });
-//         console.log('response :', response);
+//         Logger.log('response :', response);
 
 //         // Nettoyer
 //         localStorage.removeItem('auth_token');

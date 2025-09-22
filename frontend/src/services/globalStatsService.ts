@@ -1,4 +1,5 @@
 import type { GlobalStats } from '@/types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class GlobalStatsService {
   // ==========================================
@@ -18,23 +19,23 @@ export class GlobalStatsService {
    */
   async getGlobalStats(): Promise<GlobalStats> {
     try {
-      console.log('Fetching global stats from:', `${this.baseURL}/home/stats`);
+      Logger.log('Fetching global stats from:', `${this.baseURL}/home/stats`);
       
       const response = await fetch(`${this.baseURL}/home/stats`, {
         method: 'GET',
         credentials: 'include'
       });
       
-      console.log('Global stats response status:', response.status);
+      Logger.log('Global stats response status:', response.status);
       
       if (response.ok) {
         const stats: GlobalStats = await response.json();
-        console.log('Global stats received:', stats);
+        Logger.log('Global stats received:', stats);
         return stats;
       } else {
-        console.error('Global stats API error:', response.status, response.statusText);
+        Logger.error('Global stats API error:', response.status, response.statusText);
         const errorText = await response.text();
-        console.error('Error response:', errorText);
+        Logger.error('Error response:', errorText);
       }
       
       // Valeurs par défaut en cas d'erreur
@@ -44,7 +45,7 @@ export class GlobalStatsService {
         onlinePlayers: 0
       };
     } catch (error) {
-      console.error('Failed to fetch global stats:', error);
+      Logger.error('Failed to fetch global stats:', error);
       return {
         totalPlayers: 0,
         totalGames: 0,

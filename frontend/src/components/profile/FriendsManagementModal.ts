@@ -2,6 +2,7 @@ import { i18n } from '@/services/i18nService.js';
 import { friendService } from '@services/friendsService';
 import { userService } from '@services/userService';
 import { User, Friend } from '../../types/index.js';
+import { Logger } from '@/utils/logger.js'; 
 
 export class FriendsManagementModal
 {
@@ -357,7 +358,7 @@ export class FriendsManagementModal
       
       if (!action) return;
 
-      console.log('Action clicked:', action, 'Target:', target); // Debug
+      Logger.log('Action clicked:', action, 'Target:', target); // Debug
 
       try
       {
@@ -367,11 +368,11 @@ export class FriendsManagementModal
         {
           case 'view-profile':
             const userId = target.dataset.userid;
-            console.log('User ID récupéré pour view-profile:', userId); // Debug
+            Logger.log('User ID récupéré pour view-profile:', userId); // Debug
             
             if (!userId || userId === '0' || userId === 'undefined')
             {
-              console.error('ID utilisateur invalide:', userId);
+              Logger.error('ID utilisateur invalide:', userId);
               return;
             }
             
@@ -388,10 +389,10 @@ export class FriendsManagementModal
             
           case 'add-friend':
             const userIdToAdd = parseInt(target.dataset.userid || '0');
-            console.log('Adding friend with ID:', userIdToAdd);
+            Logger.log('Adding friend with ID:', userIdToAdd);
             if (userIdToAdd === 0)
             {
-              console.error('ID utilisateur invalide pour ajout ami');
+              Logger.error('ID utilisateur invalide pour ajout ami');
               return;
             }
             success = await friendService.sendFriendRequest(userIdToAdd);
@@ -408,10 +409,10 @@ export class FriendsManagementModal
             
           case 'remove-friend':
             const friendId = parseInt(target.dataset.userid || '0');
-            console.log('Removing friend with ID:', friendId);
+            Logger.log('Removing friend with ID:', friendId);
             if (friendId === 0)
             {
-              console.error('ID ami invalide pour suppression');
+              Logger.error('ID ami invalide pour suppression');
               return;
             }
             if (confirm(i18n.t('friends.confirmations.removeFriend')))
@@ -437,7 +438,7 @@ export class FriendsManagementModal
         
       } catch (error)
       {
-        console.error('Action failed:', error);
+        Logger.error('Action failed:', error);
         this.showMessage(i18n.t('friends.messages.actionFailed'), 'error');
       }
     });
@@ -465,7 +466,7 @@ export class FriendsManagementModal
           this.updateSearchResults();
         } catch (error)
         {
-          console.error('Search error:', error);
+          Logger.error('Search error:', error);
           this.showMessage(i18n.t('friends.messages.searchFailed'), 'error');
         }
       } else if (query.length === 0)
