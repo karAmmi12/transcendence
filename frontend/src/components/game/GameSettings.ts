@@ -197,9 +197,7 @@ export class GameSettingsUI
             <label class="block mb-2">${i18n.t('game.customization.theme')}:</label>
             <select id="game-theme" class="bg-gray-700 rounded px-3 py-2 w-full" ${isAuthenticated && this.userPreferredTheme ? 'disabled' : ''}>
               <option value="classic" ${defaultTheme === 'classic' ? 'selected' : ''}>${i18n.t('game.themes.classic')}</option>
-              <option value="neon" ${defaultTheme === 'neon' ? 'selected' : ''}>${i18n.t('game.themes.neon')}</option>
               <option value="retro" ${defaultTheme === 'retro' ? 'selected' : ''}>${i18n.t('game.themes.retro')}</option>
-              <option value="cyberpunk" ${defaultTheme === 'cyberpunk' ? 'selected' : ''}>Cyberpunk</option>
               <option value="space" ${defaultTheme === 'space' ? 'selected' : ''}>Space</option>
               <option value="italian" ${defaultTheme === 'italian' ? 'selected' : ''}>${i18n.t('game.themes.italian')}</option>
               <option value="matrix" ${defaultTheme === 'matrix' ? 'selected' : ''}>${i18n.t('game.themes.matrix')}</option>
@@ -470,10 +468,8 @@ export class GameSettingsUI
             <label class="block mb-2">${i18n.t('game.customization.theme')}:</label>
             <select id="tournament-theme" class="bg-gray-700 rounded px-3 py-2 w-full">
               <option value="classic" selected>${i18n.t('game.themes.classic')}</option>
-              <option value="neon">${i18n.t('game.themes.neon')}</option>
               <option value="retro">${i18n.t('game.themes.retro')}</option>
-              <option value="cyberpunk">Cyberpunk</option>
-              <option value="space">Space</option>
+              <option value="space">${i18n.t('game.themes.space')}</option>
               <option value="italian">${i18n.t('game.themes.italian')}</option>
               <option value="matrix">${i18n.t('game.themes.matrix')}</option>
               <option value="lava">${i18n.t('game.themes.lava')}</option>
@@ -520,10 +516,8 @@ export class GameSettingsUI
   {
     const nameMap: Record<string, string> = {
       classic: i18n.t('game.themes.classic'),
-      neon: i18n.t('game.themes.neon'),
       retro: i18n.t('game.themes.retro'),
-      cyberpunk: 'Cyberpunk',
-      space: 'Space',
+      space: i18n.t('game.themes.space'),
       italian: i18n.t('game.themes.italian'),
       matrix: i18n.t('game.themes.matrix'),
       lava: i18n.t('game.themes.lava')
