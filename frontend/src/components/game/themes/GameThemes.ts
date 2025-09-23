@@ -19,9 +19,7 @@ export class GameThemes
   static initialize(): void
   {
     this.themes.set('classic', this.createClassicTheme());
-    this.themes.set('neon', this.createNeonTheme());
     this.themes.set('retro', this.createRetroTheme());
-    this.themes.set('cyberpunk', this.createCyberpunkTheme());
     this.themes.set('space', this.createSpaceTheme());
     this.themes.set('italian', this.createItalianTheme());
     this.themes.set('matrix', this.createMatrixTheme());
@@ -118,65 +116,7 @@ export class GameThemes
   // THÈMES FUTURISTES ET LUMINEUX
   // ==========================================
 
-  /**
-   * Crée le thème néon futuriste
-   */
-  private static createNeonTheme(): ThemeConfig
-  {
-    return {
-      id: 'neon',
-      name: 'Neon',
-      description: 'Thème futuriste avec des effets lumineux',
-      colors: {
-        field: new BABYLON.Color3(0.05, 0.05, 0.15),
-        ball: new BABYLON.Color3(0, 1, 1),
-        player1Paddle: new BABYLON.Color3(1, 0, 1),
-        player2Paddle: new BABYLON.Color3(0, 1, 0),
-        borders: new BABYLON.Color3(0, 1, 1),
-        centerLine: new BABYLON.Color3(1, 0, 1),
-        background: new BABYLON.Color4(0.02, 0.02, 0.1, 1)
-      },
-      materials: {
-        field: {
-          type: 'standard',
-          properties: {
-            diffuseColor: new BABYLON.Color3(0.05, 0.05, 0.15),
-            specularColor: new BABYLON.Color3(0.1, 0.1, 0.3)
-          }
-        },
-        ball: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(0, 1, 1),
-            diffuseColor: new BABYLON.Color3(0, 0.5, 0.5)
-          }
-        },
-        paddles: {
-          type: 'emissive',
-          properties: {
-            specularColor: new BABYLON.Color3(1, 1, 1)
-          }
-        },
-        borders: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(0, 1, 1)
-          }
-        }
-      },
-      lighting: {
-        ambient: 0.3,
-        directional: 0.4,
-        shadowsEnabled: false
-      },
-      effects: {
-        ballTrail: true,
-        particles: true,
-        glow: true
-      }
-    };
-  }
-
+  
   /**
    * Crée le thème rétro arcade
    */
@@ -239,66 +179,6 @@ export class GameThemes
   // THÈMES TECHNIQUES ET SOMBRES
   // ==========================================
 
-  /**
-   * Crée le thème cyberpunk technologique
-   */
-  private static createCyberpunkTheme(): ThemeConfig
-  {
-    return {
-      id: 'cyberpunk',
-      name: 'Cyberpunk',
-      description: 'Thème sombre et technologique',
-      colors: {
-        field: new BABYLON.Color3(0.1, 0.02, 0.02),
-        ball: new BABYLON.Color3(1, 0.1, 0.3),
-        player1Paddle: new BABYLON.Color3(0.8, 0, 0.8),
-        player2Paddle: new BABYLON.Color3(0, 0.8, 0.8),
-        borders: new BABYLON.Color3(1, 0.2, 0.2),
-        centerLine: new BABYLON.Color3(0.8, 0.8, 0.8),
-        background: new BABYLON.Color4(0.05, 0.01, 0.01, 1)
-      },
-      materials: {
-        field: {
-          type: 'pbr',
-          properties: {
-            diffuseColor: new BABYLON.Color3(0.1, 0.02, 0.02),
-            metallic: 0.8,
-            roughness: 0.3
-          }
-        },
-        ball: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(1, 0.1, 0.3),
-            diffuseColor: new BABYLON.Color3(0.5, 0.05, 0.15)
-          }
-        },
-        paddles: {
-          type: 'pbr',
-          properties: {
-            metallic: 0.9,
-            roughness: 0.1
-          }
-        },
-        borders: {
-          type: 'emissive',
-          properties: {
-            emissiveColor: new BABYLON.Color3(1, 0.2, 0.2)
-          }
-        }
-      },
-      lighting: {
-        ambient: 0.2,
-        directional: 0.5,
-        shadowsEnabled: true
-      },
-      effects: {
-        ballTrail: true,
-        particles: true,
-        glow: true
-      }
-    };
-  }
 
   /**
    * Crée le thème Matrix avec code vert
