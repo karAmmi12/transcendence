@@ -77,6 +77,7 @@ db.exec(`
         user_id INTEGER PRIMARY KEY,
         token TEXT NOT NULL,
         expires_at DATETIME NOT NULL,
+        try INTEGER NOT NULL DEFAULT 0,
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     );
 `);
