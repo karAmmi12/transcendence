@@ -14,7 +14,7 @@
   },
   "home": {
     "welcome": "Welcome to ft_transcendence",
-    "description": "Discover the ultimate Pong game with local multiplayer, remote competitions, and tournaments.",
+    "description": "Discover the ultimate Pong game with local multiplayer, remote play, and tournaments.",
     "gameModes": {
       "title": "Choose Your Game Mode",
       "local": {
@@ -24,7 +24,7 @@
       },
       "remote": {
         "title": "Online Game",
-        "description": "Challenge players from around the world.",
+        "description": "Challenge players online.",
         "button": "Play Online",
         "loginRequired": "Login required to play online"
       },
@@ -351,16 +351,11 @@
     },
     "history": {
       "title": "Match History",
-      "noGames": "No games played yet",
       "noGamesDesc": "Start playing to see your history here",
       "playFirstGame": "Play your first game",
-      "viewAll": "View all history",
       "viewDetails": "View details",
       "noMatchesFilter": "No matches found for this filter",
-      "result": {
-        "win": "Win",
-        "loss": "Loss"
-      },
+
       "filters": {
         "all": "All",
         "wins": "Wins",
@@ -370,10 +365,27 @@
         "tournament": "Tournament"
       },
       "stats": {
-        "totalGames": "Total",
+        "wins": "Wins",
+        "losses": "Losses",
+        "total": "Total",
         "winRate": "Win Rate",
-        "recent": "Recent"
+        "totalGames": "Total Games"
+      },
+      "gameModes": {
+        "title": "Game Modes"
+      },
+      "noGames": {
+        "title": "No Games Played Yet",
+        "description": "Start playing to see your history here",
+        "playFirst": "Play Your First Game"
+      },
+      "noMatches": "No matches found for this filter",
+      "viewAll": "View all history",
+      "result": {
+        "win": "Win",
+        "loss": "Loss"
       }
+      
     },
     "friends": {
       "title": "Friends",
@@ -632,7 +644,10 @@
     "monthAgo": "1 month ago",
     "monthsAgo": "{months} months ago",
     "yearAgo": "1 year ago",
-    "yearsAgo": "{years} years ago"
+    "yearsAgo": "{years} years ago",
+    "today": "Today",
+    "yesterday": "Yesterday"
+
   },
   "common": {
     "loading": "Loading...",

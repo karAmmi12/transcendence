@@ -14,7 +14,7 @@
   },
   "home": {
     "welcome": "Bienvenido a ft_transcendence",
-    "description": "Descubre el juego Pong definitivo con multijugador local, competiciones remotas y torneos.",
+    "description": "Descubre el juego Pong definitivo con multijugador local, juego remoto y torneos.",
     "gameModes": {
       "title": "Elige Tu Modo de Juego",
       "local": {
@@ -351,28 +351,38 @@
     },
     "history": {
       "title": "Historial de Partidas",
-      "noGames": "Ninguna partida jugada aún",
-      "noGamesDesc": "Comienza a jugar para ver tu historial aquí",
+      "noGamesDesc": "Empieza a jugar para ver tu historial aquí",
       "playFirstGame": "Juega tu primera partida",
-      "viewAll": "Ver Todo",
-      "viewDetails": "Ver Detalles",
-      "noMatchesFilter": "Ninguna partida encontrada para este filtro",
-      "result": {
-        "win": "Victoria",
-        "loss": "Derrota"
-      },
+      "viewDetails": "Ver detalles",
+      "noMatchesFilter": "No se encontraron partidas para este filtro",
       "filters": {
-        "all": "Todos",
+        "all": "Todas",
         "wins": "Victorias",
         "losses": "Derrotas",
         "local": "Local",
-        "remote": "En Línea",
+        "remote": "En línea",
         "tournament": "Torneo"
       },
       "stats": {
-        "totalGames": "Total",
+        "wins": "Victorias",
+        "losses": "Derrotas",
+        "total": "Total",
         "winRate": "Tasa de Victoria",
-        "recent": "Reciente"
+        "totalGames": "Total de Partidas"
+      },
+      "gameModes": {
+        "title": "Modos de Juego"
+      },
+      "noGames": {
+        "title": "Aún No Se Han Jugado Partidas",
+        "description": "Empieza a jugar para ver tu historial aquí",
+        "playFirst": "Juega Tu Primera Partida"
+      },
+      "noMatches": "No se encontraron partidas para este filtro",
+      "viewAll": "Ver todo el historial",
+      "result": {
+        "win": "Victoria",
+        "loss": "Derrota"
       }
     },
     "friends": {
@@ -632,7 +642,9 @@
     "monthAgo": "hace 1 mes",
     "monthsAgo": "hace {months} meses",
     "yearAgo": "hace 1 año",
-    "yearsAgo": "hace {years} años"
+    "yearsAgo": "hace {years} años",
+    "today": "Hoy",
+    "yesterday": "Ayer"
   },
   "common": {
     "loading": "Cargando...",
