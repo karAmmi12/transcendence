@@ -15,6 +15,7 @@ import { authMiddleware } from "./middleware/middleware.js";
 import { startTokenCleanup } from "./utils/cleanupTokens.js";
 import { WebSocketService } from "./services/webSocketService.js";
 import { Logger } from './utils/logger.js';
+import 'dotenv/config';
 
 const app = Fastify({ logger: process.env.NODE_ENV !== 'production' });
 

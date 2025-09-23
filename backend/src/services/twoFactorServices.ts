@@ -50,25 +50,20 @@ export class TwoFactorServices
         });
     }
 
-    static async storeTwoFactor(userId: number, code: string): Promise<TwoFactorToken | null>
+    static async storeTwoFactor(userId: number, code: string): Promise<void>
     {
         const codeHash = await bcrypt.hash(code, 10);
         const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
         const stmt = db.prepare(`
             INSERT OR REPLACE INTO two_factor_tokens 
-            (user_id, token, expires_at)
-            VALUES (?, ?, ?)`);
-            const res = stmt.run(userId, codeHash, expiresAt.toISOString());
-        const returnUser = {
-            id: userId,
-            token: codeHash,
-            expiresAt: expiresAt
-        } as TwoFactorToken;
-        if (!returnUser)
+            (user_id, token, expires_at, try)
+            VALUES (?, ?, ?, 0)`);
+        const res = stmt.run(userId, codeHash, expiresAt.toISOString());
+        console.log('SIUUUUUUUUUUUUUUUUUUUUUUUUUUU', res);
+        if (!res)
             throw new Error("Create Token failed storeTwoFactor");
-        Logger.log("GET userinfo Two Factor: ", returnUser);
+        Logger.log("GET userinfo Two Factor: ", res);
         
-        return (returnUser);
     }
 
     static async sendCode(userId: number): Promise<{ success: boolean, message: string }> 
@@ -92,7 +87,8 @@ export class TwoFactorServices
         return {
             id: tokenData.user_id,
             token: tokenData.token,
-            expiresAt: tokenData.expires_at
+            expiresAt: tokenData.expires_at,
+            try: tokenData.try
         } as TwoFactorToken;
     }
 
@@ -104,10 +100,18 @@ export class TwoFactorServices
             throw new Error("Code expired for 2FA");
         }
         
+        if (stored.try >= 2) {
+            console.error('ERROR TWOFA', stored.try);
+            throw new Error("Too many failed attempts");
+        }
+
         // Utiliser bcrypt.compare pour comparer le code
         const isValidCode = await bcrypt.compare(code, stored.token);
-        if (!isValidCode)
+        if (!isValidCode){
+            const stmtTry = db.prepare("UPDATE two_factor_tokens SET try = try + 1 WHERE user_id = ?");
+            stmtTry.run(stored.id);
             throw new Error('Incorrect code');
+        }
 
         // Enable 2FA in DB if not already enabled
         const user = await this.getUserById(userId);

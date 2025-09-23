@@ -4,14 +4,13 @@ services:
     container_name: backend
     build: ./backend
     env_file: 
-      - backend/.env
+      - ./.env
     ports:
       - "8001:8001"  # Port WebSocket
     volumes:
       - ./backend:/app
       - /app/node_modules
       - /app/dist
-      - /dev/null:/app/.env
       - ./backend/database:/app/database
     depends_on:
       - database
@@ -23,7 +22,7 @@ services:
     build: ./frontend
     container_name: frontend
     env_file: 
-      - frontend/.env
+      - ./.env
     ports:
       - "8080:80"   # http
       - "8443:443"  # https

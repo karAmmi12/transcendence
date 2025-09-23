@@ -81,4 +81,5 @@ export interface TwoFactorToken {
     id: number;
     token: string;
     expiresAt: Date;
+    try: number;
 }
