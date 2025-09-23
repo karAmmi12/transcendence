@@ -37,15 +37,15 @@ install:
 
 set-dev-env:
 	@echo "$(YELLOW)Setting NODE_ENV=development...$(END)"
-	@sed -i 's/NODE_ENV=.*/NODE_ENV=development/' backend/.env
-	@sed -i 's/NODE_ENV=.*/NODE_ENV=development/' frontend/.env
-	@sed -i 's|API_URL_FRONT=.*|API_URL_FRONT="http://localhost:5173/"|' backend/.env
+	@sed -i 's/NODE_ENV=.*/NODE_ENV=development/' .env
+	@sed -i 's|API_URL_FRONT=.*|API_URL_FRONT="http://localhost:5173/"|' .env
+	@cp .env backend/.env
 
 set-prod-env:
 	@echo "$(YELLOW)Setting NODE_ENV=production...$(END)"
-	@sed -i 's/NODE_ENV=.*/NODE_ENV=production/' backend/.env
-	@sed -i 's/NODE_ENV=.*/NODE_ENV=production/' frontend/.env
-	@sed -i 's|API_URL_FRONT=.*|API_URL_FRONT="https://localhost:8443/"|' backend/.env
+	@sed -i 's/NODE_ENV=.*/NODE_ENV=production/' .env
+	@sed -i 's|API_URL_FRONT=.*|API_URL_FRONT="https://localhost:8443/"|' .env
+	@rm -f backend/.env
 
 dev: set-dev-env install
 	@echo "$(BLUE)Lauching in dev mode...$(END)"
@@ -79,6 +79,7 @@ clean:
 	@npm cache clean --force
 	@echo "$(GREEN)Total reset and cleanup completed!$(END)"
 	@echo "$(CYAN)Run 'make prod' to restart in production mode.$(END)"
+	@rm -f backend/.env
 
 logs:
 	@$(DC) logs -f
