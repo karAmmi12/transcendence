@@ -1,5 +1,5 @@
 // Import des dépendances nécessaires pour le routage
-import { ROUTES } from './utils/constants';
+
 import { authService } from '@services/authService';
 import { HomePage } from '@pages/HomePage';
 import { LoginPage } from '@pages/LoginPage';
@@ -20,31 +20,31 @@ export class Router
   // Tableau des routes définies dans l'application
   private routes: Route[] = [
     {
-      path: ROUTES.HOME,
+      path: '/',
       component: () => new HomePage(),
       title: 'Home - ft_transcendence',
       requiresAuth: false
     },
     {
-      path: ROUTES.LOGIN,
+      path: '/login',
       component: () => new LoginPage(),
       title: 'Login - ft_transcendence',
       requiresAuth: false
     },
     {
-      path: ROUTES.REGISTER,
+      path: '/register',
       component: () => new RegisterPage(),
       title: 'Register - ft_transcendence',
       requiresAuth: false
     },
     {
-      path: ROUTES.GAME,
+      path: '/game',
       component: () => new GamePage(),
       title: 'Pong 3D - ft_transcendence',
       requiresAuth: false
     },
     {
-      path: ROUTES.PROFILE,
+      path: '/profile',
       component: () => new ProfilePage(),
       title: 'Profile - ft_transcendence',
       requiresAuth: true

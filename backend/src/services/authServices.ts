@@ -128,7 +128,7 @@ export class AuthService
         const hashedPassword = await bcrypt.hash(userData.password, 10);
 
         // Creer le user
-        const stmt = db.prepare("INSERT INTO USERS (username, email, password) VALUES (?, ?, ?)");
+        const stmt = db.prepare("INSERT INTO USERS (username, email, password, is_online, last_login) VALUES (?, ?, ?, 1, CURRENT_TIMESTAMP)");
         const result = stmt.run(userData.username, userData.email, hashedPassword);
         
         const userId = result.lastInsertRowid as number;

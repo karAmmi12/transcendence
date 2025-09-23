@@ -14,7 +14,7 @@
   },
   "home": {
     "welcome": "Benvenuto su ft_transcendence",
-    "description": "Scopri il gioco Pong definitivo con multiplayer locale, competizioni remote e tornei.",
+    "description": "Scopri il gioco Pong definitivo con multiplayer locale, gioco remoto e tornei.",
     "gameModes": {
       "title": "Scegli la modalità di gioco",
       "local": {
@@ -350,17 +350,11 @@
       "lastPlayed": "Ultima partita"
     },
     "history": {
-      "title": "Cronologia partite",
-      "noGames": "Nessuna partita giocata",
-      "noGamesDesc": "Inizia a giocare per vedere la cronologia qui",
+      "title": "Cronologia Partite",
+      "noGamesDesc": "Inizia a giocare per vedere la tua cronologia qui",
       "playFirstGame": "Gioca la tua prima partita",
-      "viewAll": "Vedi tutto",
-      "viewDetails": "Vedi dettagli",
+      "viewDetails": "Visualizza dettagli",
       "noMatchesFilter": "Nessuna partita trovata per questo filtro",
-      "result": {
-        "win": "Vittoria",
-        "loss": "Sconfitta"
-      },
       "filters": {
         "all": "Tutte",
         "wins": "Vittorie",
@@ -370,9 +364,25 @@
         "tournament": "Torneo"
       },
       "stats": {
-        "totalGames": "Totale",
-        "winRate": "Percentuale vittorie",
-        "recent": "Recenti"
+        "wins": "Vittorie",
+        "losses": "Sconfitte",
+        "total": "Totale",
+        "winRate": "Percentuale Vittorie",
+        "totalGames": "Totale Partite"
+      },
+      "gameModes": {
+        "title": "Modalità di Gioco"
+      },
+      "noGames": {
+        "title": "Nessuna Partita Giocata Ancora",
+        "description": "Inizia a giocare per vedere la tua cronologia qui",
+        "playFirst": "Gioca la Tua Prima Partita"
+      },
+      "noMatches": "Nessuna partita trovata per questo filtro",
+      "viewAll": "Visualizza tutta la cronologia",
+      "result": {
+        "win": "Vittoria",
+        "loss": "Sconfitta"
       }
     },
     "friends": {
@@ -632,7 +642,9 @@
     "monthAgo": "1 mese fa",
     "monthsAgo": "{months} mesi fa",
     "yearAgo": "1 anno fa",
-    "yearsAgo": "{years} anni fa"
+    "yearsAgo": "{years} anni fa",
+    "today": "Oggi",
+    "yesterday": "Ieri"
   },
   "common": {
     "loading": "Caricamento...",

@@ -351,16 +351,10 @@
     },
     "history": {
       "title": "تاريخ المباريات",
-      "noGames": "لم يتم لعب أي ألعاب بعد",
       "noGamesDesc": "ابدأ اللعب لرؤية تاريخك هنا",
-      "playFirstGame": "العب لعبتك الأولى",
-      "viewAll": "عرض الكل",
+      "playFirstGame": "العب مباراتك الأولى",
       "viewDetails": "عرض التفاصيل",
       "noMatchesFilter": "لم يتم العثور على مباريات لهذا الفلتر",
-      "result": {
-        "win": "فوز",
-        "loss": "هزيمة"
-      },
       "filters": {
         "all": "الكل",
         "wins": "الانتصارات",
@@ -370,9 +364,25 @@
         "tournament": "دورة"
       },
       "stats": {
-        "totalGames": "الإجمالي",
+        "wins": "الانتصارات",
+        "losses": "الهزائم",
+        "total": "المجموع",
         "winRate": "معدل الفوز",
-        "recent": "حديث"
+        "totalGames": "إجمالي الألعاب"
+      },
+      "gameModes": {
+        "title": "أوضاع اللعب"
+      },
+      "noGames": {
+        "title": "لم يتم لعب أي مباريات بعد",
+        "description": "ابدأ اللعب لرؤية تاريخك هنا",
+        "playFirst": "العب مباراتك الأولى"
+      },
+      "noMatches": "لم يتم العثور على مباريات لهذا الفلتر",
+      "viewAll": "عرض كل التاريخ",
+      "result": {
+        "win": "فوز",
+        "loss": "خسارة"
       }
     },
     "friends": {
@@ -632,7 +642,9 @@
     "monthAgo": "منذ شهر واحد",
     "monthsAgo": "منذ {months} شهر",
     "yearAgo": "منذ سنة واحدة",
-    "yearsAgo": "منذ {years} سنة"
+    "yearsAgo": "منذ {years} سنة",
+    "today": "اليوم",
+    "yesterday": "أمس"
   },
   "common": {
     "loading": "جاري التحميل...",
