@@ -124,7 +124,7 @@ export class ThemeSelectionModal
           </div>
 
           <!-- Theme Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 mb-6">
             ${this.renderThemeOptions()}
           </div>
 
@@ -168,10 +168,8 @@ export class ThemeSelectionModal
   {
     const themes = [
       { id: 'classic', name: i18n.t('game.themes.classic') },
-      { id: 'neon', name: i18n.t('game.themes.neon') },
       { id: 'retro', name: i18n.t('game.themes.retro') },
-      { id: 'cyberpunk', name: 'Cyberpunk' },
-      { id: 'space', name: 'Space' },
+      { id: 'space', name: i18n.t('game.themes.space') },
       { id: 'italian', name: i18n.t('game.themes.italian') },
       { id: 'matrix', name: i18n.t('game.themes.matrix') },
       { id: 'lava', name: i18n.t('game.themes.lava') }
@@ -368,10 +366,8 @@ export class ThemeSelectionModal
   {
     const nameMap: Record<string, string> = {
       classic: i18n.t('game.themes.classic'),
-      neon: i18n.t('game.themes.neon'),
       retro: i18n.t('game.themes.retro'),
-      cyberpunk: 'Cyberpunk',
-      space: 'Space',
+      space: i18n.t('game.themes.space'),
       italian: i18n.t('game.themes.italian'),
       matrix: i18n.t('game.themes.matrix'),
       lava: i18n.t('game.themes.lava')
