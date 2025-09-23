@@ -14,7 +14,7 @@
   },
   "home": {
     "welcome": "Ansuf ɣer ft_transcendence",
-    "description": "Snirem tajruṭ n Pong tamazwarut s umdiq n urar, isfka n tidels, d tajruṭ n yidels.",
+    "description": "Snirem tajruṭ n Pong tamazwarut s umdiq n urar, urar n tidels, d tajruṭ n yidels.",
     "gameModes": {
       "title": "Fren anaẓ n urar",
       "local": {
@@ -350,29 +350,39 @@
       "lastPlayed": "Urar aneggaru"
     },
     "history": {
-      "title": "Amzruy n imnaḍen",
-      "noGames": "Ula d yiwen urar yettwar ara",
-      "noGamesDesc": "Bdu urar i twalaḍ amzruy-ik da",
-      "playFirstGame": "Urar amezwaru-ik",
-      "viewAll": "Wali akk",
-      "viewDetails": "Wali tilɣa",
-      "noMatchesFilter": "Ula d yiwen umnaḍ yufan i usiẓreg-agi",
-      "result": {
-        "win": "Trbeḥt",
-        "loss": "Tuffɣa"
-      },
+      "title": "Amazray n imnaḍen",
+      "noGamesDesc": "Bdu urar iwakken ad twaliḍ amazray-ik dagi",
+      "playFirstGame": "Urar imnaḍ-ik amezwaru",
+      "viewDetails": "Wali talqayt",
+      "noMatchesFilter": "Ulac imnaḍen yettwafen i usizdeg-agi",
       "filters": {
         "all": "Akk",
-        "wins": "Tawadiyin",
-        "losses": "Tuffɣa",
+        "wins": "Tirbeḥin",
+        "losses": "Tuffɣin",
         "local": "Adigan",
         "remote": "S yidels",
         "tournament": "Asfku"
       },
       "stats": {
-        "totalGames": "Asmdan",
-        "winRate": "Amɣnas n tawadiyin",
-        "recent": "Inagan"
+        "wins": "Tirbeḥin",
+        "losses": "Tuffɣin",
+        "total": "Asemday",
+        "winRate": "Afmiḍi n trbeḥt",
+        "totalGames": "Amḍan n imnaḍen"
+      },
+      "gameModes": {
+        "title": "Iɣewwaren n urar"
+      },
+      "noGames": {
+        "title": "Ulac imnaḍen yettwuraren yakan",
+        "description": "Bdu urar iwakken ad twaliḍ amazray-ik dagi",
+        "playFirst": "Urar imnaḍ-ik amezwaru"
+      },
+      "noMatches": "Ulac imnaḍen yettwafen i usizdeg-agi",
+      "viewAll": "Wali akk amazray",
+      "result": {
+        "win": "Trbeḥt",
+        "loss": "Tuffɣa"
       }
     },
     "friends": {
@@ -632,7 +642,9 @@
     "monthAgo": "aggur aya",
     "monthsAgo": "{months} n wagguren aya",
     "yearAgo": "aseggas aya",
-    "yearsAgo": "{years} n iseggasen aya"
+    "yearsAgo": "{years} n iseggasen aya",
+    "today": "Ass-a",
+    "yesterday": "Iḍelli"
   },
   "common": {
     "loading": "Asali...",
