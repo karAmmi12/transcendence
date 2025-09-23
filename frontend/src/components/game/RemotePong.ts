@@ -1623,9 +1623,7 @@ export class RemotePong extends Pong3D
   {
     const themeMap: Record<string, string> = {
       classic: 'Classique',
-      neon: 'Néon',
       retro: 'Rétro',
-      cyberpunk: 'Cyberpunk',
       space: 'Espace',
       italian: 'Italien',
       matrix: 'Matrix',
