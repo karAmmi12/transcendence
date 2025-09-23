@@ -14,12 +14,47 @@ export class GameControls
   // ==========================================
 
   private keydownHandler = (e: KeyboardEvent) => {
-    this.keys[e.code.toLowerCase()] = true;
+    const key = e.code.toLowerCase();
+    
+    // Empêcher le comportement par défaut pour les touches de jeu
+    if (this.isGameKey(key)) 
+    {
+      e.preventDefault();
+    }
+    
+    this.keys[key] = true;
   };
 
   private keyupHandler = (e: KeyboardEvent) => {
-    this.keys[e.code.toLowerCase()] = false;
+    const key = e.code.toLowerCase();
+    
+    // Empêcher le comportement par défaut pour les touches de jeu
+    if (this.isGameKey(key)) 
+    {
+      e.preventDefault();
+    }
+    
+    this.keys[key] = false;
   };
+
+  // ==========================================
+  // MÉTHODES PRIVÉES UTILITAIRES
+  // ==========================================
+
+  /**
+   * Vérifie si une touche est utilisée pour le jeu
+   * @param key Code de la touche en minuscules
+   * @returns True si c'est une touche de jeu
+   */
+  private isGameKey(key: string): boolean 
+  {
+    const gameKeys = [
+      'keyw', 'keys', 'keyi', 'keyk', // Touches WASD + IK
+      'arrowup', 'arrowdown', 'arrowleft', 'arrowright', // Flèches
+      'space' // Espace pour pause
+    ];
+    return gameKeys.includes(key);
+  }
 
   // ==========================================
   // MÉTHODES PUBLIQUES DE CONTRÔLE

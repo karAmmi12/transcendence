@@ -6,7 +6,7 @@ export class Logger {
 
   static error(message: any, ...args: any[]): void {
     if (import.meta.env.PROD) return; // Ne log pas en production
-    Logger.error(message, ...args);
+    console.error(message, ...args);
   }
 
   static warn(message: any, ...args: any[]): void {

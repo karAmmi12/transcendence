@@ -282,21 +282,27 @@ export class GamePhysics
     }
   }
 
-  /**
+   /**
    * Met à jour la position de la balle
    */
-  private updateBall(): void
-  {
-    // Déplacer la balle
-    this.positions.ball.x += this.ballVelocity.x;
-    this.positions.ball.z += this.ballVelocity.z;
-
-    // Rebond sur les murs haut/bas
-    if (this.positions.ball.z > 2.8 || this.positions.ball.z < -2.8)
+    private updateBall(): void
     {
-      this.ballVelocity.z *= -1;
+      // Déplacer la balle
+      this.positions.ball.x += this.ballVelocity.x;
+      this.positions.ball.z += this.ballVelocity.z;
+    
+      // Rebond sur les murs haut/bas avec correction de position
+      if (this.positions.ball.z > 2.8)
+      {
+        this.positions.ball.z = 2.8; // Forcer la position à la limite
+        this.ballVelocity.z *= -1;   // Inverser la vélocité
+      }
+      else if (this.positions.ball.z < -2.8)
+      {
+        this.positions.ball.z = -2.8; // Forcer la position à la limite
+        this.ballVelocity.z *= -1;    // Inverser la vélocité
+      }
     }
-  }
 
   // ==========================================
   // MÉTHODES PRIVÉES DE DÉTECTION

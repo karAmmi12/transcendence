@@ -21,8 +21,8 @@ export class FriendsService
 
                 const existingFriendship = db.prepare(`
                     SELECT * FROM friends 
-                    WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)
-                `).get(userId, friendId, friendId, userId);
+                    WHERE (user_id = ? AND friend_id = ?)
+                `).get(userId, friendId);
                 if (existingFriendship)
                     throw ({error: "already friends"});
 

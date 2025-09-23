@@ -156,11 +156,11 @@ export class MatchHistoryCard
             <div class="flex gap-4 text-sm">
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-emerald-500 shadow-lg"></div>
-                <span class="text-gray-300">Victoires (${wins})</span>
+                <span class="text-gray-300">${i18n.t('profile.history.stats.wins')} (${wins})</span>
               </div>
               <div class="flex items-center gap-2">
                 <div class="w-3 h-3 rounded-full bg-red-500 shadow-lg"></div>
-                <span class="text-gray-300">Défaites (${losses})</span>
+                <span class="text-gray-300">${i18n.t('profile.history.stats.losses')} (${losses})</span>
               </div>
             </div>
           </div>
@@ -169,22 +169,22 @@ export class MatchHistoryCard
           <div class="grid grid-cols-2 gap-4">
             <div class="text-center p-4 bg-emerald-900/30 rounded-lg border border-emerald-700/50 hover:bg-emerald-900/40 transition-colors">
               <div class="text-3xl font-bold text-emerald-400 mb-2">${wins}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">Victoires</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.wins')}</div>
             </div>
 
             <div class="text-center p-4 bg-red-900/30 rounded-lg border border-red-700/50 hover:bg-red-900/40 transition-colors">
               <div class="text-3xl font-bold text-red-400 mb-2">${losses}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">Défaites</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.losses')}</div>
             </div>
 
             <div class="text-center p-4 bg-blue-900/30 rounded-lg border border-blue-700/50 hover:bg-blue-900/40 transition-colors">
               <div class="text-3xl font-bold text-blue-400 mb-2">${total}</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">Total</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.total')}</div>
             </div>
 
             <div class="text-center p-4 bg-purple-900/30 rounded-lg border border-purple-700/50 hover:bg-purple-900/40 transition-colors">
               <div class="text-3xl font-bold text-purple-400 mb-2">${winRate}%</div>
-              <div class="text-sm text-gray-300 uppercase tracking-wide">Taux victoires</div>
+              <div class="text-sm text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.winRate')}</div>
             </div>
           </div>
         </div>
@@ -238,6 +238,8 @@ export class MatchHistoryCard
         ${winPercentage === 0 && lossPercentage === 0 ? `
           <circle cx="80" cy="80" r="60" fill="#374151" stroke="#4B5563" stroke-width="2"/>
         ` : ''}
+
+        
       </svg>
     `;
   }
@@ -288,7 +290,7 @@ export class MatchHistoryCard
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
           </svg>
-          Modes de jeu
+          ${i18n.t('profile.history.gameModes.title')}
         </h4>
         <div class="space-y-3">
           ${Object.entries(modes).map(([mode, count], index) =>
@@ -324,11 +326,11 @@ export class MatchHistoryCard
       return `
         <div class="text-center py-12">
           <div class="text-gray-400 text-6xl mb-4">🏓</div>
-          <h3 class="text-lg font-medium text-gray-300 mb-2">Aucune partie jouée</h3>
-          <p class="text-gray-500 mb-6">Commencez à jouer pour voir votre historique ici</p>
+          <h3 class="text-lg font-medium text-gray-300 mb-2">${i18n.t('profile.history.noGames.title')}</h3>
+          <p class="text-gray-500 mb-6">${i18n.t('profile.history.noGames.description')}</p>
           ${this.isOwnProfile ? `
-            <button class="btn-primary">
-              Jouer ma première partie
+            <button class="btn-primary" onclick="window.location.href='/game'">
+              ${i18n.t('profile.history.noGames.playFirst')}
             </button>
           ` : ''}
         </div>
@@ -342,14 +344,14 @@ export class MatchHistoryCard
         ${recentMatches.length > 0 ? recentMatches.map(match => this.renderMatch(match)).join('') : `
           <div class="text-center py-8">
             <div class="text-gray-400 text-4xl mb-2">🔍</div>
-            <p class="text-gray-500">Aucun match trouvé pour ce filtre</p>
+            <p class="text-gray-500">${i18n.t('profile.history.noMatches')}</p>
           </div>
         `}
       </div>
       ${this.filteredMatches.length > 10 ? `
         <div class="mt-6 pt-4 border-t border-gray-700">
           <button id="view-all-matches" class="w-full btn-secondary">
-            Voir tout l'historique (${this.filteredMatches.length})
+            ${i18n.t('profile.history.viewAll', { count: this.filteredMatches.length.toString() })}
           </button>
         </div>
       ` : ''}
@@ -382,7 +384,7 @@ export class MatchHistoryCard
               }
             </div>
             <span class="${resultColor} font-bold text-xs uppercase tracking-wider">
-              ${isWin ? 'Victoire' : 'Défaite'}
+              ${isWin ? i18n.t('profile.history.result.win') : i18n.t('profile.history.result.loss')}
             </span>
           </div>
 
@@ -448,15 +450,15 @@ export class MatchHistoryCard
         <div class="grid grid-cols-3 gap-4 text-center">
           <div class="bg-gradient-to-br from-blue-900/40 to-blue-800/40 rounded-xl p-4 border border-blue-700/30">
             <div class="text-2xl font-bold text-blue-400 mb-1">${total}</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">Total parties</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.totalGames')}</div>
           </div>
           <div class="bg-gradient-to-br from-green-900/40 to-green-800/40 rounded-xl p-4 border border-green-700/30">
             <div class="text-2xl font-bold ${winRate >= 50 ? 'text-green-400' : 'text-red-400'} mb-1">${winRate}%</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">Taux victoires</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.winRate')}</div>
           </div>
           <div class="bg-gradient-to-br from-purple-900/40 to-purple-800/40 rounded-xl p-4 border border-purple-700/30">
             <div class="text-2xl font-bold text-purple-400 mb-1">${wins}</div>
-            <div class="text-xs text-gray-300 uppercase tracking-wide">Victoires</div>
+            <div class="text-xs text-gray-300 uppercase tracking-wide">${i18n.t('profile.history.stats.wins')}</div>
           </div>
         </div>
       </div>
@@ -552,7 +554,7 @@ export class MatchHistoryCard
         recentMatches.map(match => this.renderMatch(match)).join('') :
         `<div class="text-center py-8">
           <div class="text-gray-400 text-4xl mb-2">🔍</div>
-          <p class="text-gray-500">Aucun match trouvé pour ce filtre</p>
+          <p class="text-gray-500">${i18n.t('profile.history.noMatches')}</p>
         </div>`;
     }
 
@@ -565,7 +567,7 @@ export class MatchHistoryCard
         const viewAllBtn = viewAllContainer.querySelector('#view-all-matches');
         if (viewAllBtn)
         {
-          viewAllBtn.textContent = `Voir tout l'historique (${this.filteredMatches.length})`;
+          viewAllBtn.textContent = i18n.t('profile.history.viewAll', { count: this.filteredMatches.length.toString() });
         }
       } else
       {
@@ -613,9 +615,9 @@ export class MatchHistoryCard
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return 'Aujourd\'hui';
-    if (diffDays === 1) return 'Hier';
-    if (diffDays < 7) return `Il y a ${diffDays} jours`;
+    if (diffDays === 0) return i18n.t('time.today');
+    if (diffDays === 1) return i18n.t('time.yesterday');
+    if (diffDays < 7) return i18n.t('time.daysAgo', { days: diffDays.toString() });
 
     return date.toLocaleDateString('fr-FR');
   }
