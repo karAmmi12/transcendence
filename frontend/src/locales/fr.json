@@ -14,7 +14,7 @@
   },
   "home": {
     "welcome": "Bienvenue sur ft_transcendence",
-    "description": "Découvrez le jeu Pong ultime avec multijoueur local, compétitions à distance et tournois.",
+    "description": "Découvrez le jeu Pong ultime avec multijoueur local, jeu à distance et tournois.",
     "gameModes": {
       "title": "Choisissez Votre Mode de Jeu",
       "local": {
@@ -24,7 +24,7 @@
       },
       "remote": {
         "title": "Jeu en Ligne",
-        "description": "Défiez des joueurs en ligne du monde entier.",
+        "description": "Défiez des joueurs en ligne.",
         "button": "Jouer en Ligne",
         "loginRequired": "Connexion requise pour jouer en ligne"
       },
@@ -359,16 +359,10 @@
     },
     "history": {
       "title": "Historique des Matchs",
-      "noGames": "Aucune partie jouée encore",
       "noGamesDesc": "Commencez à jouer pour voir votre historique ici",
       "playFirstGame": "Jouez votre première partie",
-      "viewAll": "Voir tout l'historique",
       "viewDetails": "Voir les détails",
       "noMatchesFilter": "Aucun match trouvé pour ce filtre",
-      "result": {
-        "win": "Victoire",
-        "loss": "Défaite"
-      },
       "filters": {
         "all": "Tous",
         "wins": "Victoires",
@@ -378,9 +372,25 @@
         "tournament": "Tournoi"
       },
       "stats": {
-        "totalGames": "Total",
+        "wins": "Victoires",
+        "losses": "Défaites",
+        "total": "Total",
         "winRate": "Taux de Victoire",
-        "recent": "Récent"
+        "totalGames": "Total des Parties"
+      },
+      "gameModes": {
+        "title": "Modes de Jeu"
+      },
+      "noGames": {
+        "title": "Aucune Partie Jouée Encore",
+        "description": "Commencez à jouer pour voir votre historique ici",
+        "playFirst": "Jouez Votre Première Partie"
+      },
+      "noMatches": "Aucun match trouvé pour ce filtre",
+      "viewAll": "Voir tout l'historique",
+      "result": {
+        "win": "Victoire",
+        "loss": "Défaite"
       }
     },
     "friends": {
@@ -637,7 +647,9 @@
     "monthAgo": "il y a 1 mois",
     "monthsAgo": "il y a {months} mois",
     "yearAgo": "il y a 1 an",
-    "yearsAgo": "il y a {years} ans"
+    "yearsAgo": "il y a {years} ans",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier"
   },
   "common": {
     "loading": "Chargement...",
