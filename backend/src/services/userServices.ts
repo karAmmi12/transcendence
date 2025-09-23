@@ -345,7 +345,7 @@ export class UserServices
      */
     static async updateTheme(userId: number, theme: string): Promise<{ success: boolean; message?: string; error?: string; user?: any }> {
         try {
-            const validThemes = ['classic', 'neon', 'retro', 'cyberpunk', 'space', 'italian', 'matrix', 'lava'];
+            const validThemes = ['classic', 'retro', 'space', 'italian', 'matrix', 'lava'];
             if (!theme || !validThemes.includes(theme)) {
                 return { success: false, error: "Invalid theme. Valid themes are: " + validThemes.join(', ') };
             }
