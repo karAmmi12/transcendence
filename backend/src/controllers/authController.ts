@@ -97,8 +97,11 @@ export class AuthController
             });
 
         } catch (error) {
+            console.log(error instanceof Error ? error.message : error);
             Logger.error("2FA Login controller error:", error);
-            reply.status(500).send({ error: "2FA login failed" });
+            const errorMessage = error instanceof Error ? error.message : '2FA login failed';
+            console.log("Error message22222222222222222:", errorMessage);
+            reply.status(500).send({ error: errorMessage });
         }
     }
 
