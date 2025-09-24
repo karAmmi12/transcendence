@@ -55,53 +55,34 @@ export class AuthService
      */
     static async loginWith2FA(userId: number, code: string): Promise<AuthResult>
     {
-        try {
-            const verifyResult = await TwoFactorServices.verifyCode(userId, code, false);
-            if (!verifyResult.success) {
-                return {
-                    success: false,
-                    error: verifyResult.message
-                };
-            }
+        await TwoFactorServices.verifyCode(userId, code, false);
 
-            const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
-            const user = stmt.get(userId) as UserFromDB | undefined;
+        const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
+        const user = stmt.get(userId) as UserFromDB | undefined;
 
-            if (!user) {
-                return {
-                    success: false,
-                    error: "User not found"
-                };
-            }
+        if (!user)
+            throw new Error("User not found after 2FA");
 
-            const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP, is_online = 1 WHERE id = ?");
-            updateStmt.run(user.id);
+        const updateStmt = db.prepare("UPDATE users SET last_login = CURRENT_TIMESTAMP, is_online = 1 WHERE id = ?");
+        updateStmt.run(user.id);
 
-            const PairToken = JWTService.generateTokenPair(user.id, user.username);
+        const PairToken = JWTService.generateTokenPair(user.id, user.username);
 
-            JWTService.createSession(user.id, PairToken.refreshToken);
+        JWTService.createSession(user.id, PairToken.refreshToken);
 
-            const userReturn = {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                lastLogin: new Date().toISOString()
-            };
+        const userReturn = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            lastLogin: new Date().toISOString()
+        };
 
-            return {
-                success: true,
-                user: userReturn,
-                accessToken: PairToken.accessToken,
-                refreshToken: PairToken.refreshToken
-            };
-
-        } catch (error) {
-            Logger.error('Login with 2FA error:', error);
-            return {
-                success: false,
-                error: "2FA login failed"
-            };
-        }
+        return {
+            success: true,
+            user: userReturn,
+            accessToken: PairToken.accessToken,
+            refreshToken: PairToken.refreshToken
+        };
     }
 
     /**

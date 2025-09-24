@@ -173,6 +173,11 @@ export class TwoFactorModal
     } catch (error) 
     {
       this.showError((error as Error).message);
+      if (error instanceof Error && error.message === 'Too many failed attempts') 
+      {
+        // Si trop d'échecs, fermer le modal automatiquement
+        setTimeout(() => this.close(), 2000);
+      }
     } finally 
     {
       // Reset loading state
