@@ -31,9 +31,12 @@ export class TwoFactorController
             return reply.status(200).send({ success: true, message: result.message });
         } catch (error) {
             if (error instanceof Error)
+            {
                 Logger.error(error.message);
-            if (error.message === "Too many failed attempts") {
-                return reply.status(400).send({ error: 'attempted failed'});
+                const errorMessage = error.message;
+                if (errorMessage === "Too many failed attempts") {
+                    return reply.status(400).send({ error: 'Too many failed attempts'});
+                }
             }
             return reply.status(500).send({ error: "Internal error verifying 2FA code" });
         }
