@@ -176,7 +176,10 @@ export class TwoFactorModal
       if (error instanceof Error && error.message === 'Too many failed attempts') 
       {
         // Si trop d'échecs, fermer le modal automatiquement
-        setTimeout(() => this.close(), 2000);
+        setTimeout(() => 
+          this.onCancel?.(), 2000);
+        setTimeout(() =>
+          this.close(), 2000);
       }
     } finally 
     {
