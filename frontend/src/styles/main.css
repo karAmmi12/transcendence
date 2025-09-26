@@ -1,7 +1,0 @@
-@import "./tailwind.css";
-
-@layer base {
-  body {
-    @apply font-sans antialiased;
-  }
-}
