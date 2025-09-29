@@ -1,0 +1,746 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "La Experiencia Pong Definitiva"
+  },
+  "nav": {
+    "home": "Inicio",
+    "play": "Jugar",
+    "profile": "Perfil",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "register": "Registrarse",
+    "selectLanguage": "Seleccionar Idioma"
+  },
+  "home": {
+    "welcome": "Bienvenido a ft_transcendence",
+    "description": "Descubre el juego Pong definitivo con multijugador local, juego remoto y torneos.",
+    "gameModes": {
+      "title": "Elige Tu Modo de Juego",
+      "local": {
+        "title": "Juego Local",
+        "description": "Juega con un amigo en la misma computadora. ¡Perfecto para partidas rápidas!",
+        "button": "Jugar Localmente"
+      },
+      "remote": {
+        "title": "Juego en Línea",
+        "description": "Desafía a jugadores de todo el mundo.",
+        "button": "Jugar en Línea",
+        "loginRequired": "Inicio de sesión requerido para jugar en línea"
+      },
+      "tournament": {
+        "title": "Torneo",
+        "description": "Crea un torneo de 8 jugadores y ve quién es el mejor.",
+        "button": "Crear Torneo"
+      }
+    },
+    "features": {
+      "title": "Características",
+      "multiplayer": {
+        "title": "Multijugador en Tiempo Real",
+        "description": "Juega contra tus amigos en tiempo real desde cualquier lugar del mundo."
+      },
+      "tournaments": {
+        "title": "Torneos",
+        "description": "Participa en torneos y sube en la clasificación para convertirte en campeón."
+      },
+      "singleplayer": {
+        "title": "Modo Solo",
+        "description": "Juega contra oponentes IA y mejora tus habilidades."
+      }
+    },
+    "globalStats": {
+      "title": "Estadísticas de la Plataforma",
+      "totalPlayers": "Jugadores Totales",
+      "totalGames": "Partidas Jugadas",
+      "onlinePlayers": "En Línea Ahora",
+      "activeTournaments": "Torneos Activos"
+    },
+    "stats": {
+      "title": "Tus Estadísticas",
+      "wins": "Victorias",
+      "losses": "Derrotas",
+      "winRate": "Tasa de Victoria",
+      "rank": "Rango",
+      "highestScore": "Puntuación Más Alta",
+      "currentStreak": "Racha Actual",
+      "longestStreak": "Racha Más Larga",
+      "players": "Jugadores",
+      "games": "Partidas",
+      "tournaments": "Torneos",
+      "online": "En Línea"
+    },
+    "buttons": {
+      "play": "Comenzar a Jugar",
+      "login": "Iniciar Sesión",
+      "register": "Registrarse",
+      "tournaments": "Torneos"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "username": "Nombre de Usuario",
+      "usernamePlaceholder": "Ingresa tu nombre de usuario",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Ingresa tu contraseña",
+      "rememberMe": "Recordarme",
+      "submit": "Iniciar Sesión",
+      "loginButton": "Iniciar Sesión",
+      "loading": "Iniciando sesión...",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUp": "Regístrate",
+      "or": "o",
+      "oauth42": "Iniciar sesión con 42",
+      "google": "Iniciar sesión con Google"
+    },
+    "register": {
+      "title": "Crear una Cuenta",
+      "username": "Nombre de Usuario",
+      "usernamePlaceholder": "Elige un nombre de usuario",
+      "email": "Correo Electrónico",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Crea una contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "confirmPasswordPlaceholder": "Repite tu contraseña",
+      "registerButton": "Crear Cuenta",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Iniciar Sesión"
+    },
+    "twoFactor": {
+      "title": "Autenticación de Dos Factores",
+      "description": "Un código de verificación ha sido enviado a tu dirección de correo electrónico. Por favor, ingrésalo a continuación.",
+      "verify": "Verificar",
+      "codeSent": "Código enviado por correo electrónico"
+    },
+    "errors": {
+      "loginFailed": "Error al iniciar sesión",
+      "missingFields": "Por favor, completa todos los campos",
+      "invalidCredentials": "Nombre de usuario o contraseña inválidos",
+      "usernameTaken": "El nombre de usuario ya está en uso",
+      "emailTaken": "El correo electrónico ya está registrado",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "requiredField": "Este campo es obligatorio",
+      "loginRequired": "Debes iniciar sesión para acceder a esta funcionalidad"
+    }
+  },
+  "game": {
+    "title": "Arena Pong",
+    "lobby": {
+      "title": "Sala de Juego",
+      "waitingForPlayer": "Esperando a un oponente...",
+      "playerJoined": "¡Un jugador se unió!",
+      "startGame": "Comenzar Partida",
+      "leaveGame": "Salir de la Partida"
+    },
+    "controls": {
+      "title": "Controles del Juego",
+      "instructions": "Usa W/S o las flechas para mover tu raqueta",
+      "pause": "Presiona ESPACIO para pausar",
+      "touch": "Controles Táctiles"
+    },
+    "status": {
+      "connecting_server": "Conectando al servidor...",
+      "connected": "Conectado al servidor",
+      "connection_error": "Error de conexión",
+      "disconnected": "Desconectado del servidor",
+      "searching_opponent": "Buscando oponente...",
+      "opponent_found": "¡Oponente encontrado!",
+      "waiting_opponent": "Esperando al oponente...",
+      "starting_local": "Iniciando juego local...",
+      "opponent_disconnected": "Oponente desconectado",
+      "forfeit_victory": "Victoria por abandono: {statusMessage}",
+      "paused": "Juego pausado",
+      "resumed": "Juego reanudado",
+      "go": "¡Vamos!",
+      "starting_in": "Iniciando en {count}...",
+      "starting_as_host": "Iniciando como anfitrión",
+      "starting_as_guest": "Iniciando como invitado",
+      "connected_as_guest": "Conectado como invitado - ¡Configuraciones recibidas!",
+      "connected_as_host": "Conectado como anfitrión - ¡Tú defines las configuraciones!",
+      "waiting_for_host": "Esperando configuraciones del anfitrión...",
+      "received_host_settings": "Configuraciones recibidas del anfitrión",
+      "applying_settings": "Aplicando configuraciones...",
+      "settings_applied": "Configuraciones aplicadas",
+      "game_starting": "El juego comenzará pronto...",
+      "game_ended": "La partida ha terminado",
+      "game_over": "Partida terminada",
+      "signaling_connected": "Señalización conectada",
+      "signaling_disconnected": "Señalización desconectada"
+    },
+    "score": {
+      "you": "Tú",
+      "opponent": "Oponente"
+    },
+    "placeholder": {
+      "player": "Jugador"
+    },
+    "modes": {
+      "local": "Local",
+      "remote": "En Línea",
+      "tournament": "Torneo"
+    },
+    "speeds": {
+      "slow": "Lento",
+      "medium": "Medio",
+      "fast": "Rápido"
+    },
+    "themes": {
+      "classic": "Clásico",
+      "retro": "Retro",
+      "space": "Espacio",
+      "italian": "Italiana",
+      "matrix": "Matrix",
+      "lava": "Lava"
+    },
+    "remote": {
+      "yourProfile": "Tu Perfil",
+      "speedNote": "Nota: La velocidad de la pelota puede verse afectada por la latencia de la red.",
+      "powerUpsNote": "Ambos jugadores deben estar de acuerdo con los parámetros de power-ups",
+      "findOpponent": "Encontrar Oponente",
+      "hostSettings": {
+        "title": "Configuraciones del Anfitrión",
+        "description": "Como anfitrión, defines los parámetros de la partida"
+      },
+      "forfeit": {
+        "title": "Derrota por desconexión",
+        "message": "Has salido de la partida",
+        "opponentWins": "Tu oponente gana por abandono"
+      },
+      "howItWorks": {
+        "title": "¿Cómo funciona?",
+        "host": {
+          "title": "Como Anfitrión",
+          "description": "Tus parámetros de juego serán aplicados para la partida"
+        },
+        "guest": {
+          "title": "Como Invitado",
+          "description": "Recibirás automáticamente los parámetros del anfitrión"
+        },
+        "theme": {
+          "title": "Tema personal",
+          "description": "Tu tema visual permanece tuyo en todos los casos"
+        }
+      }
+    },
+    "customization": {
+      "title": "Configuraciones del Juego",
+      "ballSpeed": "Velocidad de la Pelota",
+      "paddleSpeed": "Velocidad de la Raqueta",
+      "powerUps": "Power-ups",
+      "gameMode": "Modo de Juego",
+      "theme": "Tema",
+      "difficulty": "Dificultad",
+      "resetToDefault": "Restablecer por Defecto",
+      "applySettings": "Aplicar Configuraciones",
+      "userTheme": "Tema de Usuario",
+      "guestTheme": "Como invitado, puedes elegir un tema para esta sesión",
+      "changeInProfile": "Cambiar tema en tu perfil",
+      "willUseTheme": "utilizará este tema",
+      "tournamentTheme": "tema del torneo",
+      "enablePowerUps": "Activar Power-ups"
+    },
+    "endScreen": {
+      "title": "Fin de Partida",
+      "winnerText": " ha ganado la partida",
+      "finalScore": "Puntuación Final",
+      "stats": {
+        "duration": "duración de la partida",
+        "totalPoints": "puntos totales",
+        "winCondition": "condición de victoria",
+        "mode": "modo de juego"
+      },
+      "actions": {
+        "playAgain": "Jugar de Nuevo",
+        "backToMenu": "Volver al Menú",
+        "findNewOpponent": "Encontrar Nuevo Oponente",
+        "tournamentContinue": "Continuar Torneo",
+        "viewStats": "Ver Estadísticas"
+      }
+    }
+  },
+  "tournament": {
+    "title": "Torneo",
+    "create": {
+      "title": "Crear Torneo",
+      "youAreIncluded": "¡Estás automáticamente incluido en el torneo!",
+      "enterOtherParticipants": "Ingresa los nombres de los {count} otros participantes:",
+      "participantPlaceholder": "Nombre del participante {number}",
+      "confirmed": "Confirmado",
+      "createTournament": "Crear Torneo"
+    },
+    "join": "Unirse al Torneo",
+    "waiting": "Esperando jugadores",
+    "inProgress": "Torneo en curso",
+    "finished": "Torneo terminado",
+    "bracket": {
+      "title": "Tabla del Torneo"
+    },
+    "legend": {
+      "pending": "Pendiente",
+      "inProgress": "En Curso",
+      "completed": "Completado"
+    },
+    "rounds": {
+      "quarterFinals": "Cuartos de Final",
+      "semiFinals": "Semifinales",
+      "final": "Final"
+    },
+    "currentMatch": "Partida Actual",
+    "nextMatch": "Próxima Partida",
+    "winner": "Ganador del Torneo",
+    "participants": "Participantes",
+    "participantsCount": "participantes",
+    "participantsNote": "Número de jugadores en el torneo",
+    "matchNumber": "Partida {number}",
+    "vs": "contra",
+    "waitingForMatch": "Esperando el inicio de la partida",
+    "matchInProgress": "Partida en curso",
+    "matchCompleted": "Partida completada",
+    "yourParticipation": "Tu Participación",
+    "authenticatedPlayer": "Jugador Autenticado",
+    "guestMode": "Modo Invitado",
+    "guestModeDescription": "Estás creando un torneo como invitado. Los torneos no se almacenarán permanentemente.",
+    "winScore": "Puntuación de Victoria",
+    "winScoreNote": "Puntos necesarios para ganar cada partida",
+    "powerUpsNote": "Activar power-ups para todas las partidas del torneo",
+    "howItWorks": "Cómo funciona",
+    "step1": "Crear un torneo con los parámetros deseados",
+    "step2": "La tabla del torneo se generará automáticamente",
+    "step3": "Jugar las partidas ronda por ronda hasta la final",
+    "step4": "¡El ganador será coronado campeón!",
+    "status": {
+      "waiting": "Esperando jugadores",
+      "inProgress": "En Curso",
+      "finished": "Terminado"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "actions": {
+      "title": "Acciones Rápidas",
+      "editProfile": "Editar Perfil",
+      "changePassword": "Cambiar Contraseña",
+      "changeAvatar": "Cambiar Avatar",
+      "logout": "Cerrar Sesión",
+      "toggle2FA": "Alternar 2FA",
+      "addFriend": "Agregar Amigo",
+      "removeFriend": "Eliminar Amigo",
+      "challenge": "Desafiar"
+    },
+    "stats": {
+      "title": "Estadísticas",
+      "wins": "Victorias",
+      "losses": "Derrotas",
+      "totalGames": "Total de Partidas",
+      "gamesPlayed": "Partidas Jugadas",
+      "gamesWon": "Partidas Ganadas",
+      "winRate": "Tasa de Victoria",
+      "ranking": "Clasificación",
+      "rank": "Rango",
+      "highestScore": "Puntuación Más Alta",
+      "averageScore": "Puntuación Promedio",
+      "currentStreak": "Racha Actual",
+      "longestStreak": "Racha Más Larga",
+      "playtime": "Tiempo de Juego Total",
+      "lastPlayed": "Última Partida"
+    },
+    "history": {
+      "title": "Historial de Partidas",
+      "noGamesDesc": "Empieza a jugar para ver tu historial aquí",
+      "playFirstGame": "Juega tu primera partida",
+      "viewDetails": "Ver detalles",
+      "noMatchesFilter": "No se encontraron partidas para este filtro",
+      "filters": {
+        "all": "Todas",
+        "wins": "Victorias",
+        "losses": "Derrotas",
+        "local": "Local",
+        "remote": "En línea",
+        "tournament": "Torneo"
+      },
+      "stats": {
+        "wins": "Victorias",
+        "losses": "Derrotas",
+        "total": "Total",
+        "winRate": "Tasa de Victoria",
+        "totalGames": "Total de Partidas"
+      },
+      "gameModes": {
+        "title": "Modos de Juego"
+      },
+      "noGames": {
+        "title": "Aún No Se Han Jugado Partidas",
+        "description": "Empieza a jugar para ver tu historial aquí",
+        "playFirst": "Juega Tu Primera Partida"
+      },
+      "noMatches": "No se encontraron partidas para este filtro",
+      "viewAll": "Ver todo el historial",
+      "result": {
+        "win": "Victoria",
+        "loss": "Derrota"
+      }
+    },
+    "friends": {
+      "title": "Amigos",
+      "manage": "Administrar Amigos",
+      "noFriends": "Sin amigos aún",
+      "findFriends": "Encontrar Amigos",
+      "viewAll": "Ver Todos",
+      "online": "En línea",
+      "offline": "Fuera de línea",
+      "justOffline": "Acaba de desconectarse",
+      "minsAgo": "hace {mins} minutos",
+      "hoursAgo": "hace {hours} horas",
+      "daysAgo": "hace {days} días",
+      "viewProfile": "Ver Perfil",
+      "challenge": "Desafiar",
+      "sendMessage": "Enviar Mensaje"
+    },
+    "edit": {
+      "title": "Editar Perfil",
+      "username": "Nombre de Usuario",
+      "usernamePlaceholder": "Ingresa tu nombre de usuario",
+      "email": "Correo Electrónico",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "avatar": "Avatar",
+      "selectImage": "Seleccionar Imagen",
+      "changeAvatarHint": "Haz clic para cambiar tu avatar",
+      "save": "Guardar Cambios",
+      "cancel": "Cancelar",
+      "uploading": "Subiendo...",
+      "errors": {
+        "updateFailed": "Error al actualizar el perfil",
+        "invalidImage": "Formato de imagen inválido",
+        "invalidImageType": "Formato de imagen inválido",
+        "imageTooLarge": "Imagen demasiado grande",
+        "avatarTooLarge": "Imagen demasiado grande (máx 5MB)",
+        "usernameTooShort": "El nombre de usuario debe contener al menos 3 caracteres",
+        "usernameTooLong": "El nombre de usuario debe contener menos de 20 caracteres",
+        "invalidEmail": "Por favor, ingresa una dirección de correo electrónico válida"
+      }
+    },
+    "changePassword": {
+      "title": "Cambiar Contraseña",
+      "currentPassword": "Contraseña Actual",
+      "currentPasswordPlaceholder": "Ingresa tu contraseña actual",
+      "newPassword": "Nueva Contraseña",
+      "newPasswordPlaceholder": "Ingresa tu nueva contraseña",
+      "confirmPassword": "Confirmar Nueva Contraseña",
+      "confirmPasswordPlaceholder": "Confirma tu nueva contraseña",
+      "save": "Cambiar Contraseña",
+      "cancel": "Cancelar",
+      "saving": "Cambiando...",
+      "success": "¡Contraseña cambiada exitosamente!",
+      "error": "Error al cambiar la contraseña",
+      "validation": {
+        "required": "Este campo es obligatorio",
+        "minLength": "La contraseña debe contener al menos 8 caracteres",
+        "mismatch": "Las contraseñas no coinciden",
+        "weak": "La contraseña es demasiado débil"
+      }
+    },
+    "twoFactor": {
+      "title": "Autenticación de Dos Factores",
+      "description": "Asegura tu cuenta con autenticación de dos factores",
+      "enable": "Activar 2FA",
+      "disable": "Desactivar 2FA",
+      "enterCode": "Ingresa el código de verificación",
+      "codePlaceholder": "Código de 6 dígitos",
+      "verify": "Verificar",
+      "cancel": "Cancelar",
+      "modal": {
+        "enableTitle": "Activar Autenticación de Dos Factores",
+        "enableDescription": "Un código de verificación ha sido enviado a tu correo electrónico. Por favor, ingrésalo a continuación para activar 2FA.",
+        "enableButton": "Activar 2FA",
+        "disableTitle": "Desactivar Autenticación de Dos Factores",
+        "disableDescription": "Por favor, ingresa tu código de verificación para desactivar 2FA.",
+        "disableButton": "Desactivar 2FA",
+        "codeLabel": "Código de Verificación"
+      },
+      "messages": {
+        "enabled": "¡2FA activado exitosamente!",
+        "disabled": "¡2FA desactivado exitosamente!",
+        "codeSent": "Código de verificación enviado a tu correo electrónico",
+        "invalidCode": "Código de verificación inválido",
+        "error": "Operación 2FA fallida"
+      }
+    },
+    "themes": {
+      "title": "Tema del Juego",
+      "description": "Elige tu tema de juego preferido",
+      "select": "Selecciona tu tema de juego preferido",
+      "manageThemes": "Administrar Temas",
+      "currentTheme": "Tema Actual:",
+      "current": "Actual",
+      "saveTheme": "Guardar Tema",
+      "messages": {
+        "saved": "¡Tema guardado exitosamente!"
+      },
+      "errors": {
+        "saveFailed": "Error al guardar el tema"
+      }
+    },
+    "lastLogin": "Último inicio de sesión",
+    "googleAccount": "Cuenta Google",
+    "errors": {
+      "userNotFound": "Usuario no encontrado",
+      "loadFailed": "Error al cargar el perfil",
+      "unauthorized": "No tienes permiso para ver este perfil",
+      "networkError": "Error de red. Por favor, intenta de nuevo.",
+      "changePasswordFailed": "Error al cambiar la contraseña"
+    },
+    "settings": {
+      "title": "Configuraciones",
+      "language": "Idioma",
+      "theme": "Tema",
+      "notifications": "Notificaciones",
+      "privacy": "Privacidad",
+      "security": "Seguridad"
+    }
+  },
+  "friends": {
+    "title": "Administración de Amigos",
+    "search": {
+      "title": "Encontrar Amigos",
+      "placeholder": "Buscar usuarios...",
+      "noResults": "Ningún usuario encontrado",
+      "searchInstructions": "Ingresa al menos 2 caracteres para buscar"
+    },
+    "requests": {
+      "title": "Solicitudes de Amistad",
+      "noPending": "Ninguna solicitud pendiente",
+      "sentRequest": "Te ha enviado una solicitud de amistad",
+      "received": "Recibidas",
+      "sent": "Enviadas"
+    },
+    "actions": {
+      "addFriend": "Agregar como Amigo",
+      "removeFriend": "Eliminar Amigo",
+      "acceptRequest": "Aceptar Solicitud",
+      "cancelRequest": "Cancelar Solicitud",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "remove": "Eliminar"
+    },
+    "status": {
+      "requestSent": "Solicitud enviada",
+      "pending": "Pendiente",
+      "friends": "Amigos"
+    },
+    "messages": {
+      "requestSent": "¡Solicitud de amistad enviada!",
+      "requestAccepted": "¡Solicitud de amistad aceptada!",
+      "requestDeclined": "Solicitud de amistad rechazada",
+      "friendRemoved": "Amigo eliminado",
+      "friendAdded": "¡Amigo agregado exitosamente!",
+      "actionFailed": "Acción fallida. Por favor, intenta de nuevo.",
+      "userNotFound": "Usuario no encontrado",
+      "alreadyFriends": "Ya eres amigo de este usuario",
+      "cannotAddSelf": "No puedes agregarte como amigo",
+      "searchFailed": "Búsqueda fallida. Por favor, intenta de nuevo."
+    },
+    "confirmations": {
+      "removeFriend": "¿Estás seguro de que quieres eliminar a este amigo?",
+      "declineRequest": "¿Estás seguro de que quieres rechazar esta solicitud?"
+    }
+  },
+  "settings": {
+    "title": "Configuraciones",
+    "username": "Nombre de Usuario",
+    "email": "Correo Electrónico",
+    "save": "Guardar Configuraciones",
+    "general": {
+      "title": "Configuraciones Generales",
+      "language": "Idioma",
+      "theme": "Tema",
+      "notifications": "Notificaciones",
+      "privacy": "Privacidad",
+      "security": "Seguridad",
+      "timezone": "Zona Horaria"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "email": "Notificaciones por Correo Electrónico",
+      "push": "Notificaciones Push",
+      "gameInvites": "Invitaciones de Juego",
+      "friendRequests": "Solicitudes de Amistad",
+      "messages": "Mensajes"
+    },
+    "privacy": {
+      "title": "Configuraciones de Privacidad",
+      "profileVisibility": "Visibilidad del Perfil",
+      "onlineStatus": "Mostrar Estado en Línea",
+      "gameHistory": "Mostrar Historial de Juegos"
+    },
+    "account": {
+      "title": "Cuenta",
+      "changePassword": "Cambiar Contraseña",
+      "deleteAccount": "Eliminar Cuenta",
+      "exportData": "Exportar Datos"
+    }
+  },
+  "modals": {
+    "confirm": {
+      "title": "Confirmar Acción",
+      "message": "¿Estás seguro de que quieres continuar?",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    },
+    "error": {
+      "title": "Error",
+      "genericMessage": "Ha ocurrido un error. Por favor, intenta de nuevo.",
+      "close": "Cerrar"
+    },
+    "success": {
+      "title": "Éxito",
+      "close": "Cerrar"
+    },
+    "gameEnd": {
+      "title": "Fin de Partida",
+      "winner": "Ganador",
+      "finalScore": "Puntuación Final",
+      "duration": "Duración",
+      "playAgain": "Jugar de Nuevo",
+      "backToMenu": "Volver al Menú",
+      "tournamentContinue": "Continuar Torneo"
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "Este campo es obligatorio",
+      "email": "Por favor, ingresa una dirección de correo electrónico válida",
+      "minLength": "Debe contener al menos {min} caracteres",
+      "maxLength": "No debe exceder {max} caracteres",
+      "password": "La contraseña debe contener al menos 8 caracteres",
+      "confirmPassword": "Las contraseñas deben coincidir",
+      "username": "El nombre de usuario debe contener entre 3 y 20 caracteres y solo letras, números y guiones bajos"
+    },
+    "placeholders": {
+      "search": "Buscar...",
+      "email": "Ingresa tu correo electrónico",
+      "username": "Ingresa tu nombre de usuario",
+      "password": "Ingresa tu contraseña",
+      "message": "Escribe tu mensaje..."
+    }
+  },
+  "time": {
+    "now": "Ahora",
+    "justNow": "Ahora mismo",
+    "minuteAgo": "hace 1 minuto",
+    "minutesAgo": "hace {minutes} minutos",
+    "hourAgo": "hace 1 hora",
+    "hoursAgo": "hace {hours} horas",
+    "dayAgo": "hace 1 día",
+    "daysAgo": "hace {days} días",
+    "weekAgo": "hace 1 semana",
+    "weeksAgo": "hace {weeks} semanas",
+    "monthAgo": "hace 1 mes",
+    "monthsAgo": "hace {months} meses",
+    "yearAgo": "hace 1 año",
+    "yearsAgo": "hace {years} años",
+    "today": "Hoy",
+    "yesterday": "Ayer"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "info": "Información",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "backToMenu": "Volver al Menú",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar",
+    "reset": "Restablecer",
+    "clear": "Limpiar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "refresh": "Actualizar",
+    "retry": "Reintentar",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "tomorrow": "Mañana",
+    "daysAgo": "hace {days} días",
+    "online": "En línea",
+    "offline": "Fuera de línea",
+    "connecting": "Conectando...",
+    "connected": "Conectado",
+    "disconnected": "Desconectado",
+    "tryAgain": "Intentar de Nuevo",
+    "goBack": "Volver",
+    "seeMore": "Ver Más",
+    "showLess": "Ver Menos",
+    "expand": "Expandir",
+    "collapse": "Colapsar",
+    "pause": "Pausar",
+    "resume": "Reanudar",
+    "time": "Tiempo",
+    "status": "Estado",
+    "gameInfo": "Info del Juego",
+    "or": "o",
+    "score": "Puntuación",
+    "toWin": "para Ganar",
+    "points": "puntos",
+    "medium": "Medio",
+    "slow": "Lento",
+    "fast": "Rápido",
+    "modeSelection": "Selección de Modo",
+    "chooseModeDescription": "Elige cómo quieres jugar",
+    "changeMode": "Cambiar Modo",
+    "confirmQuitGame": "¿Estás seguro de que quieres salir de la partida?",
+    "canvasNotSupported": "Tu navegador no soporta el elemento HTML5 Canvas.",
+    "saving": "Guardando..."
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "it": "Italiano",
+    "es": "Español",
+    "kab": "Taqbaylit",
+    "kab-tfng": "ⵜⴰⵇⴱⴰⵢⵍⵉⵜ",
+    "ar": "العربية",
+    "sg": "Sängö"
+  },
+  "footer": {
+    "description": "La experiencia Pong definitiva. Juega, compite y conecta con la comunidad.",
+    "allRightsReserved": "Todos los derechos reservados.",
+    "navigation": {
+      "title": "Navegación",
+      "tournaments": "Torneos",
+      "leaderboard": "Clasificación"
+    },
+    "support": {
+      "title": "Soporte",
+      "help": "Ayuda",
+      "faq": "FAQ",
+      "contact": "Contacto",
+      "rules": "Reglas"
+    },
+    "social": {
+      "title": "Social"
+    }
+  },
+  "error": {
+    "404": {
+      "title": "Página No Encontrada",
+      "message": "¡Ups! La página que buscas parece haber desaparecido en el espacio.",
+      "suggestions": {
+        "title": "¿Dónde te gustaría ir?"
+      },
+      "help": "Si crees que es un error, verifica la URL o regresa al inicio."
+    }
+  }
+}

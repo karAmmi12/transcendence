@@ -1,0 +1,10 @@
+import {FastifyInstance} from "fastify";
+import { TournamentController } from "../controllers/tournamentController.js";
+import { createTournamentSchema } from "../schemas/gameSchema.js";
+
+export default async function tournamentRoutes(app: FastifyInstance)
+{
+    // routes proterger par le middleware
+    app.post('/create', TournamentController.createTournament);
+    app.post('/:tournamentId/matches/:matchId/finish', TournamentController.finishTournamentMatch);
+}

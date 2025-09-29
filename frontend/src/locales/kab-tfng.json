@@ -1,0 +1,746 @@
+{
+  "app": {
+    "title": "ft_transcendence",
+    "description": "ⵜⴰⵊⵔⵓⵟ ⵏ ⴱⵓⵏⴳ ⵜⴰⵎⴰⵣⵡⴰⵔⵓⵜ"
+  },
+  "nav": {
+    "home": "ⴰⴳⴻⵊⴷⴰⵏ",
+    "play": "ⵓⵔⴰⵔ",
+    "profile": "ⴰⵎⴰⵙⵏⴰⵙ",
+    "login": "ⴽⵛⴻⵎ",
+    "logout": "ⴼⴼⴻⵖ",
+    "register": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+    "selectLanguage": "ⴼⵔⴻⵏ ⵜⵓⵜⵍⴰⵢⵜ"
+  },
+  "home": {
+    "welcome": "ⴰⵏⵙⵓⴼ ⵖⴻⵔ ft_transcendence",
+    "description": "ⵙⵏⵉⵔⴻⵎ ⵜⴰⵊⵔⵓⵟ ⵏ ⴱⵓⵏⴳ ⵜⴰⵎⴰⵣⵡⴰⵔⵓⵜ ⵙ ⵓⵎⴷⵉⵇ ⵏ ⵓⵔⴰⵔ, ⵉⵙⴼⴽⴰ ⵏ ⵜⵉⴷⴻⵍⵙ, ⴷ ⵜⴰⵊⵔⵓⵟ ⵏ ⵢⵉⴷⴻⵍⵙ.",
+    "gameModes": {
+      "title": "ⴼⵔⴻⵏ ⴰⵏⴰⵥ ⵏ ⵓⵔⴰⵔ",
+      "local": {
+        "title": "ⵓⵔⴰⵔ ⴰⴷⵉⴳⴰⵏ",
+        "description": "ⵓⵔⴰⵔ ⴰⴽⴻⴷ ⵓⵎⴷⴰⴽⴽⵍ ⴷⵖⴰ ⵢⵉⵡⴻⵏ ⵓⵙⴻⵍⴽⵉⵎ. ⴰⵖⴱⴰⵍⵓ ⵉ ⵢⵉⴳⵔⴰⵡⴻⵏ ⵓⵔⴰⵔⴻⵏ!",
+        "button": "ⵓⵔⴰⵔ ⴰⴷⵉⴳⴰⵏ"
+      },
+      "remote": {
+        "title": "ⵓⵔⴰⵔ ⵙ ⵢⵉⴷⴻⵍⵙ",
+        "description": "ⵛⴻⴳⴳⴰⵄ ⵉⵎⴷⴰⵏⴻⵏ ⵙⴻⴳ ⵉⴷⵓⵔⴰⵔ ⵏ ⵓⵎⴰⴹⴰⵍ.",
+        "button": "ⵓⵔⴰⵔ ⵙ ⵢⵉⴷⴻⵍⵙ",
+        "loginRequired": "ⴰⴽⵛⴻⵎ ⵉⵍⴰⵇ ⵉ ⵓⵔⴰⵔ ⵙ ⵢⵉⴷⴻⵍⵙ"
+      },
+      "tournament": {
+        "title": "ⴰⵙⴼⴽⵓ",
+        "description": "ⵙⵎⵙⴰⵢ ⴷⵖⴰ ⵉⵙⴼⴽⴰ, ⵙⵙⴰⵖⴰⴷ ⴷⵖⴰ ⵓⴷⵔⴰⵔ ⵏ ⵢⵉⴷⴻⵍⵙ ⵉ ⵜⵉⵍⵉⴹ ⴷ ⴰⵎⵖⵏⴰⵙ.",
+        "button": "ⵔⵏⵓ ⴰⵙⴼⴽⵓ"
+      }
+    },
+    "features": {
+      "title": "ⵜⵉⵎⴰⵀⵉⵍⵉⵏ",
+      "multiplayer": {
+        "title": "ⵓⵔⴰⵔ ⵙ ⵡⴰⵟⴰⵙ ⵏ ⵉⵎⴷⴰⵏⴻⵏ ⴷⴻⴳ ⵡⴰⴽⵓⴷ ⴰⵎⵉⵔⴰⵏ",
+        "description": "ⵓⵔⴰⵔ ⴰⴽⴻⴷ ⵉⵎⴷⴰⴽⴽⵍ-ⵉⴽ ⴷⵖⴰ ⵢⴰⵍ ⴰⵎⴽⴰⵏ ⴷⴻⴳ ⵓⵎⴰⴹⴰⵍ."
+      },
+      "tournaments": {
+        "title": "ⵉⵙⴼⴽⴰ",
+        "description": "ⵜⵜⴻⴽⴽⵉ ⴷⴻⴳ ⵉⵙⴼⴽⴰ, ⴰⵍⵉ ⴷⵖⴰ ⵓⴷⵔⴰⵔ ⵉ ⵜⵓⵖⴰⵍⵉⵏ ⵉ ⵜⵓⵖⴱⴰⵍ ⴷ ⴰⵎⵖⵏⴰⵙ."
+      },
+      "singleplayer": {
+        "title": "ⴰⵎⵙⵍⴰⵢ ⵏ ⵢⵉⵡⴻⵏ",
+        "description": "ⵎⵙⴻⵍⴰⵢ ⵉⵎⵏⴰⴹⴻⵏ ⵏ IA, ⵙⵏⵉⵔⵉ ⵜⵉⴳⵉⵔⴰ-ⵉⴽ."
+      }
+    },
+    "globalStats": {
+      "title": "ⵜⵉⴳⵉⵡⵉⵢⵉⵏ ⵏ ⵜⵖⴻⵔⵎⴰ",
+      "totalPlayers": "ⴰⵙⵎⴷⴰⴷ ⵏ ⵉⵎⴷⴰⵏⴻⵏ",
+      "totalGames": "ⵓⵔⴰⵔ ⵢⴻⵜⵜⵡⴰⵔⴻⵏ",
+      "onlinePlayers": "ⵙⵔⵉⴷ ⵜⵓⵔⴰ",
+      "activeTournaments": "ⵉⵙⴼⴽⴰ ⵓⵔⵎⵉⴷⴻⵏ"
+    },
+    "stats": {
+      "title": "ⵜⵉⴳⵉⵡⵉⵢⵉⵏ-ⵉⴽ",
+      "wins": "ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+      "losses": "ⵜⵓⴼⴼⵖⴰ",
+      "winRate": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+      "rank": "ⴰⵙⴳⴳⴰⵙ",
+      "highestScore": "ⴰⵙⵉⵏ ⴰⵎⴰⵙⵉⴹ",
+      "currentStreak": "ⴰⵎⴰⵙⵏⴰⵙ ⴰⵎⵉⵔⴰⵏ",
+      "longestStreak": "ⴰⵎⴰⵙⵏⴰⵙ ⴰⵎⴻⵇⵇⵔⴰⵏ",
+      "players": "ⵉⵎⴷⴰⵏⴻⵏ",
+      "games": "ⵓⵔⴰⵔ",
+      "tournaments": "ⵉⵙⴼⴽⴰ",
+      "online": "ⵙⵔⵉⴷ"
+    },
+    "buttons": {
+      "play": "ⴱⴷⵓ ⵓⵔⴰⵔ",
+      "login": "ⴽⵛⴻⵎ",
+      "register": "ⵔⵏⵓ",
+      "tournaments": "ⵉⵙⴼⴽⴰ"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ⴰⴽⵛⴻⵎ",
+      "username": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "usernamePlaceholder": "ⵙⴻⴽⵛⴻⵎ ⵉⵙⴻⵎ-ⵉⴽ",
+      "password": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "passwordPlaceholder": "ⵙⴻⴽⵛⴻⵎ ⴰⵡⴰⵍ-ⵉⴽ ⵓⴼⴼⵉⵔ",
+      "rememberMe": "ⵛⴼⵓ ⵖⴻⴼ ⵢⵉⴷ",
+      "submit": "ⴽⵛⴻⵎ",
+      "loginButton": "ⴽⵛⴻⵎ",
+      "loading": "ⴰⴽⵛⴻⵎ ⵉⵜⴻⴷⴷⵓ...",
+      "forgotPassword": "ⵜⴻⵜⵜⵓ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ?",
+      "noAccount": "ⵓⵔ ⵜⴻⵙⵄⵉⴹ ⴰⵔⴰ ⴰⵎⵉⴹⴰⵏ?",
+      "signUp": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "or": "ⵏⴻⵖ",
+      "oauth42": "ⴽⵛⴻⵎ ⵙ 42",
+      "google": "ⴽⵛⴻⵎ ⵙ Google"
+    },
+    "register": {
+      "title": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "username": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "usernamePlaceholder": "ⴼⵔⴻⵏ ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "email": "ⵉⵎⴰⵢⵍ",
+      "emailPlaceholder": "ⵙⴻⴽⵛⴻⵎ ⵉⵎⴰⵢⵍ-ⵉⴽ",
+      "password": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "passwordPlaceholder": "ⵔⵏⵓ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "confirmPassword": "ⵙⴻⵏⵜⴻⵎ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "confirmPasswordPlaceholder": "ⴰⵍⴻⵙ ⴰⵡⴰⵍ-ⵉⴽ ⵓⴼⴼⵉⵔ",
+      "registerButton": "ⵔⵏⵓ ⴰⵎⵉⴹⴰⵏ",
+      "haveAccount": "ⵜⴻⵙⵄⵉⴹ ⴰⵎⵉⴹⴰⵏ ⵢⴰⴽⴰⵏ?",
+      "signIn": "ⴽⵛⴻⵎ"
+    },
+    "twoFactor": {
+      "title": "ⴰⵙⴻⵏⵜⴻⵎ ⵙ ⵙⵉⵏ ⵉⴼⵔⴻⴷⴻⵏ",
+      "description": "ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ ⵜⴻⵜⵜⵡⴰⵣⴻⵏ ⵖⴻⵔ ⵜⴰⵏⵙⴰ-ⵉⴽ ⵏ ⵉⵎⴰⵢⵍ. ⵙⴻⴽⵛⴻⵎ-ⵉⵜⵜ ⴷⴰ.",
+      "verify": "ⵙⴻⵏⵜⴻⵎ",
+      "codeSent": "ⵜⴰⵏⴳⴰⵍⵜ ⵜⴻⵜⵜⵡⴰⵣⴻⵏ ⵙ ⵉⵎⴰⵢⵍ"
+    },
+    "errors": {
+      "loginFailed": "ⴰⴽⵛⴻⵎ ⵓⵔ ⵢⴻⴷⴷⵉ ⴰⵔⴰ",
+      "missingFields": "ⵛⵖⴻⵍ ⴰⴹⵔⵉⵙ ⴰⴽⴽ ⵓⵔⵜⴰⵏ",
+      "invalidCredentials": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ ⵏⴻⵖ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⴷ ⴰⵔⴰⵎⴻⵖⵜⵓ",
+      "usernameTaken": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ ⵢⴻⵍⵍⴰ ⵢⴰⴽⴰⵏ",
+      "emailTaken": "ⵉⵎⴰⵢⵍ ⵢⴻⵍⵍⴰ ⵢⴰⴽⴰⵏ",
+      "passwordMismatch": "ⴰⵡⴰⵍⴻⵏ ⵓⴼⴼⵉⵔ ⵓⵔ ⵎⵙⴰⴷⴰⵏ ⴰⵔⴰ",
+      "requiredField": "ⵓⵔⵜ-ⴰⴳⵉ ⵉⵍⴰⵇ",
+      "loginRequired": "ⵉⵍⴰⵇ ⴰⴷ ⵜⴽⵛⴻⵎⴻⴹ ⵉ ⵡⴰⴽⵛⴻⵎ ⵖⴻⵔ ⵜⵉⵎⴰⵀⵉⵍⵉⵏ-ⴰⴳⵉ"
+    }
+  },
+  "game": {
+    "title": "ⴰⵔⴻⵏ ⵏ ⴱⵓⵏⴳ",
+    "lobby": {
+      "title": "ⴰⵖⵔⴰⴱ ⵏ ⵓⵔⴰⵔ",
+      "waitingForPlayer": "ⴰⵔⴰⵊⵓ ⵏ ⵓⵎⵏⴰⴹ...",
+      "playerJoined": "ⴰⵎⵏⴰⴹ ⵢⴻⵔⵏⴰ!",
+      "startGame": "ⴱⴷⵓ ⵓⵔⴰⵔ",
+      "leaveGame": "ⴻⵊⵊ ⵓⵔⴰⵔ"
+    },
+    "controls": {
+      "title": "ⵉⵙⴻⵏⵇⴰⴷⴻⵏ ⵏ ⵓⵔⴰⵔ",
+      "instructions": "ⵙⴻⵇⴷⴻⵛ W/S ⵏⴻⵖ ⵜⵉⵔⴰⵔⴰⵛⵉⵏ ⵉ ⵓⵙⵎⵓⵜⵜⵉ ⵏ ⵜⴰⵣⴰⵖⵖⴰⵍⵜ-ⵉⴽ",
+      "pause": "ⵙⵉⵜ SPACE ⵉ ⵡⴰⴽⵔⵉⴼ",
+      "touch": "ⵉⵙⴻⵏⵇⴰⴷⴻⵏ ⵏ ⵓⵎⴻⵙⵙ"
+    },
+    "status": {
+      "connecting_server": "ⵜⵓⵇⵇⵏⴰ ⵖⴻⵔ ⵓⵇⴻⴷⴷⴰⵛ...",
+      "connected": "ⵢⴻⵇⵇⴻⵏ ⵖⴻⵔ ⵓⵇⴻⴷⴷⴰⵛ",
+      "connection_error": "ⵜⵓⵛⴹⴰ ⴷⴻⴳ ⵜⵓⵇⵇⵏⴰ",
+      "disconnected": "ⵢⴻⴼⵙⵉ ⵖⴻⵔ ⵓⵇⴻⴷⴷⴰⵛ",
+      "searching_opponent": "ⴰⵏⴰⴷⵉ ⵏ ⵓⵎⵏⴰⴹ...",
+      "opponent_found": "ⵓⵎⵏⴰⴹ ⵢⵓⴼⴰⵏ!",
+      "waiting_opponent": "ⴰⵔⴰⵊⵓ ⵏ ⵓⵎⵏⴰⴹ...",
+      "starting_local": "ⴰⴱⴷⵓ ⵏ ⵓⵔⴰⵔ ⴰⴷⵉⴳⴰⵏ...",
+      "opponent_disconnected": "ⵓⵎⵏⴰⴹ ⵢⴻⴼⵙⵉ",
+      "forfeit_victory": "ⵜⴰⵡⴰⴷⵉⵢⵜ ⵙ ⵓⴼⵓⵙ: {statusMessage}",
+      "paused": "ⵓⵔⴰⵔ ⵢⴻⵜⵜⵡⴰⵀⴱⴻⵙ",
+      "resumed": "ⵓⵔⴰⵔ ⵢⴻⵜⵜⵡⴰⴽⴽⴻⵙ",
+      "go": "ⴱⴷⵓ!",
+      "starting_in": "ⴰⴱⴷⵓ ⴷⴻⴳ {count}...",
+      "starting_as_host": "ⴰⴱⴷⵓ ⴷ ⴰⵙⴻⵏⵏⴻⴼⵜⴰⵖ",
+      "starting_as_guest": "ⴰⴱⴷⵓ ⴷ ⴰⵏⴻⴼⵍⴰⵢ",
+      "connected_as_guest": "ⵢⴻⵇⵇⴻⵏ ⴷ ⴰⵏⴻⴼⵍⴰⵢ - ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⴷ-ⵢⴻⵜⵜⵡⴰⵔⴻⵏ!",
+      "connected_as_host": "ⵢⴻⵇⵇⴻⵏ ⴷ ⴰⵙⴻⵏⵏⴻⴼⵜⴰⵖ - ⴷ ⴽⴻⵛⵛ ⵉ ⵜⴻⵙⵙⴻⵖⴹⴰⴹ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ!",
+      "waiting_for_host": "ⴰⵔⴰⵊⵓ ⵏ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵙⴻⵏⵏⴻⴼⵜⴰⵖ...",
+      "received_host_settings": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵙⴻⵏⵏⴻⴼⵜⴰⵖ ⴷ-ⵢⴻⵜⵜⵡⴰⵔⴻⵏ",
+      "applying_settings": "ⴰⵙⵏⴻⵙ ⵏ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ...",
+      "settings_applied": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵜⵜⵡⴰⵙⵏⴻⵏ",
+      "game_starting": "ⵓⵔⴰⵔ ⴰⴷ ⵢⴻⴱⴷⵓ ⵜⵉⴽⴽⵉ...",
+      "game_ended": "ⵓⵔⴰⵔ ⵢⴻⵎⵎⴻⴷ",
+      "game_over": "Game over",
+      "signaling_connected": "ⴰⵙⵉⴳⵏⴰ ⵢⴻⵇⵇⴻⵏ",
+      "signaling_disconnected": "ⴰⵙⵉⴳⵏⴰ ⵢⴻⴼⵙⵉ"
+    },
+    "score": {
+      "you": "ⴽⴻⵛⵛ",
+      "opponent": "ⵓⵎⵏⴰⴹ"
+    },
+    "placeholder": {
+      "player": "ⴰⵎⵏⴰⴹ"
+    },
+    "modes": {
+      "local": "ⴰⴷⵉⴳⴰⵏ",
+      "remote": "ⵙ ⵢⵉⴷⴻⵍⵙ",
+      "tournament": "ⴰⵙⴼⴽⵓ"
+    },
+    "speeds": {
+      "slow": "ⵥⴻⵥⵥⴻⵍ",
+      "medium": "ⴰⵍⴻⵎⵎⴰⵙ",
+      "fast": "ⴰⵔⵓⵔⴻⴷ"
+    },
+    "themes": {
+      "classic": "ⴰⴽⵍⴰⵙⵉⴽ",
+      "retro": "ⵔⵉⵜⵔⵓ",
+      "space": "ⵜⴰⵍⵍⵓⵏⵜ",
+      "italian": "ⴰⵟⴰⵍⵢⴰⵏ",
+      "matrix": "ⵎⴰⵜⵔⴰⴽⵙ",
+      "lava": "ⵍⴰⵡⴰ"
+    },
+    "remote": {
+      "yourProfile": "ⴰⵎⴰⵙⵏⴰⵙ-ⵉⴽ",
+      "speedNote": "ⵜⴰⵎⴰⵡⵜ: ⴰⵔⵓⵔⴻⴷ ⵏ ⵜⴻⵇⴱⴰⵍⵍⵉⵜ ⵢⴻⵣⵎⴻⵔ ⴰⴷ ⵜⵜⴱⴻⴷⴷⴻⵍ ⵙ ⵡⴰⴽⵓⴷ ⵏ ⵓⵥⴻⵟⵟⴰ.",
+      "powerUpsNote": "ⵙⵉⵏ ⵉⵎⴷⴰⵏⴻⵏ ⵉⵍⴰⵇ ⴰⴷ ⵎⵙⴰⴷⴰⵏ ⵖⴻⴼ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ power-ups",
+      "findOpponent": "ⴰⴼ ⵓⵎⵏⴰⴹ",
+      "hostSettings": {
+        "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵙⴻⵏⵏⴻⴼⵜⴰⵖ",
+        "description": "ⴷ ⴰⵙⴻⵏⵏⴻⴼⵜⴰⵖ, ⴷ ⴽⴻⵛⵛ ⵉ ⵜⴻⵙⵙⴻⵖⴹⴰⴹ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵔⴰⵔ"
+      },
+      "forfeit": {
+        "title": "ⵜⵓⴼⴼⵖⴰ ⵙ ⵓⴼⵓⵙ",
+        "message": "ⵜⴻⵊⵊⵉⴹ ⵓⵔⴰⵔ",
+        "opponentWins": "ⵓⵎⵏⴰⴹ-ⵉⴽ ⵉⵔⴻⴱⴱⴰ ⵙ ⵓⴼⵓⵙ"
+      },
+      "howItWorks": {
+        "title": "ⴰⵎⴻⴽ ⵉⵜⴻⴷⴷⵓ?",
+        "host": {
+          "title": "ⴷ ⴰⵙⴻⵏⵏⴻⴼⵜⴰⵖ",
+          "description": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵔⴰⵔ-ⵉⴽ ⴰⴷ ⵜⵜⵡⴰⵙⵏⴻⵏ ⵉ ⵓⵎⵏⴰⴹ"
+        },
+        "guest": {
+          "title": "ⴷ ⴰⵏⴻⴼⵍⴰⵢ",
+          "description": "ⴰⴷ ⵜⵔⴻⵎⵙⴻⴹ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵙⴻⵏⵏⴻⴼⵜⴰⵖ ⵙ ⵡⵓⴷⴻⵎ ⴰⵡⵓⵔⵎⴰⵏ"
+        },
+        "theme": {
+          "title": "ⴰⵙⴻⵏⵜⴻⵍ ⵓⴷⵎⴰⵡⴰⵏ",
+          "description": "ⴰⵙⴻⵏⵜⴻⵍ-ⵉⴽ ⵓⴷⵎⴰⵡⴰⵏ ⵢⴻⵇⵇⵉⵎ ⴷ ⴰⵢⵍⴰ ⴷⴻⴳ ⵢⴰⵍ ⵜⴰⵎⵏⴰⴹⵜ"
+        }
+      }
+    },
+    "customization": {
+      "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵔⴰⵔ",
+      "ballSpeed": "ⴰⵔⵓⵔⴻⴷ ⵏ ⵜⴻⵇⴱⴰⵍⵍⵉⵜ",
+      "paddleSpeed": "ⴰⵔⵓⵔⴻⴷ ⵏ ⵜⴰⵣⴰⵖⵖⴰⵍⵜ",
+      "powerUps": "Power-ups",
+      "gameMode": "ⴰⵏⴰⵥ ⵏ ⵓⵔⴰⵔ",
+      "theme": "ⴰⵙⴻⵏⵜⴻⵍ",
+      "difficulty": "ⵜⴰⵡⵖⵉⵜ",
+      "resetToDefault": "ⵓⵖⴰⵍ ⵖⴻⵔ ⵓⵎⴻⵣⵡⴻⵔ",
+      "applySettings": "ⵙⵏⴻⵙ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ",
+      "userTheme": "ⴰⵙⴻⵏⵜⴻⵍ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "guestTheme": "ⴷ ⴰⵏⴻⴼⵍⴰⵢ, ⵜⵣⴻⵎⵔⴻⴹ ⴰⴷ ⵜⴼⵔⴻⵏⴻⴹ ⴰⵙⴻⵏⵜⴻⵍ ⵉ ⵜⵖⵉⵎⵉⵜ-ⴰⴳⵉ",
+      "changeInProfile": "ⴱⴻⴷⴷⴻⵍ ⴰⵙⴻⵏⵜⴻⵍ ⴷⴻⴳ ⵓⵎⴰⵙⵏⴰⵙ-ⵉⴽ",
+      "willUseTheme": "ⴰⴷ ⵉⵙⴻⵇⴷⴻⵛ ⴰⵙⴻⵏⵜⴻⵍ-ⴰⴳⵉ",
+      "tournamentTheme": "ⴰⵙⴻⵏⵜⴻⵍ ⵏ ⵓⵙⴼⴽⵓ",
+      "enablePowerUps": "ⵔⵎⴻⴷ power-ups"
+    },
+    "endScreen": {
+      "title": "ⵜⴰⴳⴰⵔⴰ ⵏ ⵓⵔⴰⵔ",
+      "winnerText": " ⵉⵔⴻⴱⴱⴰ ⵓⵔⴰⵔ",
+      "finalScore": "ⴰⵙⵉⵏ ⴰⵏⴻⴳⴳⴰⵔⵓ",
+      "stats": {
+        "duration": "ⵜⴰⵏⵣⴰⴳⵜ ⵏ ⵓⵔⴰⵔ",
+        "totalPoints": "ⵜⵉⵏⵇⵉⴹⵉⵏ ⵜⵉⵎⵉⴹⴰⵏⵉⵏ",
+        "winCondition": "ⵜⴰⵡⵜⵉⵍⵉ ⵏ ⵜⵔⴱⴻⵀⵜ",
+        "mode": "ⴰⵏⴰⵥ ⵏ ⵓⵔⴰⵔ"
+      },
+      "actions": {
+        "playAgain": "ⵓⵔⴰⵔ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ",
+        "backToMenu": "ⵓⵖⴰⵍ ⵖⴻⵔ ⵡⵓⵎⵓⵖ",
+        "findNewOpponent": "ⴰⴼ ⵓⵎⵏⴰⴹ ⴰⵎⴰⵢⵏⵓⵜ",
+        "tournamentContinue": "ⴽⴻⵎⵎⴻⵍ ⴰⵙⴼⴽⵓ",
+        "viewStats": "ⵡⴰⵍⵉ ⵜⵉⴳⵉⵡⵉⵢⵉⵏ"
+      }
+    }
+  },
+  "tournament": {
+    "title": "ⴰⵙⴼⴽⵓ",
+    "create": {
+      "title": "ⵔⵏⵓ ⴰⵙⴼⴽⵓ",
+      "youAreIncluded": "ⵜⴻⵜⵜⵡⴰⵀⵙⴰⴱⴻⴹ ⵙ ⵡⵓⴷⴻⵎ ⴰⵡⵓⵔⵎⴰⵏ ⴷⴻⴳ ⵓⵙⴼⴽⵓ!",
+      "enterOtherParticipants": "ⵙⴻⴽⵛⴻⵎ ⵉⵙⴻⵎⴰⵡⴻⵏ ⵏ {count} ⵉⵎⵜⵜⴻⴽⴽⵉⵢⴻⵏ-ⵏⵏⵉⴹⴻⵏ:",
+      "participantPlaceholder": "ⵉⵙⴻⵎ ⵏ ⵓⵎⵜⵜⴻⴽⵉ {number}",
+      "confirmed": "ⵢⴻⵜⵜⵡⴰⵙⴻⵏⵜⴻⵎ",
+      "createTournament": "ⵔⵏⵓ ⴰⵙⴼⵓ"
+    },
+    "join": "ⵔⵏⵓ ⴷⴻⴳ ⵓⵙⴼⴽⵓ",
+    "waiting": "ⴰⵔⴰⵊⵓ ⵏ ⵉⵎⴷⴰⵏⴻⵏ",
+    "inProgress": "ⴰⵙⴼⴽⵓ ⵉⵜⴻⴷⴷⵓ",
+    "finished": "ⴰⵙⴼⴽⵓ ⵢⴻⵎⵎⴻⴷ",
+    "bracket": {
+      "title": "ⵜⴰⴼⴻⵍⵡⵉⵜ ⵏ ⵓⵙⴼⴽⵓ"
+    },
+    "legend": {
+      "pending": "ⵢⴻⵜⵜⵔⴰⵊⵓ",
+      "inProgress": "ⵉⵜⴻⴷⴷⵓ",
+      "completed": "ⵢⴻⵎⵎⴻⴷ"
+    },
+    "rounds": {
+      "quarterFinals": "ⴰⴽⴽⵓⵥ ⵏ ⵜⴰⴳⴰⵔⴰ",
+      "semiFinals": "ⴰⵣⴳⴻⵏ ⵏ ⵜⴰⴳⴰⵔⴰ",
+      "final": "ⵜⴰⴳⴰⵔⴰ"
+    },
+    "currentMatch": "ⴰⵎⵏⴰⴹ ⴰⵎⵉⵔⴰⵏ",
+    "nextMatch": "ⴰⵎⵏⴰⴹ ⴷ-ⵉⵜⴻⴷⴷⵓⵏ",
+    "winner": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵓⵙⴼⴽⵓ",
+    "participants": "ⵉⵎⵜⵜⴻⴽⴽⵉⵢⴻⵏ",
+    "participantsCount": "ⵉⵎⵜⵜⴻⴽⴽⵉⵢⴻⵏ",
+    "participantsNote": "ⴰⵎⴹⴰⵏ ⵏ ⵉⵎⴷⴰⵏⴻⵏ ⴷⴻⴳ ⵓⵙⴼⴽⵓ",
+    "matchNumber": "ⴰⵎⵏⴰⴹ {number}",
+    "vs": "ⵎⴳⴰⵍ",
+    "waitingForMatch": "ⴰⵔⴰⵊⵓ ⵏ ⵓⴱⴷⵓ ⵏ ⵓⵎⵏⴰⴹ",
+    "matchInProgress": "ⴰⵎⵏⴰⴹ ⵉⵜⴻⴷⴷⵓ",
+    "matchCompleted": "ⴰⵎⵏⴰⴹ ⵢⴻⵎⵎⴻⴷ",
+    "yourParticipation": "ⵜⵓⵜⵜⴻⴽⴽⵉ-ⵉⴽ",
+    "authenticatedPlayer": "ⴰⵎⵏⴰⴹ ⵢⴻⵜⵜⵡⴰⵙⴻⵏⵜⵎⴻⵏ",
+    "guestMode": "ⴰⵏⴰⵥ ⵏ ⴰⵏⴻⴼⵍⴰⵢ",
+    "guestModeDescription": "ⵜⴻⵔⵏⵉⴹ ⴰⵙⴼⴽⵓ ⴷ ⴰⵏⴻⴼⵍⴰⵢ. ⵉⵙⴼⴽⴰ ⴰⴷ ⵜⵜⵡⴰⵙⴽⴻⵍⵙⴻⵏ ⵙ ⵡⵓⴷⴻⵎ ⴰⵙⴽⵓⴷⴰⵏ.",
+    "winScore": "ⴰⵙⵉⵏ ⵉ ⵜⵔⴱⴻⵀⵜ",
+    "winScoreNote": "ⵜⵉⵏⵇⵉⴹⵉⵏ ⵉⵍⴰⵇⴻⵏ ⵉ ⵜⵔⴱⴻⵀⵜ ⵢⴰⵍ ⴰⵎⵏⴰⴹ",
+    "powerUpsNote": "ⵔⵎⴻⴷ power-ups ⵉ ⵢⴰⵍ ⵉⵎⵏⴰⴹⴻⵏ ⵏ ⵓⵙⴼⴽⵓ",
+    "howItWorks": "ⴰⵎⴻⴽ ⵉⵜⴻⴷⴷⵓ",
+    "step1": "ⵔⵏⵓ ⴰⵙⴼⴽⵓ ⵙ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵉ ⵜⴻⴱⵖⵉⴹ",
+    "step2": "ⵜⴰⴼⴻⵍⵡⵉⵜ ⵏ ⵓⵙⴼⴽⵓ ⴰⴷ ⵜⴻⵜⵜⵡⴰⵔⴻⵏ ⵙ ⵡⵓⴷⴻⵎ ⴰⵡⵓⵔⵎⴰⵏ",
+    "step3": "ⵓⵔⴰⵔ ⵉⵎⵏⴰⴹⴻⵏ ⵜⴰⵡⵔⵉ ⵜⴰⵡⵔⵉ ⴰⵔⵎⵉ ⵜⴰⴳⴰⵔⴰ",
+    "step4": "ⴰⵎⵖⵏⴰⵙ ⴰⴷ ⵢⴻⵜⵜⵡⴰⵖⴱⴰⵍ ⴷ ⴰⵎⵖⵏⴰⵙ!",
+    "status": {
+      "waiting": "ⴰⵔⴰⵊⵓ ⵏ ⵉⵎⴷⴰⵏⴻⵏ",
+      "inProgress": "ⵉⵜⴻⴷⴷⵓ",
+      "finished": "ⵢⴻⵎⵎⴻⴷ"
+    }
+  },
+  "profile": {
+    "title": "ⴰⵎⴰⵙⵏⴰⵙ",
+    "actions": {
+      "title": "ⵜⵉⴳⴰⵡⵉⵏ ⵜⵓⵔⵓⵔⵉⵏ",
+      "editProfile": "ⵥⵔⴻⴳ ⴰⵎⴰⵙⵏⴰⵙ",
+      "changePassword": "ⴱⴻⴷⴷⴻⵍ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "changeAvatar": "ⴱⴻⴷⴷⴻⵍ ⵜⴰⵡⵓⴳⴰ",
+      "logout": "ⴼⴼⴻⵖ",
+      "toggle2FA": "ⴱⴻⴷⴷⴻⵍ 2FA",
+      "addFriend": "ⵔⵏⵓ ⴰⵎⴷⴰⴽⴽⵍ",
+      "removeFriend": "ⴽⴽⴻⵙ ⴰⵎⴷⴰⴽⴽⵍ",
+      "challenge": "ⵛⴻⴳⴳⴰⵄ"
+    },
+    "stats": {
+      "title": "ⵜⵉⴳⵉⵡⵉⵢⵉⵏ",
+      "wins": "ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+      "losses": "ⵜⵓⴼⴼⵖⴰ",
+      "totalGames": "ⴰⵙⵎⴷⴰⴷ ⵏ ⵓⵔⴰⵔⴻⵏ",
+      "gamesPlayed": "ⵓⵔⴰⵔ ⵢⴻⵜⵜⵡⴰⵔⴻⵏ",
+      "gamesWon": "ⵓⵔⴰⵔ ⵢⴻⵜⵜⵡⴰⵔⴻⴱⴱⴻⵏ",
+      "winRate": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+      "ranking": "ⴰⵙⴳⴳⴰⵙ",
+      "rank": "ⴰⵙⴳⴳⴰⵙ",
+      "highestScore": "ⴰⵙⵉⵏ ⴰⵎⴰⵙⵉⴹ",
+      "averageScore": "ⴰⵙⵉⵏ ⴰⵍⴻⵎⵎⴰⵙ",
+      "currentStreak": "ⴰⵎⴰⵙⵏⴰⵙ ⴰⵎⵉⵔⴰⵏ",
+      "longestStreak": "ⴰⵎⴰⵙⵏⴰⵙ ⴰⵎⴻⵇⵇⵔⴰⵏ",
+      "playtime": "ⴰⴽⵓⴷ ⵏ ⵓⵔⴰⵔ ⴰⵙⵎⴷⴰⴷ",
+      "lastPlayed": "ⵓⵔⴰⵔ ⴰⵏⴻⴳⴳⴰⵔⵓ"
+    },
+    "history": {
+      "title": "ⴰⵎⵣⵔⵓⵢ ⵏ ⵉⵎⵏⴰⴹⴻⵏ",
+      "noGamesDesc": "ⴱⴷⵓ ⵓⵔⴰⵔ ⵉⵡⴰⴽⴽⴻⵏ ⴰⴷ ⵜⵡⴰⵍⵉⴹ ⴰⵎⵣⵔⵓⵢ-ⵉⴽ ⴷⴰⴳⵉ",
+      "playFirstGame": "ⵓⵔⴰⵔ ⵉⵎⵏⴰⴹ-ⵉⴽ ⴰⵎⴻⵣⵡⴰⵔⵓ",
+      "viewDetails": "ⵡⴰⵍⵉ ⵜⵉⵍⵖⴰ",
+      "noMatchesFilter": "ⵓⵍⴰ ⴷ ⵢⵉⵡⴻⵏ ⵓⵎⵏⴰⴹ ⵢⵓⴼⴰⵏ ⵉ ⵓⵙⵉⵥⵔⴻⴳ-ⴰⴳⵉ",
+      "filters": {
+        "all": "ⴰⴽⴽ",
+        "wins": "ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+        "losses": "ⵜⵓⴼⴼⵖⴰ",
+        "local": "ⴰⴷⵉⴳⴰⵏ",
+        "remote": "ⵙ ⵢⵉⴷⴻⵍⵙ",
+        "tournament": "ⴰⵙⴼⴽⵓ"
+      },
+      "stats": {
+        "wins": "ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+        "losses": "ⵜⵓⴼⴼⵖⴰ",
+        "total": "ⴰⵙⵎⴷⴰⴷ",
+        "winRate": "ⴰⵎⵖⵏⴰⵙ ⵏ ⵜⴰⵡⴰⴷⵉⵢⵉⵏ",
+        "totalGames": "ⴰⵙⵎⴷⴰⴷ ⵏ ⵓⵔⴰⵔⴻⵏ"
+      },
+      "gameModes": {
+        "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵓⵔⴰⵔ"
+      },
+      "noGames": {
+        "title": "ⵓⵍⴰ ⴷ ⵢⵉⵡⴻⵏ ⵓⵔⴰⵔ ⵢⴻⵜⵜⵡⴰⵔⴻⵏ ⵢⴰⴽⴰⵏ",
+        "description": "ⴱⴷⵓ ⵓⵔⴰⵔ ⵉⵡⴰⴽⴽⴻⵏ ⴰⴷ ⵜⵡⴰⵍⵉⴹ ⴰⵎⵣⵔⵓⵢ-ⵉⴽ ⴷⴰⴳⵉ",
+        "playFirst": "ⵓⵔⴰⵔ ⵉⵎⵏⴰⴹ-ⵉⴽ ⴰⵎⴻⵣⵡⴰⵔⵓ"
+      },
+      "noMatches": "ⵓⵍⴰ ⴷ ⵢⵉⵡⴻⵏ ⵓⵎⵏⴰⴹ ⵢⵓⴼⴰⵏ ⵉ ⵓⵙⵉⵥⵔⴻⴳ-ⴰⴳⵉ",
+      "viewAll": "ⵡⴰⵍⵉ ⴰⴽⴽ",
+      "result": {
+        "win": "ⵜⵔⴱⴻⵀⵜ",
+        "loss": "ⵜⵓⴼⴼⵖⴰ"
+      }
+    },
+    "friends": {
+      "title": "ⵉⵎⴷⴰⴽⴽⵍ",
+      "manage": "ⵙⴻⴼⵔⴻⴽ ⵉⵎⴷⴰⴽⴽⵍ",
+      "noFriends": "ⵓⵍⴰ ⴷ ⵢⵉⵡⴻⵏ ⵓⵎⴷⴰⴽⴽⵍ ⴰⵔⴰ ⵜⵓⵔⴰ",
+      "findFriends": "ⵏⴰⴷⵉ ⵉⵎⴷⴰⴽⴽⵍ",
+      "viewAll": "ⵡⴰⵍⵉ ⴰⴽⴽ",
+      "online": "ⵙⵔⵉⴷ",
+      "offline": "ⵓⵔ ⵢⴻⵙⵙⵉⵔⵉⴷ ⴰⵔⴰ",
+      "justOffline": "ⵢⴻⴼⵙⵉ ⵜⵉⴽⴽⵉ ⴽⴰⵏ",
+      "minsAgo": "ⵎⵉⵏⵓⵜⴻⵏ {mins} ⴰⵢⴰ",
+      "hoursAgo": "ⵉⵙⵔⴰⴳⴻⵏ {hours} ⴰⵢⴰ",
+      "daysAgo": "ⵓⵙⵙⴰⵏ {days} ⴰⵢⴰ",
+      "viewProfile": "ⵡⴰⵍⵉ ⴰⵎⴰⵙⵏⴰⵙ",
+      "challenge": "ⵛⴻⴳⴳⴰⵄ",
+      "sendMessage": "ⴰⵣⴻⵏ ⵉⵣⴻⵏ"
+    },
+    "edit": {
+      "title": "ⵥⵔⴻⴳ ⴰⵎⴰⵙⵏⴰⵙ",
+      "username": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "usernamePlaceholder": "ⵙⴻⴽⵛⴻⵎ ⵉⵙⴻⵎ-ⵉⴽ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "email": "ⵉⵎⴰⵢⵍ",
+      "emailPlaceholder": "ⵙⴻⴽⵛⴻⵎ ⵉⵎⴰⵢⵍ-ⵉⴽ",
+      "avatar": "ⵜⴰⵡⵓⴳⴰ",
+      "selectImage": "ⴼⵔⴻⵏ ⵜⵓⴳⵏⴰ",
+      "changeAvatarHint": "ⵙⵉⵜ ⵉ ⵓⴱⴻⴷⴷⴻⵍ ⵏ ⵜⵡⵓⴳⴰ-ⵉⴽ",
+      "save": "ⵙⴻⴽⵍⴻⵙ ⴰⵙⵏⵉⴼⴻⵍ",
+      "cancel": "ⵙⴻⴼⵙⴻⵛ",
+      "uploading": "ⴰⵙⴰⵍⵉ...",
+      "errors": {
+        "updateFailed": "ⴰⵍⴻⵇⵇⴻⵎ ⵏ ⵓⵎⴰⵙⵏⴰⵙ ⵓⵔ ⵢⴻⴷⴷⵉ ⴰⵔⴰ",
+        "invalidImage": "ⵜⵓⴳⵏⴰ ⴷ ⵜⴰⵔⴰⵎⴻⵖⵜⵓⵜ",
+        "invalidImageType": "ⵜⵓⴳⵏⴰ ⴷ ⵜⴰⵔⴰⵎⴻⵖⵜⵓⵜ",
+        "imageTooLarge": "ⵜⵓⴳⵏⴰ ⵜⴰⵎⴻⵇⵇⵔⴰⵏⵜ ⴰⵟⴰⵙ",
+        "avatarTooLarge": "ⵜⵓⴳⵏⴰ ⵜⴰⵎⴻⵇⵇⵔⴰⵏⵜ ⴰⵟⴰⵙ (ⴰⴼⴻⵍⵍⴰⵢ 5MB)",
+        "usernameTooShort": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ ⵉⵍⴰⵇ ⴰⴷ ⵢⴻⴳⴱⴻⵔ 3 ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ ⵎⴰ ⴷⵔⵓⵙ",
+        "usernameTooLong": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ ⵉⵍⴰⵇ ⴰⴷ ⵢⴻⴳⴱⴻⵔ ⴷⵔⵓⵙ 20 ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ",
+        "invalidEmail": "ⵙⴻⴽⵛⴻⵎ ⵜⴰⵏⵙⴰ ⵏ ⵉⵎⴰⵢⵍ ⵜⴰⵎⴻⵖⵜⵓⵜ"
+      }
+    },
+    "changePassword": {
+      "title": "ⴱⴻⴷⴷⴻⵍ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "currentPassword": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⴰⵎⵉⵔⴰⵏ",
+      "currentPasswordPlaceholder": "ⵙⴻⴽⵛⴻⵎ ⴰⵡⴰⵍ-ⵉⴽ ⵓⴼⴼⵉⵔ ⴰⵎⵉⵔⴰⵏ",
+      "newPassword": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⴰⵎⴰⵢⵏⵓⵜ",
+      "newPasswordPlaceholder": "ⵙⴻⴽⵛⴻⵎ ⴰⵡⴰⵍ-ⵉⴽ ⵓⴼⴼⵉⵔ ⴰⵎⴰⵢⵏⵓⵜ",
+      "confirmPassword": "ⵙⴻⵏⵜⴻⵎ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⴰⵎⴰⵢⵏⵓⵜ",
+      "confirmPasswordPlaceholder": "ⵙⴻⵏⵜⴻⵎ ⴰⵡⴰⵍ-ⵉⴽ ⵓⴼⴼⵉⵔ ⴰⵎⴰⵢⵏⵓⵜ",
+      "save": "ⴱⴻⴷⴷⴻⵍ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "cancel": "ⵙⴻⴼⵙⴻⵛ",
+      "saving": "ⴰⴱⴻⴷⴷⴻⵍ...",
+      "success": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⵢⴻⵜⵜⵡⴰⴱⴻⴷⴷⴻⵍ ⴰⴽⴽⴻⵏ ⵉⵡⴰⵜⴰ!",
+      "error": "ⵜⵓⵛⴹⴰ ⴷⴻⴳ ⵓⴱⴻⴷⴷⴻⵍ ⵏ ⵡⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "validation": {
+        "required": "ⵓⵔⵜ-ⴰⴳⵉ ⵉⵍⴰⵇ",
+        "minLength": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⵉⵍⴰⵇ ⴰⴷ ⵢⴻⴳⴱⴻⵔ 8 ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ ⵎⴰ ⴷⵔⵓⵙ",
+        "mismatch": "ⴰⵡⴰⵍⴻⵏ ⵓⴼⴼⵉⵔ ⵓⵔ ⵎⵙⴰⴷⴰⵏ ⴰⵔⴰ",
+        "weak": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⴷ ⴰⴹⴻⴱⵙⴰⵏ ⴰⵟⴰⵙ"
+      }
+    },
+    "twoFactor": {
+      "title": "ⴰⵙⴻⵏⵜⴻⵎ ⵙ ⵙⵉⵏ ⵉⴼⵔⴻⴷⴻⵏ",
+      "description": "ⴹⵎⴻⵏ ⴰⵎⵉⴹⴰⵏ-ⵉⴽ ⵙ ⵓⵙⴻⵏⵜⴻⵎ ⵙ ⵙⵉⵏ ⵉⴼⵔⴻⴷⴻⵏ",
+      "enable": "ⵔⵎⴻⴷ 2FA",
+      "disable": "ⴽⴽⴻⵙ 2FA",
+      "enterCode": "ⵙⴻⴽⵛⴻⵎ ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ",
+      "codePlaceholder": "ⵜⴰⵏⴳⴰⵍⵜ ⵙ 6 ⵏ ⵡⵓⵟⵟⵓⵏⴻⵏ",
+      "verify": "ⵙⴻⵏⵜⴻⵎ",
+      "cancel": "ⵙⴻⴼⵙⴻⵛ",
+      "modal": {
+        "enableTitle": "ⵔⵎⴻⴷ ⴰⵙⴻⵏⵜⴻⵎ ⵙ ⵙⵉⵏ ⵉⴼⵔⴻⴷⴻⵏ",
+        "enableDescription": "ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ ⵜⴻⵜⵜⵡⴰⵣⴻⵏ ⵖⴻⵔ ⵉⵎⴰⵢⵍ-ⵉⴽ. ⵙⴻⴽⵛⴻⵎ-ⵉⵜⵜ ⴷⴰ ⵉ ⵓⵔⵎⴰⴷ ⵏ 2FA.",
+        "enableButton": "ⵔⵎⴻⴷ 2FA",
+        "disableTitle": "ⴽⴽⴻⵙ ⴰⵙⴻⵏⵜⴻⵎ ⵙ ⵙⵉⵏ ⵉⴼⵔⴻⴷⴻⵏ",
+        "disableDescription": "ⵙⴻⴽⵛⴻⵎ ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ-ⵉⴽ ⵉ ⵓⴽⴻⵙ ⵏ 2FA.",
+        "disableButton": "ⴽⴽⴻⵙ 2FA",
+        "codeLabel": "ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ"
+      },
+      "messages": {
+        "enabled": "2FA ⵢⴻⵜⵜⵡⴰⵔⵎⴻⴷ ⴰⴽⴽⴻⵏ ⵉⵡⴰⵜⴰ!",
+        "disabled": "2FA ⵢⴻⵜⵜⵡⴰⴽⴽⴻⵙ ⴰⴽⴽⴻⵏ ⵉⵡⴰⵜⴰ!",
+        "codeSent": "ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ ⵜⴻⵜⵜⵡⴰⵣⴻⵏ ⵖⴻⵔ ⵉⵎⴰⵢⵍ-ⵉⴽ",
+        "invalidCode": "ⵜⴰⵏⴳⴰⵍⵜ ⵏ ⵓⵙⴻⵏⵜⴻⵎ ⴷ ⵜⴰⵔⴰⵎⴻⵖⵜⵓⵜ",
+        "error": "ⵜⴰⵎⴰⵀⵉⵍⵜ ⵏ 2FA ⵓⵔ ⵜⴻⴷⴷⵉ ⴰⵔⴰ"
+      }
+    },
+    "themes": {
+      "title": "ⴰⵙⴻⵏⵜⴻⵍ ⵏ ⵓⵔⴰⵔ",
+      "description": "ⴼⵔⴻⵏ ⴰⵙⴻⵏⵜⴻⵍ ⵏ ⵓⵔⴰⵔ ⵉ ⵜⴻⴱⵖⵉⴹ",
+      "select": "ⴼⵔⴻⵏ ⴰⵙⴻⵏⵜⴻⵍ ⵏ ⵓⵔⴰⵔ ⵉ ⵜⴻⴱⵖⵉⴹ",
+      "manageThemes": "ⵙⴻⴼⵔⴻⴽ ⵉⵙⴻⵏⵜⴰⵍ",
+      "currentTheme": "ⴰⵙⴻⵏⵜⴻⵍ ⴰⵎⵉⵔⴰⵏ:",
+      "current": "ⴰⵎⵉⵔⴰⵏ",
+      "saveTheme": "ⵙⴻⴽⵍⴻⵙ ⴰⵙⴻⵏⵜⴻⵍ",
+      "messages": {
+        "saved": "ⴰⵙⴻⵏⵜⴻⵍ ⵢⴻⵜⵜⵡⴰⵙⴻⴽⵍⴻⵙ ⴰⴽⴽⴻⵏ ⵉⵡⴰⵜⴰ!"
+      },
+      "errors": {
+        "saveFailed": "ⴰⵙⴻⴽⵍⴻⵙ ⵏ ⵓⵙⴻⵏⵜⴻⵍ ⵓⵔ ⵢⴻⴷⴷⵉ ⴰⵔⴰ"
+      }
+    },
+    "lastLogin": "ⴰⴽⵛⴻⵎ ⴰⵏⴻⴳⴳⴰⵔⵓ",
+    "googleAccount": "ⴰⵎⵉⴹⴰⵏ Google",
+    "errors": {
+      "userNotFound": "ⴰⵙⴻⵇⴷⴰⵛ ⵓⵔ ⵢⵓⴼⵉ ⴰⵔⴰ",
+      "loadFailed": "ⴰⵙⴰⵍⵉ ⵏ ⵓⵎⴰⵙⵏⴰⵙ ⵓⵔ ⵢⴻⴷⴷⵉ ⴰⵔⴰ",
+      "unauthorized": "ⵓⵔ ⵜⴻⵙⵄⵉⴹ ⴰⵔⴰ ⵜⴰⵙⵉⵔⴻⴳⵜ ⵉ ⵜⵡⴰⵍⴰ ⵏ ⵓⵎⴰⵙⵏⴰⵙ-ⴰⴳⵉ",
+      "networkError": "ⵜⵓⵛⴹⴰ ⵏ ⵓⵥⴻⵟⵟⴰ. ⴻⵔⴻⴹ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ.",
+      "changePasswordFailed": "ⴰⴱⴻⴷⴷⴻⵍ ⵏ ⵡⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⵓⵔ ⵢⴻⴷⴷⵉ ⴰⵔⴰ"
+    },
+    "settings": {
+      "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ",
+      "language": "ⵜⵓⵜⵍⴰⵢⵜ",
+      "theme": "ⴰⵙⴻⵏⵜⴻⵍ",
+      "notifications": "ⵉⵍⵖⴰ",
+      "privacy": "ⵜⴰⴱⴰⴹⵏⵉⵜ",
+      "security": "ⵜⴰⵖⴻⵍⵍⵉⵙⵜ"
+    }
+  },
+  "friends": {
+    "title": "ⴰⵙⴻⴼⵔⴰⴽ ⵏ ⵉⵎⴷⴰⴽⴽⵍ",
+    "search": {
+      "title": "ⵏⴰⴷⵉ ⵉⵎⴷⴰⴽⴽⵍ",
+      "placeholder": "ⵏⴰⴷⵉ ⵉⵙⴻⵇⴷⴰⵛⴻⵏ...",
+      "noResults": "ⵓⵍⴰ ⴷ ⵢⵉⵡⴻⵏ ⵓⵙⴻⵇⴷⴰⵛ ⵢⵓⴼⴰⵏ",
+      "searchInstructions": "ⵙⴻⴽⵛⴻⵎ 2 ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ ⵎⴰ ⴷⵔⵓⵙ ⵉ ⵓⵏⴰⴷⵉ"
+    },
+    "requests": {
+      "title": "ⵉⵙⵓⵜⴰⵔ ⵏ ⵜⴷⵓⴽⵍⴰ",
+      "noPending": "ⵓⵍⴰ ⴷ ⵢⵉⵡⴻⵏ ⵓⵙⵓⵜⴻⵔ ⵢⴻⵜⵜⵔⴰⵊⵓ",
+      "sentRequest": "ⵢⵓⵣⴻⵏ-ⴰⴽ-ⴷ ⴰⵙⵓⵜⴻⵔ ⵏ ⵜⴷⵓⴽⵍⴰ",
+      "received": "ⵢⴻⵜⵜⵡⴰⵔⵎⴻⵏ",
+      "sent": "ⵢⴻⵜⵜⵡⴰⵣⴻⵏ"
+    },
+    "actions": {
+      "addFriend": "ⵔⵏⵓ ⴷ ⴰⵎⴷⴰⴽⴽⵍ",
+      "removeFriend": "ⴽⴽⴻⵙ ⴰⵎⴷⴰⴽⴽⵍ",
+      "acceptRequest": "ⵇⴱⴻⵍ ⴰⵙⵓⵜⴻⵔ",
+      "cancelRequest": "ⵙⴻⴼⵙⴻⵛ ⴰⵙⵓⵜⴻⵔ",
+      "accept": "ⵇⴱⴻⵍ",
+      "decline": "ⴰⴳⵉ",
+      "remove": "ⴽⴽⴻⵙ"
+    },
+    "status": {
+      "requestSent": "ⴰⵙⵓⵜⴻⵔ ⵢⴻⵜⵜⵡⴰⵣⴻⵏ",
+      "pending": "ⵢⴻⵜⵜⵔⴰⵊⵓ",
+      "friends": "ⵉⵎⴷⴰⴽⴽⵍ"
+    },
+    "messages": {
+      "requestSent": "ⴰⵙⵓⵜⴻⵔ ⵏ ⵜⴷⵓⴽⵍⴰ ⵢⴻⵜⵜⵡⴰⵣⴻⵏ!",
+      "requestAccepted": "ⴰⵙⵓⵜⴻⵔ ⵏ ⵜⴷⵓⴽⵍⴰ ⵢⴻⵜⵜⵡⴰⵇⴱⴻⵍ!",
+      "requestDeclined": "ⴰⵙⵓⵜⴻⵔ ⵏ ⵜⴷⵓⴽⵍⴰ ⵢⴻⵜⵜⵡⴰⴳⵉ",
+      "friendRemoved": "ⴰⵎⴷⴰⴽⴽⵍ ⵢⴻⵜⵜⵡⴰⴽⴽⴻⵙ",
+      "friendAdded": "ⴰⵎⴷⴰⴽⴽⵍ ⵢⴻⵜⵜⵡⴰⵔⵏⵓ ⴰⴽⴽⴻⵏ ⵉⵡⴰⵜⴰ!",
+      "actionFailed": "ⵜⴰⵎⴰⵀⵉⵍⵜ ⵓⵔ ⵜⴻⴷⴷⵉ ⴰⵔⴰ. ⴻⵔⴻⴹ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ.",
+      "userNotFound": "ⴰⵙⴻⵇⴷⴰⵛ ⵓⵔ ⵢⵓⴼⵉ ⴰⵔⴰ",
+      "alreadyFriends": "ⵜⴻⵜⵜⵡⴰⴹⴹⴰⴼⴻⴹ ⵢⴰⴽⴰⵏ ⴷ ⵉⵎⴷⴰⴽⴽⵍ ⴰⴽⴻⴷ ⵓⵙⴻⵇⴷⴰⵛ-ⴰⴳⵉ",
+      "cannotAddSelf": "ⵓⵔ ⵜⵣⴻⵎⵔⴻⴹ ⴰⵔⴰ ⴰⴷ ⵜⴰⵔⵏⴻⴹ ⵉⵎⴰⵏ-ⵉⴽ ⴷ ⴰⵎⴷⴰⴽⴽⵍ",
+      "searchFailed": "ⴰⵏⴰⴷⵉ ⵓⵔ ⵢⴻⴷⴷⵉ ⴰⵔⴰ. ⴻⵔⴻⴹ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ."
+    },
+    "confirmations": {
+      "removeFriend": "ⵜⴻⴱⵖⵉⴹ ⴰⴷ ⵜⴻⴽⴽⴻⵙⴻⴹ ⴰⵎⴷⴰⴽⴽⵍ-ⴰⴳⵉ?",
+      "declineRequest": "ⵜⴻⴱⵖⵉⴹ ⴰⴷ ⵜⴰⴳⵉⴹ ⴰⵙⵓⵜⴻⵔ-ⴰⴳⵉ ⵏ ⵜⴷⵓⴽⵍⴰ?"
+    }
+  },
+  "settings": {
+    "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ",
+    "username": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+    "email": "ⵉⵎⴰⵢⵍ",
+    "save": "ⵙⴻⴽⵍⴻⵙ ⵉⵖⴻⵡⵡⴰⵔⴻⵏ",
+    "general": {
+      "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵉⵎⵓⵜⴰ",
+      "language": "ⵜⵓⵜⵍⴰⵢⵜ",
+      "theme": "ⴰⵙⴻⵏⵜⴻⵍ",
+      "notifications": "ⵉⵍⵖⴰ",
+      "privacy": "ⵜⴰⴱⴰⴹⵏⵉⵜ",
+      "security": "ⵜⴰⵖⴻⵍⵍⵉⵙⵜ",
+      "timezone": "ⵜⴰⵏⵣⴰⴳⵜ ⵏ ⵡⴰⴽⵓⴷ"
+    },
+    "notifications": {
+      "title": "ⵉⵍⵖⴰ",
+      "email": "ⵉⵍⵖⴰ ⵏ ⵉⵎⴰⵢⵍ",
+      "push": "ⵉⵍⵖⴰ ⵏ ⵜⵓⵙⵙⴼⴰ",
+      "gameInvites": "ⵜⵉⵏⵏⵓⴱⴳⴰ ⵏ ⵓⵔⴰⵔ",
+      "friendRequests": "ⵉⵙⵓⵜⴰⵔ ⵏ ⵜⴷⵓⴽⵍⴰ",
+      "messages": "ⵉⵣⴻⵏ"
+    },
+    "privacy": {
+      "title": "ⵉⵖⴻⵡⵡⴰⵔⴻⵏ ⵏ ⵜⴰⴱⴰⴹⵏⵉⵜ",
+      "profileVisibility": "ⵜⵓⵎⵥⵔⵉ ⵏ ⵓⵎⴰⵙⵏⴰⵙ",
+      "onlineStatus": "ⵙⴽⴻⵏ ⴰⴷⴷⴰⴷ ⵙⵔⵉⴷ",
+      "gameHistory": "ⵙⴽⴻⵏ ⴰⵎⵣⵔⵓⵢ ⵏ ⵓⵔⴰⵔ"
+    },
+    "account": {
+      "title": "ⴰⵎⵉⴹⴰⵏ",
+      "changePassword": "ⴱⴻⴷⴷⴻⵍ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "deleteAccount": "ⴽⴽⴻⵙ ⴰⵎⵉⴹⴰⵏ",
+      "exportData": "ⵙⵉⴼⴻⴹ ⵉⵙⴻⴼⴽⴰ"
+    }
+  },
+  "modals": {
+    "confirm": {
+      "title": "ⵙⴻⵏⵜⴻⵎ ⵜⵉⴳⴰⵡⵜ",
+      "message": "ⵜⴻⴱⵖⵉⴹ ⴰⴷ ⵜⴽⴻⵎⵎⵍⴻⴹ?",
+      "confirm": "ⵙⴻⵏⵜⴻⵎ",
+      "cancel": "ⵙⴻⴼⵙⴻⵛ"
+    },
+    "error": {
+      "title": "ⵜⵓⵛⴹⴰ",
+      "genericMessage": "ⵜⴻⵍⵍⴰ-ⴷ ⵜⵓⵛⴹⴰ. ⴻⵔⴻⴹ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ.",
+      "close": "ⵎⴷⴻⵍ"
+    },
+    "success": {
+      "title": "ⵜⴰⵡⴰⴷⵉⵢⵜ",
+      "close": "ⵎⴷⴻⵍ"
+    },
+    "gameEnd": {
+      "title": "ⵜⴰⴳⴰⵔⴰ ⵏ ⵓⵔⴰⵔ",
+      "winner": "ⴰⵎⵖⵏⴰⵙ",
+      "finalScore": "ⴰⵙⵉⵏ ⴰⵏⴻⴳⴳⴰⵔⵓ",
+      "duration": "ⵜⴰⵏⵣⴰⴳⵜ",
+      "playAgain": "ⵓⵔⴰⵔ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ",
+      "backToMenu": "ⵓⵖⴰⵍ ⵖⴻⵔ ⵡⵓⵎⵓⵖ",
+      "tournamentContinue": "ⴽⴻⵎⵎⴻⵍ ⴰⵙⴼⴽⵓ"
+    }
+  },
+  "forms": {
+    "validation": {
+      "required": "ⵓⵔⵜ-ⴰⴳⵉ ⵉⵍⴰⵇ",
+      "email": "ⵙⴻⴽⵛⴻⵎ ⵜⴰⵏⵙⴰ ⵏ ⵉⵎⴰⵢⵍ ⵜⴰⵎⴻⵖⵜⵓⵜ",
+      "minLength": "ⵉⵍⴰⵇ ⴰⴷ ⵢⴻⴳⴱⴻⵔ {min} ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ ⵎⴰ ⴷⵔⵓⵙ",
+      "maxLength": "ⵓⵔ ⵉⵍⴰⵇ ⴰⵔⴰ ⴰⴷ ⵢⴻⴳⴱⴻⵔ {max} ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ",
+      "password": "ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ ⵉⵍⴰⵇ ⴰⴷ ⵢⴻⴳⴱⴻⵔ 8 ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ ⵎⴰ ⴷⵔⵓⵙ",
+      "confirmPassword": "ⴰⵡⴰⵍⴻⵏ ⵓⴼⴼⵉⵔ ⵉⵍⴰⵇ ⴰⴷ ⵎⵙⴰⴷⴰⵏ",
+      "username": "ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ ⵉⵍⴰⵇ ⴰⴷ ⵢⴻⴳⴱⴻⵔ 3 ⵖⴻⵔ 20 ⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ ⴷ ⴽⴰⵏ ⵉⵙⴻⴽⴽⵉⵍⴻⵏ, ⵡⵓⵟⵟⵓⵏⴻⵏ ⴷ ⵉⵊⴻⵔⵔⵉⴹⴻⵏ ⵏ ⵡⴰⴹⴹⴰ"
+    },
+    "placeholders": {
+      "search": "ⵏⴰⴷⵉ...",
+      "email": "ⵙⴻⴽⵛⴻⵎ ⵉⵎⴰⵢⵍ-ⵉⴽ",
+      "username": "ⵙⴻⴽⵛⴻⵎ ⵉⵙⴻⵎ ⵏ ⵓⵙⴻⵇⴷⴰⵛ",
+      "password": "ⵙⴻⴽⵛⴻⵎ ⴰⵡⴰⵍ ⵓⴼⴼⵉⵔ",
+      "message": "ⴰⵔⵓ ⵉⵣⴻⵏ-ⵉⴽ..."
+    }
+  },
+  "time": {
+    "now": "ⵜⵓⵔⴰ",
+    "justNow": "ⵜⵉⴽⴽⵉ ⴽⴰⵏ",
+    "minuteAgo": "ⵎⵉⵏⵓⵜ ⴰⵢⴰ",
+    "minutesAgo": "{minutes} ⵏ ⵜⵙⴻⴷⴰⵜⵉⵏ ⴰⵢⴰ",
+    "hourAgo": "ⵉⵙⵔⴰⴳ ⴰⵢⴰ",
+    "hoursAgo": "{hours} ⵏ ⵉⵙⵔⴰⴳⴻⵏ ⴰⵢⴰ",
+    "dayAgo": "ⴰⵙⵙ ⴰⵢⴰ",
+    "daysAgo": "{days} ⵏ ⵡⵓⵙⵙⴰⵏ ⴰⵢⴰ",
+    "weekAgo": "ⴷⴷⵓⵔⵜ ⴰⵢⴰ",
+    "weeksAgo": "{weeks} ⵏ ⴷⴷⵓⵔⵜⴰⵜ ⴰⵢⴰ",
+    "monthAgo": "ⴰⴳⴳⵓⵔ ⴰⵢⴰ",
+    "monthsAgo": "{months} ⵏ ⵡⴰⴳⴳⵓⵔⴻⵏ ⴰⵢⴰ",
+    "yearAgo": "ⴰⵙⴻⴳⴳⴰⵙ ⴰⵢⴰ",
+    "yearsAgo": "{years} ⵏ ⵉⵙⴻⴳⴳⴰⵙⴻⵏ ⴰⵢⴰ",
+    "today": "ⴰⵙⵙ-ⴰ",
+    "yesterday": "ⵉⴹⴻⵍⵍⵉ"
+  },
+  "common": {
+    "loading": "ⴰⵙⴰⵍⵉ...",
+    "error": "ⵜⵓⵛⴹⴰ",
+    "success": "ⵜⴰⵡⴰⴷⵉⵢⵜ",
+    "warning": "ⴰⵍⵖⵓ",
+    "info": "ⵜⴰⵍⵖⵓⵜ",
+    "cancel": "ⵙⴻⴼⵙⴻⵛ",
+    "confirm": "ⵙⴻⵏⵜⴻⵎ",
+    "save": "ⵙⴻⴽⵍⴻⵙ",
+    "delete": "ⴽⴽⴻⵙ",
+    "edit": "ⵥⵔⴻⴳ",
+    "close": "ⵎⴷⴻⵍ",
+    "backToMenu": "ⵓⵖⴰⵍ ⵖⴻⵔ ⵡⵓⵎⵓⵖ",
+    "next": "ⴷ-ⵉⵜⴻⴷⴷⵓⵏ",
+    "previous": "ⵓⴹⴼⵉⵔ",
+    "submit": "ⴰⵣⴻⵏ",
+    "reset": "ⴰⵍⴻⵙ ⴰⵡⴻⵏⵏⴻⵣ",
+    "clear": "ⵙⴼⴻⴹ",
+    "search": "ⵏⴰⴷⵉ",
+    "filter": "ⵙⵉⵥⵔⴻⴳ",
+    "sort": "ⵙⵎⵉⵥⵥⴻⵔ",
+    "refresh": "ⵙⵎⵉⵔⴻⵏ",
+    "retry": "ⴻⵔⴻⴹ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ",
+    "yes": "ⵉⵀ",
+    "no": "ⵓⵀⵓ",
+    "ok": "ⵉⵀ",
+    "today": "ⴰⵙⵙ-ⴰ",
+    "yesterday": "ⵉⴹⴻⵍⵍⵉ",
+    "tomorrow": "ⴰⵣⴻⴽⴽⴰ",
+    "daysAgo": "ⵓⵙⵙⴰⵏ {days} ⴰⵢⴰ",
+    "online": "ⵙⵔⵉⴷ",
+    "offline": "ⵓⵔ ⵢⴻⵙⵙⵉⵔⵉⴷ ⴰⵔⴰ",
+    "connecting": "ⵜⵓⵇⵇⵏⴰ...",
+    "connected": "ⵢⴻⵇⵇⴻⵏ",
+    "disconnected": "ⵢⴻⴼⵙⵉ",
+    "tryAgain": "ⴻⵔⴻⴹ ⵜⵉⴽⴽⴻⵍⵜ-ⵏⵏⵉⴹⴻⵏ",
+    "goBack": "ⵓⵖⴰⵍ",
+    "seeMore": "ⵡⴰⵍⵉ ⵓⴳⴰⵔ",
+    "showLess": "ⵙⴽⴻⵏ ⴷⵔⵓⵙ",
+    "expand": "ⵙⵉⵏⴻⵖⵣⴻⴼ",
+    "collapse": "ⵙⵇⴻⵎⵛ",
+    "pause": "ⵀⴱⴻⵙ",
+    "resume": "ⴽⴻⵎⵎⴻⵍ",
+    "time": "ⴰⴽⵓⴷ",
+    "status": "ⴰⴷⴷⴰⴷ",
+    "gameInfo": "ⵜⴰⵍⵖⵓⵜ ⵏ ⵓⵔⴰⵔ",
+    "or": "ⵏⴻⵖ",
+    "score": "ⴰⵙⵉⵏ",
+    "toWin": "ⵉ ⵜⵔⴱⴻⵀⵜ",
+    "points": "ⵜⵉⵏⵇⵉⴹⵉⵏ",
+    "medium": "ⴰⵍⴻⵎⵎⴰⵙ",
+    "slow": "ⵥⴻⵥⵥⴻⵍ",
+    "fast": "ⴰⵔⵓⵔⴻⴷ",
+    "modeSelection": "ⴰⴼⵔⴰⵏ ⵏ ⵓⵏⴰⵥ",
+    "chooseModeDescription": "ⴼⵔⴻⵏ ⴰⵎⴻⴽ ⵜⴻⴱⵖⵉⴹ ⴰⴷ ⵜⵓⵔⴻⴹ",
+    "changeMode": "ⴱⴻⴷⴷⴻⵍ ⴰⵏⴰⵥ",
+    "confirmQuitGame": "ⵜⴻⴱⵖⵉⴹ ⴰⴷ ⵜⴻⵊⵊⵉⴹ ⵓⵔⴰⵔ?",
+    "canvasNotSupported": "ⵉⵎⵉⵏⵉⴳ-ⵉⴽ ⵓⵔ ⵉⵙⵙⴻⴼⵔⴰⴽ ⴰⵔⴰ ⴰⴼⴻⵔⴷⵉⵙ HTML5 Canvas.",
+    "saving": "ⴰⵙⴻⴽⵍⴻⵙ..."
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "it": "Italiano",
+    "es": "Español",
+    "ar": "العربية",
+    "kab": "Taqbaylit",
+    "kab-tfng": "ⵜⴰⵇⴱⴰⵢⵍⵉⵜ",
+    "sg": "Sängö"
+  },
+  "footer": {
+    "description": "ⵜⴰⵊⵔⵓⵟ ⵏ ⴱⵓⵏⴳ ⵜⴰⵎⴰⵣⵡⴰⵔⵓⵜ. ⵓⵔⴰⵔ, ⵛⴻⴳⴳⴰⵄ, ⵇⵇⴻⵏ ⴰⴽⴻⴷ ⵜⵎⴻⵣⴷⴰⴳⵏⵓⵜ.",
+    "allRightsReserved": "ⴰⴽⴽ ⵉⵣⵔⴻⴼⴰⵏ ⵜⵜⵡⴰⵀⴻⵔⵣⴻⵏ.",
+    "navigation": {
+      "title": "ⵜⵓⵏⵉⴳⵉⵏ",
+      "tournaments": "ⵉⵙⴼⴽⴰ",
+      "leaderboard": "ⵓⴷⵔⴰⵔ"
+    },
+    "support": {
+      "title": "ⵜⴰⵍⵍⴰⵍⵜ",
+      "help": "ⵜⴰⵍⵍⴰⵍⵜ",
+      "faq": "FAQ",
+      "contact": "ⴰⵏⴻⵔⵎⵉⵙ",
+      "rules": "ⵉⵍⵓⴳⴰⵏ"
+    },
+    "social": {
+      "title": "ⵜⴰⵎⴻⵣⴷⴰⴳⵏⵓⵜ"
+    }
+  },
+  "error": {
+    "404": {
+      "title": "ⴰⵙⴻⴱⵜⴻⵔ ⵓⵔ ⵢⵓⴼⵉ ⴰⵔⴰ",
+      "message": "ⵙⵓⵔ! ⴰⵙⴻⴱⵜⴻⵔ ⵉ ⵜⴻⵜⵜⵏⴰⴷⵉⴹ ⵢⴻⴱⵖⴰ ⵢⴻⵎⵀⵓ ⴷⴻⴳ ⵜⴰⵍⵍⵓⵏⵜ.",
+      "suggestions": {
+        "title": "ⴰⵏⴷⴰ ⵜⴻⴱⵖⵉⴹ ⴰⴷ ⵜⴻⴷⴷⵓⴹ?"
+      },
+      "help": "ⵎⴰ ⵜⴻⵥⵔⵉⴹ ⴷ ⵜⵓⵛⴹⴰ, ⵙⴻⵏⵇⴻⴷ URL ⵏⴻⵖ ⵓⵖⴰⵍ ⵖⴻⵔ ⵓⵙⴻⴱⵜⴻⵔ ⴰⴳⴻⵊⴷⴰⵏ."
+    }
+  }
+}
