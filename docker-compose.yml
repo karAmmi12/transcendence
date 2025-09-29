@@ -1,0 +1,53 @@
+services:
+
+  backend:
+    container_name: backend
+    build: ./backend
+    env_file: 
+      - ./.env
+    ports:
+      - "8001:8001"  # Port WebSocket
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - /app/dist
+      - ./backend/database:/app/database
+    depends_on:
+      - database
+    networks:
+      - transcendence_network
+    restart: unless-stopped
+  
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    env_file: 
+      - ./.env
+    ports:
+      - "8080:80"   # http
+      - "8443:443"  # https
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - transcendence_network
+    restart: unless-stopped
+  
+  database:
+    image: alpine:latest #siuu peut etre mettre une version precise
+    container_name: database
+    volumes:
+      - ./backend/database:/data
+    command: tail -f /dev/null
+    networks:
+      - transcendence_network
+
+networks:
+  transcendence_network:
+    driver: bridge
+
+volumes:
+  database_data: 
+    driver: local
