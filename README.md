@@ -9,7 +9,7 @@
 
 ## 📝 Description
 
-**ft_transcendence** est le projet final de l'École 42 - une plateforme web complète de jeu Pong multijoueur avec des fonctionnalités modernes d'authentification, de chat en temps réel et de rendu 3D.
+**ft_transcendence** est le projet final du tronc commun de l'École 42 - une plateforme web complète de jeu Pong multijoueur avec des fonctionnalités modernes d'authentification, de chat en temps réel et de rendu 3D.
 
 ## 🎯 Objectifs du Projet
 
@@ -47,6 +47,7 @@
 # Versions requises
 Docker >= 20.10
 Docker Compose >= 2.0
+Make
 ```
 
 ### Démarrage rapide
@@ -55,11 +56,20 @@ Docker Compose >= 2.0
 git clone https://github.com/alesshardy/ft_transcendence.git
 cd ft_transcendence
 
-# Lancer l'application
-docker-compose up --build
+# Lancer l'application en production
+make prod
 
 # Accéder à l'application
-open http://localhost:3000
+open https://localhost:8443
+```
+
+### Commandes Make disponibles
+```bash
+make prod     # Lance l'environnement de production
+make dev      # Lance l'environnement de développement
+make clean    # Nettoie les conteneurs et volumes
+make fclean   # Nettoyage complet
+make re       # Rebuild complet
 ```
 
 ## 📋 Fonctionnalités Principales
@@ -73,14 +83,7 @@ open http://localhost:3000
 ### 🎮 Jeu Pong Multijoueur
 - **Mode temps réel** - WebSocket pour la synchronisation
 - **Matchmaking** - Système de recherche d'adversaire
-- **Spectateur** - Regarder les parties en cours
 - **Historique des parties** - Statistiques et classements
-
-### 💬 Chat Intégré
-- **Messages instantanés** - Communication temps réel
-- **Channels publics/privés** - Gestion des salons
-- **Modération** - Système de ban/mute
-- **Commandes chat** - Interface de gestion
 
 ### 🎨 Interface 3D
 - **Rendu Babylon.js** - Graphismes modernes
@@ -100,6 +103,7 @@ ft_transcendence/
 │   ├── database/
 │   └── package.json
 ├── nginx/             # Configuration reverse proxy
+├── Makefile          # Commandes de gestion
 └── docker-compose.yml # Orchestration
 ```
 
@@ -115,7 +119,7 @@ ft_transcendence/
 ## 🎯 Défis Techniques Relevés
 
 - **Synchronisation temps réel** du jeu entre clients
-- **Gestion des états** complexes (authentification, parties, chat)
+- **Gestion des états** complexes (authentification, parties)
 - **Sécurisation complète** de l'API et des communications
 - **Performance** - Optimisation du rendu 3D
 - **Scalabilité** - Architecture modulaire et conteneurisée
