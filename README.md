@@ -1,213 +1,125 @@
-✅ Objectif confirmé : 125% = 19 points
-Modules choisis :
-Domaine	        Module	    Type	                Points
+# ft_transcendence 🎮
 
-Web	            Backend avec Fastify	            MAJ	2 ✅
-                Frontend avec Tailwind CSS	        MIN	1 ✅
-                SQLite	                            MIN	1 ✅
-User Mgmt	    Auth classique (email + password)	MAJ	2 ✅
-                Auth Google (OAuth)	                MAJ	2 ✅
-Gameplay	    Joueurs distants (remote players)	MAJ	2 ✅
-                Customisation du jeu	            MIN	1 ✅
-AI / Stats	    Dashboard statistiques utilisateur	MIN	1 ✅
-Cybersecurity   JWT + 2FA	                        MAJ	2 ✅
-Accessibility	Support tous appareils (responsive)	MIN	1 ✅
-                Compatibilité navigateurs étendue	MIN	1 ✅
-                Support multilingue	                MIN	1 ✅
-Graphics        Use advanced 3D techniques          MAJ 2 ✅
+<div align="center">
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Fastify-000000?style=for-the-badge&logo=fastify&logoColor=white" alt="Fastify" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Babylon.js-FD5750?style=for-the-badge&logo=babylon.js&logoColor=white" alt="Babylon.js" />
+</div>
 
-Total           =                                 19 points ✅
+## 📝 Description
 
-Techno utilise:
-    - Tailwind CSS
-    - Fastify avec Node.js
-    - SQLite
-    - OAuth 2.0
-    - Babylon.js
+**ft_transcendence** est le projet final de l'École 42 - une plateforme web complète de jeu Pong multijoueur avec des fonctionnalités modernes d'authentification, de chat en temps réel et de rendu 3D.
 
-Outils Backend :
-    - bcrypt : Hachage sécurisé des mots de passe pour protéger les données utilisateur contre les attaques.
-    - better-sqlite3 : Pilote SQLite optimisé pour exécuter des requêtes SQL préparées et gérer la base de données efficacement.
-    - dotenv : Chargement des variables d'environnement (clés API, secrets) depuis des fichiers sécurisés pour la configuration.
-    - jsonwebtoken : Génération et validation de tokens JWT pour l'authentification stateless et la gestion des sessions.
-    - nodemailer : Envoi d'emails pour l'authentification à deux facteurs (2FA) et les notifications.
-    - node-cron : Planification de tâches automatiques, comme le nettoyage périodique des tokens expirés.
-    - ws : Gestion des connexions WebSocket pour les parties multijoueurs en temps réel et le matchmaking.
-    - tsx : Non utilisé en production (seulement en dev pour exécuter TypeScript directement).
+## 🎯 Objectifs du Projet
 
-Outils Frontend :
-    - eslint : Linting du code JavaScript/TypeScript pour détecter et corriger les erreurs, améliorant la qualité et la maintenabilité.
-    - tailwindcss : Compilation des classes CSS utilitaires en styles optimisés pour la production.
-    - typescript : Compilation du code TypeScript en JavaScript compatible avec les navigateurs, ajoutant la sécurité des types.
-    - vite : Build tool pour bundler et optimiser les assets (JS, CSS, images) en un package de production servi par nginx.
+- Développer une application web full-stack complexe
+- Implémenter une architecture sécurisée avec authentification JWT
+- Maîtriser les WebSockets pour le temps réel
+- Orchestrer une infrastructure complète avec Docker
+- Créer une expérience utilisateur moderne et responsive
 
+## 🛠️ Technologies Utilisées
 
-SUJET:
+### Backend
+- **Node.js** avec **Fastify** - API REST haute performance
+- **TypeScript** - Typage statique et développement robuste
+- **SQLite** - Base de données légère et efficace
+- **JWT** - Authentification sécurisée
+- **WebSocket** - Communication temps réel
 
-• Major module: Use a framework to build the backend.
-    In this major module, you are required to use a specific web framework for backend
-    development: Fastify with Node.js .
-    You can create the backend without using the constraints of this
-    module by using the default backend language (as specified above in
-    the mandatory part). However, this module will only be valid if you
-    follow its requirements.
+### Frontend
+- **HTML5/CSS3** - Structure et design
+- **Tailwind CSS** - Framework CSS utilitaire
+- **Babylon.js** - Rendu 3D pour le jeu
+- **Vite** - Build tool moderne
 
-• Minor module: Use a framework or toolkit to build the front-end.
-    Your frontend development must use the Tailwind CSS in addition of the Typescript, and nothing else.
-    You can create a front-end without using the constraints of this
-    module by using the default front-end directives (as specified above
-    in the mandatory part). However, this module will only be valid if
-    you follow its requirements.
+### DevOps & Outils
+- **Docker** & **Docker Compose** - Conteneurisation
+- **Nginx** - Reverse proxy et serveur web
+- **ESLint** - Qualité de code
+- **Dotenv** - Gestion des variables d'environnement
 
-• Minor module: Use a database for the backend -and more.
-    The designated database for all DB instances in your project is SQLite This choice
-    ensure data consistency and compatibility across all project components and may
-    be a prerequisite for other modules, such as the backend Framework module.
+## 🚀 Installation & Lancement
 
-• Major module: Standard user management, authentication and users across tournaments.
-    ◦ Users can securely subscribe to the website.
-    ◦ Registered users can securely log in.
-    ◦ Users can select a unique display name to participate in tournaments.
-    ◦ Users can update their information.
-    ◦ Users can upload an avatar, with a default option if none is provided.
-    ◦ Users can add others as friends and view their online status.
-    ◦ User profiles display stats, such as wins and losses.
-    ◦ Each user has a Match History including 1v1 games, dates, and relevant
-    details, accessible to logged-in users.
-    The management of duplicate usernames/emails is at your discretion;
-    please ensure a logical solution is provided.
+### Prérequis
+```bash
+# Versions requises
+Docker >= 20.10
+Docker Compose >= 2.0
+```
 
-• Major module: Implement remote authentication.
-    In this major module, the goal is to implement a secure external authentication
-    system using OAuth 2.0 .
-    • You are free to choose any OAuth-compatible provider (e.g., Google,
-    GitHub, etc.).
-    14
-    ft_transcendence Surprise.
-    Key features and objectives include:
-    ◦ Integrate the authentication system, allowing users to securely sign in.
-    ◦ Obtain the necessary credentials and permissions from the authority to enable
-    secure login.
-    ◦ Implement user-friendly login and authorization flows that adhere to best practices and security standards.
-    ◦ Ensure the secure exchange of authentication tokens and user information
-    between the web application and the authentication provider.
-    This major module aims to provide a remote user authentication, offering users a
-    secure and convenient way to access the web application.
+### Démarrage rapide
+```bash
+# Cloner le repository
+git clone https://github.com/alesshardy/ft_transcendence.git
+cd ft_transcendence
 
-• Major module: Remote players
-    It should be possible for two players to play remotely. Each player is located on a
-    separated computer, accessing the same website and playing the same Pong game.
-    Consider network issues, such as unexpected disconnections or lag.
-    You must offer the best user experience possible.
+# Lancer l'application
+docker-compose up --build
 
-• Minor module: Game customization options.
-    In this minor module, the goal is to provide customization options for all available
-    games on the platform. Key features and objectives include:
-    ◦ Offer customization features, such as power-ups, attacks, or different maps,
-    that enhance the gameplay experience.
-    ◦ Allow users to choose a default version of the game with basic features if they
-    prefer a simpler experience.
-    ◦ Ensure that customization options are available and applicable to all games
-    offered on the platform.
-    ◦ Implement user-friendly settings menus or interfaces for adjusting game parameters.
-    ◦ Maintain consistency in customization features across all games to provide a
-    unified user experience.
-    This module aims to give users the flexibility to tailor their gaming experience
-    across all available games by providing a variety of customization options while
-    also offering a default version for those who prefer a straightforward gameplay
-    experience.
+# Accéder à l'application
+open http://localhost:3000
+```
 
-• Minor module: User and Game Stats Dashboards.
-    In this minor module, the goal is to introduce dashboards that display statistics for
-    individual users and game sessions. Key features and objectives include:
-    ◦ Create user-friendly dashboards that provide users with insights into their
-    gaming statistics.
-    ◦ Develop a separate dashboard for game sessions, showing detailed statistics,
-    outcomes, and historical data for each match.
-    ◦ Ensure that the dashboards offer an intuitive and informative user interface
-    for tracking and analyzing data.
-    ◦ Implement data visualization techniques, such as charts and graphs, to present
-    statistics in a clear and visually appealing manner.
-    ◦ Allow users to access and explore their own gaming history and performance
-    metrics conveniently.
-    ◦ Feel free to add any metrics you deem useful.
-    This minor module aims to empower users with the ability to monitor their gaming
-    statistics and game session details through user-friendly dashboards, providing a
-    comprehensive view of their gaming experience.
+## 📋 Fonctionnalités Principales
 
-• Major module: Implement Two-Factor Authentication (2FA) and JWT.
-    The goal of this major module is to enhance security and user authentication
-    by introducing Two-Factor Authentication (2FA) and utilizing JSON Web Tokens
-    (JWT). Key features and objectives include:
-    ◦ Implement Two-Factor Authentication (2FA) as an additional layer of security
-    for user accounts, requiring users to provide a secondary verification method,
-    such as a one-time code, in addition to their password.
-    ◦ Utilize JSON Web Tokens (JWT) as a secure method for authentication and
-    authorization, ensuring that user sessions and access to resources are managed 
-    securely.
-    ◦ Provide a user-friendly setup process for enabling 2FA, with options for SMS
-    codes, authenticator apps, or email-based verification.
-    ◦ Ensure that JWT tokens are issued and validated securely to prevent unauthorized access to user accounts and sensitive data.
-    This major module aims to strengthen user account security by offering Two-Factor
-    Authentication (2FA) and enhancing authentication and authorization through the
-    use of JSON Web Tokens (JWT).
+### 🔐 Authentification Sécurisée
+- **JWT Authentication** - Tokens sécurisés
+- **OAuth2 Integration** - Connexion via 42 API
+- **Two-Factor Authentication (2FA)** - Sécurité renforcée
+- **Gestion des sessions** - Persistance utilisateur
 
-• Major module: Implementing Advanced 3D Techniques
-    This major module,"Graphics," focuses on enhancing the visual aspects of the Pong
-    game. It introduces the use of advanced 3D techniques to create a more immersive
-    gaming experience. Specifically, the Pong game will be developed using Babylon.js
-    to achieve the desired visual effects.
-    ◦ Advanced 3D Graphics: The primary goal of this module is to implement
-    advanced 3D graphics techniques to elevate the visual quality of the Pong
-    game. By utilizing Babylon.js , the goal is to create stunning visual effects
-    that immerse players in the gaming environment.
-    ◦ Immersive Gameplay: The incorporation of advanced 3D techniques enhances
-    the overall gameplay experience by providing users with a visually engaging
-    and captivating Pong game.
-    ◦ Technology Integration: The chosen technology for this module is Babylon.js .
-    These tools will be used to create the 3D graphics, ensuring compatibility and
-    optimal performance.
-    This major module aims to revolutionize the Pong game’s visual elements by introducing advanced 3D techniques. Through the use of Babylon.js , we aim to provide
-    players with an immersive and visually stunning gaming experience.
+### 🎮 Jeu Pong Multijoueur
+- **Mode temps réel** - WebSocket pour la synchronisation
+- **Matchmaking** - Système de recherche d'adversaire
+- **Spectateur** - Regarder les parties en cours
+- **Historique des parties** - Statistiques et classements
 
-• Minor module: Support on all devices.
-    In this module, the main focus is to ensure that your website works seamlessly on
-    all types of devices. Key features and objectives include:
-    ◦ Ensure the website is responsive, adapting to different screen sizes and orientations, providing a consistent user experience on desktops, laptops, tablets,
-    and smartphones.
-    ◦ Ensure that users can easily navigate and interact with the website using
-    different input methods, such as touchscreens, keyboards, and mice, depending
-    on the device they are using.
-    This module aims to provide a consistent and user-friendly experience on all devices,
-    maximizing accessibility and user satisfaction.
+### 💬 Chat Intégré
+- **Messages instantanés** - Communication temps réel
+- **Channels publics/privés** - Gestion des salons
+- **Modération** - Système de ban/mute
+- **Commandes chat** - Interface de gestion
 
-• Minor module: Expanding Browser Compatibility.
-    In this minor module, the objective is to enhance the compatibility of the web
-    application by adding support for an additional web browser. Key features and
-    objectives include:
-    ◦ Extend browser support to include an additional web browser, ensuring that
-    users can access and use the application seamlessly.
-    ◦ Conduct thorough testing and optimization to ensure that the web application
-    functions correctly and displays correctly in the newly supported browser.
-    ◦ Address any compatibility issues or rendering discrepancies that may arise in
-    the added web browser.
-    ◦ Ensure a consistent user experience across all supported browsers, maintaining
-    usability and functionality.
-    This minor module aims to broaden the accessibility of the web application by
-    supporting an additional web browser, providing users with more choices for their
-    browsing experience.
+### 🎨 Interface 3D
+- **Rendu Babylon.js** - Graphismes modernes
+- **Animations fluides** - Expérience immersive
+- **Responsive design** - Compatible mobile/desktop
 
-• Minor module: Multiple language support.
-    In this minor module, the objective is to ensure that your website supports multiple
-    languages to cater to a diverse user base. Key features and goals include:
-    ◦ Implement support for a minimum of three languages on the website to accommodate a broad audience.
-    ◦ Provide a language switcher or selector that allows users to easily change the
-    website’s language based on their preferences.
-    ◦ Translate essential website content, such as navigation menus, headings, and
-    key information, into the supported languages.
-    ◦ Ensure that users can navigate and interact with the website seamlessly, regardless of the selected language.
-    ◦ Consider using language packs or localization libraries to simplify the translation process and maintain consistency across different languages.
-    ◦ Allow users to set their preferred language as the default for subsequent visits.
-    This minor module aims to enhance the accessibility and inclusivity of your website
-    by offering content in multiple languages, making it more user-friendly for a diverse
-    international audience.
+## 🏗️ Architecture
+
+```
+ft_transcendence/
+├── frontend/          # Interface utilisateur
+│   ├── src/
+│   ├── public/
+│   └── vite.config.ts
+├── backend/           # API Fastify
+│   ├── src/
+│   ├── database/
+│   └── package.json
+├── nginx/             # Configuration reverse proxy
+└── docker-compose.yml # Orchestration
+```
+
+## 🏆 Compétences Acquises
+
+- **Architecture Full-Stack** - Conception d'applications complètes
+- **Sécurité Web** - Authentification JWT, OAuth2, 2FA
+- **Temps Réel** - WebSockets et synchronisation
+- **DevOps** - Docker, orchestration multi-conteneurs
+- **3D Web** - Intégration Babylon.js
+- **Qualité de Code** - TypeScript, ESLint, bonnes pratiques
+
+## 🎯 Défis Techniques Relevés
+
+- **Synchronisation temps réel** du jeu entre clients
+- **Gestion des états** complexes (authentification, parties, chat)
+- **Sécurisation complète** de l'API et des communications
+- **Performance** - Optimisation du rendu 3D
+- **Scalabilité** - Architecture modulaire et conteneurisée
+
+---
+
+*Projet réalisé dans le cadre du cursus 42 Paris - Démonstration de maîtrise du développement web moderne*
