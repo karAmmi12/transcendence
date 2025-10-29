@@ -74,6 +74,7 @@ web_modules/
 
 # dotenv environment variable files
 .env
+.env.production
 .env.development.local
 .env.test.local
 .env.production.local
@@ -138,3 +139,8 @@ dist
 # Base de données et uploads
 backend/database.db
 backend/uploads/
+# Production environment files
+.env.production
+docker-compose.production.yml
+deploy-config/
+

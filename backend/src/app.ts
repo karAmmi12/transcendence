@@ -31,7 +31,7 @@ const start = async () => {
     // Autoriser CORS pour le dev frontend
     await app.register(cors, {
       origin: process.env.NODE_ENV === 'production' 
-      ? ['https://localhost:8443', 'https://localhost', 'http://localhost:8080']
+      ? ['https://transcendence.kammi.dev','https://www.transcendence.kammi.dev', 'https://localhost', 'http://localhost:8080']
       : [
           'http://localhost:5173',  // Vite dev
           'http://localhost:3000',  // Autres frontends
