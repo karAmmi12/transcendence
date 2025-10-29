@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2020", //voila c'est bien
+    "target": "ES2020", 
     "useDefineForClassFields": true,
     "module": "ESNext", 
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -10,20 +10,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "strict": false, // modif
-    "noUnusedLocals": false, // modif
-    "noUnusedParameters": false, // modif
+    "strict": false, 
+    "noUnusedLocals": false, 
+    "noUnusedParameters": false, 
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"], //ca c;est bien les autres faut le degager vous encombrer pas
+      "@/*": ["src/*"], 
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@services/*": ["src/services/*"],
       "@utils/*": ["src/utils/*"],
       "@types/*": ["src/types/*"]
     },
-    // ✅ Ajouter les types pour Vite
     "types": ["vite/client"]
   },
   "include": ["src", "vite.config.ts", "src/vite-env.d.ts"],
